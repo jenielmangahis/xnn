@@ -1,0 +1,13 @@
+[481-1] No new transaction to generate commission.
+[481-2] Checking PRS of Affiliate. PRS:494483.00
+[481-3]  Number of gift cards to give away 988
+[481-4]  Number of issued of gift cards 988
+[481-5]  Number of gift cards to issue0
+[481-6] Number of qualified sponsor: 1
+PHP Fatal error:  Unsupported operand types in /home/nxm/rep/cb/olz/commissions/CommissionTypes/SilverStartUp.php on line 109
+
+In SilverStartUp.php line 109:
+                             
+  Unsupported operand types  
+                             
+

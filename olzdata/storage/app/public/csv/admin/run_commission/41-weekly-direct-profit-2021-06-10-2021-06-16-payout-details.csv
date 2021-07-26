@@ -1,0 +1,6 @@
+payee_id,user_id,first_name,last_name,sponsor_id,commission_type,volume_calculated_from,payout,level,order_id,percent_payout,remarks
+1,412,"Client Champs",Department,1,"Weekly Direct Profit",0.00,0.00,1,9865644,25.00,"Member: 1 has a total of 0.00 CV"
+1,649,Mary,Allunam,1,"Weekly Direct Profit",0.00,0.00,1,9865661,25.00,"Member: 1 has a total of 0.00 CV"
+412,412,"Client Champs",Department,412,"Weekly Direct Profit",0.00,0.00,0,9865644,25.00,"Member: 412 has a total of 0.00 CV"
+463,463,"Core Tech",Department,463,"Weekly Direct Profit",49.00,12.25,0,9865600,25.00,"Member: 463 has a total of 49.00 CV"
+649,649,Mary,Allunam,649,"Weekly Direct Profit",0.00,0.00,0,9865661,25.00,"Member: 649 has a total of 0.00 CV"

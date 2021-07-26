@@ -1,0 +1,7 @@
+[32-1] Number of transactions29
+
+In PersonalSalesBonus.php line 55:
+                                        
+  Trying to get property of non-object  
+                                        
+

@@ -1,0 +1,62 @@
+
+var dataSet1 = [
+    [ "925 BASH", "2021/04/07 - 2022/04/11", "Actions" ],
+    [ "Contest Sample", "2021/06/01 - 2022/06/07", "Actions" ],
+];
+
+
+var dataSet2 = [
+    [ "20H", "2021/04/07 - 2022/04/11", "Actions" ],
+    [ "Contest Sample", "2021/06/01 - 2022/06/07", "Actions" ],
+];
+
+var dataSet3 = [
+    [ "20", "Ben Dixon", "Big Cedar", "100", "0", "0", "Actions" ],
+    [ "20", "Ben Dixon", "Big Cedar", "100", "0", "0", "Actions" ],
+];
+
+$('#running_incentives').dataTable({
+	responsive: true,
+	"data": dataSet1,
+    "aoColumns": [
+    	{ "mData": 0 }, 
+    	{ "mData": 1 },
+		{ "mData": null, "bSortable": false, "className": "text-center running-incentive-button", "sWidth": "20%", "mRender": function(data, type, full) {
+				return `<button class="btn btn-sm  btn-info"><i class="fa fa-search" aria-hidden="true"></i></button><button class="btn btn-sm  btn-success"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></button><button class="btn btn-sm  btn-info"><i class="fa fa-download" aria-hidden="true"></i></button><button class="btn btn-sm btn-danger"><i class="fa fa-trash-o" aria-hidden="true"></i></button>`;
+			}
+        },
+    ],
+
+});
+
+$('#close_incentives').dataTable({
+	responsive: true,
+	"data": dataSet2,
+    "aoColumns": [
+    	{ "mData": 0 }, 
+    	{ "mData": 1 },
+		{ "mData": null, "bSortable": false, "className": "text-center running-incentive-button", "sWidth": "20%", "mRender": function(data, type, full) {
+				return `<button class="btn btn-sm  btn-info"><i class="fa fa-eye-slash" aria-hidden="true"></i></button><button class="btn btn-sm  btn-info"><i class="fa fa-search" aria-hidden="true"></i></button>`;
+			}
+        },
+    ],
+
+});
+
+$('#arbitrary_points').dataTable({
+	responsive: true,
+	"data": dataSet3,
+    "aoColumns": [
+    	{ "mData": 0 }, 
+    	{ "mData": 1 },
+    	{ "mData": 2 },
+    	{ "mData": 3 },
+    	{ "mData": 4 },
+    	{ "mData": 5 },
+		{ "mData": null, "bSortable": false, "className": "text-center running-incentive-button", "sWidth": "20%", "mRender": function(data, type, full) {
+				return `<button class="btn btn-sm  btn-danger"><i class="fa fa-trash-o" aria-hidden="true"></i>`;
+			}
+        },
+    ],
+
+});

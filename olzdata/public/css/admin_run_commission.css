@@ -1,0 +1,81 @@
+.run-commission .table-sm td,
+.run-commission .table-sm th {
+    padding: .3rem!important;
+    text-align: center
+}
+
+.run-commission__step {
+    font-weight: 700!important
+}
+
+.run-commission .form-control {
+    height: calc(2.4em + 0.2rem + 2px);
+}
+
+.form-control:focus {
+    color: #495057;
+    background-color: #fff;
+    border-color: #ffdcdc;
+    outline: 0;
+    -webkit-box-shadow: 0 0 0 .2rem rgb(251 217 217);
+    box-shadow: 0 0 0 .2rem rgb(251 217 217)
+}
+
+.form-control::-webkit-input-placeholder {
+    color: #6c757d;
+    opacity: 1
+}
+
+.form-control:-ms-input-placeholder {
+    color: #6c757d;
+    opacity: 1
+}
+
+.form-control::-ms-input-placeholder {
+    color: #6c757d;
+    opacity: 1
+}
+
+.form-control::placeholder {
+    color: #6c757d;
+    opacity: 1
+}
+
+.form-control:disabled,
+.form-control[readonly] {
+    background-color: #e9ecef;
+    opacity: 1
+}
+
+.run-commission__download-link,
+.run-commission__step {
+    margin-bottom: 5px!important
+}
+
+.run-commission__log {
+    z-index: auto;
+    position: relative;
+    line-height: 20px;
+    -webkit-transition: none;
+    transition: none;
+    background: #000;
+    overflow-y: scroll;
+    overflow-x: auto;
+    white-space: nowrap;
+    font-family: monospace;
+    font-size: .85em!important;
+    height: 300px;
+    padding: 10px
+}
+
+.run-commission__log--success {
+    color: #3cb64b
+}
+
+.run-commission__log--error {
+    color: #e14439
+}
+
+.run-commission__log-message {
+    margin: 0!important
+}

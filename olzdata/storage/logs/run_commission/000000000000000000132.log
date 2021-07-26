@@ -1,0 +1,13 @@
+[513-1] Skip Order:9865827, donwline of:759, level:2
+[513-2] Skip Order:9865842, donwline of:760, level:3
+[513-3] Skip Order:9865842, donwline of:760, level:2
+          
+          
+          
+          
+[516-1] Generating CSV reports
+          
+          
+[516-1] Payout Summary: https://office.stg1-opulenza.xyz:81/storage/csv/admin/run_commission/132-monthly-level-commission-2021-07-01-2021-07-13-payout-summary.csv
+[516-2] Payout Details: https://office.stg1-opulenza.xyz:81/storage/csv/admin/run_commission/132-monthly-level-commission-2021-07-01-2021-07-13-payout-details.csv
+[516-3] Done generating CSV reports

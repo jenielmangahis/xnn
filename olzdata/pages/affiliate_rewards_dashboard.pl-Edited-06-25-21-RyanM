@@ -1,0 +1,145 @@
+print <<EOS;
+
+<link rel="stylesheet" href="https://cdn.datatables.net/rowreorder/1.2.5/css/rowReorder.dataTables.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.3/css/responsive.dataTables.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tooltipster/3.3.0/css/themes/tooltipster-shadow.min.css" integrity="sha256-OIlyDunILjraKXlyZTIBuWVxBPzw3DvDhjbUUYgoxEo=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.4/jquery-confirm.min.css" integrity="sha256-VxlXnpkS8UAw3dJnlJj8IjIflIWmDUVQbXD9grYXr98=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+<link rel="stylesheet" href="$commission_engine_api_url/css/affiliate_rewards_dashboard.css?v=$app_css_version">
+
+<div class="container panel rewards-dashboard">
+	<input type="hidden" id="member_id" value="$uid">
+
+	<div class="row">
+	    <div class="col-md-12 text-center">
+	        <h1 class="rewards-dashboard__h1">
+                Rewards Dashboard
+	        </h1>
+            <!-- COUNTDOWN TIMER -->
+            <ul id="rewards-dashboard__countdown-timer">
+		        <li>
+		            <span class="days">00</span><p class="days_text">Days</p>
+		        </li>
+		        <li class="separator">:</li>
+		        <li>
+		            <span class="hours">00</span><p class="hours_text">Hours</p>
+		        </li>
+		        <li class="separator">:</li>
+		        <li>
+		            <span class="minutes">00</span><p class="minutes_text">Minutes</p>
+		        </li>
+	        </ul>
+	        <!-- END COUNTDOWN TIMER -->
+
+	        <h2 class="rewards-dashboard__h2">
+                Until Reward Time!
+	        </h2>
+	    </div>
+    </div>
+    <div class="row affiliate-rewards-dashboard__pending-orders-table--wrap">
+        <div class="form-group text-right">
+            <div class="col-sm-8 col-sm-offset-4 form-inline affiliate-rewards-dashboard__sales-daterange--wrap">
+                <label for="affiliate-rewards-dashboard-sales-daterange" class="control-label">Current Period:</label>
+                <input type="text" name="affiliate-rewards-dashboard-sales-daterange" class="affiliate-rewards-dashboard__sales-daterange form-control" value="" />
+            </div>
+        </div>
+
+        <div class="col-md-12">
+            <table class="table table-bordered rewards-dashboard__table affiliate-rewards-dashboard__pending-orders-table display nowrap" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>Hostess Name</th>
+                        <th>Sponsor Link</th>
+                        <th>Total Sales This Period</th>
+                        <th>Link</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+    <div class="row affiliate-rewards-dashboard__top-hostess-table--wrap">
+        <div class="col-md-12">
+            <h2 class="rewards-dashboard__h2 text-center">
+                Top Hostesses Of All Time
+	        </h2>
+            <table class="table table-bordered rewards-dashboard__table affiliate-rewards-dashboard__top-hostess-table display nowrap" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>Hostess Name</th>
+                        <th>All Time Sales</th>
+                        <th>Direct Commissions Missed (25%)</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <h2 class="rewards-dashboard__h2 text-center">
+                Gift Card
+            </h2>
+            <table class="table table-bordered rewards-dashboard__table affiliate-rewards-dashboard__coupon-table display nowrap" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>CODE</th>
+                        <th>GVC</th>
+                        <th>BALANCE</th>
+                    </tr>
+                </thead>
+            </table>
+
+            <h2 class="rewards-dashboard__h2 text-center">
+                Gift Card Transaction History
+            </h2>
+            <table class="table table-bordered rewards-dashboard__table affiliate-rewards-dashboard__gift-cards-history-table display nowrap" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>Invoice #</th>
+                        <th>Description</th>
+                        <th>Amount Used</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+
+    <!-- TOOLTIPSTER TABLE -->
+    <div class="tooltip-affiliate-pending-orders-breakdown__template">
+        <div class="container" id="tooltip-affiliate-pending-orders-breakdown">
+            <div class="row">
+                <div class="col-md-12">
+                    <span class="tooltipster-close float-right">
+                        <i class="fa fa-times-circle" aria-hidden="true"></i>
+                    </span>
+
+                    <table class="table table-bordered rewards-dashboard__table affiliate-rewards-dashboard__pending-orders-table--breakdown display nowrap" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Order Number</th>
+                                <th>Order</th>
+                                <th>Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+        <div>
+    </div>
+</div>
+
+<script src="https://cdn.datatables.net/rowreorder/1.2.5/js/dataTables.rowReorder.min.js"></script>
+<script src="https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js"></script>
+<script src="$commission_engine_api_url/js/jquery.countdown.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.4/jquery-confirm.min.js" integrity="sha256-Ka8obxsHNCz6H9hRpl8X4QV3XmhxWyqBpk/EpHYyj9k=" crossorigin="anonymous"></script>
+<script src="$commission_engine_api_url/js/_pages.config.js"></script>
+<script src="$commission_engine_api_url/js/affiliate_rewards_dashboard_fn.js"></script>
+<script src="$commission_engine_api_url/js/affiliate_rewards_dashboard.js"></script>
+
+EOS
+1;

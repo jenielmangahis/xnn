@@ -1,0 +1,48 @@
+payee_id,user_id,first_name,last_name,sponsor_id,commission_type,payout,volume_calculated_from,order_id,percent_payout,remarks
+42,42,Ryan,M,42,"Free Jewelry Incentive",50.0000,,,,
+52,52,"Client Champs",Departments,52,"Free Jewelry Incentive",100.0000,,,,
+270,270,"Ralph Ivan",Arnibal,270,"Free Jewelry Incentive",50.0000,,,,"ID 270 Join Date: 2020-11-05 | Payout Type: Gift Card"
+276,276,Dana,Carroll,276,"Free Jewelry Incentive",50.0000,,,,"ID 276 Join Date: 0000-00-00 | Payout Type: Gift Card"
+279,279,"Bobbi Sue",Hoflund,279,"Free Jewelry Incentive",100.0000,,,,"ID 279 Join Date: 0000-00-00 | Payout Type: Gift Card"
+285,285,Sandy,Hunt,285,"Free Jewelry Incentive",100.0000,,,,"ID 285 Join Date: 0000-00-00 | Payout Type: Gift Card"
+394,394,"Client Champs",Departments,394,"Free Jewelry Incentive",50.0000,,,,"ID 394 Join Date: 2020-11-05 | Payout Type: Gift Card"
+397,397,"Client Champs",Departments,397,"Free Jewelry Incentive",100.0000,,,,"ID 397 Join Date: 2020-11-05 | Payout Type: Gift Card"
+403,403,"Client Champs",Department,403,"Free Jewelry Incentive",50.0000,,,,
+433,433,Zee,cclientchamp,433,"Free Jewelry Incentive",100.0000,,,,
+451,451,"Core Tech",Department,451,"Free Jewelry Incentive",50.0000,,,,
+454,454,Joe,Joe,454,"Free Jewelry Incentive",50.0000,,,,
+457,457,Jovanie,Benola,457,"Free Jewelry Incentive",50.0000,,,,
+463,463,"Core Tech",Department,463,"Free Jewelry Incentive",50.0000,,,,
+466,466,"Core Tech",Department,466,"Free Jewelry Incentive",50.0000,,,,
+478,478,Commission,Department,478,"Free Jewelry Incentive",50.0000,,,,
+526,526,IS,Department,526,"Free Jewelry Incentive",100.0000,,,,
+601,601,Renelyn,Dain,601,"Free Jewelry Incentive",100.0000,,,,"ID 601 Join Date: 2020-11-05 | Payout Type: Gift Card"
+622,622,Jairus,Monreal,622,"Free Jewelry Incentive",100.0000,,,,"ID 622 Join Date: 2020-11-05 | Payout Type: Gift Card"
+634,634,Jayvee,Salango,634,"Free Jewelry Incentive",50.0000,,,,"ID 634 Join Date: 2020-11-05 | Payout Type: Gift Card"
+646,646,Jhimson,Lupiga,646,"Free Jewelry Incentive",50.0000,,,,"ID 646 Join Date: 2020-11-05 | Payout Type: Gift Card"
+655,655,Ricah,B,655,"Free Jewelry Incentive",50.0000,,,,
+688,688,Pro,Naxumtester,688,"Free Jewelry Incentive",50.0000,,,,"ID 688 Join Date: 2004-09-11 | Payout Type: Gift Card"
+759,759,"Commission Leda",Test,759,"Free Jewelry Incentive",100.0000,,,,
+760,760,"Commission Colt",Test,760,"Free Jewelry Incentive",50.0000,,,,
+44,44,"Client Champs",Departments,44,"Free Jewelry Incentive",50.0000,,,,
+46,46,"Client Champs",Departments,46,"Free Jewelry Incentive",50.0000,,,,
+48,48,"Pam Client Champs",Department,48,"Free Jewelry Incentive",50.0000,,,,
+176,176,"Client Champ",Department,176,"Free Jewelry Incentive",100.0000,,,,"ID 176 Join Date: 2021-02-21 | Payout Type: Gift Card"
+311,311,Ross,George,311,"Free Jewelry Incentive",100.0000,,,,"ID 311 Join Date: 0000-00-00 | Payout Type: Gift Card"
+424,424,"Client Champs",Department,424,"Free Jewelry Incentive",50.0000,,,,
+460,460,"Core Tech",Department,460,"Free Jewelry Incentive",50.0000,,,,
+481,481,Commission,Department,481,"Free Jewelry Incentive",50.0000,,,,
+484,484,Commission,Department,484,"Free Jewelry Incentive",50.0000,,,,
+520,520,IS,Department,520,"Free Jewelry Incentive",50.0000,,,,
+604,604,Rosemay,Romero,604,"Free Jewelry Incentive",50.0000,,,,"ID 604 Join Date: 2020-11-05 | Payout Type: Gift Card"
+607,607,Necta,Casiple,607,"Free Jewelry Incentive",50.0000,,,,"ID 607 Join Date: 2020-11-05 | Payout Type: Gift Card"
+625,625,Claire,Aceron,625,"Free Jewelry Incentive",100.0000,,,,"ID 625 Join Date: 2020-11-05 | Payout Type: Gift Card"
+628,628,Crismarie,Lopez,628,"Free Jewelry Incentive",50.0000,,,,"ID 628 Join Date: 2020-11-05 | Payout Type: Gift Card"
+637,637,John,Chan,637,"Free Jewelry Incentive",100.0000,,,,"ID 637 Join Date: 2020-11-05 | Payout Type: Gift Card"
+640,640,Christopher,Java,640,"Free Jewelry Incentive",50.0000,,,,"ID 640 Join Date: 2020-11-05 | Payout Type: Gift Card"
+652,652,Chris,Scappatura,652,"Free Jewelry Incentive",100.0000,,,,"ID 652 Join Date: 2020-11-05 | Payout Type: Gift Card"
+679,679,Lala,Client,679,"Free Jewelry Incentive",100.0000,,,,"ID 679 Join Date: 2021-05-29 | Payout Type: Gift Card"
+690,690,nxmdemo,nxmdemo,690,"Free Jewelry Incentive",50.0000,,,,"ID 690 Join Date: 2020-11-05 | Payout Type: Gift Card"
+757,757,"Commission Sandra",Test,757,"Free Jewelry Incentive",100.0000,,,,
+758,758,"Commission Malinda",Test,758,"Free Jewelry Incentive",100.0000,,,,
+692,692,nxm,naxumtester,692,"Free Jewelry Incentive",50.0000,,,,"ID 692 Join Date: 2021-06-16 | Payout Type: Gift Card"

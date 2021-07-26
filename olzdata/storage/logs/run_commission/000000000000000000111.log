@@ -1,0 +1,15 @@
+[434-1] Checking cache
+[434-2] cache tid
+[434-3] db tid 9865633
+[434-4] Setting last transaction to: 9865633
+[434-5] Checking PRS of Affiliate. PRS:0.00
+          
+          
+          
+          
+[437-1] Generating CSV reports
+          
+          
+[437-1] Payout Summary: https://office.stg1-opulenza.xyz:81/storage/csv/admin/run_commission/111-silver-start-up-program-2021-07-12-2021-07-11-payout-summary.csv
+[437-2] Payout Details: https://office.stg1-opulenza.xyz:81/storage/csv/admin/run_commission/111-silver-start-up-program-2021-07-12-2021-07-11-payout-details.csv
+[437-3] Done generating CSV reports

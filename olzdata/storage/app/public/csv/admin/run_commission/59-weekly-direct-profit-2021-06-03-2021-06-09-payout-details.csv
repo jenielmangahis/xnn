@@ -1,0 +1,8 @@
+payee_id,user_id,first_name,last_name,sponsor_id,commission_type,volume_calculated_from,payout,level,order_id,percent_payout,remarks
+20,20,Ben-,Dixon,41,"Weekly Direct Profit",0.00,0.00,2,9865604,25.00,"Order type: Customer Order | Member: 20 has a total of 0.00 CV is paid to the first upline Representative: 20"
+41,20,Ben-,Dixon,41,"Weekly Direct Profit",0.00,0.00,1,9865604,25.00,"Order type: Customer Order | Member: 41 has a total of 0.00 CV is paid to the first upline Representative: 20"
+52,52,"Client Champs",Departments,20,"Weekly Direct Profit",0.00,0.00,0,9865624,25.00,"Order type: Representative Order | Member: 52 has a total of 0.00 CV"
+52,52,"Client Champs",Departments,20,"Weekly Direct Profit",0.00,0.00,0,9865668,25.00,"Order type: Representative Order | Member: 52 has a total of 0.00 CV"
+397,397,"Client Champs",Departments,1,"Weekly Direct Profit",0.00,0.00,0,9865679,25.00,"Order type: Representative Order | Member: 397 has a total of 0.00 CV"
+601,601,Renelyn,Dain,1,"Weekly Direct Profit",0.00,0.00,0,9865681,25.00,"Order type: Representative Order | Member: 601 has a total of 0.00 CV"
+655,655,Ricah,B,20,"Weekly Direct Profit",0.00,0.00,0,9865671,25.00,"Order type: Representative Order | Member: 655 has a total of 0.00 CV"

@@ -1,0 +1,47 @@
+[124-1] number of transactions 35
+[124-2] Evaluating #9865592-1
+[124-3] []
+[124-4] []
+[124-5] Affiliate 1 is not qualified for commission. 
+[124-6] Evaluating #9865593-1
+[124-7] {"1":0}
+[124-8] [1]
+[124-9] Affiliate 1 is not qualified for commission. 
+[124-10] Evaluating #9865594-1
+[124-11] {"1":0}
+[124-12] [1]
+[124-13] Affiliate 1 is not qualified for commission. 
+[124-14] Evaluating #9865595-1
+[124-15] {"1":0}
+[124-16] [1]
+[124-17] Affiliate 1 is not qualified for commission. 
+[124-18] Evaluating #9865596-1
+[124-19] {"1":0}
+[124-20] [1]
+[124-21] Affiliate 1 is not qualified for commission. 
+[124-22] Evaluating #9865597-1
+[124-23] {"1":0}
+[124-24] [1]
+[124-25] Affiliate 1 is not qualified for commission. 
+[124-26] Evaluating #9865598-1
+[124-27] {"1":0}
+[124-28] [1]
+[124-29] Affiliate 1 is not qualified for commission. 
+[124-30] Evaluating #9865599-1
+[124-31] {"1":0}
+[124-32] [1]
+[124-33] Affiliate 1 is not qualified for commission. 
+[124-34] Evaluating #9865600-1
+[124-35] {"1":0}
+[124-36] [1]
+[124-37] Affiliate 1 is not qualified for commission. 
+[124-38] Evaluating #9865773-688
+[124-39] {"1":0}
+[124-40] [1]
+PHP Fatal error:  Class 'Commissions\CommissionTypes\Rank' not found in /home/nxm/rep/cb/olz/commissions/CommissionTypes/PersonalSalesBonus.php on line 126
+
+In PersonalSalesBonus.php line 126:
+                                                      
+  Class 'Commissions\CommissionTypes\Rank' not found  
+                                                      
+

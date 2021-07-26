@@ -1,0 +1,17 @@
+[214-1] Processing Order ID 9865668
+          
+[214-2] Processing Order ID 9865624
+          
+[214-3] Processing Order ID 9865679
+          
+[214-4] Processing Order ID 9865681
+          
+[214-5] Processing Order ID 9865626
+          
+[214-6] Processing Order ID 9865604
+
+In WeeklyDirectProfit.php line 45:
+                            
+  Undefined index: user_id  
+                            
+

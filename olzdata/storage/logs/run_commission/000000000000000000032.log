@@ -1,0 +1,49 @@
+[120-1] number of transactions 35
+[120-2] Evaluating #9865592-1
+[120-3] []
+[120-4] []
+[120-5] Affiliate 1 is not qualified for commission. 
+[120-6] Evaluating #9865593-1
+[120-7] {"1":0}
+[120-8] [1]
+[120-9] Affiliate 1 is not qualified for commission. 
+[120-10] Evaluating #9865594-1
+[120-11] {"1":0}
+[120-12] [1]
+[120-13] Affiliate 1 is not qualified for commission. 
+[120-14] Evaluating #9865595-1
+[120-15] {"1":0}
+[120-16] [1]
+[120-17] Affiliate 1 is not qualified for commission. 
+[120-18] Evaluating #9865596-1
+[120-19] {"1":0}
+[120-20] [1]
+[120-21] Affiliate 1 is not qualified for commission. 
+[120-22] Evaluating #9865597-1
+[120-23] {"1":0}
+[120-24] [1]
+[120-25] Affiliate 1 is not qualified for commission. 
+[120-26] Evaluating #9865598-1
+[120-27] {"1":0}
+[120-28] [1]
+[120-29] Affiliate 1 is not qualified for commission. 
+[120-30] Evaluating #9865599-1
+[120-31] {"1":0}
+[120-32] [1]
+[120-33] Affiliate 1 is not qualified for commission. 
+[120-34] Evaluating #9865600-1
+[120-35] {"1":0}
+[120-36] [1]
+[120-37] Affiliate 1 is not qualified for commission. 
+[120-38] Evaluating #9865773-688
+[120-39] {"1":0}
+[120-40] [1]
+[120-41] {"id":1,"user_id":688,"volume_id":1,"rank_date":"2021-06-30","rank_id":null,"min_rank_id":null,"paid_as_rank_id":1,"is_active":0,"is_system_active":0,"created_at":"2021-06-22 14:03:14","updated_at":"2021-06-22 15:32:07"}{"id":1,"user_id":688,"volume_date":"2021-06-30","level":null,"created_at":"2021-06-22 14:04:39","updated_at":"2021-06-22 14:04:39","ppv":"0.00","ppv_capped":"0.00","pcv":"0.00","prs":"1000.00","pcv_capped":"0.00","pcv_users":null,"coach_points":"0.00","organization_points":"0.00","team_group_points":"0.00","referral_preferred_customer_points":"0.00","referral_preferred_customer_users":null,"referral_enrolled_coach_points":"0.00","referral_enrolled_coach_users":null,"referral_rank_advancement_points":"0.00","referral_rank_advancement_users":null,"referral_points":"0.00","personally_enrolled_retention_rate":"0.00","customer_retention_rate":"0.00","organization_retention_rate":"0.00","preferred_customer_count":0,"preferred_customer_users":null,"influencer_count":0,"silver_influencer_count":0,"gold_influencer_count":0,"platinum_influencer_count":0,"diamond_influencer_count":0}
+
+In PersonalSalesBonus.php line 124:
+                                                                               
+  Missing argument 3 for Commissions\CommissionTypes\PersonalSalesBonus::eval  
+  uateUserPercentage(), called in /home/nxm/rep/cb/olz/commissions/Commission  
+  Types/PersonalSalesBonus.php on line 67 and defined                          
+                                                                               
+

@@ -1,0 +1,8 @@
+[418-1] Checking cache
+
+In Builder.php line 2445:
+                                                                               
+  Call to undefined method Illuminate\Database\Query\Builder::validTransactio  
+  n()                                                                          
+                                                                               
+

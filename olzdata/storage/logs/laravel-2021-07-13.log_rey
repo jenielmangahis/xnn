@@ -1,0 +1,79 @@
+[2021-07-13 06:58:29] production.ERROR: exception 'Illuminate\Contracts\Container\BindingResolutionException' with message 'Target [Commissions\Contracts\BackgroundWorkerLoggerInterface] is not instantiable while building [App\Console\Commands\Commission\RunSilverStartUpProgram, Commissions\CommissionTypes\SilverStartUp].' in /home/nxm/rep/cb/olz/vendor/laravel/framework/src/Illuminate/Container/Container.php:895
+Stack trace:
+#0 /home/nxm/rep/cb/olz/vendor/laravel/framework/src/Illuminate/Container/Container.php(735): Illuminate\Container\Container->notInstantiable('Commissions\\Con...')
+#1 /home/nxm/rep/cb/olz/vendor/laravel/framework/src/Illuminate/Container/Container.php(608): Illuminate\Container\Container->build('Commissions\\Con...')
+#2 /home/nxm/rep/cb/olz/vendor/laravel/framework/src/Illuminate/Container/Container.php(575): Illuminate\Container\Container->resolve('Commissions\\Con...')
+#3 /home/nxm/rep/cb/olz/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(728): Illuminate\Container\Container->make('Commissions\\Con...')
+#4 /home/nxm/rep/cb/olz/vendor/laravel/framework/src/Illuminate/Container/Container.php(862): Illuminate\Foundation\Application->make('Commissions\\Con...')
+#5 /home/nxm/rep/cb/olz/vendor/laravel/framework/src/Illuminate/Container/Container.php(790): Illuminate\Container\Container->resolveClass(Object(ReflectionParameter))
+#6 /home/nxm/rep/cb/olz/vendor/laravel/framework/src/Illuminate/Container/Container.php(758): Illuminate\Container\Container->resolveDependencies(Array)
+#7 /home/nxm/rep/cb/olz/vendor/laravel/framework/src/Illuminate/Container/Container.php(608): Illuminate\Container\Container->build('Commissions\\Com...')
+#8 /home/nxm/rep/cb/olz/vendor/laravel/framework/src/Illuminate/Container/Container.php(575): Illuminate\Container\Container->resolve('Commissions\\Com...')
+#9 /home/nxm/rep/cb/olz/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(728): Illuminate\Container\Container->make('Commissions\\Com...')
+#10 /home/nxm/rep/cb/olz/vendor/laravel/framework/src/Illuminate/Container/Container.php(862): Illuminate\Foundation\Application->make('Commissions\\Com...')
+#11 /home/nxm/rep/cb/olz/vendor/laravel/framework/src/Illuminate/Container/Container.php(790): Illuminate\Container\Container->resolveClass(Object(ReflectionParameter))
+#12 /home/nxm/rep/cb/olz/vendor/laravel/framework/src/Illuminate/Container/Container.php(758): Illuminate\Container\Container->resolveDependencies(Array)
+#13 /home/nxm/rep/cb/olz/vendor/laravel/framework/src/Illuminate/Container/Container.php(608): Illuminate\Container\Container->build('App\\Console\\Com...')
+#14 /home/nxm/rep/cb/olz/vendor/laravel/framework/src/Illuminate/Container/Container.php(575): Illuminate\Container\Container->resolve('App\\Console\\Com...')
+#15 /home/nxm/rep/cb/olz/vendor/laravel/framework/src/Illuminate/Foundation/Application.php(728): Illuminate\Container\Container->make('App\\Console\\Com...')
+#16 /home/nxm/rep/cb/olz/vendor/laravel/framework/src/Illuminate/Console/Application.php(192): Illuminate\Foundation\Application->make('App\\Console\\Com...')
+#17 /home/nxm/rep/cb/olz/vendor/laravel/framework/src/Illuminate/Console/Application.php(206): Illuminate\Console\Application->resolve('App\\Console\\Com...')
+#18 /home/nxm/rep/cb/olz/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(285): Illuminate\Console\Application->resolveCommands(Array)
+#19 /home/nxm/rep/cb/olz/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(122): Illuminate\Foundation\Console\Kernel->getArtisan()
+#20 /home/nxm/rep/cb/olz/artisan(36): Illuminate\Foundation\Console\Kernel->handle(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#21 {main}  
+[2021-07-13 07:20:00] production.ERROR: exception 'ErrorException' with message 'Trying to get property of non-object' in /home/nxm/rep/cb/olz/commissions/CommissionTypes/SilverStartUp.php:48
+Stack trace:
+#0 /home/nxm/rep/cb/olz/commissions/CommissionTypes/SilverStartUp.php(48): Illuminate\Foundation\Bootstrap\HandleExceptions->handleError(8, 'Trying to get p...', '/home/nxm/rep/c...', 48, Array)
+#1 /home/nxm/rep/cb/olz/app/Console/Commands/Commission/RunSilverStartUpProgram.php(47): Commissions\CommissionTypes\SilverStartUp->run()
+#2 [internal function]: App\Console\Commands\Commission\RunSilverStartUpProgram->handle()
+#3 /home/nxm/rep/cb/olz/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(30): call_user_func_array(Array, Array)
+#4 /home/nxm/rep/cb/olz/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(87): Illuminate\Container\BoundMethod::Illuminate\Container\{closure}()
+#5 /home/nxm/rep/cb/olz/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(31): Illuminate\Container\BoundMethod::callBoundMethod(Object(Illuminate\Foundation\Application), Array, Object(Closure))
+#6 /home/nxm/rep/cb/olz/vendor/laravel/framework/src/Illuminate/Container/Container.php(539): Illuminate\Container\BoundMethod::call(Object(Illuminate\Foundation\Application), Array, Array, NULL)
+#7 /home/nxm/rep/cb/olz/vendor/laravel/framework/src/Illuminate/Console/Command.php(182): Illuminate\Container\Container->call(Array)
+#8 /home/nxm/rep/cb/olz/vendor/symfony/console/Command/Command.php(255): Illuminate\Console\Command->execute(Object(Symfony\Component\Console\Input\ArgvInput), Object(Illuminate\Console\OutputStyle))
+#9 /home/nxm/rep/cb/olz/vendor/laravel/framework/src/Illuminate/Console/Command.php(168): Symfony\Component\Console\Command\Command->run(Object(Symfony\Component\Console\Input\ArgvInput), Object(Illuminate\Console\OutputStyle))
+#10 /home/nxm/rep/cb/olz/vendor/symfony/console/Application.php(992): Illuminate\Console\Command->run(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#11 /home/nxm/rep/cb/olz/vendor/symfony/console/Application.php(255): Symfony\Component\Console\Application->doRunCommand(Object(App\Console\Commands\Commission\RunSilverStartUpProgram), Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#12 /home/nxm/rep/cb/olz/vendor/symfony/console/Application.php(148): Symfony\Component\Console\Application->doRun(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#13 /home/nxm/rep/cb/olz/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(122): Symfony\Component\Console\Application->run(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#14 /home/nxm/rep/cb/olz/artisan(36): Illuminate\Foundation\Console\Kernel->handle(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#15 {main}  
+[2021-07-13 07:49:47] production.ERROR: exception 'Symfony\Component\Console\Exception\CommandNotFoundException' with message 'There are no commands defined in the "commission:generate-commission-periods" namespace.
+
+Did you mean this?
+    commission' in /home/nxm/rep/cb/olz/vendor/symfony/console/Application.php:579
+Stack trace:
+#0 /home/nxm/rep/cb/olz/vendor/symfony/console/Descriptor/ApplicationDescription.php(102): Symfony\Component\Console\Application->findNamespace('commission:gene...')
+#1 /home/nxm/rep/cb/olz/vendor/symfony/console/Descriptor/ApplicationDescription.php(75): Symfony\Component\Console\Descriptor\ApplicationDescription->inspectApplication()
+#2 /home/nxm/rep/cb/olz/vendor/symfony/console/Descriptor/TextDescriptor.php(194): Symfony\Component\Console\Descriptor\ApplicationDescription->getCommands()
+#3 /home/nxm/rep/cb/olz/vendor/symfony/console/Descriptor/Descriptor.php(55): Symfony\Component\Console\Descriptor\TextDescriptor->describeApplication(Object(Illuminate\Console\Application), Array)
+#4 /home/nxm/rep/cb/olz/vendor/symfony/console/Helper/DescriptorHelper.php(67): Symfony\Component\Console\Descriptor\Descriptor->describe(Object(Symfony\Component\Console\Output\ConsoleOutput), Object(Illuminate\Console\Application), Array)
+#5 /home/nxm/rep/cb/olz/vendor/symfony/console/Command/ListCommand.php(76): Symfony\Component\Console\Helper\DescriptorHelper->describe(Object(Symfony\Component\Console\Output\ConsoleOutput), Object(Illuminate\Console\Application), Array)
+#6 /home/nxm/rep/cb/olz/vendor/symfony/console/Command/Command.php(255): Symfony\Component\Console\Command\ListCommand->execute(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#7 /home/nxm/rep/cb/olz/vendor/symfony/console/Application.php(992): Symfony\Component\Console\Command\Command->run(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#8 /home/nxm/rep/cb/olz/vendor/symfony/console/Application.php(255): Symfony\Component\Console\Application->doRunCommand(Object(Symfony\Component\Console\Command\ListCommand), Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#9 /home/nxm/rep/cb/olz/vendor/symfony/console/Application.php(148): Symfony\Component\Console\Application->doRun(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#10 /home/nxm/rep/cb/olz/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(122): Symfony\Component\Console\Application->run(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#11 /home/nxm/rep/cb/olz/artisan(36): Illuminate\Foundation\Console\Kernel->handle(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#12 {main}  
+[2021-07-13 07:53:14] production.ERROR: exception 'ErrorException' with message 'Missing argument 1 for Commissions\CommissionTypes\SilverStartUp::generateCommission(), called in /home/nxm/rep/cb/olz/commissions/CommissionTypes/SilverStartUp.php on line 50 and defined' in /home/nxm/rep/cb/olz/commissions/CommissionTypes/SilverStartUp.php:53
+Stack trace:
+#0 /home/nxm/rep/cb/olz/commissions/CommissionTypes/SilverStartUp.php(53): Illuminate\Foundation\Bootstrap\HandleExceptions->handleError(2, 'Missing argumen...', '/home/nxm/rep/c...', 53, Array)
+#1 /home/nxm/rep/cb/olz/commissions/CommissionTypes/SilverStartUp.php(50): Commissions\CommissionTypes\SilverStartUp->generateCommission()
+#2 /home/nxm/rep/cb/olz/app/Console/Commands/Commission/RunSilverStartUpProgram.php(47): Commissions\CommissionTypes\SilverStartUp->run()
+#3 [internal function]: App\Console\Commands\Commission\RunSilverStartUpProgram->handle()
+#4 /home/nxm/rep/cb/olz/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(30): call_user_func_array(Array, Array)
+#5 /home/nxm/rep/cb/olz/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(87): Illuminate\Container\BoundMethod::Illuminate\Container\{closure}()
+#6 /home/nxm/rep/cb/olz/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(31): Illuminate\Container\BoundMethod::callBoundMethod(Object(Illuminate\Foundation\Application), Array, Object(Closure))
+#7 /home/nxm/rep/cb/olz/vendor/laravel/framework/src/Illuminate/Container/Container.php(539): Illuminate\Container\BoundMethod::call(Object(Illuminate\Foundation\Application), Array, Array, NULL)
+#8 /home/nxm/rep/cb/olz/vendor/laravel/framework/src/Illuminate/Console/Command.php(182): Illuminate\Container\Container->call(Array)
+#9 /home/nxm/rep/cb/olz/vendor/symfony/console/Command/Command.php(255): Illuminate\Console\Command->execute(Object(Symfony\Component\Console\Input\ArgvInput), Object(Illuminate\Console\OutputStyle))
+#10 /home/nxm/rep/cb/olz/vendor/laravel/framework/src/Illuminate/Console/Command.php(168): Symfony\Component\Console\Command\Command->run(Object(Symfony\Component\Console\Input\ArgvInput), Object(Illuminate\Console\OutputStyle))
+#11 /home/nxm/rep/cb/olz/vendor/symfony/console/Application.php(992): Illuminate\Console\Command->run(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#12 /home/nxm/rep/cb/olz/vendor/symfony/console/Application.php(255): Symfony\Component\Console\Application->doRunCommand(Object(App\Console\Commands\Commission\RunSilverStartUpProgram), Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#13 /home/nxm/rep/cb/olz/vendor/symfony/console/Application.php(148): Symfony\Component\Console\Application->doRun(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#14 /home/nxm/rep/cb/olz/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(122): Symfony\Component\Console\Application->run(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#15 /home/nxm/rep/cb/olz/artisan(36): Illuminate\Foundation\Console\Kernel->handle(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#16 {main}  

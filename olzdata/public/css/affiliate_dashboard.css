@@ -1,0 +1,120 @@
+.tool-container .border-left-info {
+    border-left: none;
+}
+
+.table th {
+    color: #000;
+    background-color: #e9ecef;
+    border-color: #dee2e6;
+}
+.dashboard.tool-container h3,
+.card-body .no-gutters .card-details span,
+.card-header h6 {
+    color: #838383 !important;
+}
+
+
+#countdown-wrap {
+	width: 100%;
+	height: 150px;
+	/*  border: 1px solid black; */
+	padding: 20px;
+}
+
+.tool-container .dataTables_paginate>.pagination>.active>a {
+  color: #000 !important;
+  background-color: #ffdcdc !important;
+  border-color: #ffdcdc !important
+}
+
+/* M */
+@media only screen and (min-width: 992px) and (max-width: 1199px) {
+
+	.tool-container #countdown-wrap h4 {
+		font-size: 17px;
+	}
+
+	.tool-container #countdown-wrap span {
+		font-size: 13px;
+	}
+}
+/* S */
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+
+	.tool-container #countdown-wrap h4 {
+		font-size: 15px;
+	}
+
+	.tool-container #countdown-wrap #glass {
+		height: 40px;
+	}
+
+	.tool-container #countdown-wrap span {
+		font-size: 10px;
+	}
+}
+
+/* ES */
+@media only screen and (min-width: 576px) and (max-width: 767px) {
+	.tool-container #countdown-wrap {
+		padding-left: 0;
+		padding-right: 0;
+	}
+
+	.tool-container #countdown-wrap h4,
+	.tool-container h4.mt-40 {
+		font-size: 14px;
+	}
+
+	.tool-container #countdown-wrap #glass {
+		height: 30px;
+	}
+
+	.tool-container #countdown-wrap span {
+		font-size: 10px;
+	}
+}
+
+/* C */
+@media only screen and (max-width : 575px) {
+
+	.tool-container #countdown-wrap {
+		padding-left: 0;
+		padding-right: 0;
+	}
+
+	.tool-container #countdown-wrap h4,
+	.tool-container h4.mt-40 {
+		font-size: 14px;
+	}
+
+	.tool-container #countdown-wrap #glass {
+		height: 30px;
+	}
+
+	.tool-container #countdown-wrap span {
+		font-size: 10px;
+	}
+
+}
+
+/* C34 */
+@media only screen and (min-width: 320px) and (max-width: 414px) {
+
+	.tool-container #countdown-wrap {
+		height: auto;
+	}
+
+	.tool-container #countdown-wrap h4,
+	.tool-container h4.mt-40 {
+		font-size: 10px;
+	}
+
+	.tool-container #countdown-wrap #glass {
+		height: 25px;
+	}
+
+	.tool-container #countdown-wrap span {
+		font-size: 6px;
+	}
+}

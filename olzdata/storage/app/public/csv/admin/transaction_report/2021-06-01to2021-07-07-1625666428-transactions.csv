@@ -1,0 +1,134 @@
+id,invoice,purchaser,sponsor,product,total_cv,volume,transaction_date,amount_paid,credited,t_status,order_type,payment_type,phone,gift_card,coupon,ledger_payment
+9865592,OLZ1001,"Core Tech Department","Admin Account","1 Earring Backs, 1 gc-test",103.00,103.0000,"2021-06-01 03:27:15",$93.00,,Approved,Wholesale,"Gift Cards + CC",0123456789,$-10.00,,0.0000
+9865593,OLZ1002,"Core Tech Department","Admin Account","1 N1088, 1 gc-test",117.00,117.0000,"2021-06-01 06:06:50",$17.00,,Approved,Wholesale,"Gift Cards + CC",0123456789,$-100.00,,0.0000
+9865594,OLZ1003,"Core Tech Department","Admin Account","1 A1000, 1 gc-test",149.00,149.0000,"2021-06-01 06:21:49",$49.00,,Approved,Wholesale,"Gift Cards + CC",0123456789,$-49.00,,0.0000
+9865595,OLZ1004,"Core Tech Department","Admin Account","1 A1000, 1 gc-test",149.00,149.0000,"2021-06-01 07:23:36",$198.00,,Approved,Wholesale,"Gift Cards + CC",0123456789,$-49.00,,0.0000
+9865596,OLZ1005,"Core Tech Department","Admin Account","1 A1000, 1 gc-test",149.00,149.0000,"2021-06-01 07:41:37",$100.00,,Approved,Wholesale,"Gift Cards + CC",0123456789,$-49.00,,0.0000
+9865597,OLZ1006,"Core Tech Department","Admin Account","1 A1000, 1 gc-test, 1 Earring Backs",149.00,149.0000,"2021-06-03 15:16:53",$102.70,,Approved,Wholesale,"Gift Cards + CC",0123456789,$-44.10,"test - $5.20",0.0000
+9865598,OLZ1007,"Core Tech Department","Admin Account","1 gc-test, 1 A1003, 1 Earring Backs",149.00,149.0000,"2021-06-03 15:33:31",$102.70,,Approved,Wholesale,"Gift Cards + CC",0123456789,$-44.10,"test - $5.20",0.0000
+9865599,OLZ1008,"Core Tech Department","Admin Account","1 gc-test, 1 Earring Backs, 1 B1030, 1 B1066",308.00,308.0000,"2021-06-03 16:27:26",$218.80,,Approved,Wholesale,"Gift Cards + CC",0123456789,$-71.10,"test - $21.10",0.0000
+9865600,OLZ1009,"Core Tech Department","Admin Account","1 E1117",49.00,49.0000,"2021-06-14 06:14:36",$54.00,,Approved,Wholesale,CC,,$0.00,,0.0000
+9865604,y,"Mary Allunam","Mara Admin",,0.00,0.0000,"2021-06-06 22:38:52",,,Approved,Wholesale,,,$0.00,,0.0000
+9865605,n,,"Ben- Dixon",,0.00,0.0000,"2021-06-10 02:33:10",,,Approved,Wholesale,,,$0.00,,0.0000
+9865606,n,,"James Naxumtester",,0.00,0.0000,"2021-06-30 08:59:34",,,Approved,Wholesale,,,$0.00,,0.0000
+9865608,r,"Commission Department","Admin Account",,0.00,0.0000,"2021-06-25 20:42:05",,,Approved,Wholesale,,,$0.00,,0.0000
+9865610,k,"RCustomer Naxumtester","Admin Account",,0.00,0.0000,"2021-07-04 23:10:30",,,Approved,Wholesale,,2816470775,$0.00,,0.0000
+9865612,i,,"Ben- Dixon",,0.00,0.0000,"2021-06-24 02:33:10",,,Approved,Wholesale,,,$0.00,,0.0000
+9865613,x,,"Master Account",,0.00,0.0000,"2021-06-25 08:23:51",,,Approved,Wholesale,,,$0.00,,0.0000
+9865614,e,"Anne Pangilan","Admin Account",,0.00,0.0000,"2021-06-10 21:09:24",,,Approved,Wholesale,,,$0.00,,0.0000
+9865615,d,"Client Champs Departments","Admin Account",,0.00,0.0000,"2021-06-29 07:56:52",,,Approved,Wholesale,,5498798440,$0.00,,0.0000
+9865616,r,"Ralph Ivan Arnibal","Admin Account",,0.00,0.0000,"2021-06-26 11:18:53",,,Approved,Wholesale,,123123123123,$0.00,,0.0000
+9865617,h,"Jhimson Lupiga","Admin Account",,0.00,0.0000,"2021-06-18 20:50:09",,,Approved,Wholesale,,,$0.00,,0.0000
+9865619,e,"Client Champ Department","Ben- Dixon",,0.00,0.0000,"2021-07-02 20:18:15",,,Approved,Wholesale,,,$0.00,,0.0000
+9865620,y,"Chris Scappatura","Admin Account",,0.00,0.0000,"2021-06-27 22:38:59",,,Approved,Wholesale,,,$0.00,,0.0000
+9865623,i,"Demo NxmTester","Master Account",,0.00,0.0000,"2021-06-28 13:44:07",,,Approved,Wholesale,,,$0.00,,0.0000
+9865624,i,"Client Champs Departments","Ben- Dixon",,0.00,0.0000,"2021-06-08 20:39:57",,,Approved,Wholesale,,,$0.00,,0.0000
+9865625,o,"Chris Scappatura","Admin Account",,0.00,0.0000,"2021-06-19 22:38:59",,,Approved,Wholesale,,,$0.00,,0.0000
+9865626,c,"Crismarie Lopez","Admin Account",,0.00,0.0000,"2021-06-05 22:17:40",,,Approved,Wholesale,,,$0.00,,0.0000
+9865627,b,"Ben Admin",,,0.00,0.0000,"2021-06-03 07:08:52",,,Approved,Wholesale,,NULL,$0.00,,0.0000
+9865629,k,"Dana Carroll","Admin Account",,0.00,0.0000,"2021-06-20 06:12:07",,,Approved,Wholesale,,,$0.00,,0.0000
+9865630,s,"Rosemay Romero","Admin Account",,0.00,0.0000,"2021-06-17 16:17:21",,,Approved,Wholesale,,1234567896,$0.00,,0.0000
+9865634,j,"Client Champs Department","Admin Account",,0.00,0.0000,"2021-06-25 20:41:24",,,Approved,Wholesale,,,$0.00,,0.0000
+9865636,y,"Holding Account","Owner Admin",,0.00,0.0000,"2021-06-28 07:37:20",,,Approved,Wholesale,,5555555555,$0.00,,0.0000
+9865637,q,"Frontend Ui-UX Department","Ben- Dixon",,0.00,0.0000,"2021-06-05 20:39:32",,,Approved,Wholesale,,,$0.00,,0.0000
+9865638,e,,,,0.00,0.0000,"2021-07-02 08:38:52",,,Approved,Wholesale,,,$0.00,,0.0000
+9865641,e,"Cris Nxm","Ben- Dixon",,0.00,0.0000,"2021-06-02 09:38:35",,,Approved,Wholesale,,,$0.00,,0.0000
+9865643,o,"nxm naxumtester","Ben- Dixon",,0.00,0.0000,"2021-06-24 23:00:42",,,Approved,Wholesale,,,$0.00,,0.0000
+9865644,d,"Client Champs Department","Admin Account",,0.00,0.0000,"2021-06-14 20:41:19",,,Approved,Wholesale,,,$0.00,,0.0000
+9865647,s,"Yen Naxumtester","Master Account",,0.00,0.0000,"2021-07-03 20:29:09",,,Approved,Wholesale,,,$0.00,,0.0000
+9865648,k,,,,0.00,0.0000,"2021-07-03 09:00:45",,,Approved,Wholesale,,,$0.00,,0.0000
+9865649,e,"Phoebe Secretaria","Admin Account",,0.00,0.0000,"2021-06-24 21:09:38",,,Approved,Wholesale,,,$0.00,,0.0000
+9865650,p,"RYan Masong","Master Account",,0.00,0.0000,"2021-07-01 12:03:58",,,Approved,Wholesale,,,$0.00,,0.0000
+9865651,z,"James------ UX-james-----","Ben- Dixon",,0.00,0.0000,"2021-06-29 15:35:48",,,Approved,Wholesale,,1231231111,$0.00,,0.0000
+9865652,b,"yen naxumtester","Ben- Dixon",,0.00,0.0000,"2021-07-03 20:26:05",,,Approved,Wholesale,,,$0.00,,0.0000
+9865655,o,,,,0.00,0.0000,"2021-06-26 08:59:34",,,Approved,Wholesale,,,$0.00,,0.0000
+9865656,c,"Lala Client","Ben- Dixon",,0.00,0.0000,"2021-06-04 09:35:20",,,Approved,Wholesale,,,$0.00,,0.0000
+9865659,z,"Anne Pangilan","Admin Account",,0.00,0.0000,"2021-06-27 21:09:24",,,Approved,Wholesale,,,$0.00,,0.0000
+9865660,a,,"James Naxumtester",,0.00,0.0000,"2021-06-23 08:23:51",,,Approved,Wholesale,,,$0.00,,0.0000
+9865661,q,"Mary Allunam","Admin Account",,0.00,0.0000,"2021-06-13 22:38:52",,,Approved,Wholesale,,,$0.00,,0.0000
+9865662,c,"Dana Carroll","Admin Account",,0.00,0.0000,"2021-06-10 06:12:07",,,Approved,Wholesale,,,$0.00,,0.0000
+9865664,k,,,,0.00,0.0000,"2021-06-25 09:04:12",,,Approved,Wholesale,,,$0.00,,0.0000
+9865665,x,"Core Tech Department","Admin Account",,0.00,0.0000,"2021-06-02 20:41:30",,,Approved,Wholesale,,,$0.00,,0.0000
+9865666,l,,"Master Account",,0.00,0.0000,"2021-06-28 08:23:51",,,Approved,Wholesale,,,$0.00,,0.0000
+9865667,i,"JayRhey Licong","Master Account",,0.00,0.0000,"2021-06-23 11:05:19",,,Approved,Wholesale,,,$0.00,,0.0000
+9865668,p,"Client Champs Departments","Ben- Dixon",,0.00,0.0000,"2021-06-03 20:39:57",,,Approved,Wholesale,,,$0.00,,0.0000
+9865670,k,"RCustomer Naxumtester","Admin Account",,0.00,0.0000,"2021-06-18 23:10:30",,,Approved,Wholesale,,2816470775,$0.00,,0.0000
+9865671,i,"Ricah B","Ben- Dixon",,0.00,0.0000,"2021-06-05 18:03:22",,,Approved,Wholesale,,,$0.00,,0.0000
+9865672,v,"nxmdemo nxmdemo","Admin Account",,0.00,0.0000,"2021-06-25 23:52:32",,,Approved,Wholesale,,,$0.00,,0.0000
+9865673,u,"Jayvee Salango","Admin Account",,0.00,0.0000,"2021-06-17 08:17:10",,,Approved,Wholesale,,,$0.00,,0.0000
+9865674,b,,"Master Account",,0.00,0.0000,"2021-06-27 08:26:00",,,Approved,Wholesale,,,$0.00,,0.0000
+9865677,v,"Jayvee Salango","Admin Account",,0.00,0.0000,"2021-06-22 08:17:10",,,Approved,Wholesale,,,$0.00,,0.0000
+9865678,m,,,,0.00,0.0000,"2021-06-27 08:38:52",,,Approved,Wholesale,,,$0.00,,0.0000
+9865679,t,"Client Champs Departments","Admin Account",,0.00,0.0000,"2021-06-03 07:56:52",,,Approved,Wholesale,,5498798440,$0.00,,0.0000
+9865680,b,"Ricah B","Ben- Dixon",,0.00,0.0000,"2021-06-02 18:03:22",,,Approved,Wholesale,,,$0.00,,0.0000
+9865681,r,"Renelyn Dain","Admin Account",,0.00,0.0000,"2021-06-04 21:08:57",,,Approved,Wholesale,,,$0.00,,0.0000
+9865682,w,,,,0.00,0.0000,"2021-06-26 09:00:59",,,Approved,Wholesale,,,$0.00,,0.0000
+9865683,t,,,,0.00,0.0000,"2021-06-29 08:59:34",,,Approved,Wholesale,,,$0.00,,0.0000
+9865684,e,,"James Naxumtester",,0.00,0.0000,"2021-06-27 08:23:51",,,Approved,Wholesale,,,$0.00,,0.0000
+9865685,t,,"James Naxumtester",,0.00,0.0000,"2021-06-23 08:26:00",,,Approved,Wholesale,,,$0.00,,0.0000
+9865686,r,,,,0.00,0.0000,"2021-06-24 09:04:12",,,Approved,Wholesale,,,$0.00,,0.0000
+9865687,s,,"James Naxumtester",,0.00,0.0000,"2021-06-27 08:26:00",,,Approved,Wholesale,,,$0.00,,0.0000
+9865688,a,,,,0.00,0.0000,"2021-06-29 08:38:52",,,Approved,Wholesale,,,$0.00,,0.0000
+9865689,b,,,,0.00,0.0000,"2021-06-28 09:04:12",,,Approved,Wholesale,,,$0.00,,0.0000
+9865690,t,,,,0.00,0.0000,"2021-06-30 08:59:34",,,Approved,Wholesale,,,$0.00,,0.0000
+9865691,t,,,,0.00,0.0000,"2021-06-26 09:00:59",,,Approved,Wholesale,,,$0.00,,0.0000
+9865692,t,,,,0.00,0.0000,"2021-06-25 09:00:59",,,Approved,Wholesale,,,$0.00,,0.0000
+9865693,d,,,,0.00,0.0000,"2021-06-29 09:04:12",,,Approved,Wholesale,,,$0.00,,0.0000
+9865694,q,,,,0.00,0.0000,"2021-06-27 09:00:59",,,Approved,Wholesale,,,$0.00,,0.0000
+9865695,d,,,,0.00,0.0000,"2021-06-23 09:00:45",,,Approved,Wholesale,,,$0.00,,0.0000
+9865696,i,,,,0.00,0.0000,"2021-06-25 08:59:34",,,Approved,Wholesale,,,$0.00,,0.0000
+9865697,t,,"James Naxumtester",,0.00,0.0000,"2021-06-25 08:59:34",,,Approved,Wholesale,,,$0.00,,0.0000
+9865698,i,,"James Naxumtester",,0.00,0.0000,"2021-06-28 08:59:34",,,Approved,Wholesale,,,$0.00,,0.0000
+9865699,l,,,,0.00,0.0000,"2021-06-24 09:00:45",,,Approved,Wholesale,,,$0.00,,0.0000
+9865700,b,,"James Naxumtester",,0.00,0.0000,"2021-06-30 08:26:00",,,Approved,Wholesale,,,$0.00,,0.0000
+9865701,h,,"James Naxumtester",,0.00,0.0000,"2021-06-27 08:23:51",,,Approved,Wholesale,,,$0.00,,0.0000
+9865702,u,,,,0.00,0.0000,"2021-06-29 09:04:12",,,Approved,Wholesale,,,$0.00,,0.0000
+9865703,h,,,,0.00,0.0000,"2021-06-26 09:00:45",,,Approved,Wholesale,,,$0.00,,0.0000
+9865704,y,,,,0.00,0.0000,"2021-06-26 09:00:59",,,Approved,Wholesale,,,$0.00,,0.0000
+9865705,l,,,,0.00,0.0000,"2021-06-27 09:04:12",,,Approved,Wholesale,,,$0.00,,0.0000
+9865706,e,,"James Naxumtester",,0.00,0.0000,"2021-06-30 08:59:34",,,Approved,Wholesale,,,$0.00,,0.0000
+9865707,e,,,,0.00,0.0000,"2021-06-29 09:00:59",,,Approved,Wholesale,,,$0.00,,0.0000
+9865708,o,,,,0.00,0.0000,"2021-06-24 09:00:45",,,Approved,Wholesale,,,$0.00,,0.0000
+9865709,p,,,,0.00,0.0000,"2021-06-23 09:04:12",,,Approved,Wholesale,,,$0.00,,0.0000
+9865710,j,,,,0.00,0.0000,"2021-06-29 09:00:59",,,Approved,Wholesale,,,$0.00,,0.0000
+9865711,h,,"James Naxumtester",,0.00,0.0000,"2021-06-30 08:26:00",,,Approved,Wholesale,,,$0.00,,0.0000
+9865712,s,,"James Naxumtester",,0.00,0.0000,"2021-06-26 08:26:00",,,Approved,Wholesale,,,$0.00,,0.0000
+9865773,m,"Commission Malinda Test","James Naxumtester","912 B1082, 578 B1081, 647 R1022, 623 E1118",188270.00,188270.0000,"2021-06-25 13:03:53","$53,808.00",,Approved,Wholesale,CC,"576.623.8396 x5",$0.00,,0.0000
+9865774,h,"Commission Sandra Test","James Naxumtester","875 E1055, 692 N1088",54639.00,54639.0000,"2021-06-23 13:03:53","$42,875.00",,Approved,Wholesale,CC,205-907-4172,$0.00,,0.0000
+9865775,z,"Commission Annabelle Test","James Naxumtester","881 T1001",34359.00,34359.0000,"2021-06-24 13:03:53","$34,359.00",,Approved,Wholesale,CC,+17506384470,$0.00,,0.0000
+9865776,o,"Commission Malinda Test","Commission Sandra Test","612 E1052, 674 N1105, 788 N1080",181366.00,181366.0000,"2021-06-26 13:03:53","$42,228.00",,Approved,Wholesale,CC,"576.623.8396 x5",$0.00,,0.0000
+9865777,b,"Commission Sandra Test","James Naxumtester","723 B1082, 785 N1038",120372.00,120372.0000,"2021-06-24 13:03:53","$42,657.00",,Approved,Wholesale,CC,205-907-4172,$0.00,,0.0000
+9865778,i,"Commission Annabelle Test","James Naxumtester","888 E1106",52392.00,52392.0000,"2021-06-23 13:03:53","$52,392.00",,Approved,Wholesale,CC,+17506384470,$0.00,,0.0000
+9865779,f,"Commission Sandra Test","James Naxumtester","752 E1112 , 564 E1038 , 953 E1097, 853 J1000, 774 B1043",445444.00,445444.0000,"2021-06-26 13:03:53","$66,928.00",,Approved,Wholesale,CC,205-907-4172,$0.00,,0.0000
+9865780,n,"Commission Annabelle Test","James Naxumtester","911 B1029",62859.00,62859.0000,"2021-06-29 13:03:53","$62,859.00",,Approved,Wholesale,CC,+17506384470,$0.00,,0.0000
+9865781,w,"Commission Annabelle Test","James Naxumtester","502 E1114, 951 N1088, 931 gc-test, 826 B1039, 863 N1142",365306.00,365306.0000,"2021-06-23 13:03:53","$24,598.00",,Approved,Wholesale,CC,+17506384470,$0.00,,0.0000
+9865782,s,"Commission Sandra Test","James Naxumtester","973 N1105",76867.00,76867.0000,"2021-06-30 13:03:53","$76,867.00",,Approved,Wholesale,CC,205-907-4172,$0.00,,0.0000
+9865783,z,"Commission Malinda Test","James Naxumtester","592 E1007, 530 B1041, 540 N1110, 734 A1001",255824.00,255824.0000,"2021-06-24 13:03:53","$40,848.00",,Approved,Wholesale,CC,"576.623.8396 x5",$0.00,,0.0000
+9865784,m,"Commission Annabelle Test","James Naxumtester","689 N1108, 602 N1119",64129.00,64129.0000,"2021-06-29 13:03:53","$40,651.00",,Approved,Wholesale,CC,+17506384470,$0.00,,0.0000
+9865785,f,"Commission Malinda Test","James Naxumtester","683 N1135-5",40297.00,40297.0000,"2021-06-30 13:03:53","$40,297.00",,Approved,Wholesale,CC,"576.623.8396 x5",$0.00,,0.0000
+9865786,n,"Commission Malinda Test","James Naxumtester","746 B1063, 850 N1135-5",191144.00,191144.0000,"2021-06-29 13:03:53","$140,994.00",,Approved,Wholesale,CC,"576.623.8396 x5",$0.00,,0.0000
+9865787,o,"Commission Sandra Test","James Naxumtester","669 N1136, 863 N1114, 548 N1120, 569 J1003, 699 E1085",313722.00,313722.0000,"2021-06-28 13:03:53","$79,611.00",,Approved,Wholesale,CC,205-907-4172,$0.00,,0.0000
+9865788,b,"Commission Annabelle Test","James Naxumtester","557 B1071, 777 E1093",78706.00,78706.0000,"2021-06-23 13:03:53","$32,863.00",,Approved,Wholesale,CC,+17506384470,$0.00,,0.0000
+9865789,i,"Commission Sandra Test","James Naxumtester","528 N1109",68112.00,68112.0000,"2021-06-30 13:03:53","$68,112.00",,Approved,Wholesale,CC,205-907-4172,$0.00,,0.0000
+9865790,i,"Commission Sandra Test","James Naxumtester","929 N1118, 554 E1113",100537.00,100537.0000,"2021-06-29 13:03:53","$73,391.00",,Approved,Wholesale,CC,205-907-4172,$0.00,,0.0000
+9865791,g,"Commission Sandra Test","James Naxumtester","826 N1057, 698 N1021",42684.00,42684.0000,"2021-06-25 13:03:53","$32,214.00",,Approved,Wholesale,CC,205-907-4172,$0.00,,0.0000
+9865792,n,"Commission Malinda Test","James Naxumtester","722 N1052, 790 E1085, 909 B1080, 762 E1098",205977.00,205977.0000,"2021-06-26 13:03:53","$42,598.00",,Approved,Wholesale,CC,"576.623.8396 x5",$0.00,,0.0000
+9865793,p,"Commission Annabelle Test","James Naxumtester","883 B1050, 972 E1112 , 668 B1054",211417.00,211417.0000,"2021-06-28 13:03:53","$52,097.00",,Approved,Wholesale,CC,+17506384470,$0.00,,0.0000
+9865794,b,"Commission Sandra Test","James Naxumtester","944 N1131, 766 B1076, 858 N1142",177132.00,177132.0000,"2021-06-24 13:03:53","$74,576.00",,Approved,Wholesale,CC,205-907-4172,$0.00,,0.0000
+9865795,v,"Commission Malinda Test","James Naxumtester","766 B1050, 876 N1088, 972 N1141, 787 N1103, 702 N1060",325715.00,325715.0000,"2021-06-30 13:03:53","$45,194.00",,Approved,Wholesale,CC,"576.623.8396 x5",$0.00,,0.0000
+9865796,x,"Commission Malinda Test","James Naxumtester","521 N1041, 692 N1098, 678 A1003, 573 B1030",215016.00,215016.0000,"2021-06-24 13:03:53","$25,529.00",,Approved,Wholesale,CC,"576.623.8396 x5",$0.00,,0.0000
+9865797,e,"Commission Sandra Test","James Naxumtester","891 B1063",168399.00,168399.0000,"2021-06-24 13:03:53","$168,399.00",,Approved,Wholesale,CC,205-907-4172,$0.00,,0.0000
+9865798,w,"Commission Sandra Test","James Naxumtester","638 B1063, 853 E1048, 971 N1123, 755 B1068",270583.00,270583.0000,"2021-06-27 13:03:53","$120,582.00",,Approved,Wholesale,CC,205-907-4172,$0.00,,0.0000
+9865799,s,"Commission Sandra Test","James Naxumtester","646 N1100, 613 E1072",86541.00,86541.0000,"2021-06-25 13:03:53","$38,114.00",,Approved,Wholesale,CC,205-907-4172,$0.00,,0.0000
+9865800,z,"Commission Malinda Test","James Naxumtester","526 N1089",52074.00,52074.0000,"2021-06-28 13:03:53","$52,074.00",,Approved,Wholesale,CC,"576.623.8396 x5",$0.00,,0.0000
+9865801,q,"Commission Malinda Test","James Naxumtester","909 B1036, 998 N1135-5, 506 N1080, 643 B1050",332864.00,332864.0000,"2021-06-29 13:03:53","$180,891.00",,Approved,Wholesale,CC,"576.623.8396 x5",$0.00,,0.0000
+9865802,f,"Commission Annabelle Test","James Naxumtester","773 N1038, 500 E1002, 861 E1044, 539 B1056, 877 B1076",273810.00,273810.0000,"2021-06-29 13:03:53","$76,527.00",,Approved,Wholesale,CC,+17506384470,$0.00,,0.0000
+9865803,OLZ1090,"Core Tech Department","Admin Account","15 N1021, 1 N1021, 3 B1062",687.00,687.0000,"2021-07-02 14:41:43",$351.00,,Approved,Wholesale,CC,0123456789,$0.00,,0.0000
+9865804,OLZ1092,"Core Tech Department","Admin Account","3 N1021, 1 N1088",62.00,62.0000,"2021-07-05 07:01:28",$36.00,,Approved,Wholesale,CC,0123456789,$0.00,,0.0000
+9865805,OLZ1093,"Core Tech Department","Admin Account","1 N1021",15.00,15.0000,"2021-07-05 07:02:36",$12.50,,Approved,Wholesale,CC,0123456789,$0.00,,0.0000
+9865806,OLZ1094,"Core Tech Department","Admin Account","2 A1000, 2 N1021",128.00,128.0000,"2021-07-05 07:03:54",$69.00,,Approved,Wholesale,CC,0123456789,$0.00,,0.0000
+9865807,OLZ1095,"Core Tech Department","Admin Account","1 N1088",17.00,17.0000,"2021-07-05 07:04:51",$13.50,,Approved,Wholesale,CC,0123456789,$0.00,,0.0000
+9865808,OLZ1096,"Core Tech Department","Admin Account","1 N1088",17.00,17.0000,"2021-07-05 07:07:57",$13.50,,Approved,Wholesale,CC,0123456789,$0.00,,0.0000
+9865809,OLZ1097,"Core Tech Department","Admin Account","17 N1021, 1 N1088, 1 N1021",287.00,287.0000,"2021-07-05 08:32:35",$159.50,,Approved,Wholesale,CC,0123456789,$0.00,,0.0000
+9865810,e,"James------ UX-james-----","Ben- Dixon","911 B1072",53749.00,53749.0000,"2021-06-26 16:15:47","$53,749.00",,Approved,Wholesale,CC,1231231111,$0.00,,0.0000
+9865816,q,"Client Champ Department","Ben- Dixon","989 N1146, 769 B1041",250942.00,250942.0000,"2021-07-04 17:58:09","$97,911.00",,Approved,Wholesale,CC,,$0.00,,0.0000

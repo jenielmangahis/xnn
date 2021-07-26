@@ -1,0 +1,32 @@
+<?php
+
+return [
+
+    'ranks' => [
+	'ranks-1' => 1,
+	'ranks-2' => 2,
+	'ranks-3' => 3,
+
+    ],
+
+    'commission-types' => [
+	'weekly-direct-profit' => 1,
+    'personal-sales-commission' => 2,
+    'free-jewelry-incentive' => 3
+
+    ],
+
+    'member-types' => [
+        'customers' => '80362,15',
+        'affiliates' => '13'
+    ],
+
+    'payment' => env('COMMISSION_PAYMENT'),
+
+    'affiliate' => env('COMMISSION_AFFILIATE', 'Affiliate'),
+
+    'first_day_of_the_week' => env('COMMISSION_FIRST_DAY_OF_THE_WEEK', 'monday'),  // monday | tuesday | wednesday | thursday | friday | saturday | sunday
+
+    'payout_to_ledger_enable' => env('COMMISSION_PAYOUT_TO_LEDGER_ENABLE', false)
+
+];

@@ -1,0 +1,2 @@
+payee_id,user_id,first_name,last_name,sponsor_id,commission_type,volume_calculated_from,payout,level,order_id,percent_payout,remarks
+688,757,"Commission Sandra",Test,688,"Monthly Level Commission",60514.00,3025.70,1,9865794,5.00," 688 has earned a commission for order 9865794"

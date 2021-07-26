@@ -1,0 +1,8 @@
+
+In SparkleStartProgram.php line 169:
+                                                                               
+  SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error i  
+  n your SQL syntax; check the manual that corresponds to your MariaDB server  
+   version for the right syntax to use near 'LIMIT 0, 50' at line 7            
+                                                                               
+

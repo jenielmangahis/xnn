@@ -1,0 +1,7 @@
+[374-1] Member: 688 received $50 product rewards (gift card) for having $1000.00 PRS in the first 10 days
+
+In SparkleStartProgram.php line 75:
+                       
+  Undefined index: id  
+                       
+

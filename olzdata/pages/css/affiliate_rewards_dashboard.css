@@ -1,0 +1,135 @@
+/* REWARDS DASHBOARD STYLES */
+.rewards-dashboard .float-left {
+    float: left;
+}
+
+.float-right {
+    float: right;
+}
+
+.rewards-dashboard .rewards-dashboard__h1 {
+    color: darkslategray;
+    font-family: "Lato", sans-serif !important;
+    text-transform: none;
+    margin-bottom: 2em;
+}
+/* END REWARDS DASHBOARD STYLES */
+
+/* COUNTDOWN TIMER STYLES */
+#rewards-dashboard__countdown-timer {
+    list-style: none;
+    margin: 60px 0 20px;
+    padding: 0;
+    display: block;
+    text-align: center;
+}
+
+#rewards-dashboard__countdown-timer li {
+    display: inline-block;
+}
+
+#rewards-dashboard__countdown-timer li span {
+    font-family: sans-serif;
+    font-size: 58px;
+    font-weight: 300;
+    line-height: 62px;
+}
+
+#rewards-dashboard__countdown-timer li.separator {
+    font-size: 32px;
+    line-height: 75px;
+    vertical-align: top;
+    padding: 0 18px;
+}
+
+#rewards-dashboard__countdown-timer li p {
+    color: #a7abb1;
+    font-size: 14px;
+    margin-top: 10px;
+}
+/* END COUNTDOWN TIMER STYLES */
+
+.rewards-dashboard .rewards-dashboard__h2 {
+    font-family: sans-serif !important;
+    font-size: 29px;
+    text-transform: none;
+    font-weight: 100;
+}
+
+/* DATATABLES STYLES */
+.rewards-dashboard .rewards-dashboard__table thead,
+#tooltip-affiliate-pending-orders-breakdown .affiliate-rewards-dashboard__pending-orders-table--breakdown thead {
+    font-weight: 900;
+    color: #fff;
+}
+
+.rewards-dashboard .affiliate-rewards-dashboard__pending-orders-table--wrap,
+.rewards-dashboard .affiliate-rewards-dashboard__top-hostess-table--wrap {
+    margin-top: 5em;
+}
+
+.rewards-dashboard .affiliate-rewards-dashboard__pending-orders-table--wrap .affiliate-rewards-dashboard__sales-daterange--wrap {
+    margin-bottom: 1.5em;
+}
+
+.rewards-dashboard .affiliate-rewards-dashboard__pending-orders-table--wrap .affiliate-rewards-dashboard__sales-daterange--wrap .affiliate-rewards-dashboard__sales-daterange {
+    width: 189px;
+}
+
+.rewards-dashboard .affiliate-rewards-dashboard__pending-orders-table thead,
+#tooltip-affiliate-pending-orders-breakdown .affiliate-rewards-dashboard__pending-orders-table--breakdown thead,
+.rewards-dashboard .affiliate-rewards-dashboard__top-hostess-table thead,
+.rewards-dashboard .affiliate-rewards-dashboard__coupon-table thead,
+.rewards-dashboard .affiliate-rewards-dashboard__gift-cards-history-table thead {
+    background: #c49991;
+}
+
+.rewards-dashboard .rewards-dashboard__table tbody .even,
+#tooltip-affiliate-pending-orders-breakdown .affiliate-rewards-dashboard__pending-orders-table--breakdown tbody .even {
+    background: #d7d0c8;
+}
+
+.rewards-dashboard .rewards-dashboard__table th,
+.rewards-dashboard .rewards-dashboard__table td,
+#tooltip-affiliate-pending-orders-breakdown .affiliate-rewards-dashboard__pending-orders-table--breakdown th,
+#tooltip-affiliate-pending-orders-breakdown .affiliate-rewards-dashboard__pending-orders-table--breakdown td {
+    text-align: center;
+}
+
+.rewards-dashboard .affiliate-rewards-dashboard__pending-orders-table .tooltip-affiliate-pending-orders,
+.tooltipster-close {
+    cursor: pointer;
+}
+
+.rewards-dashboard .affiliate-rewards-dashboard__pending-orders-table .tooltip-affiliate-pending-orders:hover,
+.tooltipster-close:hover {
+    color: #9db0bf;
+}
+
+.rewards-dashboard .tooltip-affiliate-pending-orders-breakdown__template {
+    display: none;
+}
+
+#tooltip-affiliate-pending-orders-breakdown .col-md-12 {
+    padding: 0;
+}
+/* END DATATABLES STYLES */
+
+/* RESPONSIVE DATATABLE STYLES */
+.rewards-dashboard .rewards-dashboard__table>tbody>tr.child span.dtr-title {
+    min-width: 119px;
+}
+
+@media only screen and (max-width: 767px) {
+    .rewards-dashboard .affiliate-rewards-dashboard__sales-daterange--wrap {
+        text-align: center;
+    }
+
+    .rewards-dashboard .affiliate-rewards-dashboard__sales-daterange--wrap .affiliate-rewards-dashboard__sales-daterange {
+        margin: 0 auto;
+    }
+}
+/* END RESPONSIVE DATATABLE STYLES */
+.affiliate-rewards-dashboard__gift-cards-history-table > tbody > tr.child > td {
+    white-space: normal !important;
+}

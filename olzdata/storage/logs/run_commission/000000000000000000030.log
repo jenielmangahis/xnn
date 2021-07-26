@@ -1,0 +1,48 @@
+[112-1] number of transactions 35
+[112-2] Evaluating #9865592-1
+[112-3] []
+[112-4] []
+[112-5] Affiliate 1 is not qualified for commission. 
+[112-6] Evaluating #9865593-1
+[112-7] {"1":0}
+[112-8] [1]
+[112-9] Affiliate 1 is not qualified for commission. 
+[112-10] Evaluating #9865594-1
+[112-11] {"1":0}
+[112-12] [1]
+[112-13] Affiliate 1 is not qualified for commission. 
+[112-14] Evaluating #9865595-1
+[112-15] {"1":0}
+[112-16] [1]
+[112-17] Affiliate 1 is not qualified for commission. 
+[112-18] Evaluating #9865596-1
+[112-19] {"1":0}
+[112-20] [1]
+[112-21] Affiliate 1 is not qualified for commission. 
+[112-22] Evaluating #9865597-1
+[112-23] {"1":0}
+[112-24] [1]
+[112-25] Affiliate 1 is not qualified for commission. 
+[112-26] Evaluating #9865598-1
+[112-27] {"1":0}
+[112-28] [1]
+[112-29] Affiliate 1 is not qualified for commission. 
+[112-30] Evaluating #9865599-1
+[112-31] {"1":0}
+[112-32] [1]
+[112-33] Affiliate 1 is not qualified for commission. 
+[112-34] Evaluating #9865600-1
+[112-35] {"1":0}
+[112-36] [1]
+[112-37] Affiliate 1 is not qualified for commission. 
+[112-38] Evaluating #9865773-688
+[112-39] {"1":0}
+[112-40] [1]
+
+In PersonalSalesBonus.php line 122:
+                                                                               
+  Missing argument 3 for Commissions\CommissionTypes\PersonalSalesBonus::eval  
+  uateUserPercentage(), called in /home/nxm/rep/cb/olz/commissions/Commission  
+  Types/PersonalSalesBonus.php on line 65 and defined                          
+                                                                               
+

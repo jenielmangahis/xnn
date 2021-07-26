@@ -1,0 +1,19 @@
+[218-1] Processing Order ID 9865624
+          
+[218-2] Processing Order ID 9865668
+          
+[218-3] Processing Order ID 9865679
+          
+[218-4] Processing Order ID 9865681
+          
+[218-5] Processing Order ID 9865626
+          
+[218-6] Processing Order ID 9865604
+array:1 [
+  0 => array:4 [
+    "user_id" => 20
+    "parent_id" => 6
+    "level" => 1
+    "root_id" => 6
+  ]
+]

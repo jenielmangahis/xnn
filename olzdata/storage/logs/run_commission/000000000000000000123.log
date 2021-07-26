@@ -1,0 +1,11 @@
+[477-1] No new transaction to generate commission.
+[477-2] Checking PRS of Affiliate. PRS:494483.00
+[477-3]  Number of gift cards to give away 988
+[477-4]  Number of issued of gift cards 988
+[477-5]  Number of gift cards to issue0
+
+In SilverStartUp.php line 77:
+                       
+  Undefined offset: 6  
+                       
+

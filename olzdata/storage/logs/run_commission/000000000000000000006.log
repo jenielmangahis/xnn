@@ -1,0 +1,8 @@
+[16-1] Number of transactions29
+PHP Fatal error:  Class 'Commissions\CommissionTypes\User' not found in /home/nxm/rep/cb/olz/commissions/CommissionTypes/PersonalSalesBonus.php on line 36
+
+In PersonalSalesBonus.php line 36:
+                                                      
+  Class 'Commissions\CommissionTypes\User' not found  
+                                                      
+

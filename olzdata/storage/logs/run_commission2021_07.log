@@ -1,0 +1,12 @@
+2021-07-13 22:20:00: null
+2021-07-13 22:53:14: {"id":17,"commission_type_id":6,"start_date":"2021-07-13","end_date":"2021-07-13","is_locked":0,"is_running":0,"created_at":"2021-07-13 07:50:02","updated_at":"2021-07-13 07:50:02","locked_at":null}
+2021-07-13 22:54:25: {"id":17,"commission_type_id":6,"start_date":"2021-07-13","end_date":"2021-07-13","is_locked":0,"is_running":0,"created_at":"2021-07-13 07:50:02","updated_at":"2021-07-13 07:50:02","locked_at":null}
+2021-07-13 22:54:25: No new transaction to generate commission.
+2021-07-13 22:54:26: Checking PRS of Affiliate. PRS:494483.00
+2021-07-13 22:54:26:  Number of gift cards to give away 988
+2021-07-13 22:54:26:  Number of issued of gift cards 988
+2021-07-13 22:54:26:  Number of gift cards to issue0
+2021-07-13 22:54:26: Number of qualified sponsor: 1
+2021-07-13 22:54:26:  Number of gift cards to give away 1
+2021-07-13 22:54:26:  Number of issued of gift cards 0
+2021-07-13 22:54:26:  Number of gift cards to issue 1

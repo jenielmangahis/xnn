@@ -1,0 +1,48 @@
+[2021-07-24 05:49:12] production.ERROR: exception 'PDOException' with message 'SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '' AND ?
+                        AND cits.id = ?
+                        AND cd' at line 6' in /home/nxm/rep/cb/olz/commissions/IncentivePointsTracker.php:191
+Stack trace:
+#0 /home/nxm/rep/cb/olz/commissions/IncentivePointsTracker.php(191): PDO->prepare('               ...')
+#1 /home/nxm/rep/cb/olz/commissions/IncentivePointsTracker.php(42): Commissions\IncentivePointsTracker->setPromoteToOrHigher()
+#2 /home/nxm/rep/cb/olz/vendor/laravel/framework/src/Illuminate/Database/Concerns/ManagesTransactions.php(29): Commissions\IncentivePointsTracker->Commissions\{closure}(Object(Illuminate\Database\MySqlConnection))
+#3 /home/nxm/rep/cb/olz/vendor/laravel/framework/src/Illuminate/Database/DatabaseManager.php(327): Illuminate\Database\Connection->transaction(Object(Closure), 3)
+#4 /home/nxm/rep/cb/olz/vendor/laravel/framework/src/Illuminate/Support/Facades/Facade.php(221): Illuminate\Database\DatabaseManager->__call('transaction', Array)
+#5 /home/nxm/rep/cb/olz/vendor/laravel/framework/src/Illuminate/Support/Facades/Facade.php(221): Illuminate\Database\DatabaseManager->transaction(Object(Closure), 3)
+#6 /home/nxm/rep/cb/olz/commissions/IncentivePointsTracker.php(59): Illuminate\Support\Facades\Facade::__callStatic('transaction', Array)
+#7 /home/nxm/rep/cb/olz/commissions/IncentivePointsTracker.php(59): Illuminate\Support\Facades\DB::transaction(Object(Closure), 3)
+#8 /home/nxm/rep/cb/olz/commissions/IncentivePointsTracker.php(492): Commissions\IncentivePointsTracker->process()
+#9 /home/nxm/rep/cb/olz/app/Console/Commands/Commission/RunDailyIncentivePointsTracker.php(47): Commissions\IncentivePointsTracker->run()
+#10 [internal function]: App\Console\Commands\Commission\RunDailyIncentivePointsTracker->handle()
+#11 /home/nxm/rep/cb/olz/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(30): call_user_func_array(Array, Array)
+#12 /home/nxm/rep/cb/olz/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(87): Illuminate\Container\BoundMethod::Illuminate\Container\{closure}()
+#13 /home/nxm/rep/cb/olz/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(31): Illuminate\Container\BoundMethod::callBoundMethod(Object(Illuminate\Foundation\Application), Array, Object(Closure))
+#14 /home/nxm/rep/cb/olz/vendor/laravel/framework/src/Illuminate/Container/Container.php(539): Illuminate\Container\BoundMethod::call(Object(Illuminate\Foundation\Application), Array, Array, NULL)
+#15 /home/nxm/rep/cb/olz/vendor/laravel/framework/src/Illuminate/Console/Command.php(182): Illuminate\Container\Container->call(Array)
+#16 /home/nxm/rep/cb/olz/vendor/symfony/console/Command/Command.php(255): Illuminate\Console\Command->execute(Object(Symfony\Component\Console\Input\ArgvInput), Object(Illuminate\Console\OutputStyle))
+#17 /home/nxm/rep/cb/olz/vendor/laravel/framework/src/Illuminate/Console/Command.php(168): Symfony\Component\Console\Command\Command->run(Object(Symfony\Component\Console\Input\ArgvInput), Object(Illuminate\Console\OutputStyle))
+#18 /home/nxm/rep/cb/olz/vendor/symfony/console/Application.php(992): Illuminate\Console\Command->run(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#19 /home/nxm/rep/cb/olz/vendor/symfony/console/Application.php(255): Symfony\Component\Console\Application->doRunCommand(Object(App\Console\Commands\Commission\RunDailyIncentivePointsTracker), Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#20 /home/nxm/rep/cb/olz/vendor/symfony/console/Application.php(148): Symfony\Component\Console\Application->doRun(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#21 /home/nxm/rep/cb/olz/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(122): Symfony\Component\Console\Application->run(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#22 /home/nxm/rep/cb/olz/artisan(36): Illuminate\Foundation\Console\Kernel->handle(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#23 {main}  
+[2021-07-24 08:56:02] production.ERROR: exception 'PDOException' with message 'SQLSTATE[42000]: Syntax error or access violation: 1064 You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'end_date >= @end_date
+            ORDER BY start_date ASC' at line 4' in /home/nxm/rep/cb/olz/commissions/IncentivePointsTracker.php:440
+Stack trace:
+#0 /home/nxm/rep/cb/olz/commissions/IncentivePointsTracker.php(440): PDO->prepare('\r\n            S...')
+#1 /home/nxm/rep/cb/olz/commissions/IncentivePointsTracker.php(486): Commissions\IncentivePointsTracker->getIncentiveToolSettings()
+#2 /home/nxm/rep/cb/olz/app/Console/Commands/Commission/RunDailyIncentivePointsTracker.php(47): Commissions\IncentivePointsTracker->run()
+#3 [internal function]: App\Console\Commands\Commission\RunDailyIncentivePointsTracker->handle()
+#4 /home/nxm/rep/cb/olz/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(30): call_user_func_array(Array, Array)
+#5 /home/nxm/rep/cb/olz/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(87): Illuminate\Container\BoundMethod::Illuminate\Container\{closure}()
+#6 /home/nxm/rep/cb/olz/vendor/laravel/framework/src/Illuminate/Container/BoundMethod.php(31): Illuminate\Container\BoundMethod::callBoundMethod(Object(Illuminate\Foundation\Application), Array, Object(Closure))
+#7 /home/nxm/rep/cb/olz/vendor/laravel/framework/src/Illuminate/Container/Container.php(539): Illuminate\Container\BoundMethod::call(Object(Illuminate\Foundation\Application), Array, Array, NULL)
+#8 /home/nxm/rep/cb/olz/vendor/laravel/framework/src/Illuminate/Console/Command.php(182): Illuminate\Container\Container->call(Array)
+#9 /home/nxm/rep/cb/olz/vendor/symfony/console/Command/Command.php(255): Illuminate\Console\Command->execute(Object(Symfony\Component\Console\Input\ArgvInput), Object(Illuminate\Console\OutputStyle))
+#10 /home/nxm/rep/cb/olz/vendor/laravel/framework/src/Illuminate/Console/Command.php(168): Symfony\Component\Console\Command\Command->run(Object(Symfony\Component\Console\Input\ArgvInput), Object(Illuminate\Console\OutputStyle))
+#11 /home/nxm/rep/cb/olz/vendor/symfony/console/Application.php(992): Illuminate\Console\Command->run(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#12 /home/nxm/rep/cb/olz/vendor/symfony/console/Application.php(255): Symfony\Component\Console\Application->doRunCommand(Object(App\Console\Commands\Commission\RunDailyIncentivePointsTracker), Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#13 /home/nxm/rep/cb/olz/vendor/symfony/console/Application.php(148): Symfony\Component\Console\Application->doRun(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#14 /home/nxm/rep/cb/olz/vendor/laravel/framework/src/Illuminate/Foundation/Console/Kernel.php(122): Symfony\Component\Console\Application->run(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#15 /home/nxm/rep/cb/olz/artisan(36): Illuminate\Foundation\Console\Kernel->handle(Object(Symfony\Component\Console\Input\ArgvInput), Object(Symfony\Component\Console\Output\ConsoleOutput))
+#16 {main}  

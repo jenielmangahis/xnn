@@ -1,0 +1,31 @@
+2021-07-13 23:07:28: No new transaction to generate commission. Exiting...
+2021-07-13 23:09:01: No new transaction to generate commission. Exiting...
+2021-07-13 23:10:14: Cached transaction id: 9865633
+2021-07-13 23:10:14: DB transaction id: 9865633
+2021-07-13 23:10:14: No new transaction to generate commission. Exiting...
+2021-07-13 23:15:43: Cached transaction id: 9865633
+2021-07-13 23:15:43: DB transaction id: 9865864
+2021-07-13 23:15:43: Setting last transaction to: 9865864
+2021-07-13 23:15:43: Checking PRS of Affiliate. PRS:674626.00
+2021-07-13 23:15:43:  Number of gift cards to give away 1349
+2021-07-13 23:15:43:  Number of issued of gift cards 988
+2021-07-13 23:15:43:  Number of gift cards to issue361
+2021-07-13 23:15:44: Number of qualified sponsor: 1
+2021-07-13 23:15:44:  Number of gift cards to give away 1
+2021-07-13 23:15:44:  Number of issued of gift cards 0
+2021-07-13 23:15:44:  Number of gift cards to issue 1
+2021-07-13 23:23:00: Cached transaction id: 9865864
+2021-07-13 23:23:00: DB transaction id: 9865864
+2021-07-13 23:23:00: No new transaction to generate commission. Exiting...
+2021-07-13 23:24:33: Cached transaction id: 9865864
+2021-07-13 23:24:33: DB transaction id: 9865874
+2021-07-13 23:24:33: Setting last transaction to: 9865874
+2021-07-13 23:24:33: Checking PRS of Affiliate. PRS:674626.00
+2021-07-13 23:24:33:  Number of gift cards to give away 1349
+2021-07-13 23:24:33:  Number of issued of gift cards 1349
+2021-07-13 23:24:33:  Number of gift cards to issue0
+2021-07-13 23:24:33: Number of qualified sponsor: 1
+2021-07-13 23:24:33:  Number of gift cards to give away 1
+2021-07-13 23:24:33:  Number of issued of gift cards 0
+2021-07-13 23:24:33:  Number of gift cards to issue 1
+2021-07-13 23:24:33:  Giving GC to 6

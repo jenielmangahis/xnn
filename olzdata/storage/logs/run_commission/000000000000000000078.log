@@ -1,0 +1,17 @@
+[302-1] Processing Order ID 9865624
+          
+[302-2] Processing Order ID 9865668
+          
+[302-3] Processing Order ID 9865679
+          
+[302-4] Processing Order ID 9865681
+          
+[302-5] Processing Order ID 9865626
+          
+[302-6] Processing Order ID 9865604
+
+In WeeklyDirectProfit.php line 45:
+                                           
+  Invalid argument supplied for foreach()  
+                                           
+

@@ -1,0 +1,7 @@
+[20-1] Number of transactions29
+
+In PersonalSalesBonus.php line 141:
+                                                             
+  in_array() expects parameter 2 to be array, integer given  
+                                                             
+

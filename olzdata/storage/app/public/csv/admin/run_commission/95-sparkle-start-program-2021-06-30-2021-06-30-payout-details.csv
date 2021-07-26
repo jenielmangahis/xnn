@@ -1,0 +1,3 @@
+payee_id,user_id,first_name,last_name,sponsor_id,commission_type,volume_calculated_from,payout,level,order_id,percent_payout,remarks
+1,688,James,Naxumtester,1,"Sparkle Start Program",50.00,50.00,0,1,0.00,"Member: 688 received $50 product rewards (gift card) for having $1000.00 PRS in the first 10 days"
+688,688,James,Naxumtester,688,"Sparkle Start Program",50.00,50.00,0,1,0.00,"Upline Representative: 688 received $50 jewelry gift card from Member: 688 for having $1000.00 PRS in the first 10 days"

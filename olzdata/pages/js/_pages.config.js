@@ -1,0 +1,1 @@
+var api_url = "https://office.stg1-myccoriginals.xyz:81/";

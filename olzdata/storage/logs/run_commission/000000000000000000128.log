@@ -1,0 +1,13 @@
+[497-1] No new transaction to generate commission.
+[497-2] Checking PRS of Affiliate. PRS:494483.00
+[497-3]  Number of gift cards to give away 988
+[497-4]  Number of issued of gift cards 988
+[497-5]  Number of gift cards to issue0
+[497-6] Number of qualified sponsor: 1
+[497-7] 0:{"6":1}
+
+In SilverStartUp.php line 117:
+                              
+  Array to string conversion  
+                              
+

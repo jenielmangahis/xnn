@@ -1,0 +1,22 @@
+[56-1] select `transactions`.`id`, `transactions`.`userid`, `transactions`.`sponsorid`, `transactions`.`purchaser_catid`, `transactions`.`sponsor_catid`, getCommissionValue(transactions.id) as CV from `transactions` where `status` = ? and (`authcode` is null or `authcode` <> ?) and (`credited` is null or `credited` = ?) and `type` = ? and `transactiondate` between ? and ? and getCommissionValue(transactions.id) > 0 limit 50 offset 0
+[56-2] Number of transactions9
+[56-3] select `transactions`.`id`, `transactions`.`userid`, `transactions`.`sponsorid`, `transactions`.`purchaser_catid`, `transactions`.`sponsor_catid`, getCommissionValue(transactions.id) as CV from `transactions` where `status` = ? and (`authcode` is null or `authcode` <> ?) and (`credited` is null or `credited` = ?) and `type` = ? and `transactiondate` between ? and ? and getCommissionValue(transactions.id) > 0 limit 50 offset 0
+[56-4] Affiliate 1 is not qualified for commission. 
+[56-5] Affiliate 1 is not qualified for commission. 
+[56-6] Affiliate 1 is not qualified for commission. 
+[56-7] Affiliate 1 is not qualified for commission. 
+[56-8] Affiliate 1 is not qualified for commission. 
+[56-9] Affiliate 1 is not qualified for commission. 
+[56-10] Affiliate 1 is not qualified for commission. 
+[56-11] Affiliate 1 is not qualified for commission. 
+[56-12] Affiliate 1 is not qualified for commission. 
+          
+          
+          
+          
+[59-1] Generating CSV reports
+          
+          
+[59-1] Payout Summary: https://office.stg1-opulenza.xyz:81/storage/csv/admin/run_commission/16-personal-sales-bonus-2021-06-01-2021-06-22-payout-summary.csv
+[59-2] Payout Details: https://office.stg1-opulenza.xyz:81/storage/csv/admin/run_commission/16-personal-sales-bonus-2021-06-01-2021-06-22-payout-details.csv
+[59-3] Done generating CSV reports

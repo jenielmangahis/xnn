@@ -1,0 +1,7 @@
+2021-07-20 04:30:03: {"id":31,"commission_type_id":6,"start_date":"2021-07-19","end_date":"2021-07-19","is_locked":0,"is_running":0,"created_at":"2021-07-19 12:59:35","updated_at":"2021-07-19 12:59:35","locked_at":null}
+2021-07-20 04:30:03: No new transaction to generate commission. Exiting...
+2021-07-20 04:32:19: {"id":31,"commission_type_id":6,"start_date":"2021-07-19","end_date":"2021-07-19","is_locked":0,"is_running":0,"created_at":"2021-07-19 12:59:35","updated_at":"2021-07-19 12:59:35","locked_at":null}
+2021-07-20 04:32:19: Setting last transaction to: 2021-07-19 16:32:14
+2021-07-20 04:32:19: Number of qualified sponsor: 0
+2021-07-20 04:41:38: {"id":31,"commission_type_id":6,"start_date":"2021-07-19","end_date":"2021-07-19","is_locked":0,"is_running":0,"created_at":"2021-07-19 12:59:35","updated_at":"2021-07-19 12:59:35","locked_at":null}
+2021-07-20 04:41:38: No new transaction to generate commission. Exiting...

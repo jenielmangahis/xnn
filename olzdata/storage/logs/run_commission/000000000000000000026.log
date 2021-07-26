@@ -1,0 +1,10 @@
+[96-1] number of transactions 35
+[96-2] Evaluating #9865592-1
+[96-3] []
+[96-4] null
+
+In PersonalSalesBonus.php line 60:
+                                        
+  Trying to get property of non-object  
+                                        
+
