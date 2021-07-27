@@ -60,7 +60,7 @@ class Dashboard
     {
         $default_affiliate = config('commission.affiliate');
 
-        $sql = "
+        /*$sql = "
             SELECT
                 u.id AS user_id,
                 dr.rank_id,
@@ -70,6 +70,48 @@ class Dashboard
                 IFNULL(c.name, '$default_affiliate') AS current_rank,
                 IFNULL(dr.is_active, 0) AS is_active,
                 IFNULL(dv.preferred_customer_count, 0) AS preferred_customer_count,
+                IFNULL(dv.referral_points, 0) AS referral_points,
+                IFNULL(dv.coach_points, 0) AS coach_points,
+                IFNULL(dv.organization_points, 0) AS organization_points,
+                IFNULL(dv.team_group_points, 0) AS team_group_points,
+                IFNULL(dv.influencer_count, 0) AS influencer_count,
+                IFNULL(dv.silver_influencer_count, 0) AS silver_influencer_count,
+                IFNULL(dv.gold_influencer_count, 0) AS gold_influencer_count,
+                IFNULL(dv.platinum_influencer_count, 0) AS platinum_influencer_count,
+                IFNULL(dv.diamond_influencer_count, 0) AS diamond_influencer_count,
+                IFNULL(n.name, '$default_affiliate') next_rank,
+                dv.referral_preferred_customer_users,
+                dv.referral_enrolled_coach_users,
+                dv.referral_rank_advancement_users,
+                n.id AS next_rank_id
+            FROM users u
+            LEFT JOIN cm_daily_volumes dv ON dv.user_id = u.id AND dv.volume_date = CURRENT_DATE()
+            LEFT JOIN cm_daily_ranks dr ON dr.volume_id = dv.id
+            LEFT JOIN cm_achieved_ranks ar ON ar.user_id = dr.user_id 
+                AND ar.rank_id = (
+                    SELECT ar_.rank_id 
+                    FROM cm_achieved_ranks ar_ 
+                    WHERE ar_.user_id = ar.user_id 
+                    ORDER BY ar_.rank_id DESC 
+                    LIMIT 1
+                )
+            LEFT JOIN cm_ranks r ON r.id = dr.paid_as_rank_id
+            LEFT JOIN cm_ranks c ON c.id = dr.rank_id
+            LEFT JOIN cm_ranks h ON h.id = ar.rank_id
+            LEFT JOIN cm_ranks n ON n.id = dr.paid_as_rank_id + 1
+            WHERE u.id = :user_id
+            LIMIT 1;
+        ";*/
+
+        $sql = "
+            SELECT
+                u.id AS user_id,
+                dr.rank_id,
+                dr.paid_as_rank_id,
+                IFNULL(h.name, '$default_affiliate') AS highest_rank,
+                IFNULL(r.name, '$default_affiliate') AS paid_as_rank,
+                IFNULL(c.name, '$default_affiliate') AS current_rank,
+                IFNULL(dr.is_active, 0) AS is_active,
                 IFNULL(dv.referral_points, 0) AS referral_points,
                 IFNULL(dv.coach_points, 0) AS coach_points,
                 IFNULL(dv.organization_points, 0) AS organization_points,
