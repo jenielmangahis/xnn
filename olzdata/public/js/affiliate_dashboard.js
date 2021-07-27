@@ -130,6 +130,8 @@
                         this.currentRankDetails.nextRank = typeof details.next_rank !== "undefined" ? details.next_rank : this.defaultRank;
                         this.currentRankDetails.isActive = typeof details.is_active !== "undefined" ? details.is_active : 'No';
                         this.currentRankDetails.businessVolume = typeof details.business_volume !== "undefined" ? details.business_volume : 0;
+                        this.currentRankDetails.volumePRS = typeof details.volume_prs !== "undefined" ? details.volume_prs : 0;
+                        this.currentRankDetails.volumeGRS = typeof details.volume_grs !== "undefined" ? details.volume_grs : 0;
 
                         
                         this.currentRankDetails.needs = typeof details.needs !== "undefined" ? details.needs : [];
