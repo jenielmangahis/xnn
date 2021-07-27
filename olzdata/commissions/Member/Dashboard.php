@@ -112,16 +112,16 @@ class Dashboard
                 IFNULL(r.name, '$default_affiliate') AS paid_as_rank,
                 IFNULL(c.name, '$default_affiliate') AS current_rank,
                 IFNULL(dr.is_active, 0) AS is_active,
-                IFNULL(dv.team_group_points, 0) AS team_group_points,
-                IFNULL(dv.influencer_count, 0) AS influencer_count,
-                IFNULL(dv.silver_influencer_count, 0) AS silver_influencer_count,
-                IFNULL(dv.gold_influencer_count, 0) AS gold_influencer_count,
-                IFNULL(dv.platinum_influencer_count, 0) AS platinum_influencer_count,
-                IFNULL(dv.diamond_influencer_count, 0) AS diamond_influencer_count,
+             /*   IFNULL(dv.team_group_points, 0) AS team_group_points,
+                IFNULL(dv.influencer_count, 0) AS influencer_count, 
+                IFNULL(dv.silver_influencer_count, 0) AS silver_influencer_count, 
+                IFNULL(dv.gold_influencer_count, 0) AS gold_influencer_count, 
+                IFNULL(dv.platinum_influencer_count, 0) AS platinum_influencer_count, 
+                IFNULL(dv.diamond_influencer_count, 0) AS diamond_influencer_count, */
                 IFNULL(n.name, '$default_affiliate') next_rank,
-                dv.referral_preferred_customer_users,
-                dv.referral_enrolled_coach_users,
-                dv.referral_rank_advancement_users,
+               
+               
+               
                 n.id AS next_rank_id
             FROM users u
             LEFT JOIN cm_daily_volumes dv ON dv.user_id = u.id AND dv.volume_date = CURRENT_DATE()
