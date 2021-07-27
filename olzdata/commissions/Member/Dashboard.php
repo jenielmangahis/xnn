@@ -112,7 +112,6 @@ class Dashboard
                 IFNULL(r.name, '$default_affiliate') AS paid_as_rank,
                 IFNULL(c.name, '$default_affiliate') AS current_rank,
                 IFNULL(dr.is_active, 0) AS is_active,
-                IFNULL(dv.organization_points, 0) AS organization_points,
                 IFNULL(dv.team_group_points, 0) AS team_group_points,
                 IFNULL(dv.influencer_count, 0) AS influencer_count,
                 IFNULL(dv.silver_influencer_count, 0) AS silver_influencer_count,
