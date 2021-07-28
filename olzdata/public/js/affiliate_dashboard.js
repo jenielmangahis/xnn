@@ -135,6 +135,7 @@
                         this.currentRankDetails.sponsoredQualifiedRepresentativesCount = typeof details.sponsored_qualified_representatives !== "undefined" ? details.sponsored_qualified_representatives : 0;
                         this.currentRankDetails.sponsoredLeaderHigher = typeof details.sponsored_leader_or_higher !== "undefined" ? details.sponsored_leader_or_higher : 0;
                         this.currentRankDetails.needsPRS = typeof details.needs_prs !== "undefined" ? details.needs_prs : 0;
+                        this.currentRankDetails.needsGRS = typeof details.needs_grs !== "undefined" ? details.needs_grs : 0;
 
                         
                         this.currentRankDetails.needs = typeof details.needs !== "undefined" ? details.needs : [];
