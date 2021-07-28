@@ -24,12 +24,7 @@ print <<EOS;
                                 Rank:
                                 <span v-if="!isRankLoaded"><i class="fa fa-spinner fa-spin"></i></span>
                                 <span v-else>{{ currentRankDetails.currentRank }}</span>
-                            </div>
-                            <div class="h6 mb-0 mt-2 font-weight-bold">
-                                Current Volumes:
-                                <span v-if="!isRankLoaded"><i class="fa fa-spinner fa-spin"></i></span>
-                                <span v-else>{{ currentRankDetails.currentVolumes }}</span>
-                            </div>
+                            </div>                            
                             <div class="h6 mb-0 mt-2 font-weight-bold">
                                 Lifetime Rank:
                                 <span v-if="!isRankLoaded"><i class="fa fa-spinner fa-spin"></i></span>
@@ -39,7 +34,12 @@ print <<EOS;
                                 Qualified:
                                 <span v-if="!isRankLoaded"><i class="fa fa-spinner fa-spin"></i></span>
                                 <span v-else></span>
-                            </div>        
+                            </div>  
+                            <div class="h6 mb-0 mt-2 font-weight-bold">
+                                Current Volumes:
+                                <span v-if="!isRankLoaded"><i class="fa fa-spinner fa-spin"></i></span>
+                                <span v-else></span>
+                            </div>      
                             <div class="h6 mb-0 mt-2 font-weight-bold">
                                 PRS:
                                 <span v-if="!isRankLoaded"><i class="fa fa-spinner fa-spin"></i></span>
