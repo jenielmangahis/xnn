@@ -31,6 +31,13 @@ class DashboardController extends Controller
         );
     }
 
+    public function currentEarningsDetails(Request $request)
+    {
+        return response()->json(
+            $this->dashboard->getEarningsDetails(Auth::user()->id)
+        );
+    }
+
     public function giftCards(Request $request)
     {
         return response()->json(

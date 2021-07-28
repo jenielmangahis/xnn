@@ -525,5 +525,60 @@ class Dashboard
         return compact('days', 'next_double_rank_id', 'next_double_rank_name', 'next_rank_id', 'date', 'debug', 'hours');
     }
 
+    public function getEarningsDetails($user_id)
+    {
+        $earnings = [];
+        $earnings['last_month_earnings'] = $this->getMonthlyEarnings($user_id);
+        $earnings['last_week_earnings'] = $this->getWeeklyEarnings($user_id);
+
+        return $earnings;
+    }
+
+    public function getMonthlyEarnings($user_id)
+    {
+       $sql = "
+            SELECT COALESCE(SUM(payouts.amount), 0.00) AS total_payout
+            FROM cm_commission_payouts AS payouts
+            LEFT JOIN cm_commission_periods AS periods ON periods.id = payouts.commission_period_id
+            LEFT JOIN cm_commission_types AS comm_type ON periods.commission_type_id = comm_type.id
+            WHERE comm_type.frequency = 'monthly'
+                AND payouts.payee_id = :member_id
+                AND periods.is_locked = 1
+                AND DATEDIFF(NOW(), periods.end_date) < 14
+            ORDER BY periods.start_date DESC
+        ";
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindParam(":member_id", $user_id);
+        $stmt->execute();
+
+        $result = $stmt->fetch(\PDO::FETCH_ASSOC);
+
+        return $result['total_payout'];
+    }
+
+    public function getWeeklyEarnings($user_id)
+    {
+        $sql = "
+            SELECT COALESCE(SUM(payouts.amount), 0.00) AS total_payout
+            FROM cm_commission_payouts AS payouts
+            LEFT JOIN cm_commission_periods AS periods ON periods.id = payouts.commission_period_id
+            LEFT JOIN cm_commission_types AS comm_type ON periods.commission_type_id = comm_type.id
+            WHERE comm_type.frequency = 'weekly'
+                AND payouts.payee_id = :member_id
+                AND periods.is_locked = 1
+                AND DATEDIFF(NOW(), periods.end_date) < 14
+            ORDER BY periods.start_date DESC
+        ";
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindParam(":member_id", $user_id);
+        $stmt->execute();
+
+        $result = $stmt->fetch(\PDO::FETCH_ASSOC);
+
+        return $result['total_payout'];
+    }
+
 
 }

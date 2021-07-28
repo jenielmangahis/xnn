@@ -187,7 +187,7 @@
                         this.currentEarningsDeatilsState = "loaded";
 
                         // earnings
-                        this.lastEarningsDetails.lifeTimeEarnings = typeof details.lifetime_earnings !== "undefined" ? details.lifetime_earnings : 0;
+                        this.currentRankDetails.lastMonthEarnings = typeof details.last_month_earnings !== "undefined" ? details.last_month_earnings : 0;
                         this.currentRankDetails.lastWeekEarnings = typeof details.last_week_earnings !== "undefined" ? details.last_week_earnings : 0;
 
                     })

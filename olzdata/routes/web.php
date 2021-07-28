@@ -83,6 +83,7 @@ Route::prefix('member/dashboard')->namespace('Member')->middleware('jwt.auth')->
     Route::get('current-rank-details', 'DashboardController@currentRankDetails');
     Route::get('gift-cards', 'DashboardController@giftCards');
     Route::get('title-achievement-bonus-details', 'DashboardController@titleAchievementBonusDetails');
+    Route::get('current-earnings-details', 'DashboardController@currentEarningsDetails');
 });
 
 Route::prefix('member/pay-quicker')->namespace('Member')->middleware('jwt.auth')->group(function(){
