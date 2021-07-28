@@ -112,7 +112,6 @@ class Dashboard
                 IFNULL(r.name, '$default_affiliate') AS paid_as_rank,
                 IFNULL(c.name, '$default_affiliate') AS current_rank,
                 IFNULL(dr.is_active, 0) AS is_active,
-                IFNULL(dv.organization_points, 0) AS organization_points,
                 IFNULL(n.name, '$default_affiliate') next_rank,
                 dv.prs AS volume_prs,
                 dv.grs AS volume_grs,
