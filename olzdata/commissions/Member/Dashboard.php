@@ -119,9 +119,11 @@ class Dashboard
                 dv.sponsored_leader_or_higher_count AS sponsored_leader_or_higher,
                 n.id AS next_rank_id,
                 IF(n.prs_requirement - dv.prs < 0,0,n.prs_requirement - dv.prs) AS needs_prs,
-                IF(n.grs_requirement - dv.grs < 0,0,n.grs_requirement - dv.grs) AS needs_grs
+                IF(n.grs_requirement - dv.grs < 0,0,n.grs_requirement - dv.grs) AS needs_grs,
+                IF(drq.is_active = 1,'Yes','No') AS is_qualified,
             FROM users u
             LEFT JOIN cm_daily_volumes dv ON dv.user_id = u.id AND dv.volume_date = CURRENT_DATE()
+            LEFT JOIN cm_daily_ranks drq ON drq.user_id = u.id AND drq.rank_date = CURRENT_DATE()
             LEFT JOIN cm_daily_ranks dr ON dr.volume_id = dv.id
             LEFT JOIN cm_achieved_ranks ar ON ar.user_id = dr.user_id 
                 AND ar.rank_id = (
