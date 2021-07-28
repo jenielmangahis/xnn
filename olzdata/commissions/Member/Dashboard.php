@@ -118,7 +118,7 @@ class Dashboard
                 dv.sponsored_qualified_representatives_count AS sponsored_qualified_representatives,
                 dv.sponsored_leader_or_higher_count AS sponsored_leader_or_higher,
                 n.id AS next_rank_id,
-                (dv.prs - n.prs_requirement) AS needs_prs
+                (n.prs_requirement - dv.prs) AS needs_prs
             FROM users u
             LEFT JOIN cm_daily_volumes dv ON dv.user_id = u.id AND dv.volume_date = CURRENT_DATE()
             LEFT JOIN cm_daily_ranks dr ON dr.volume_id = dv.id
