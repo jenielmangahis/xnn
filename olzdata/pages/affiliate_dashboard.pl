@@ -250,7 +250,7 @@ print <<EOS;
         <div id="countdown-wrap">
             <div class="progress" style="height:2rem;">
               <div class="progress-bar" role="progressbar" aria-valuenow="100"
-              aria-valuemin="0" aria-valuemax="100" style="width:100%">
+              aria-valuemin="0" aria-valuemax="100" style="width:100%;text-align:left;padding-left:14px;">
                 <span v-if="!isSilverStartupProgramLoaded"><i class="fa fa-spinner fa-spin"></i></span>
                 <span v-else><b>Silver Start Up Program</b> Progress {{ silverStartUpDetails.silverTotalPRS }} worth of Gift Cards so far</span>
               </div>
