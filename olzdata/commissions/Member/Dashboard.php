@@ -586,8 +586,9 @@ class Dashboard
        $sql = "
             SELECT COALESCE(SUM(dv.prs), 0.00) AS silver_total_prs
             FROM cm_daily_volumes AS dv
+            LEFT JOIN users AS u ON dv.user_id = u.id
             WHERE dv.user_id = :member_id
-                AND dv.volume_date <= (NOW() - INTERVAL 90 DAY)
+                AND dv.volume_date <= ((SELECT enrolled_date FROM users u WHERE u.id = dv.user_id) + INTERVAL 90 DAY)
         ";
 
         $stmt = $this->db->prepare($sql);
