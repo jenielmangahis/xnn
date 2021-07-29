@@ -248,10 +248,13 @@ print <<EOS;
     
     <div class="col-md-12" style="padding: 40px 0px;">
         <div id="countdown-wrap">
-            <h4 id="progress-value" style="color: #000000;">
+            <div class="progress">
+              <div class="progress-bar" role="progressbar" aria-valuenow="100"
+              aria-valuemin="0" aria-valuemax="100" style="width:70%">
                 <span v-if="!isSilverStartupProgramLoaded"><i class="fa fa-spinner fa-spin"></i></span>
                 <span v-else><b>Silver Start Up Program</b> Progress {{ silverStartUpDetails.silverTotalPRS }} worth of Gift Cards so far</span>
-            </h4>
+              </div>
+            </div>
             <div class="goal-stat">
                 <span class="goal-number">\$500</span><br/>
                 <span class="goal-label">\$50 Gift Card</span>
