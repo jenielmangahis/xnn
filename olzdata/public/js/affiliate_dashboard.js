@@ -7,6 +7,7 @@
         el: ".tool-container",
         data: {
             dtCurrentPeriodOrders: null,
+            dtGiftCards: null,
             defaultRank: 'Customer',
 
             currentRankDetailsState: "loaded", // loaded/fetching/error
@@ -49,6 +50,7 @@
             this.getCurrentRankDetails();
             // this.getCurrentBinaryVolumeDetails();
             this.getLastEarningsDetails();
+            this.initializeGiftCardDataTables();
            // this.initializeDataTables();
         },
         methods: {
@@ -109,6 +111,26 @@
                         {data: 'transaction_date', className: "text-center"},
                         // {data: 'cv', className: "text-right", render: $.fn.dataTable.render.number(',', '.', 2, '$')},
                         {data: 'bv', className: "text-right"},
+                    ],
+                });
+            },
+            initializeGiftCardDataTables() {
+                let _this = this;
+                this.dtGiftCards = $('#table-gift_cards').DataTable({
+                    // searching: false,
+                    // lengthChange: true,
+                    processing: true,
+                    serverSide: true,
+                    responsive: true,
+                    ajax: {
+                         url: `${api_url}member/dashboard/gift-cards`,
+                    },
+                    order: [[1, 'desc']],
+                    columns: [
+                        {data: 'code'},
+                        {data: 'validation_code'},
+                        {data: 'amount', className: "text-right"},
+                        {data: 'balance', className: "text-right"},
                     ],
                 });
             },
