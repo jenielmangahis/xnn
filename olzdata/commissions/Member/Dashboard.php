@@ -423,6 +423,7 @@ class Dashboard
         if (is_numeric($search) && is_int(+$search)) {
             $query->where(function ($query) use ($search) {
                 $query->where('gc.amount', $search);
+                $query->orWhere('gc.code', 'LIKE', "%{$search}%");
             });
         } elseif (!!$search) {
             $query->where(function ($query) use ($search) {
