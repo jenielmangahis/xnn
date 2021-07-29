@@ -254,7 +254,7 @@ print <<EOS;
             <div id="glass">
                 <div id="progress">
                     <span v-if="!isSilverStartupProgramLoaded"><i class="fa fa-spinner fa-spin"></i></span>
-                    <span v-else>{{ silverStartUpDetails.silverTotalPRS }}</span>
+                    <span v-else><b>Silver Start Up Program</b> Progress ${{ silverStartUpDetails.silverTotalPRS }} worth of Gift Cards so far</span>
                 </div>
             </div>
             <div class="goal-stat">
