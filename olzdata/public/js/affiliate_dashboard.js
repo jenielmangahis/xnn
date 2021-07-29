@@ -6,7 +6,7 @@
     const vm = new Vue({
         el: ".tool-container",
         data: {
-            dtCurrentPeriodOrders: null,
+            //dtCurrentPeriodOrders: null,
             dtGiftCards: null,
             defaultRank: 'Customer',
 
