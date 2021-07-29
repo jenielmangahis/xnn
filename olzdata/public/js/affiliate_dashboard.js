@@ -55,7 +55,7 @@
         methods: {
             initializeDataTables() {
                 let _this = this;
-                this.dtCurrentPeriodOrders = $('#table-current-period-orders').DataTable({
+                /*this.dtCurrentPeriodOrders = $('#table-current-period-orders').DataTable({
                     // searching: false,
                     // lengthChange: true,
                     processing: true,
@@ -111,8 +111,7 @@
                         // {data: 'cv', className: "text-right", render: $.fn.dataTable.render.number(',', '.', 2, '$')},
                         {data: 'bv', className: "text-right"},
                     ],
-                });
-
+                });*/
                 this.dtGiftCards = $("#table-gift-cards").DataTable({
                     // searching: false,
                     // lengthChange: true,
