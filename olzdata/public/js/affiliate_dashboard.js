@@ -125,7 +125,7 @@
                     ajax: {
                          url: `${api_url}member/dashboard/gift-cards`,
                     },
-                    order: [[1, 'desc']],
+                    order: [[3, 'desc']],
                     columns: [
                         {data: 'code'},
                         {data: 'validation_code'},
