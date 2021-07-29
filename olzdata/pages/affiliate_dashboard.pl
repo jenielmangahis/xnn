@@ -250,7 +250,7 @@ print <<EOS;
         <div id="countdown-wrap">
             <h4 id="progress-value" style="color: #000000;">
                 <span v-if="!isSilverStartupProgramLoaded"><i class="fa fa-spinner fa-spin"></i></span>
-                <span v-else><b>Silver Start Up Program</b> Progress ${{ silverStartUpDetails.silverTotalPRS }} worth of Gift Cards so far</span>
+                <b>Silver Start Up Program</b> Progress <span v-else>${{ silverStartUpDetails.silverTotalPRS }}</span> worth of Gift Cards so far
             </h4>
             <div class="goal-stat">
                 <span class="goal-number">\$500</span><br/>
