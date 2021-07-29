@@ -118,8 +118,8 @@ class Dashboard
                 IFNULL(dv.sponsored_qualified_representatives_count, 0) AS sponsored_qualified_representatives,
                 IFNULL(dv.sponsored_leader_or_higher_count, 0) AS sponsored_leader_or_higher,
                 n.id AS next_rank_id,
-                IF(n.prs_requirement - dv.prs < 0,0,n.prs_requirement - dv.prs) AS needs_prs,
-                IF(n.grs_requirement - dv.grs < 0,0,n.grs_requirement - dv.grs) AS needs_grs,
+                IFNULL(IF(n.prs_requirement - dv.prs < 0,0,n.prs_requirement - dv.prs),0) AS needs_prs,
+                IFNULL(IF(n.grs_requirement - dv.grs < 0,0,n.grs_requirement - dv.grs),0) AS needs_grs,
                 IF(drq.is_active = 1,'Yes','No') AS is_qualified
             FROM users u 
             LEFT JOIN cm_daily_volumes dv ON dv.user_id = u.id AND dv.volume_date = CURRENT_DATE()
