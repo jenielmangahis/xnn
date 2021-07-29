@@ -9,7 +9,6 @@
             //dtCurrentPeriodOrders: null,
             dtGiftCards: null,
             defaultRank: 'Customer',
-
             currentRankDetailsState: "loaded", // loaded/fetching/error
             currentBinaryVolumeDeatilsState: "loaded",
             currentEarningsDeatilsState: "loaded",

@@ -4,6 +4,13 @@ print <<EOS;
 <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.3/css/responsive.bootstrap.min.css">
 <link rel="stylesheet" href="$commission_engine_api_url/css/affiliate_dashboard.css?v=1" />
 
+<style>
+.goal-stat{
+    display:inline-block;
+    margin:8px;
+}
+</style>
+
 <div class="dashboard tool-container" v-cloak>
 
     <div class="row">
@@ -242,14 +249,9 @@ print <<EOS;
     <div class="col-md-12" style="padding: 40px 0px;">
         <div id="countdown-wrap">
             <h4 id="progress-value" style="color: #000000;">
-                <i class="fa fa-circle-o-notch fa-spin text-danger"></i>
+                <span v-if="!isSilverStartupProgramLoaded"><i class="fa fa-spinner fa-spin"></i></span>
+                <span v-else>{{ silverStartUpDetails.silverTotalPRS }}</span>
             </h4>
-            <div id="glass">
-                <div id="progress">
-                    <span v-if="!isSilverStartupProgramLoaded"><i class="fa fa-spinner fa-spin"></i></span>
-                    <span v-else>{{ silverStartUpDetails.silverTotalPRS }}</span>
-                </div>
-            </div>
             <div class="goal-stat">
                 <span class="goal-number">\$250</span>
                 <span class="goal-label">\$25 Gift Card</span>

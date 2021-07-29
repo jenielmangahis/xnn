@@ -587,7 +587,7 @@ class Dashboard
             SELECT COALESCE(SUM(dv.prs), 0.00) AS silver_total_prs
             FROM cm_daily_volumes AS dv
             WHERE dv.user_id = :member_id
-                AND DATEDIFF(NOW(), dv.volume_date) < 90
+                AND dv.volume_date <= (NOW() - INTERVAL 90 DAY)
         ";
 
         $stmt = $this->db->prepare($sql);
