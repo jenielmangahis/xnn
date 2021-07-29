@@ -179,7 +179,7 @@ print <<EOS;
                             <div class="h6 mb-0 mt-2 font-weight-bold">
                                 Last Monthly Earnings:
                                 <span v-if="!isEarningsLoaded"><i class="fa fa-spinner fa-spin"></i></span>
-                                 <span v-else>{{ currentRankDetails.lastMonthEarnings }}</span>
+                                <span v-else>{{ currentRankDetails.lastMonthEarnings }}</span>
                             </div>                                                   
                         </div>
                     </div>
@@ -238,15 +238,17 @@ print <<EOS;
         </div>
 
     </div>
-
-    <!-- PROGRESS BAR / No data yet
+    
     <div class="col-md-12" style="padding: 40px 0px;">
         <div id="countdown-wrap">
             <h4 id="progress-value" style="color: #000000;">
                 <i class="fa fa-circle-o-notch fa-spin text-danger"></i>
             </h4>
             <div id="glass">
-                <div id="progress"></div>
+                <div id="progress">
+                    <span v-if="!isSilverStartupProgramLoaded"><i class="fa fa-spinner fa-spin"></i></span>
+                    <span v-else>{{ silverStartUpDetails.silverTotalPRS }}</span>
+                </div>
             </div>
             <div class="goal-stat">
                 <span class="goal-number">\$250</span>
@@ -282,7 +284,6 @@ print <<EOS;
             </div>
         </div>
     </div>
-    END PROGRESS BAR -->
 
     <div class="row">
         <div class="col-md-12">

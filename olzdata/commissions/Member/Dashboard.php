@@ -581,5 +581,23 @@ class Dashboard
         return $result['total_payout'];
     }
 
+    public function getSilverStartupDetails($user_id)
+    {
+       $sql = "
+            SELECT COALESCE(SUM(dv.prs), 0.00) AS silver_total_prs
+            FROM cm_daily_volumes AS dv
+            WHERE dv.user_id = :member_id
+                AND DATEDIFF(NOW(), dv.volume_date) < 90
+        ";
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindParam(":member_id", $user_id);
+        $stmt->execute();
+
+        $result = $stmt->fetch(\PDO::FETCH_ASSOC);
+
+        return $result['silver_total_prs'];
+    }
+
 
 }

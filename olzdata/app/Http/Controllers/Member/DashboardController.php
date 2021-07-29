@@ -52,4 +52,11 @@ class DashboardController extends Controller
         );
     }
 
+    public function silverStartUpDetails(Request $request)
+    {
+        return response()->json(
+            $this->dashboard->getSilverStartupDetails(Auth::user()->id)
+        );
+    }
+
 }

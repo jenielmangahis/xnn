@@ -13,6 +13,7 @@
             currentRankDetailsState: "loaded", // loaded/fetching/error
             currentBinaryVolumeDeatilsState: "loaded",
             currentEarningsDeatilsState: "loaded",
+            silverStartUpDetailsState: "loaded",
             currentRankDetails: {
                 highestAchievedRank: "",
                 paidAsRank: "",
@@ -51,6 +52,7 @@
             // this.getCurrentBinaryVolumeDetails();
             this.getLastEarningsDetails();
             this.initializeDataTables();
+            $this.getSilverStartupProgram();
         },
         methods: {
             initializeDataTables() {
@@ -200,7 +202,7 @@
                         console.log("current details error", error);
                     }
                 )
-            },
+            },            
             getCurrentBinaryVolumeDetails() {
                 if (this.currentBinaryVolumeDeatilsState === "fetching") return;
 
@@ -251,6 +253,25 @@
                     }
                 )
             },
+            getSilverStartupProgram() {
+                if (this.silverStartUpDetailsState === "fetching") return;
+
+                this.silverStartUpDetailsState = "fetching";
+
+                client.get("member/dashboard/silver-startup-details")
+                    .then(response => {
+                        let details = response.data;
+
+                        this.silverStartUpDetailsState = "loaded";
+                        
+                        this.silverStartUpDetails.silverTotalPRS = typeof details.silver_total_prs !== "undefined" ? details.silver_total_prs : 0;
+                    })
+                    .catch(error => {
+                        this.silverStartUpDetailsState = "error";
+                        console.log("current details error", error);
+                    }
+                )
+            },
         },
         computed: {
             isRankLoaded() {
@@ -264,6 +285,9 @@
             },
             isAchievementLoaded() {
                 return this.titleAchievementBonusState === "loaded";
+            },
+            isSilverStartupProgramLoaded() {
+                return this.silverStartUpDetailsState === 'loaded';
             },
         }
     });
