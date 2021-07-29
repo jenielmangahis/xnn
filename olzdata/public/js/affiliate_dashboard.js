@@ -50,8 +50,7 @@
             this.getCurrentRankDetails();
             // this.getCurrentBinaryVolumeDetails();
             this.getLastEarningsDetails();
-            this.initializeGiftCardDataTables();
-           // this.initializeDataTables();
+            this.initializeDataTables();
         },
         methods: {
             initializeDataTables() {
@@ -113,6 +112,40 @@
                         {data: 'bv', className: "text-right"},
                     ],
                 });
+
+                this.dtGiftCards = $("#table-gift-cards").DataTable({
+                    // searching: false,
+                    // lengthChange: true,
+                    processing: true,
+                    serverSide: true,
+                    responsive: true,
+                    ajax: {
+                        url: `${api_url}member/dashboard/gift-cards`,
+                    },
+                    order: [[5, 'desc']],
+                    columns: [
+                        {data: 'code'},
+                        {data: 'validation_code'},
+                        {
+                            data: 'amount',
+                            className: "text-right",
+                            render: $.fn.dataTable.render.number(',', '.', 2, '$')
+                        },
+                        {
+                            data: 'balance',
+                            className: "text-right",
+                            render: $.fn.dataTable.render.number(',', '.', 2, '$')
+                        },
+                        {data: 'end_date'},
+                        {data: 'created_date'},
+                    ],
+                    columnDefs: [
+
+                        {responsivePriority: 1, targets: 0},
+                        {responsivePriority: 2, targets: 1},
+                        {responsivePriority: 3, targets: -3},
+                    ]
+                });
             },
             initializeGiftCardDataTables() {
                 let _this = this;
@@ -125,7 +158,7 @@
                     ajax: {
                          url: `${api_url}member/dashboard/gift-cards`,
                     },
-                    order: [[3, 'desc']],
+                    order: [[1, 'desc']],
                     columns: [
                         {data: 'code'},
                         {data: 'validation_code'},

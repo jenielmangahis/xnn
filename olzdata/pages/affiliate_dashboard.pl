@@ -294,13 +294,15 @@ print <<EOS;
                 <!-- Card Body -->
                 <div class="card-body" style="padding: 1.25rem;"> 
                     <div class="table-responsive">
-                        <table id="table-gift_cards" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
+                        <table id="table-gift-cards" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
                             <thead class="table__header">
-                            <tr  >
+                            <tr>
                                 <th class="table__cell">Code</th>
                                 <th class="table__cell">Validation Code</th>
                                 <th class="table__cell">Amount</th>
                                 <th class="table__cell">Balance</th>
+                                <th class="table__cell">Expiration Date</th>
+                                <th class="table__cell">Created Date</th>
                             </tr>
                             </thead>
                             <tbody class="table__body">
