@@ -74,11 +74,6 @@ print <<EOS;
                             <div class="h6 mb-0 mt-1 font-weight-bold">
                                 Needs:
                                 <span v-if="!isRankLoaded"><i class="fa fa-spinner fa-spin"></i></span>
-                                <div v-else>
-                                    <ul class="list-unstyled">
-                                        <li v-for="(n, index) in currentRankDetails.needs" v-bind:key="n.description">{{n.description}}: <span>{{n.value}}</span> </li>
-                                    </ul>
-                                </div>
                             </div>
                             <div class="h6 mb-0 mt-2 font-weight-bold">
                                 PRS:
@@ -125,42 +120,42 @@ print <<EOS;
                             <div class="h6 mb-0 mt-2 font-weight-bold">
                                 Direct Profit:
                                 <span v-if="!isRankLoaded"><i class="fa fa-spinner fa-spin"></i></span>
-                                <span v-else>No</span>
+                                <span v-else>Not Qualified</span>
                             </div>
                             <div class="h6 mb-0 mt-2 font-weight-bold">
                                 Personal Sales Bonus:
                                 <span v-if="!isRankLoaded"><i class="fa fa-spinner fa-spin"></i></span>
-                                <span v-else>No</span>
+                                <span v-else>Not Qualified</span>
                             </div>                            
                             <div class="h6 mb-0 mt-2 font-weight-bold">
                                 Level Commission:
                                 <span v-if="!isRankLoaded"><i class="fa fa-spinner fa-spin"></i></span>
-                                <span v-else>No</span>
+                                <span v-else>Not Qualified</span>
                             </div>  
                             <div class="h6 mb-0 mt-2 font-weight-bold">
                                 Rank Advancement Bonus:
                                 <span v-if="!isRankLoaded"><i class="fa fa-spinner fa-spin"></i></span>
-                                <span v-else>No</span>
+                                <span v-else>Not Qualified</span>
                             </div> 
                             <div class="h6 mb-0 mt-2 font-weight-bold">
                                 Rank Consistency Bonus:
                                 <span v-if="!isRankLoaded"><i class="fa fa-spinner fa-spin"></i></span>
-                                <span v-else>No</span>
+                                <span v-else>Not Qualified</span>
                             </div>
                             <div class="h6 mb-0 mt-2 font-weight-bold">
                                 Silver Start Up Program:
                                 <span v-if="!isRankLoaded"><i class="fa fa-spinner fa-spin"></i></span>
-                                <span v-else>No</span>
+                                <span v-else>Not Qualified</span>
                             </div>         
                             <div class="h6 mb-0 mt-2 font-weight-bold">
                                 Sparkle Start Up Program:
                                 <span v-if="!isRankLoaded"><i class="fa fa-spinner fa-spin"></i></span>
-                                <span v-else>No</span>
+                                <span v-else>Not Qualified</span>
                             </div>    
                             <div class="h6 mb-0 mt-2 font-weight-bold">
                                 Monthly Free Jewelry Incentive:
                                 <span v-if="!isRankLoaded"><i class="fa fa-spinner fa-spin"></i></span>
-                                <span v-else>No</span>
+                                <span v-else>Not Qualified</span>
                             </div>                                                                                                                                                                
                         </div>
                     </div>

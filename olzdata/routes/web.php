@@ -229,7 +229,7 @@ Route::prefix('admin/top-earner')->namespace('Admin')->middleware('jwt.auth.leve
     Route::get('/', 'TopEarnerController@topEarner');
 });
 
-Route::prefix('admin/transactions')->namespace('Admin')->middleware('jwt.auth.level:1,6')->group(function () {
+Route::prefix('admin/transactions')->namespace('Admin')->group(function () {
     Route::get('getTransactions/{start_date}/{end_date}', 'TransactionsReportController@getAllTransactions');
     Route::get('getTotal/{start_date}/{end_date}', 'TransactionsReportController@getAllBreakDown');
     Route::get('generate-report/{start_date}/{end_date}', 'TransactionsReportController@getReport');

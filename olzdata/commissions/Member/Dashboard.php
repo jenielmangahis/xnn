@@ -274,7 +274,7 @@ class Dashboard
         $customers = config('commission.member-types.customers');
 
         $user_id = +$user_id;
-
+       // getCappedVolume(t.user_id, t.transaction_id, t.transaction_date) AS cv
         $query = DB::table('v_cm_transactions AS t')
             ->selectRaw("
                 t.transaction_id,
@@ -293,8 +293,8 @@ class Dashboard
                     WHERE tp.transaction_id = t.transaction_id
                 ) products,
                 t.amount,
-                t.transaction_date,
-                getCappedVolume(t.user_id, t.transaction_id, t.transaction_date) AS cv
+                t.transaction_date
+               
             ")
             ->join('users AS u', 'u.id', '=', 't.user_id')
             ->leftJoin('users AS s', 's.id', '=', 't.sponsor_id')

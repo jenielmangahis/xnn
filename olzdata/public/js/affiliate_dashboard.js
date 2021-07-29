@@ -48,8 +48,8 @@
         mounted() {
             this.getCurrentRankDetails();
             // this.getCurrentBinaryVolumeDetails();
-            // this.getLastEarningsDetails();
-            // this.initializeDataTables();
+            this.getLastEarningsDetails();
+           // this.initializeDataTables();
         },
         methods: {
             initializeDataTables() {
@@ -61,7 +61,7 @@
                     serverSide: true,
                     responsive: true,
                     ajax: {
-                        // url: `${api_url}member/dashboard/current-period-orders`,
+                         url: `${api_url}member/dashboard/current-period-orders`,
                     },
                     order: [[5, 'desc']],
                     columns: [
