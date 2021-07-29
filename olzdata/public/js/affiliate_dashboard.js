@@ -22,6 +22,9 @@
                 nextRank: "",
                 needs: [],
             },
+            silverStartUpDetails: {
+                silverTotalPRS: 0,
+            },
             currentBinaryVolumeDetails: {
                 leftLegVolume:'0.00',
                 leftLegVolumeToday: '0.00',
