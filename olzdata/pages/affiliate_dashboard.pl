@@ -250,39 +250,43 @@ print <<EOS;
         <div id="countdown-wrap">
             <h4 id="progress-value" style="color: #000000;">
                 <span v-if="!isSilverStartupProgramLoaded"><i class="fa fa-spinner fa-spin"></i></span>
-                <span v-else>{{ silverStartUpDetails.silverTotalPRS }}</span>
+                <span v-else><b>Silver Start Up Program</b> Progress ${{ silverStartUpDetails.silverTotalPRS }} worth of Gift Cards so far</span>
             </h4>
             <div class="goal-stat">
-                <span class="goal-number">\$250</span>
-                <span class="goal-label">\$25 Gift Card</span>
+                <span class="goal-number">\$500</span><br/>
+                <span class="goal-label">\$50 Gift Card</span>
             </div>
             <div class="goal-stat">
-                <span class="goal-number">\$500</span>
-                <span class="goal-label">\$25 Gift Card</span>
+                <span class="goal-number">\$1000</span><br/>
+                <span class="goal-label">\$50 Gift Card</span>
             </div>
             <div class="goal-stat">
-                <span class="goal-number">\$750</span>
-                <span class="goal-label">\$25 Gift Card</span>
+                <span class="goal-number">\$1500</span><br/>
+                <span class="goal-label">\$50 Gift Card</span>
             </div>
             <div class="goal-stat">
-                <span class="goal-number">\$1000</span>
-                <span class="goal-label">\$25 Gift Card</span>
+                <span class="goal-number">\$2000</span><br/>
+                <span class="goal-label">\$50 Gift Card</span>
             </div>
             <div class="goal-stat">
-                <span class="goal-number">\$1250</span>
-                <span class="goal-label">\$25 Gift Card</span>
+                <span class="goal-number">\$2500</span><br/>
+                <span class="goal-label">\$50 Gift Card</span>
             </div>
             <div class="goal-stat">
-                <span class="goal-number">\$1500</span>
-                <span class="goal-label">\$25 Gift Card</span>
+                <span class="goal-number">\$2500</span><br/>
+                <span class="goal-label">\$50 Gift Card</span>
             </div>
             <div class="goal-stat">
-                <span class="goal-number">\$1750</span>
-                <span class="goal-label">\$25 Gift Card</span>
+                <span class="goal-number">\$3000</span><br/>
+                <span class="goal-label">\$50 Gift Card</span>
             </div>
             <div class="goal-stat">
-                <span class="goal-number">\$2000</span>
-                <span class="goal-label">\$25 Gift Card</span>
+                <span class="goal-number">\$3500</span><br/>
+                <span class="goal-label">\$50 Gift Card</span>
+            </div>
+            <div class="goal-stat">
+                <span class="goal-number">\$4000</span><br/>
+                <span class="goal-label">\$50 Gift Card</span>
             </div>
         </div>
     </div>
