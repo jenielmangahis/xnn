@@ -14,6 +14,7 @@
             currentBinaryVolumeDeatilsState: "loaded",
             currentEarningsDeatilsState: "loaded",
             silverStartUpDetailsState: "loaded",
+            sparkleStartUpDetailsState: "loaded",
             currentRankDetails: {
                 highestAchievedRank: "",
                 paidAsRank: "",
@@ -255,6 +256,33 @@
                     }
                 )
             },
+            getSparkleStartupProgram() {
+                if (this.sparkleStartUpDetailsState === "fetching") return;
+
+                this.sparkleStartUpDetailsState = "fetching";
+
+                client.get("member/dashboard/sparkle-startup-details")
+                    .then(response => {
+                        let details = response.data;
+
+                        this.sparkleStartUpDetailsState = "loaded";
+                        
+                        this.sparkleStartUpDetails.sparkleTotalPRS = typeof details.sparkle_total_prs !== "undefined" ? details.sparkle_total_prs : 0;
+
+                        if( details.sparkle_total_prs >= 500 ){
+                            this.sparkleStartUpDetails.sparkleNotice = "<b>Sparkle Start Program Progress : </b>You have reached your goal of having $500 PRS"; 
+                        }else{
+                            let x_days = 10 - sparkleStartUpDetails.days_diff;
+                            this.sparkleStartUpDetails.sparkleNotice = "<b>Sparkle Start Program Progress : </b> You only have " + x_days + " days left to reach $500 PRS"; 
+                        }
+
+                    })
+                    .catch(error => {
+                        this.sparkleStartUpDetailsState = "error";
+                        console.log("current details error", error);
+                    }
+                )
+            },
         },
         computed: {
             isRankLoaded() {
@@ -271,6 +299,9 @@
             },
             isSilverStartupProgramLoaded() {
                 return this.silverStartUpDetailsState === 'loaded';
+            },
+            isSparkleStartupProgramLoaded() {
+                return this.sparkleStartUpDetailsState === 'loaded';
             },
         }
     });

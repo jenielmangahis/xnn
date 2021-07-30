@@ -59,4 +59,11 @@ class DashboardController extends Controller
         );
     }
 
+    public function sparkleStartUpDetails(Request $request)
+    {
+        return response()->json(
+            $this->dashboard->getSparkleStartupDetails(Auth::user()->id)
+        );
+    }
+
 }
