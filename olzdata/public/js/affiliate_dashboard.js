@@ -26,6 +26,10 @@
             silverStartUpDetails: {
                 silverTotalPRS: 0,
             },
+            sparkleStartUpDetails: {
+                sparkleNotice: '',
+                sparkleTotalPRS:'0.00',
+            },
             currentBinaryVolumeDetails: {
                 leftLegVolume:'0.00',
                 leftLegVolumeToday: '0.00',
