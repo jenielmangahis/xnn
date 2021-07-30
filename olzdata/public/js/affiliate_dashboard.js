@@ -279,7 +279,35 @@
                         if( details.sparkle_total_prs >= 500 ){
                             this.sparkleStartUpDetails.sparkleNotice = "Sparkle Start Program Progress : You have reached your goal of having 500 PRS"; 
                         }else{
-                            let x_days = this.sparkleStartUpDetails.daysDiff;
+                            let x_days = 10 - this.sparkleStartUpDetails.daysDiff;
+                            this.sparkleStartUpDetails.sparkleNotice = "Sparkle Start Program Progress : You only have " + x_days + " days left to reach 500 PRS"; 
+                        }
+
+                    })
+                    .catch(error => {
+                        this.sparkleStartUpDetailsState = "error";
+                        console.log("current details error", error);
+                    }
+                )
+            },
+            get925BashProgram() {
+                if (this.sparkleStartUpDetailsState === "fetching") return;
+
+                this.sparkleStartUpDetailsState = "fetching";
+
+                client.get("member/dashboard/bash-925-startup-details")
+                    .then(response => {
+                        let details = response.data;
+
+                        this.sparkleStartUpDetailsState = "loaded";
+                        
+                        this.sparkleStartUpDetails.sparkleTotalPRS = typeof details.sparkle_total_prs !== "undefined" ? details.sparkle_total_prs : 0;
+                        this.sparkleStartUpDetails.daysDiff = typeof details.days_diff !== "undefined" ? details.days_diff : 0;
+
+                        if( details.sparkle_total_prs >= 500 ){
+                            this.sparkleStartUpDetails.sparkleNotice = "Sparkle Start Program Progress : You have reached your goal of having 500 PRS"; 
+                        }else{
+                            let x_days = 10 - this.sparkleStartUpDetails.daysDiff;
                             this.sparkleStartUpDetails.sparkleNotice = "Sparkle Start Program Progress : You only have " + x_days + " days left to reach 500 PRS"; 
                         }
 
