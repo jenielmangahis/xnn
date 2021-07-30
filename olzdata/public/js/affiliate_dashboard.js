@@ -272,13 +272,12 @@
                         this.sparkleStartUpDetailsState = "loaded";
                         
                         this.sparkleStartUpDetails.sparkleTotalPRS = typeof details.sparkle_total_prs !== "undefined" ? details.sparkle_total_prs : 0;
-                        this.sparkleStartUpDetails.sparkleNotice = "<b>Sparkle Start Program Progress : </b>You have reached your goal of having $500 PRS"; 
-                        /*if( details.sparkle_total_prs >= 500 ){
-                            this.sparkleStartUpDetails.sparkleNotice = "<b>Sparkle Start Program Progress : </b>You have reached your goal of having $500 PRS"; 
+                        if( details.sparkle_total_prs >= 500 ){
+                            this.sparkleStartUpDetails.sparkleNotice = "<b>Sparkle Start Program Progress : </b>You have reached your goal of having 500 PRS"; 
                         }else{
                             let x_days = 10 - sparkleStartUpDetails.days_diff;
-                            this.sparkleStartUpDetails.sparkleNotice = "<b>Sparkle Start Program Progress : </b> You only have " + x_days + " days left to reach $500 PRS"; 
-                        }*/
+                            this.sparkleStartUpDetails.sparkleNotice = "<b>Sparkle Start Program Progress : </b> You only have " + x_days + " days left to reach 500 PRS"; 
+                        }
 
                     })
                     .catch(error => {
