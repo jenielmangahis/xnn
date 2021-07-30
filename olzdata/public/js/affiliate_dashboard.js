@@ -151,26 +151,6 @@
                     ]
                 });
             },
-            initializeGiftCardDataTables() {
-                let _this = this;
-                this.dtGiftCards = $('#table-gift_cards').DataTable({
-                    // searching: false,
-                    // lengthChange: true,
-                    processing: true,
-                    serverSide: true,
-                    responsive: true,
-                    ajax: {
-                         url: `${api_url}member/dashboard/gift-cards`,
-                    },
-                    order: [[1, 'desc']],
-                    columns: [
-                        {data: 'code'},
-                        {data: 'validation_code'},
-                        {data: 'amount', className: "text-right"},
-                        {data: 'balance', className: "text-right"},
-                    ],
-                });
-            },
             getCurrentRankDetails() {
                 if (this.currentRankDetailsState === "fetching") return;
 
