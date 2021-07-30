@@ -276,7 +276,7 @@
                         if( details.sparkle_total_prs >= 500 ){
                             this.sparkleStartUpDetails.sparkleNotice = "Sparkle Start Program Progress : You have reached your goal of having 500 PRS"; 
                         }else{
-                            let x_days = 10 - this.sparkleStartUpDetails.days_diff;
+                            let x_days = 10 - details.days_diff;
                             this.sparkleStartUpDetails.sparkleNotice = "Sparkle Start Program Progress : You only have " + x_days + " days left to reach 500 PRS"; 
                         }
 
