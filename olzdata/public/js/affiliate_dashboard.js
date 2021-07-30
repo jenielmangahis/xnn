@@ -273,7 +273,7 @@
                         this.sparkleStartUpDetailsState = "loaded";
                         
                         this.sparkleStartUpDetails.sparkleTotalPRS = typeof details.sparkle_total_prs !== "undefined" ? details.sparkle_total_prs : 0;
-                        this.sparkleStartUpDetails.sparkleNotice = 1; 
+                        this.sparkleStartUpDetails.sparkleNotice = "<b>Sparkle Start Program Progress : </b>You have reached your goal of having 500 PRS"; 
                         /*if( details.sparkle_total_prs >= 500 ){
                             this.sparkleStartUpDetails.sparkleNotice = "<b>Sparkle Start Program Progress : </b>You have reached your goal of having 500 PRS"; 
                         }else{
