@@ -60,7 +60,8 @@
             // this.getCurrentBinaryVolumeDetails();
             this.getLastEarningsDetails();
             this.initializeDataTables();
-            $this.getSilverStartupProgram();
+            this.getSilverStartupProgram();
+            this.getSparkleStartupProgram();
         },
         methods: {
             initializeDataTables() {
