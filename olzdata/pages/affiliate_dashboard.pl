@@ -308,6 +308,20 @@ print <<EOS;
         </div>
     </div>
 
+    <div class="col-md-12" style="padding: 40px 0px;">
+        <div id="countdown-wrap">
+            <span v-if="!isBashStartupProgramLoaded"><i class="fa fa-spinner fa-spin"></i></span>
+            <span v-else>{{ bashStartUpDetails.bashNotice }} </span>
+            <div class="progress" style="height:2rem;">
+              <div class="progress-bar" role="progressbar" aria-valuenow="100"
+              aria-valuemin="0" aria-valuemax="100" style="width:100%;text-align:left;padding-left:14px;">   
+                <span v-if="!isBashStartupProgramLoaded"><i class="fa fa-spinner fa-spin"></i></span>
+                <span v-else>{{ bashStartUpDetails.bashTotalPRS }} / 3600 PRS</span>            
+              </div>
+            </div>
+        </div>
+    </div>
+
     <div class="row">
         <div class="col-md-12">
             <div class="card shadow mb-4 border-bottom-primary">

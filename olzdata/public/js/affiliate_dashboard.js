@@ -15,6 +15,7 @@
             currentEarningsDeatilsState: "loaded",
             silverStartUpDetailsState: "loaded",
             sparkleStartUpDetailsState: "loaded",
+            bashStartUpDetailsState: "loaded",
             currentRankDetails: {
                 highestAchievedRank: "",
                 paidAsRank: "",
@@ -31,6 +32,11 @@
                 daysDiff:0,
                 sparkleTotalPRS:0,
                 sparkleMemberId:0,
+            },
+            bashStartUpDetails:{
+                bashNotice: "",
+                bashTotalPRS: 0,
+                daysLeft: 0,
             },
             currentBinaryVolumeDetails: {
                 leftLegVolume:'0.00',
@@ -64,6 +70,7 @@
             this.initializeDataTables();
             this.getSilverStartupProgram();
             this.getSparkleStartupProgram();
+            this.get925BashProgram();
         },
         methods: {
             initializeDataTables() {
@@ -292,29 +299,29 @@
                 )
             },
             get925BashProgram() {
-                if (this.sparkleStartUpDetailsState === "fetching") return;
+                if (this.bashStartUpDetailsState === "fetching") return;
 
-                this.sparkleStartUpDetailsState = "fetching";
+                this.bashStartUpDetailsState = "fetching";
 
                 client.get("member/dashboard/bash-925-startup-details")
                     .then(response => {
                         let details = response.data;
 
-                        this.sparkleStartUpDetailsState = "loaded";
+                        this.bashStartUpDetailsState = "loaded";
                         
-                        this.sparkleStartUpDetails.sparkleTotalPRS = typeof details.sparkle_total_prs !== "undefined" ? details.sparkle_total_prs : 0;
-                        this.sparkleStartUpDetails.daysDiff = typeof details.days_diff !== "undefined" ? details.days_diff : 0;
+                        this.bashStartUpDetails.bashTotalPRS = typeof details.bash_total_prs !== "undefined" ? details.bash_total_prs : 0;
+                        this.bashStartUpDetails.daysLeft = typeof details.days_left !== "undefined" ? details.days_left : 0;
 
-                        if( details.sparkle_total_prs >= 500 ){
-                            this.sparkleStartUpDetails.sparkleNotice = "Sparkle Start Program Progress : You have reached your goal of having 500 PRS"; 
+                        if( details.bash_total_prs >= 36000 ){
+                            this.bashStartUpDetails.bashNotice = "925 Bash Progress : You have reached your goal of having $36,000 PRS"; 
                         }else{
-                            let x_days = 10 - this.sparkleStartUpDetails.daysDiff;
-                            this.sparkleStartUpDetails.sparkleNotice = "Sparkle Start Program Progress : You only have " + x_days + " days left to reach 500 PRS"; 
+                            let x_days = this.bashStartUpDetails.daysLeft;
+                            this.bashStartUpDetails.bashNotice = "925 Bash Progress : You only have " + x_days + " days left to reach $36,000 PRS"; 
                         }
 
                     })
                     .catch(error => {
-                        this.sparkleStartUpDetailsState = "error";
+                        this.bashStartUpDetailsState = "error";
                         console.log("current details error", error);
                     }
                 )
@@ -338,6 +345,9 @@
             },
             isSparkleStartupProgramLoaded() {
                 return this.sparkleStartUpDetailsState === 'loaded';
+            },
+            isBashStartupProgramLoaded() {
+                return this.bashStartUpDetailsState === 'loaded';
             },
         }
     });

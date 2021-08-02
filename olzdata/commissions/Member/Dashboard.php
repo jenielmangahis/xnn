@@ -639,25 +639,40 @@ class Dashboard
 
     public function getBash925StartupDetails($user_id)
     {
-       $sql = "
-            SELECT COALESCE(dv.prs, 0.00) AS sparkle_total_prs, 
-                (SELECT u.enrolled_date FROM users AS u WHERE u.id = dv.user_id) AS enrolled_date,
-                ((SELECT enrolled_date FROM users AS u WHERE u.id = dv.user_id) + INTERVAL 10 DAY) AS ten_days_upon_enrollment,
-                DATEDIFF((SELECT dva.volume_date FROM cm_daily_volumes AS dva WHERE dva.user_id = :member_id AND dva.volume_date <= ((SELECT enrolled_date FROM users AS u WHERE u.id = dv.user_id) + INTERVAL 10 DAY) ORDER BY dva.volume_date DESC LIMIT 1), (SELECT u.enrolled_date FROM users AS u WHERE u.id = dv.user_id)) AS days_diff,
-                (SELECT dva.volume_date FROM cm_daily_volumes AS dva WHERE dva.user_id = :member_id AND dva.volume_date <= ((SELECT enrolled_date FROM users AS u WHERE u.id = dv.user_id) + INTERVAL 10 DAY) ORDER BY dva.volume_date DESC LIMIT 1) AS ten_days_recent_volume_date
+        $today      = date("Y-m-d");
+        $start_date = date("Y-07-01");
+
+        if( $today < $start_date ){
+		 $start_date   = date("Y-07-01", strtotime(date("Y-m-d", strtotime($start_date)) . " - 1 year"));		       	
+        }
+	    $end_date   = date("Y-06-30", strtotime(date("Y-m-d", strtotime($start_date)) . " + 1 year"));
+
+	    $date_a = new DateTime($start_date);
+		$date_b = new DateTime($today);
+
+		$difference = $date_a->diff($date_b);
+		$days_diff  = $difference->d;
+		$days_left  = 365 - $days_diff;
+
+        $sql = "
+            SELECT COALESCE(dv.prs, 0.00) AS bash_total_prs
             FROM cm_daily_volumes AS dv
             WHERE dv.user_id = :member_id
-                AND dv.volume_date <= ((SELECT u.enrolled_date FROM users AS u WHERE u.id = dv.user_id) + INTERVAL 10 DAY)
+                AND dv.volume_date <= :start_date 
+                AND dv.volume_date >= :end_date 
             ORDER BY dv.id DESC 
             LIMIT 1
         ";
 
         $stmt = $this->db->prepare($sql);
         $stmt->bindParam(":member_id", $user_id);
+        $stmt->bindParam(":start_date", $start_date);
+        $stmt->bindParam(":end_date", $end_date);
         $stmt->execute();
 
         $result = $stmt->fetch(\PDO::FETCH_ASSOC);
-        
+        $result['days_left'] = $days_left;
+                
         return $result;
     }
 
