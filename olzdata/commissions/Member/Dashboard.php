@@ -617,8 +617,8 @@ class Dashboard
                 (SELECT u.enrolled_date FROM users AS u WHERE u.id = dv.user_id) AS enrolled_date,
                 (SELECT u.id FROM users AS u WHERE u.id = :member_id) AS muser_id,
                 ('2021-06-03' + INTERVAL 10 DAY) AS ten_days_upon_enrollment,
-                DATEDIFF((SELECT dva.volume_date FROM cm_daily_volumes AS dva WHERE dva.user_id = :member_id AND dva.volume_date <= ('2021-06-03' + INTERVAL 10 DAY) ORDER BY dva.volume_date DESC LIMIT 1), '2021-06-03') AS days_diff,
-                (SELECT dva.volume_date FROM cm_daily_volumes AS dva WHERE dva.user_id = :member_id AND dva.volume_date <= ((SELECT enrolled_date FROM users AS u WHERE u.id = dv.user_id) + INTERVAL 10 DAY) ORDER BY dva.volume_date DESC LIMIT 1) AS ten_days_recent_volume_date
+                DATEDIFF((SELECT dva.volume_date FROM cm_daily_volumes AS dva WHERE dva.user_id = dv.user_id AND dva.volume_date <= ('2021-06-03' + INTERVAL 10 DAY) ORDER BY dva.volume_date DESC LIMIT 1), '2021-06-03') AS days_diff,
+                (SELECT dva.volume_date FROM cm_daily_volumes AS dva WHERE dva.user_id = dv.user_id AND dva.volume_date <= ((SELECT enrolled_date FROM users AS u WHERE u.id = dv.user_id) + INTERVAL 10 DAY) ORDER BY dva.volume_date DESC LIMIT 1) AS ten_days_recent_volume_date
             FROM cm_daily_volumes AS dv
             WHERE dv.user_id = :member_id
                 AND dv.volume_date <= ('2021-07-20' + INTERVAL 10 DAY)
