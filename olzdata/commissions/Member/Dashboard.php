@@ -646,12 +646,7 @@ class Dashboard
 		 $start_date   = date("Y-07-01", strtotime(date("Y-m-d", strtotime($start_date)) . " - 1 year"));		       	
         }
 	    $end_date   = date("Y-06-30", strtotime(date("Y-m-d", strtotime($start_date)) . " + 1 year"));
-
-	    $date_a = new \DateTime($start_date);
-		$date_b = new \DateTime($today);
-
-		$difference = $date_a->diff($date_b);
-		$days_diff  = $difference->d;
+		$days_diff  = ceil(abs(strtotime($today) - strtotime($start_date)) / 86400);
 		$days_left  = 365 - $days_diff;
 
         $sql = "
@@ -672,6 +667,7 @@ class Dashboard
 
         $result = $stmt->fetch(\PDO::FETCH_ASSOC);
         $result['days_left'] = $days_left;
+        $result['member_id'] = $member_id;
 
         return $result;
     }
