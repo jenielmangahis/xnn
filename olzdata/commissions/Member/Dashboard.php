@@ -667,7 +667,7 @@ class Dashboard
 
         $result = $stmt->fetch(\PDO::FETCH_ASSOC);
         $result['days_left'] = $days_left;
-        $result['member_id'] = $member_id;
+        $result['member_id'] = $user_id;
 
         return $result;
     }
