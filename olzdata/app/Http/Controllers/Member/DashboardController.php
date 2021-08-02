@@ -66,11 +66,4 @@ class DashboardController extends Controller
         );
     }
 
-    public function bash925StartUpDetails(Request $request)
-    {
-        return response()->json(
-            $this->dashboard->getBash925StartupDetails(Auth::user()->id)
-        );
-    }
-
 }
