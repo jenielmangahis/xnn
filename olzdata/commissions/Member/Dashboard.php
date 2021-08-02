@@ -647,8 +647,8 @@ class Dashboard
         }
 	    $end_date   = date("Y-06-30", strtotime(date("Y-m-d", strtotime($start_date)) . " + 1 year"));
 
-	    $date_a = new DateTime($start_date);
-		$date_b = new DateTime($today);
+	    $date_a = new \DateTime($start_date);
+		$date_b = new \DateTime($today);
 
 		$difference = $date_a->diff($date_b);
 		$days_diff  = $difference->d;
@@ -672,7 +672,7 @@ class Dashboard
 
         $result = $stmt->fetch(\PDO::FETCH_ASSOC);
         $result['days_left'] = $days_left;
-                
+
         return $result;
     }
 
