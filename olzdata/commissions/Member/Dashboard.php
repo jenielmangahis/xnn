@@ -122,8 +122,8 @@ class Dashboard
                 IFNULL(IF(n.grs_requirement - dv.grs < 0,0,n.grs_requirement - dv.grs),0) AS needs_grs,
                 IF(drq.is_active = 1,'Yes','No') AS is_qualified
             FROM users u 
-            LEFT JOIN cm_daily_volumes dv ON dv.user_id = u.id AND dv.volume_date = CURRENT_DATE()
-            LEFT JOIN cm_daily_ranks drq ON drq.user_id = u.id AND drq.rank_date = CURRENT_DATE()
+            LEFT JOIN cm_daily_volumes dv ON dv.user_id = u.id AND dv.volume_date = (SELECT volume_date FROM cm_daily_volumes WHERE user_id = :user_id ORDER BY id DESC LIMIT 1)
+            LEFT JOIN cm_daily_ranks drq ON drq.user_id = u.id AND drq.rank_date = (SELECT rank_date FROM cm_daily_ranks WHERE user_id = :user_id ORDER BY id DESC LIMIT 1)
             LEFT JOIN cm_daily_ranks dr ON dr.volume_id = dv.id
             LEFT JOIN cm_achieved_ranks ar ON ar.user_id = dr.user_id 
                 AND ar.rank_id = (
