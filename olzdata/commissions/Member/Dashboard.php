@@ -603,6 +603,7 @@ class Dashboard
 
     public function getSparkleStartupDetails($user_id)
     {
+    	$user_id = 3;
        /*$sql = "
             SELECT COALESCE(SUM(dv.prs), 0.00) AS sparkle_total_prs, 
                 (SELECT u.enrolled_date FROM users AS u WHERE u.id = dv.user_id) AS enrolled_date,
