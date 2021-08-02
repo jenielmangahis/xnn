@@ -285,10 +285,10 @@
                         this.sparkleStartUpDetails.daysDiff = typeof details.days_diff !== "undefined" ? details.days_diff : 0;
 
                         if( details.sparkle_total_prs >= 500 ){
-                            this.sparkleStartUpDetails.sparkleNotice = "Sparkle Start Program Progress : You have reached your goal of having 500 PRS"; 
+                            this.sparkleStartUpDetails.sparkleNotice = "Sparkle Start Program Progress : You have reached your goal of having $500.00 PRS"; 
                         }else{
                             let x_days = this.sparkleStartUpDetails.daysDiff;
-                            this.sparkleStartUpDetails.sparkleNotice = "Sparkle Start Program Progress : You only have " + x_days + " days left to reach 500 PRS"; 
+                            this.sparkleStartUpDetails.sparkleNotice = "Sparkle Start Program Progress : You only have " + x_days + " days left to reach $500.00 PRS"; 
                         }
 
                     })
@@ -313,10 +313,10 @@
                         this.bashStartUpDetails.daysLeft = typeof details.days_left !== "undefined" ? details.days_left : 0;
 
                         if( details.bash_total_prs >= 36000 ){
-                            this.bashStartUpDetails.bashNotice = "925 Bash Progress : You have reached your goal of having $36,000 PRS"; 
+                            this.bashStartUpDetails.bashNotice = "925 Bash Progress : You have reached your goal of having $36,000.00 PRS"; 
                         }else{
                             let x_days = this.bashStartUpDetails.daysLeft;
-                            this.bashStartUpDetails.bashNotice = "925 Bash Progress : You only have " + x_days + " days left to reach $36,000 PRS"; 
+                            this.bashStartUpDetails.bashNotice = "925 Bash Progress : You only have " + x_days + " days left to reach $36,000.00 PRS"; 
                         }
 
                     })
