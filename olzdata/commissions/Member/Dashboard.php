@@ -640,7 +640,7 @@ class Dashboard
     public function getBash925StartupDetails($user_id)
     {
        $sql = "
-            SELECT COALESCE(SUM(dv.prs), 0.00) AS sparkle_total_prs, 
+            SELECT COALESCE(dv.prs, 0.00) AS sparkle_total_prs, 
                 (SELECT u.enrolled_date FROM users AS u WHERE u.id = dv.user_id) AS enrolled_date,
                 ((SELECT enrolled_date FROM users AS u WHERE u.id = dv.user_id) + INTERVAL 10 DAY) AS ten_days_upon_enrollment,
                 DATEDIFF((SELECT dva.volume_date FROM cm_daily_volumes AS dva WHERE dva.user_id = :member_id AND dva.volume_date <= ((SELECT enrolled_date FROM users AS u WHERE u.id = dv.user_id) + INTERVAL 10 DAY) ORDER BY dva.volume_date DESC LIMIT 1), (SELECT u.enrolled_date FROM users AS u WHERE u.id = dv.user_id)) AS days_diff,
@@ -648,6 +648,8 @@ class Dashboard
             FROM cm_daily_volumes AS dv
             WHERE dv.user_id = :member_id
                 AND dv.volume_date <= ((SELECT u.enrolled_date FROM users AS u WHERE u.id = dv.user_id) + INTERVAL 10 DAY)
+            ORDER BY dv.id DESC 
+            LIMIT 1
         ";
 
         $stmt = $this->db->prepare($sql);
