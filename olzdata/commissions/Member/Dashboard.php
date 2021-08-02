@@ -587,7 +587,9 @@ class Dashboard
             SELECT COALESCE(dv.prs, 0.00) AS silver_total_prs
             FROM cm_daily_volumes AS dv
             WHERE dv.user_id = :member_id
-                AND dv.volume_date <= ((SELECT enrolled_date FROM users AS u WHERE u.id = dv.user_id) + INTERVAL 90 DAY)
+                AND dv.volume_date <= ((SELECT enrolled_date FROM users AS u WHERE u.id = dv.user_id) + INTERVAL 90 DAY)            
+            ORDER BY dv.id DESC
+            LIMIT 1
         ";
 
         $stmt = $this->db->prepare($sql);
@@ -621,6 +623,8 @@ class Dashboard
             FROM cm_daily_volumes AS dv
             WHERE dv.user_id = :member_id
                 AND dv.volume_date <= ('2021-06-03' + INTERVAL 10 DAY)
+            ORDER BY dv.id DESC
+            LIMIT 1
         ";
 
         $stmt = $this->db->prepare($sql);
@@ -643,6 +647,8 @@ class Dashboard
             FROM cm_daily_volumes AS dv
             WHERE dv.user_id = :member_id
                 AND dv.volume_date <= ((SELECT u.enrolled_date FROM users AS u WHERE u.id = dv.user_id) + INTERVAL 10 DAY)
+            ORDER BY dv.id DESC
+            LIMIT 1
         ";
 
         $stmt = $this->db->prepare($sql);
