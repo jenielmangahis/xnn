@@ -653,8 +653,7 @@ class Dashboard
             SELECT COALESCE(dv.prs, 0.00) AS bash_total_prs
             FROM cm_daily_volumes AS dv
             WHERE dv.user_id = :member_id
-                AND dv.volume_date <= :start_date 
-                AND dv.volume_date >= :end_date 
+                AND dv.volume_date BETWEEN :start_date AND :end_date
             ORDER BY dv.id DESC 
             LIMIT 1
         ";
