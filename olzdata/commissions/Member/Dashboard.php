@@ -26,7 +26,7 @@ use Commissions\Repositories\PayoutRepository;
 class Dashboard
 {
     const LOG_PATH = "logs/run_commission";
-    
+
     protected $db;
 
     public function __construct()
@@ -697,7 +697,7 @@ class Dashboard
         $isQualifiedForWeeklyDirectProfit     = $weeklyDirectProfit->isQualifiedForWeeklyDirectProfit($user_id) == true ? 'Qualified' : 'Not Qualified';
         $isQualifiedForMonthlyLevelCommission = $monthlyLevelCommission->isQualifiedForMonthlyLevelCommission($user_id) == true ? 'Qualified' : 'Not Qualified';
         $isQualifiedForSparkleStartProgram    = $sparkleStartProgram->isQualifiedForSparkleStartProgram($user_id) == true ? 'Qualified' : 'Not Qualified';
-        $isQualifiedForRankAdvancementBonus   = $rankAdvancementBonus->sQualifiedForRankAdvancementBonus($user_id) == true ? 'Qualified' : 'Not Qualified';
+        $isQualifiedForRankAdvancementBonus   = $rankAdvancementBonus->isQualifiedForRankAdvancementBonus($user_id) == true ? 'Qualified' : 'Not Qualified';
         
         $result = [
             'is_qualified_weekly_direct_profit' => $isQualifiedForWeeklyDirectProfit,
