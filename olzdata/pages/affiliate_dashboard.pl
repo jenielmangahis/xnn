@@ -7,10 +7,10 @@ print <<EOS;
 <style>
 .goal-stat{
     display:inline-block;
-    margin:8px;
+    margin:20px;
 }
 .bash-goal{
-    margin-right:182px;
+    margin-right:171px;
 }
 </style>
 
