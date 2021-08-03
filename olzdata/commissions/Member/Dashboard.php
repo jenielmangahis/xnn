@@ -630,12 +630,13 @@ class Dashboard
             SELECT COALESCE(dv.prs, 0.00) AS sparkle_total_prs, 
                 (SELECT u.enrolled_date FROM users AS u WHERE u.id = dv.user_id) AS enrolled_date,
                 (SELECT u.id FROM users AS u WHERE u.id = :member_id) AS muser_id,
-                ('2021-06-03' + INTERVAL 10 DAY) AS ten_days_upon_enrollment,
-                DATEDIFF((SELECT dva.volume_date FROM cm_daily_volumes AS dva WHERE dva.user_id = :member_id AND dva.volume_date <= ('2021-06-03' + INTERVAL 10 DAY) ORDER BY dva.volume_date DESC LIMIT 1), '2021-06-03') AS days_diff,
+                (ca.affiliated_date + INTERVAL 10 DAY) AS ten_days_upon_enrollment,
+                DATEDIFF((SELECT dva.volume_date FROM cm_daily_volumes AS dva WHERE dva.user_id = :member_id AND dva.volume_date <= (ca.affiliated_date + INTERVAL 10 DAY) ORDER BY dva.volume_date DESC LIMIT 1), ca.affiliated_date) AS days_diff,
                 (SELECT dva.volume_date FROM cm_daily_volumes AS dva WHERE dva.user_id = :member_id AND dva.volume_date <= ((SELECT enrolled_date FROM users AS u WHERE u.id = dv.user_id) + INTERVAL 10 DAY) ORDER BY dva.volume_date DESC LIMIT 1) AS ten_days_recent_volume_date
             FROM cm_daily_volumes AS dv
+            LEFT JOIN cm_affiliates ca ON dv.user_id = ca.user_id
             WHERE dv.user_id = :member_id
-                AND dv.volume_date <= ('2021-07-20' + INTERVAL 10 DAY)
+                AND dv.volume_date <= (ca.affiliated_date + INTERVAL 10 DAY)
             ORDER BY dv.id DESC 
             LIMIT 1
         ";
