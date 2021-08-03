@@ -680,7 +680,9 @@ class Dashboard
 
     public function getCurrentQualificationDetails($user_id)
     {
-        $weeklyDirectProfit     = new WeeklyDirectProfit(1);
+        $period = CommissionPeriod::find(1);
+
+        $weeklyDirectProfit     = new WeeklyDirectProfit($period);
         $monthlyLevelCommission = new MonthlyLevelCommission('', '', '');
         $sparkleStartProgram    = new SparkleStarAProgram('', '', '');
         $rankAdvancementBonus   = new RankAdvancementBonus('', '', '');
