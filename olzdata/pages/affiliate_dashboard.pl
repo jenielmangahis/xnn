@@ -9,6 +9,9 @@ print <<EOS;
     display:inline-block;
     margin:8px;
 }
+.bash-goal{
+    margin-right:182px;
+}
 </style>
 
 <div class="dashboard tool-container" v-cloak>
