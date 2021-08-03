@@ -72,6 +72,7 @@
         },
         mounted() {
             this.getCurrentRankDetails();
+            this.getQualificationDetails();
             // this.getCurrentBinaryVolumeDetails();
             this.getLastEarningsDetails();
             this.initializeDataTables();
