@@ -691,7 +691,7 @@ class Dashboard
 
         $weeklyDirectProfit     = new WeeklyDirectProfit($period, $background_worker_logger, $payout_repository);
         $monthlyLevelCommission = new MonthlyLevelCommission($period, $background_worker_logger, $payout_repository);
-        $sparkleStartProgram    = new SparkleStarAProgram($period, $background_worker_logger, $payout_repository);
+        $sparkleStartProgram    = new SparkleStartProgram($period, $background_worker_logger, $payout_repository);
         $rankAdvancementBonus   = new RankAdvancementBonus($period, $background_worker_logger, $payout_repository);
 
         $isQualifiedForWeeklyDirectProfit     = $weeklyDirectProfit->isQualifiedForWeeklyDirectProfit($user_id) == true ? 'Qualified' : 'Not Qualified';
