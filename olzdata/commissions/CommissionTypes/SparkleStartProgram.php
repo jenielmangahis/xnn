@@ -281,7 +281,7 @@ class SparkleStartProgram extends RunCommission
         return $result;
     }
 
-    public static function isQualifiedForSparkleStartProgram($user_id) {
+    public function isQualifiedForSparkleStartProgram($user_id) {
         $sql = "
             SELECT ca.user_id, u.`sponsorid`, dv.`prs`, dv.`volume_date`, dr.`paid_as_rank_id` 
             FROM users u

@@ -20,6 +20,9 @@ use Commissions\CommissionTypes\MonthlyLevelCommission;
 use Commissions\VolumesAndRanks;
 use Illuminate\Support\Facades\DB;
 
+use Commissions\BackgroundWorkerLogger;
+use Commissions\Repositories\PayoutRepository;
+
 class Dashboard
 {
     protected $db;
@@ -650,11 +653,11 @@ class Dashboard
         $start_date = date("Y-07-01");
 
         if( $today < $start_date ){
-		 $start_date   = date("Y-07-01", strtotime(date("Y-m-d", strtotime($start_date)) . " - 1 year"));		       	
+         $start_date   = date("Y-07-01", strtotime(date("Y-m-d", strtotime($start_date)) . " - 1 year"));               
         }
-	    $end_date   = date("Y-06-30", strtotime(date("Y-m-d", strtotime($start_date)) . " + 1 year"));
-		$days_diff  = ceil(abs(strtotime($today) - strtotime($start_date)) / 86400);
-		$days_left  = 365 - $days_diff;
+        $end_date   = date("Y-06-30", strtotime(date("Y-m-d", strtotime($start_date)) . " + 1 year"));
+        $days_diff  = ceil(abs(strtotime($today) - strtotime($start_date)) / 86400);
+        $days_left  = 365 - $days_diff;
 
         $sql = "
             SELECT COALESCE(dv.prs, 0.00) AS bash_total_prs
@@ -680,22 +683,26 @@ class Dashboard
 
     public function getCurrentQualificationDetails($user_id)
     {
-        $isQualifiedForWeeklyDirectProfit     = WeeklyDirectProfit::isQualifiedForWeeklyDirectProfit($user_id);
-        /*$isQualifiedForMonthlyLevelCommission = MonthlyLevelCommission::isQualifiedForMonthlyLevelCommission($user_id);
-        $isQualifiedForSparkleStartProgram    = SparkleStartProgram::isQualifiedForSparkleStartProgram($user_id);
-        $isQualifiedForRankAdvancementBonus   = RankAdvancementBonus::isQualifiedForRankAdvancementBonus($user_id);
-        */
+        $period = CommissionPeriod::find(1);
+        $background_worker_logger = new BackgroundWorkerLogger(storage_path(static::LOG_PATH), 1, 1);
+        $payout_repository        = new PayoutRepository();
+
+        $weeklyDirectProfit     = new WeeklyDirectProfit($period, $background_worker_logger, $payout_repository);
+        $monthlyLevelCommission = new MonthlyLevelCommission($period, $background_worker_logger, $payout_repository);
+        $sparkleStartProgram    = new SparkleStarAProgram($period, $background_worker_logger, $payout_repository);
+        $rankAdvancementBonus   = new RankAdvancementBonus($period, $background_worker_logger, $payout_repository);
+
+        $isQualifiedForWeeklyDirectProfit     = $weeklyDirectProfit->isQualifiedForWeeklyDirectProfit($user_id) == true ? 'Qualified' : 'Not Qualified';
+        $isQualifiedForMonthlyLevelCommission = $monthlyLevelCommission->isQualifiedForMonthlyLevelCommission($user_id) == true ? 'Qualified' : 'Not Qualified';
+        $isQualifiedForSparkleStartProgram    = $sparkleStartProgram->isQualifiedForSparkleStartProgram($user_id) == true ? 'Qualified' : 'Not Qualified';
+        $isQualifiedForRankAdvancementBonus   = $rankAdvancementBonus->sQualifiedForRankAdvancementBonus($user_id) == true ? 'Qualified' : 'Not Qualified';
+        
         $result = [
             'is_qualified_weekly_direct_profit' => $isQualifiedForWeeklyDirectProfit,
-            //'is_qualified_monthly_level_commission' => $isQualifiedForMonthlyLevelCommission,
-            //'is_qualified_sparkle_start_program' => $isQualifiedForSparkleStartProgram,
-            //'is_qualified_rank_advancement_bonus' => $isQualifiedForRankAdvancementBonus
+            'is_qualified_monthly_level_commission' => $isQualifiedForMonthlyLevelCommission,
+            'is_qualified_sparkle_start_program' => $isQualifiedForSparkleStartProgram,
+            'is_qualified_rank_advancement_bonus' => $isQualifiedForRankAdvancementBonus
         ];
-
-        echo "<pre>";
-        print_r($result);
-
-        $result = array();
 
         return $result;
     }

@@ -129,7 +129,7 @@ class RankAdvancementBonus extends CommissionType implements CommissionTypeInter
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
 
-    public static function isQualifiedForRankAdvancementBonus($user_id) {
+    public function isQualifiedForRankAdvancementBonus($user_id) {
 
         $affiliates = config('commission.member-types.affiliates');
 
