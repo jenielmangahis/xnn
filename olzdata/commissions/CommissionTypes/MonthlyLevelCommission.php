@@ -252,4 +252,52 @@ class MonthlyLevelCommission extends CommissionType implements CommissionTypeInt
 
         return $percentage;
     }
+
+    public function isQualifiedForMonthlyLevelCommission($user_id)
+    {
+        $affiliates = config('commission.member-types.affiliates');
+        $end_date = date('Y-m-d');
+        $min_rank = self::MINIMUM_RANK;
+
+        $sql = "
+            SELECT
+                u.id AS user_id,
+                dr.paid_as_rank_id,
+                r.name AS current_rank,
+                u.sponsorid AS sponsor_id
+            FROM cm_daily_volumes dv
+            JOIN cm_daily_ranks dr ON dr.volume_id = dv.id AND dr.rank_date = '$end_date'
+            JOIN users u ON u.id = dv.user_id
+            JOIN cm_ranks r ON r.id = dr.paid_as_rank_id
+            WHERE u.active = 'Yes' 
+            AND EXISTS(SELECT 1 FROM cm_affiliates a WHERE a.user_id = dv.user_id AND FIND_IN_SET(a.cat_id,'$affiliates'))
+            AND dr.paid_as_rank_id >= $min_rank
+            AND u.id = $user_id
+        ";
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute();
+
+        $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+
+        foreach($result as $user) {
+            $userDownlines = $this->getDownlines($user['user_id']);
+
+            $isQualified = false;
+            if(count($userDownlines) > 0) {
+                foreach($userDownlines as $downline) {
+                    if(+$user['paid_as_rank_id'] > 1) {
+    
+                        $flag = $this->evaluateUserDownline($user['paid_as_rank_id'], $downline);
+                        if($flag) {
+                            $isQualified = true;
+                            return;
+                        }
+                    }
+                }
+            }
+
+            return $isQualified;
+        }
+    }
 }

@@ -241,4 +241,80 @@ class SparkleStartProgram extends RunCommission
     {
         DB::table('cm_commission_periods')->where('id', $period_id)->update(['is_running' => $is_running]);
     }
+
+    public function getDownlines($user_id) {
+
+        $affiliates = config('commission.member-types.affiliates');
+
+        $sql = "
+            WITH RECURSIVE downline (user_id, parent_id, `level`) AS (
+                SELECT 
+                id AS user_id,
+                sponsorid AS parent_id,
+                1 AS `level`
+                FROM users
+                WHERE sponsorid = $user_id AND levelid = 3
+                
+                UNION ALL
+                
+                SELECT
+                p.id AS user_id,
+                p.sponsorid AS parent_id,
+                downline.`level` + 1 `level`
+                FROM users p
+                INNER JOIN downline ON p.sponsorid = downline.user_id
+                WHERE p.levelid = 3 AND p.active = 'Yes'
+            )
+            SELECT dv.`prs`
+            FROM downline d 
+            JOIN cm_affiliates ca ON d.user_id = ca.user_id
+            JOIN cm_daily_volumes dv ON d.user_id = dv.user_id AND dv.`volume_date` = CURRENT_DATE()
+            JOIN cm_daily_ranks dr ON dv.id = dr.`volume_id` AND dr.`rank_date` = CURRENT_DATE()
+            WHERE ca.affiliated_date BETWEEN DATE_SUB(NOW(), INTERVAL 10 DAY) AND NOW()
+            AND FIND_IN_SET(ca.cat_id, '$affiliates')
+        ";
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute();
+
+        $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        return $result;
+    }
+
+    public function isQualifiedForSparkleStartProgram($user_id) {
+        $sql = "
+            SELECT ca.user_id, u.`sponsorid`, dv.`prs`, dv.`volume_date`, dr.`paid_as_rank_id` 
+            FROM users u
+            JOIN cm_affiliates ca ON u.id = ca.user_id
+            JOIN cm_daily_volumes dv ON u.id = dv.user_id AND dv.`volume_date` = CURRENT_DATE()
+            JOIN cm_daily_ranks dr ON dv.id = dr.`volume_id` AND dr.`rank_date` = CURRENT_DATE()
+            WHERE ca.affiliated_date BETWEEN DATE_SUB(NOW(), INTERVAL 10 DAY) AND NOW()
+            AND FIND_IN_SET(ca.cat_id, '13')
+            AND u.`active` = 'Yes'
+            AND u.id = $user_id
+            ORDER BY dv.user_id ASC
+        ";
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute();
+
+        $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+
+        $isQualified = false;
+        if(count($result) > 0) {
+            $isQualified = true;
+        } 
+        else {
+            $user_downlines = $this->getDownlines($user_id);
+            if(count($user_downlines) > 0) {
+                foreach($user_downlines as $downline) {
+                    if($downline['prs'] >= 500) {
+                        $isQualified = true;
+                    }
+                }
+            }
+        }
+
+        return $isQualified;
+    }
 }

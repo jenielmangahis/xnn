@@ -74,7 +74,7 @@ class WeeklyDirectProfit extends CommissionType implements CommissionTypeInterfa
 
     }
 
-    function isCustomer($user_id)
+    private function isCustomer($user_id)
     {
         $customers = config('commission.member-types.customers');
         $sql = "
@@ -201,5 +201,95 @@ class WeeklyDirectProfit extends CommissionType implements CommissionTypeInterfa
         $stmt->execute();
 
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
+    public function isQualifiedForWeeklyDirectProfit($user_id)
+    {
+        $customers = config('commission.member-types.customers');
+        $affiliates = config('commission.member-types.affiliates');
+
+        $start_date = date('Y-m-d',strtotime('last thursday'));
+        $end_date = date('Y-m-d',strtotime('this wednesday'));
+
+        $sql = "
+            SELECT
+                a.order_id, 
+                a.user_id,
+                a.sponsor_id,
+                a.payee_id,
+                a.cv,
+                a.transaction_date,
+                a.`level`,
+                a.order_type
+            FROM (
+            WITH RECURSIVE downline (user_id, parent_id, `level`, root_id) AS (
+                SELECT 
+                id AS user_id,
+                sponsorid AS parent_id,
+                1 AS `level`,
+                sponsorid AS root_id
+                FROM users u
+                WHERE u.id = $user_id
+                
+                UNION ALL
+                
+                SELECT
+                p.id AS user_id,
+                p.sponsorid AS parent_id,
+                downline.`level` + 1 `level`,
+                downline.root_id
+                FROM users p
+                INNER JOIN downline ON p.sponsorid = downline.user_id
+                WHERE EXISTS(SELECT 1 FROM categorymap cm WHERE cm.userid = p.id AND FIND_IN_SET(cm.catid, '$customers'))
+            )
+            SELECT
+                t.transaction_id AS order_id, 
+                t.user_id,
+                t.sponsor_id,
+                d.root_id AS payee_id,
+                COALESCE(t.computed_cv, 0) AS cv,
+                t.transaction_date,
+                d.level,
+                'Customer Order' AS order_type
+            FROM downline d
+            JOIN v_cm_transactions t ON t.user_id = d.user_id
+            WHERE t.transaction_date BETWEEN '$start_date' AND '$end_date'
+                AND t.`type` = 'product' 
+                AND FIND_IN_SET(t.purchaser_catid, '$customers')
+            
+            UNION ALL
+                            
+            SELECT
+                t.transaction_id AS order_id, 
+                t.user_id,
+                t.sponsor_id,
+                t.user_id AS payee_id,
+                COALESCE(t.computed_cv, 0) AS cv,
+                t.transaction_date,
+                0 `level`,
+                'Representative Order' AS order_type
+            FROM v_cm_transactions t
+            JOIN users u ON u.id = t.user_id
+            WHERE t.transaction_date BETWEEN '$start_date' AND '$end_date'
+                AND t.`type` = 'product'
+                AND FIND_IN_SET(t.purchaser_catid, '$affiliates')
+                AND u.active = 'Yes'
+                AND u.id = $user_id
+            ) a
+            ORDER BY a.user_id
+            
+        ";
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute();
+
+        $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+        
+        $flag = false;
+        if(count($result) > 0) {
+            $flag = true;
+        }
+
+        return $flag;
     }
 }
