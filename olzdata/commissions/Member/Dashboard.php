@@ -25,6 +25,8 @@ use Commissions\Repositories\PayoutRepository;
 
 class Dashboard
 {
+    const LOG_PATH = "logs/run_commission";
+    
     protected $db;
 
     public function __construct()
