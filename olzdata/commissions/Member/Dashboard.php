@@ -680,10 +680,10 @@ class Dashboard
 
     public function getCurrentQualificationDetails($user_id)
     {
-        $weeklyDirectProfit     = new WeeklyDirectProfit();
-        $monthlyLevelCommission = new MonthlyLevelCommission();
-        $sparkleStartProgram    = new SparkleStartProgram();
-        $rankAdvancementBonus   = new RankAdvancementBonus();
+        $weeklyDirectProfit     = new WeeklyDirectProfit('', '', '');
+        $monthlyLevelCommission = new MonthlyLevelCommission('', '', '');
+        $sparkleStartProgram    = new SparkleStartProgram('', '', '');
+        $rankAdvancementBonus   = new RankAdvancementBonus('', '', '');
 
         $isQualifiedForWeeklyDirectProfit     = $weeklyDirectProfit->isQualifiedForWeeklyDirectProfit($user_id) == true ? 'Qualified' : 'Not Qualified';
         $isQualifiedForMonthlyLevelCommission = $monthlyLevelCommission->isQualifiedForMonthlyLevelCommission($user_id) == true ? 'Qualified' : 'Not Qualified';
