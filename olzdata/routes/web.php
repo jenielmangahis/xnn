@@ -81,6 +81,7 @@ Route::prefix('member/historical-commission')->namespace('Member')->middleware('
 Route::prefix('member/dashboard')->namespace('Member')->middleware('jwt.auth')->group(function(){
     Route::get('current-period-orders', 'DashboardController@currentPeriodOrders');
     Route::get('current-rank-details', 'DashboardController@currentRankDetails');
+    Route::get('current-qualification-details', 'DashboardController@currentQualificationDetails');
     Route::get('silver-startup-details', 'DashboardController@silverStartUpDetails');
     Route::get('sparkle-startup-details', 'DashboardController@silverStartUpDetails');
     Route::get('bash-925-startup-details', 'DashboardController@bash925StartUpDetails');

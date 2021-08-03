@@ -73,4 +73,11 @@ class DashboardController extends Controller
         );
     }
 
+    public function currentQualificationDetails(Request $request)
+    {
+        return response()->json(
+            $this->dashboard->getCurrentQualificationDetails(Auth::user()->id)
+        );
+    }
+
 }

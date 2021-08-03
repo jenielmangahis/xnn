@@ -11,10 +11,11 @@
             defaultRank: 'Customer',
 
             currentRankDetailsState: "loaded", // loaded/fetching/error
+            currentQualificationState: "loaded",
             currentBinaryVolumeDeatilsState: "loaded",
             currentEarningsDeatilsState: "loaded",
             silverStartUpDetailsState: "loaded",
-            sparkleStartUpDetailsState: "loaded",
+            sparkleStartUpDetailsState: "loaded",            
             bashStartUpDetailsState: "loaded",
             currentRankDetails: {
                 highestAchievedRank: "",
@@ -23,6 +24,12 @@
                 businessVolume: 0,
                 nextRank: "",
                 needs: [],
+            },
+            currentQualificationDetails:{
+                isQualifiedForWeeklyDirectProfit: "",
+                isQualifiedForMonthlyLevelCommission: "",
+                isQualifiedForSparkleStartProgram: "",
+                isQualifiedForRankAdvancementBonus: "",
             },
             silverStartUpDetails: {
                 silverTotalPRS: 0,
@@ -165,6 +172,29 @@
                         {responsivePriority: 3, targets: -3},
                     ]
                 });
+            },
+            getQualificationDetails() {
+                if (this.currentQualificationState === "fetching") return;
+
+                this.currentQualificationState = "fetching";
+
+                client.get("member/dashboard/current-qualification-details")
+                    .then(response => {
+                        let details = response.data;
+
+                        this.currentQualificationState = "loaded";
+
+                        this.currentQualificationDetails.isQualifiedForWeeklyDirectProfit = typeof details.is_qualified_weekly_direct_profit !== "undefined" ? details.is_qualified_weekly_direct_profit : 'Not Qualified';
+                        this.currentQualificationDetails.isQualifiedForMonthlyLevelCommission = typeof details.is_qualified_monthly_level_commission !== "undefined" ? details.is_qualified_monthly_level_commission : 'Not Qualified';
+                        this.currentQualificationDetails.isQualifiedForSparkleStartProgram = typeof details.is_qualified_sparkle_start_program !== "undefined" ? details.is_qualified_sparkle_start_program : 'Not Qualified';
+                        this.currentQualificationDetails.isQualifiedForRankAdvancementBonus = typeof details.is_qualified_rank_advancement_bonus !== "undefined" ? details.is_qualified_rank_advancement_bonus : 'Not Qualified';
+
+                    })
+                    .catch(error => {
+                        this.currentQualificationState = "error";
+                        console.log("current details error", error);
+                    }
+                )
             },
             getCurrentRankDetails() {
                 if (this.currentRankDetailsState === "fetching") return;
@@ -348,6 +378,9 @@
             },
             isBashStartupProgramLoaded() {
                 return this.bashStartUpDetailsState === 'loaded';
+            },
+            isQualificationLoaded() {
+                return this.currentQualificationState === 'loaded';
             },
         }
     });

@@ -126,8 +126,8 @@ print <<EOS;
                         <div class="col mr-2 text-info card-details">
                             <div class="h6 mb-0 mt-2 font-weight-bold">
                                 Direct Profit:
-                                <span v-if="!isRankLoaded"><i class="fa fa-spinner fa-spin"></i></span>
-                                <span v-else>Not Qualified</span>
+                                <span v-if="!isQualificationLoaded"><i class="fa fa-spinner fa-spin"></i></span>
+                                <span v-else>{{ currentQualificationDetails.isQualifiedForWeeklyDirectProfit }}</span>
                             </div>
                             <div class="h6 mb-0 mt-2 font-weight-bold">
                                 Personal Sales Bonus:
@@ -141,8 +141,8 @@ print <<EOS;
                             </div>  
                             <div class="h6 mb-0 mt-2 font-weight-bold">
                                 Rank Advancement Bonus:
-                                <span v-if="!isRankLoaded"><i class="fa fa-spinner fa-spin"></i></span>
-                                <span v-else>Not Qualified</span>
+                                <span v-if="!isQualificationLoaded"><i class="fa fa-spinner fa-spin"></i></span>
+                                <span v-else>{{ currentQualificationDetails.isQualifiedForRankAdvancementBonus }}</span>
                             </div> 
                             <div class="h6 mb-0 mt-2 font-weight-bold">
                                 Rank Consistency Bonus:
@@ -156,8 +156,8 @@ print <<EOS;
                             </div>         
                             <div class="h6 mb-0 mt-2 font-weight-bold">
                                 Sparkle Start Up Program:
-                                <span v-if="!isRankLoaded"><i class="fa fa-spinner fa-spin"></i></span>
-                                <span v-else>Not Qualified</span>
+                                <span v-if="!isQualificationLoaded"><i class="fa fa-spinner fa-spin"></i></span>
+                                <span v-else>{{ currentQualificationDetails.isQualifiedForSparkleStartProgram }}</span>
                             </div>    
                             <div class="h6 mb-0 mt-2 font-weight-bold">
                                 Monthly Free Jewelry Incentive:

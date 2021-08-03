@@ -12,6 +12,11 @@ use App\Rank;
 use App\User;
 use Carbon\Carbon;
 use Commissions\CommissionTypes\TitleAchievementBonus;
+use Commissions\CommissionTypes\WeeklyDirectProfit;
+use Commissions\CommissionTypes\SparkleStartProgram;
+use Commissions\CommissionTypes\RankAdvancementBonus;
+use Commissions\CommissionTypes\MonthlyLevelCommission;
+
 use Commissions\VolumesAndRanks;
 use Illuminate\Support\Facades\DB;
 
@@ -669,6 +674,23 @@ class Dashboard
         $result = $stmt->fetch(\PDO::FETCH_ASSOC);
         $result['days_left'] = $days_left;
         $result['member_id'] = $user_id;
+
+        return $result;
+    }
+
+    public function getCurrentQualificationDetails($user_id)
+    {
+        $isQualifiedForWeeklyDirectProfit     = WeeklyDirectProfit::isQualifiedForWeeklyDirectProfit($user_id) == true ? 'Qualified' : 'Not Qualified';
+        $isQualifiedForMonthlyLevelCommission = MonthlyLevelCommission::isQualifiedForMonthlyLevelCommission($user_id) == true ? 'Qualified' : 'Not Qualified';
+        $isQualifiedForSparkleStartProgram    = SparkleStartProgram::isQualifiedForSparkleStartProgram($user_id) == true ? 'Qualified' : 'Not Qualified';
+        $isQualifiedForRankAdvancementBonus   = RankAdvancementBonus::isQualifiedForRankAdvancementBonus($user_id) == true ? 'Qualified' : 'Not Qualified';
+        
+        $result = [
+            'is_qualified_weekly_direct_profit' => $isQualifiedForWeeklyDirectProfit,
+            'is_qualified_monthly_level_commission' => $isQualifiedForMonthlyLevelCommission,
+            'is_qualified_sparkle_start_program' => $isQualifiedForSparkleStartProgram,
+            'is_qualified_rank_advancement_bonus' => $isQualifiedForRankAdvancementBonus
+        ];
 
         return $result;
     }
