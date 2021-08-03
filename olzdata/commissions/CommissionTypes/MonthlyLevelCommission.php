@@ -253,7 +253,7 @@ class MonthlyLevelCommission extends CommissionType implements CommissionTypeInt
         return $percentage;
     }
 
-    public function isQualifiedForMonthlyLevelCommission($user_id)
+    public static function isQualifiedForMonthlyLevelCommission($user_id)
     {
         $affiliates = config('commission.member-types.affiliates');
         $end_date = date('Y-m-d');

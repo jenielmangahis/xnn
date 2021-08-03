@@ -319,6 +319,22 @@ print <<EOS;
                 <span v-else>{{ bashStartUpDetails.bashTotalPRS }} / 3,600.00 PRS</span>            
               </div>
             </div>
+
+            <div class="goal-stat bash-goal">
+                <span class="goal-number">\$6000</span>                
+            </div>
+            <div class="goal-stat bash-goal">
+                <span class="goal-number">\$18,000</span>
+            </div>
+            <div class="goal-stat bash-goal">
+                <span class="goal-number">\$24,000</span>
+            </div>
+            <div class="goal-stat bash-goal">
+                <span class="goal-number">\$30,000</span>
+            </div>
+            <div class="goal-stat bash-goal">
+                <span class="goal-number">\$36,000</span>
+            </div>
         </div>
     </div>
 
