@@ -692,6 +692,11 @@ class Dashboard
             'is_qualified_rank_advancement_bonus' => $isQualifiedForRankAdvancementBonus
         ];
 
+        echo "<pre>";
+        print_r($result);
+
+        $result = array();
+
         return $result;
     }
 
