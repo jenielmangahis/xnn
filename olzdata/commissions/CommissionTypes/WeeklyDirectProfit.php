@@ -280,7 +280,7 @@ class WeeklyDirectProfit extends CommissionType implements CommissionTypeInterfa
             
         ";
 
-        $stmt = $this->db->prepare($sql);
+        $stmt = DB::prepare($sql);
         $stmt->execute();
 
         $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);

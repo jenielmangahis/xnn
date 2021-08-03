@@ -681,15 +681,15 @@ class Dashboard
     public function getCurrentQualificationDetails($user_id)
     {
         $isQualifiedForWeeklyDirectProfit     = WeeklyDirectProfit::isQualifiedForWeeklyDirectProfit($user_id);
-        $isQualifiedForMonthlyLevelCommission = MonthlyLevelCommission::isQualifiedForMonthlyLevelCommission($user_id);
+        /*$isQualifiedForMonthlyLevelCommission = MonthlyLevelCommission::isQualifiedForMonthlyLevelCommission($user_id);
         $isQualifiedForSparkleStartProgram    = SparkleStartProgram::isQualifiedForSparkleStartProgram($user_id);
         $isQualifiedForRankAdvancementBonus   = RankAdvancementBonus::isQualifiedForRankAdvancementBonus($user_id);
-        
+        */
         $result = [
             'is_qualified_weekly_direct_profit' => $isQualifiedForWeeklyDirectProfit,
-            'is_qualified_monthly_level_commission' => $isQualifiedForMonthlyLevelCommission,
-            'is_qualified_sparkle_start_program' => $isQualifiedForSparkleStartProgram,
-            'is_qualified_rank_advancement_bonus' => $isQualifiedForRankAdvancementBonus
+            //'is_qualified_monthly_level_commission' => $isQualifiedForMonthlyLevelCommission,
+            //'is_qualified_sparkle_start_program' => $isQualifiedForSparkleStartProgram,
+            //'is_qualified_rank_advancement_bonus' => $isQualifiedForRankAdvancementBonus
         ];
 
         echo "<pre>";
