@@ -680,10 +680,15 @@ class Dashboard
 
     public function getCurrentQualificationDetails($user_id)
     {
-        $isQualifiedForWeeklyDirectProfit     = WeeklyDirectProfit::isQualifiedForWeeklyDirectProfit($user_id) == true ? 'Qualified' : 'Not Qualified';
-        $isQualifiedForMonthlyLevelCommission = MonthlyLevelCommission::isQualifiedForMonthlyLevelCommission($user_id) == true ? 'Qualified' : 'Not Qualified';
-        $isQualifiedForSparkleStartProgram    = SparkleStartProgram::isQualifiedForSparkleStartProgram($user_id) == true ? 'Qualified' : 'Not Qualified';
-        $isQualifiedForRankAdvancementBonus   = RankAdvancementBonus::isQualifiedForRankAdvancementBonus($user_id) == true ? 'Qualified' : 'Not Qualified';
+        $weeklyDirectProfit     = new WeeklyDirectProfit();
+        $monthlyLevelCommission = new MonthlyLevelCommission();
+        $sparkleStartProgram    = new SparkleStartProgram();
+        $rankAdvancementBonus   = new RankAdvancementBonus();
+
+        $isQualifiedForWeeklyDirectProfit     = $weeklyDirectProfit->isQualifiedForWeeklyDirectProfit($user_id) == true ? 'Qualified' : 'Not Qualified';
+        $isQualifiedForMonthlyLevelCommission = $monthlyLevelCommission->isQualifiedForMonthlyLevelCommission($user_id) == true ? 'Qualified' : 'Not Qualified';
+        $isQualifiedForSparkleStartProgram    = $sparkleStartProgram->isQualifiedForSparkleStartProgram($user_id) == true ? 'Qualified' : 'Not Qualified';
+        $isQualifiedForRankAdvancementBonus   = $rankAdvancementBonus->sQualifiedForRankAdvancementBonus($user_id) == true ? 'Qualified' : 'Not Qualified';
         
         $result = [
             'is_qualified_weekly_direct_profit' => $isQualifiedForWeeklyDirectProfit,
