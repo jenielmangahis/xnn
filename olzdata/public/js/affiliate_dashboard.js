@@ -327,7 +327,7 @@
                             this.sparkleStartUpDetails.sparkleNotice = "Sparkle Start Program Progress : You only have " + x_days + " days left to reach $500.00 PRS"; 
                         }
 
-                        this.sparkleStartUpDetails.sparklePercentage = (details.sparkle_total_prs / 500) * 100;
+                        this.sparkleStartUpDetails.sparklePercentage = (this.sparkleStartUpDetails.sparkleTotalPRS / 500) * 100;
 
                     })
                     .catch(error => {
@@ -357,7 +357,7 @@
                             this.bashStartUpDetails.bashNotice = "925 Bash Progress : You only have " + x_days + " days left to reach $36,000.00 PRS"; 
                         }
 
-                        this.bashStartUpDetails.bashPercentage = (details.bash_total_prs / 3600) * 100;
+                        this.bashStartUpDetails.bashPercentage = (this.bashStartUpDetails.bashTotalPRS / 3600) * 100;
 
                     })
                     .catch(error => {
