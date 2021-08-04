@@ -44,6 +44,7 @@
                 bashNotice: "",
                 bashTotalPRS: 0,
                 daysLeft: 0,
+                bashPercentage: 0
             },
             currentBinaryVolumeDetails: {
                 leftLegVolume:'0.00',
@@ -354,6 +355,8 @@
                             let x_days = this.bashStartUpDetails.daysLeft;
                             this.bashStartUpDetails.bashNotice = "925 Bash Progress : You only have " + x_days + " days left to reach $36,000.00 PRS"; 
                         }
+
+                        this.bashStartUpDetails.bashPercentage = (details.bash_total_prs / 3600) * 100;
 
                     })
                     .catch(error => {
