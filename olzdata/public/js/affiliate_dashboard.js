@@ -36,16 +36,16 @@
             },
             sparkleStartUpDetails: {
                 sparkleNotice: "",
-                daysDiff:0,
-                sparkleTotalPRS:0,
-                sparkleMemberId:0,
-                sparklePercentage:0,
+                daysDiff: 0,
+                sparkleTotalPRS: 0,
+                sparkleMemberId: 0,
+                sparklePercentage: 0,
             },
             bashStartUpDetails:{
                 bashNotice: "",
                 bashTotalPRS: 0,
                 daysLeft: 0,
-                bashPercentage: 0
+                bashPercentage: 0,
             },
             currentBinaryVolumeDetails: {
                 leftLegVolume:'0.00',
@@ -357,7 +357,12 @@
                             this.bashStartUpDetails.bashNotice = "925 Bash Progress : You only have " + x_days + " days left to reach $36,000.00 PRS"; 
                         }
 
-                        this.bashStartUpDetails.bashPercentage = (this.bashStartUpDetails.bashTotalPRS / 3600) * 100;
+                        if( this.bashStartUpDetails.bashTotalPRS > 0 ){
+                            this.bashStartUpDetails.bashPercentage = Math.round((this.bashStartUpDetails.bashTotalPRS / 3600) * 100);
+                        }else{
+                            this.bashStartUpDetails.bashPercentage = 0;
+                        }
+                        
 
                     })
                     .catch(error => {
