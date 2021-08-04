@@ -12,6 +12,9 @@ print <<EOS;
 .bash-goal{
     margin-right:171px;
 }
+.progress{
+    background-color: #737574 !important;
+}
 </style>
 
 <div class="dashboard tool-container" v-cloak>
