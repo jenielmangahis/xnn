@@ -15,6 +15,10 @@ print <<EOS;
 .progress{
     background-color: #737574 !important;
 }
+.progress-bar{
+    text-align:left;
+    padding-left:14px;
+}
 </style>
 
 <div class="dashboard tool-container" v-cloak>
@@ -315,17 +319,17 @@ print <<EOS;
     </div>
 
     <div class="col-md-12" style="padding: 40px 0px;">
-        <div id="countdown-wrap">           
+        <div id="countdown-wrap">
             <span v-if="!isBashStartupProgramLoaded"><i class="fa fa-spinner fa-spin"></i></span>
-            <span v-else>
-                {{ bashStartUpDetails.bashNotice }}
-                <div class="progress" style="height:2rem;">
-                  <div class="progress-bar" role="progressbar" aria-valuenow="100"
-                  aria-valuemin="0" aria-valuemax="100" style="width:{{ bashStartUpDetails.bashPercentage }}%;text-align:left;padding-left:14px;">   
-                    {{ bashStartUpDetails.bashTotalPRS }} / 3,600.00 PRS
-                  </div>
-                </div>
-            </span>    
+            <span v-else>{{ bashStartUpDetails.bashNotice }} </span>
+            <div class="progress" style="height:2rem;">
+              <div class="progress-bar" role="progressbar" aria-valuenow="100"
+              aria-valuemin="0" aria-valuemax="100" v-bind:style="{width: bashStartUpDetails.bashPercentage + '%'}">   
+                <span v-if="!isBashStartupProgramLoaded"><i class="fa fa-spinner fa-spin"></i></span>
+                <span v-else>{{ bashStartUpDetails.bashPercentage }} / 3,600.00 PRS</span>            
+              </div>
+            </div>
+
             <div class="goal-stat bash-goal">
                 <span class="goal-number">\$6000</span>                
             </div>
