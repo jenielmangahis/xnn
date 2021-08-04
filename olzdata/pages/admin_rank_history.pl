@@ -5,7 +5,7 @@ print <<EOS;
 <link rel="stylesheet" href="$commission_engine_api_url/css/select2-bootstrap.css"/>
 <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.3/css/responsive.bootstrap.min.css">
 <link rel="stylesheet" href="$commission_engine_api_url/css/datepicker.css?v=$app_css_version" />
-<!--<link rel="stylesheet" href="$commission_engine_api_url/css/affiliate_rank_history.css?v=1" />-->
+<link rel="stylesheet" href="$commission_engine_api_url/css/admin_rank_history.css?v=1" />
 
 <style>
     .btn-download {
@@ -31,8 +31,12 @@ print <<EOS;
         <div class="col-md-12">
             <!-- Nav tabs -->
             <ul class="nav nav-tabs" role="tablist" id='nav-tab-report'>
-                <li role="presentation" class="active"><a href="#tree" class="tab-header" aria-controls="tree" role="tab" data-toggle="tab" style="color: black !important;">$rank_title History</a></li>
-                <li role="presentation"><a href="#new-highest-rank" class="tab-header" aria-controls="new-highest-rank" role="tab" data-toggle="tab" style="color: black !important;">New Highest Achieved $rank_title_plural</a></li>
+                <li class="nav-item">
+                    <a class="nav-link active" href="#tree" aria-controls="tree" role="tab" data-toggle="tab" style="color: black !important;">$rank_title History</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#new-highest-rank" aria-controls="new-highest-rank" role="tab" data-toggle="tab" style="color: black !important;">New Highest Achieved $rank_title_plural</a>
+                </li>
             </ul>
 
             <!-- Tab panes -->
@@ -42,11 +46,13 @@ print <<EOS;
                         <div class="col-md-4">
                             <form class="form-horizontal">
                                 <div class="form-group">
-                                    <div class="col-sm-6">
+                                    <div class="col-sm-12">
                                         <label>Date</label>
                                         <datepicker id="start-date" v-model="enrollment.start_date" v-bind:end-date="today"></datepicker>
                                     </div>
-                                    <div class="col-sm-6">
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-12">
                                         <label for="rank_id">Paid-as $rank_title</label>
                                         <select disabled
                                                 v-bind:disabled="rankState !== 'loaded'"
@@ -73,7 +79,7 @@ print <<EOS;
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <div class="col-sm-6">
+                                    <div class="col-sm-12">
                                         <button
                                                 type="button"
                                                 class="btn btn-primary btn-block"
@@ -141,23 +147,25 @@ print <<EOS;
                         <div class="col-md-4">
                             <form class="form-horizontal">
                                 <div class="form-group" v-show="+highest.is_all === 0">
-                                    <div class="col-sm-6">
+                                    <div class="col-sm-12">
                                         <label>From</label>
                                         <datepicker v-model="highest.start_date" v-bind:end-date="today"></datepicker>
                                     </div>
-                                    <div class="col-sm-6">
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-12">
                                         <label>To</label>
                                         <datepicker v-model="highest.end_date" v-bind:start-date="highest.start_date" v-bind:end-date="today"></datepicker>
                                     </div>
                                 </div>
                                 <div class="form-group" v-show="+highest.is_all === 1">
-                                    <div class="col-sm-6">
+                                    <div class="col-sm-12">
                                         <label>As of</label>
                                         <datepicker v-model="highest.end_date" v-bind:end-date="today"></datepicker>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <div class="col-sm-6">
+                                    <div class="col-sm-12">
                                         <label for="highest_rank_id">$rank_title</label>
                                         <select disabled
                                                 v-bind:disabled="rankState !== 'loaded'"
@@ -184,7 +192,7 @@ print <<EOS;
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <div class="col-sm-6">
+                                    <div class="col-sm-12">
                                         <div class="checkbox">
                                             <input
                                                     type="checkbox"
@@ -199,7 +207,7 @@ print <<EOS;
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <div class="col-sm-6">
+                                    <div class="col-sm-12">
                                         <button
                                                 type="button"
                                                 class="btn btn-primary btn-block"
