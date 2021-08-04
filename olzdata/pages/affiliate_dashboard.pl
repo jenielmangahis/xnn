@@ -306,7 +306,7 @@ print <<EOS;
             <span v-else>{{ sparkleStartUpDetails.sparkleNotice }} </span>
             <div class="progress" style="height:2rem;">
               <div class="progress-bar" role="progressbar" aria-valuenow="100"
-              aria-valuemin="0" aria-valuemax="100" style="width:100%;text-align:left;padding-left:14px;">   
+              aria-valuemin="0" aria-valuemax="100" style="width:{{ sparkleStartUpDetails.sparklePercentage }}%;text-align:left;padding-left:14px;">   
                 <span v-if="!isSparkleStartupProgramLoaded"><i class="fa fa-spinner fa-spin"></i></span>
                 <span v-else>{{ sparkleStartUpDetails.sparkleTotalPRS }} / 500.00 PRS</span>            
               </div>

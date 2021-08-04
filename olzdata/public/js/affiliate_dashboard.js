@@ -39,6 +39,7 @@
                 daysDiff:0,
                 sparkleTotalPRS:0,
                 sparkleMemberId:0,
+                sparklePercentage:0,
             },
             bashStartUpDetails:{
                 bashNotice: "",
@@ -190,11 +191,9 @@
                         this.currentQualificationDetails.isQualifiedForMonthlyLevelCommission = typeof details.is_qualified_monthly_level_commission !== "undefined" ? details.is_qualified_monthly_level_commission : 'Not Qualified';
                         this.currentQualificationDetails.isQualifiedForSparkleStartProgram = typeof details.is_qualified_sparkle_start_program !== "undefined" ? details.is_qualified_sparkle_start_program : 'Not Qualified';
                         this.currentQualificationDetails.isQualifiedForRankAdvancementBonus = typeof details.is_qualified_rank_advancement_bonus !== "undefined" ? details.is_qualified_rank_advancement_bonus : 'Not Qualified';
-
                         this.currentQualificationDetails.isQualifiedFreeJewelryIncentive = typeof details.is_qualified_free_jewelry_incentive !== "undefined" ? details.is_qualified_free_jewelry_incentive : 'Not Qualified';
                         this.currentQualificationDetails.isQualifiedPersonalSalesBonus = typeof details.is_qualified_personal_sales_bonus !== "undefined" ? details.is_qualified_personal_sales_bonus : 'Not Qualified';
                         this.currentQualificationDetails.isQualifiedSilverStartup = typeof details.is_qualified_silver_startup !== "undefined" ? details.is_qualified_silver_startup : 'Not Qualified';
-
 
                     })
                     .catch(error => {
@@ -327,6 +326,8 @@
                             let x_days = this.sparkleStartUpDetails.daysDiff;
                             this.sparkleStartUpDetails.sparkleNotice = "Sparkle Start Program Progress : You only have " + x_days + " days left to reach $500.00 PRS"; 
                         }
+
+                        this.sparkleStartUpDetails.sparklePercentage = (details.sparkle_total_prs / 500) * 100;
 
                     })
                     .catch(error => {

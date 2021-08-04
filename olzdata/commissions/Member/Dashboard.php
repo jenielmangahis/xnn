@@ -6,7 +6,6 @@ namespace Commissions\Member;
 
 use App\AchievedRank;
 use App\Affiliate;
-use App\CommissionPeriod;
 use App\DailyVolume;
 use App\Rank;
 use App\User;
@@ -23,9 +22,6 @@ use Commissions\CommissionTypes\PersonalSalesBonus;
 
 use Commissions\VolumesAndRanks;
 use Illuminate\Support\Facades\DB;
-
-use Commissions\BackgroundWorkerLogger;
-use Commissions\Repositories\PayoutRepository;
 
 class Dashboard
 {
@@ -691,31 +687,19 @@ class Dashboard
 
     public function getCurrentQualificationDetails($user_id)
     {
-        $period = CommissionPeriod::find(1);
-        $background_worker_logger = new BackgroundWorkerLogger(storage_path(static::LOG_PATH), 1, 1);
-        $payout_repository        = new PayoutRepository();
-
-        $weeklyDirectProfit     = new WeeklyDirectProfit($period, $background_worker_logger, $payout_repository);
-        $monthlyLevelCommission = new MonthlyLevelCommission($period, $background_worker_logger, $payout_repository);
-        $sparkleStartProgram    = new SparkleStartProgram($period, $background_worker_logger, $payout_repository);
-        $rankAdvancementBonus   = new RankAdvancementBonus($period, $background_worker_logger, $payout_repository);
-
-        $isQualifiedForWeeklyDirectProfit     = $weeklyDirectProfit->isQualifiedForWeeklyDirectProfit($user_id) == true ? 'Qualified' : 'Not Qualified';
-        $isQualifiedForMonthlyLevelCommission = $monthlyLevelCommission->isQualifiedForMonthlyLevelCommission($user_id) == true ? 'Qualified' : 'Not Qualified';
-        $isQualifiedForSparkleStartProgram    = $sparkleStartProgram->isQualifiedForSparkleStartProgram($user_id) == true ? 'Qualified' : 'Not Qualified';
-        $isQualifiedForRankAdvancementBonus   = $rankAdvancementBonus->isQualifiedForRankAdvancementBonus($user_id) == true ? 'Qualified' : 'Not Qualified';
-        
+        $isQualifiedForWeeklyDirectProfit     = WeeklyDirectProfit::isQualifiedForWeeklyDirectProfit($user_id) == true ? 'Qualified' : 'Not Qualified';
+        $isQualifiedForMonthlyLevelCommission = MonthlyLevelCommission::isQualifiedForMonthlyLevelCommission($user_id) == true ? 'Qualified' : 'Not Qualified';
+        $isQualifiedForSparkleStartProgram    = SparkleStartProgram::isQualifiedForSparkleStartProgram($user_id) == true ? 'Qualified' : 'Not Qualified';
+        $isQualifiedForRankAdvancementBonus   = RankAdvancementBonus::isQualifiedForRankAdvancementBonus($user_id) == true ? 'Qualified' : 'Not Qualified';        
         $isQualifiedForFreeJewelryIncentive   = FreeJewelryIncentive::userIsQualified($user_id)  == true ? 'Qualified' : 'Not Qualified';
         $isQualifiedForPersonalSalesBonus     = PersonalSalesBonus::userIsQualified($user_id) == true ? 'Qualified' : 'Not Qualified';
         $isQualifiedForSilverStartUp          = SilverStartUp::userIsQualified($user_id) == true ? 'Qualified' : 'Not Qualified';
-
 
         $result = [
             'is_qualified_weekly_direct_profit' => $isQualifiedForWeeklyDirectProfit,
             'is_qualified_monthly_level_commission' => $isQualifiedForMonthlyLevelCommission,
             'is_qualified_sparkle_start_program' => $isQualifiedForSparkleStartProgram,
             'is_qualified_rank_advancement_bonus' => $isQualifiedForRankAdvancementBonus,
-            
             'is_qualified_free_jewelry_incentive' => $isQualifiedForFreeJewelryIncentive,
             'is_qualified_personal_sales_bonus' => $isQualifiedForPersonalSalesBonus,
             'is_qualified_silver_startup' => $isQualifiedForSilverStartUp
