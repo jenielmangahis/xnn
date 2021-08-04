@@ -203,8 +203,9 @@ class WeeklyDirectProfit extends CommissionType implements CommissionTypeInterfa
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
 
-    public function isQualifiedForWeeklyDirectProfit($user_id)
+    public static function isQualifiedForWeeklyDirectProfit($user_id)
     {
+        $db = DB::connection()->getPdo();
         $customers = config('commission.member-types.customers');
         $affiliates = config('commission.member-types.affiliates');
 
@@ -280,7 +281,7 @@ class WeeklyDirectProfit extends CommissionType implements CommissionTypeInterfa
             
         ";
 
-        $stmt = $this->db->prepare($sql);
+        $stmt = $db->prepare($sql);
         $stmt->execute();
 
         $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);

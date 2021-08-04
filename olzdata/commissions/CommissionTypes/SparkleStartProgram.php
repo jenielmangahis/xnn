@@ -281,7 +281,9 @@ class SparkleStartProgram extends RunCommission
         return $result;
     }
 
-    public function isQualifiedForSparkleStartProgram($user_id) {
+    public static function isQualifiedForSparkleStartProgram($user_id) {
+        
+        $db = DB::connection()->getPdo();
         $sql = "
             SELECT ca.user_id, u.`sponsorid`, dv.`prs`, dv.`volume_date`, dr.`paid_as_rank_id` 
             FROM users u
@@ -295,7 +297,7 @@ class SparkleStartProgram extends RunCommission
             ORDER BY dv.user_id ASC
         ";
 
-        $stmt = $this->db->prepare($sql);
+        $stmt = $db->prepare($sql);
         $stmt->execute();
 
         $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
@@ -305,7 +307,9 @@ class SparkleStartProgram extends RunCommission
             $isQualified = true;
         } 
         else {
-            $user_downlines = $this->getDownlines($user_id);
+
+            $user_downlines = (new self)->getDownlines($user_id);
+            
             if(count($user_downlines) > 0) {
                 foreach($user_downlines as $downline) {
                     if($downline['prs'] >= 500) {

@@ -253,12 +253,14 @@ class MonthlyLevelCommission extends CommissionType implements CommissionTypeInt
         return $percentage;
     }
 
-    public function isQualifiedForMonthlyLevelCommission($user_id)
+    public static function isQualifiedForMonthlyLevelCommission($user_id)
     {
+        $db = DB::connection()->getPdo();
         $affiliates = config('commission.member-types.affiliates');
         $end_date = date('Y-m-d');
         $min_rank = self::MINIMUM_RANK;
 
+        //get user
         $sql = "
             SELECT
                 u.id AS user_id,
@@ -275,20 +277,93 @@ class MonthlyLevelCommission extends CommissionType implements CommissionTypeInt
             AND u.id = $user_id
         ";
 
-        $stmt = $this->db->prepare($sql);
+        $stmt = $db->prepare($sql);
         $stmt->execute();
 
         $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
-
+        
+        $isQualified = false;
         foreach($result as $user) {
-            $userDownlines = $this->getDownlines($user['user_id']);
+            
+            $t_start_date = date('Y-m-01');
+            $t_end_date = date('Y-m-t');
+            $user_id = $user['user_id'];
 
-            $isQualified = false;
+            //get downlines
+            $sql = "
+                WITH RECURSIVE downline (user_id, parent_id, `level`) AS (
+                    SELECT 
+                    id AS user_id,
+                    sponsorid AS parent_id,
+                    1 AS `level`
+                    FROM users
+                    WHERE sponsorid = $user_id AND levelid = 3
+                    
+                    UNION ALL
+                    
+                    SELECT
+                    p.id AS user_id,
+                    p.sponsorid AS parent_id,
+                    downline.`level` + 1 `level`
+                    FROM users p
+                    INNER JOIN downline ON p.sponsorid = downline.user_id
+                    WHERE p.levelid = 3 AND p.active = 'Yes'
+                )
+                SELECT 
+                    t.transaction_id AS order_id, 
+                    t.user_id,
+                    t.sponsor_id AS sponsor_id,
+                    COALESCE(t.computed_cv, 0) AS cv,
+                    t.transaction_date,
+                    d.level
+                FROM downline d 
+                JOIN v_cm_transactions t ON t.user_id = d.user_id
+                WHERE t.transaction_date BETWEEN '$t_start_date' AND '$t_end_date'
+                    AND t.`type` = 'product' 
+                    AND t.sub_total > 0
+                    AND t.computed_cv > 0
+                    AND d.level <= 5
+                    GROUP BY d.level
+            ";
+
+            $stmt = $db->prepare($sql);
+            $stmt->execute();
+
+            $userDownlines = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+
             if(count($userDownlines) > 0) {
                 foreach($userDownlines as $downline) {
                     if(+$user['paid_as_rank_id'] > 1) {
     
-                        $flag = $this->evaluateUserDownline($user['paid_as_rank_id'], $downline);
+                        //evaluate
+                        $paid_as_rank = $user['paid_as_rank_id'];
+                        $flag = false;
+
+                        if($paid_as_rank === 2 && $downline['level'] === 1) {
+                            $flag = true;
+                        }
+                        elseif($paid_as_rank === 3 && $downline['level'] >= 1 && $downline['level'] <= 2) {
+                            $flag = true;
+                        }
+                        elseif($paid_as_rank === 4 && $downline['level'] >= 1 && $downline['level'] <= 2) {
+                            $flag = true;
+                        }
+                        elseif($paid_as_rank === 5 && $downline['level'] >= 1 && $downline['level'] <= 2) {
+                            $flag = true;
+                        }
+                        elseif($paid_as_rank === 6 && $downline['level'] >= 1 && $downline['level'] <= 3) {
+                            $flag = true;
+                        }
+                        elseif($paid_as_rank === 7 && $downline['level'] >= 1 && $downline['level'] <= 4) {
+                            $flag = true;
+                        }
+                        elseif($paid_as_rank === 8 && $downline['level'] >= 1 && $downline['level'] <= 5) {
+                            $flag = true;
+                        }
+                        elseif($paid_as_rank === 9 && $downline['level'] >= 1 && $downline['level'] <= 5) {
+                            $flag = true;
+                        }
+
                         if($flag) {
                             $isQualified = true;
                             return;
@@ -296,8 +371,7 @@ class MonthlyLevelCommission extends CommissionType implements CommissionTypeInt
                     }
                 }
             }
-
-            return $isQualified;
         }
+        return $isQualified;
     }
 }

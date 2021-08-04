@@ -7,10 +7,15 @@ use Commissions\Contracts\CommissionTypeInterface;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Cache;
 
+use App\CommissionPeriod;
+use Commissions\BackgroundWorkerLogger;
+use Commissions\Repositories\PayoutRepository;
+
 class RankAdvancementBonus extends CommissionType implements CommissionTypeInterface
 {
     const MINIMUM_RANK = 2;
     const MAXIMUM_RANK = 9;
+    const LOG_PATH = "logs/run_commission";
 
     public function count()
     {
@@ -129,8 +134,9 @@ class RankAdvancementBonus extends CommissionType implements CommissionTypeInter
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
 
-    public function isQualifiedForRankAdvancementBonus($user_id) {
+    public static function isQualifiedForRankAdvancementBonus($user_id) {
 
+        $db = DB::connection()->getPdo();
         $affiliates = config('commission.member-types.affiliates');
 
         $start_date = date('Y-m-01');
@@ -146,7 +152,7 @@ class RankAdvancementBonus extends CommissionType implements CommissionTypeInter
             AND u.id = $user_id
         ";
 
-        $stmt = $this->db->prepare($sql);
+        $stmt = $db->prepare($sql);
         $stmt->execute();
 
         $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
@@ -154,11 +160,28 @@ class RankAdvancementBonus extends CommissionType implements CommissionTypeInter
         $isQualified = false;
         
         if(count($result) > 0) {
+            
             foreach($result as $user) {
                 
                 if($user['rank_id'] >= self::MINIMUM_RANK && $user['rank_id'] <= self::MAXIMUM_RANK) {
 
-                    $flag = $this->checkPreviousRank($user['user_id'], $user['rank_id']);
+                    $user_id = $user['user_id'];
+                    $rank_id = $user['rank_id'];
+                    
+                    $sql = "
+                        SELECT crp.* FROM cm_rab_payouts AS crp 
+                        WHERE crp.user_id = $user_id AND crp.rank_id = $rank_id
+                        AND EXISTS(SELECT 1 FROM cm_commission_periods ccp WHERE crp.commission_period_id = ccp.id AND ccp.is_locked = 1)
+                    ";
+
+                    $stmt = $db->prepare($sql);
+                    $stmt->execute();
+                    $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+                
+                    $flag = false;
+                    if(count($result) > 0) {
+                        $flag = true;
+                    }
                     
                     if(!$flag) {
                         $isQualified = true;
