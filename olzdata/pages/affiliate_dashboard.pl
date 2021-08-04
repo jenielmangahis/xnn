@@ -319,8 +319,10 @@ print <<EOS;
             <span v-if="!isBashStartupProgramLoaded"><i class="fa fa-spinner fa-spin"></i></span>
             <span v-else>{{ bashStartUpDetails.bashNotice }} </span>
             <div class="progress" style="height:2rem;">
-              <div class="progress-bar" role="progressbar" aria-valuenow="100"
-              aria-valuemin="0" aria-valuemax="100" v-bind:style="width:{{ bashStartUpDetails.bashPercentage }}%;text-align:left;padding-left:14px;">   
+              <div v-if="!isBashStartupProgramLoaded" class="progress-bar" role="progressbar" aria-valuenow="100"
+              aria-valuemin="0" aria-valuemax="100" v-bind:style="width:0%;text-align:left;padding-left:14px;"> 
+              <div v-else class="progress-bar" role="progressbar" aria-valuenow="100"
+              aria-valuemin="0" aria-valuemax="100" v-bind:style="width:{{ bashStartUpDetails.bashPercentage }}%;text-align:left;padding-left:14px;"> 
                 <span v-if="!isBashStartupProgramLoaded"><i class="fa fa-spinner fa-spin"></i></span>
                 <span v-else>{{ bashStartUpDetails.bashTotalPRS }} / 3,600.00 PRS</span>            
               </div>
