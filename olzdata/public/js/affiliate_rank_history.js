@@ -95,7 +95,7 @@
                         {data: 'organization_points', className: "text-center"},
                         {data: 'team_group_points', className: "text-center"},
                         {data: 'preferred_customer_count', className: "text-center"},
-                        {data: 'influencer_count', className: "text-center"},
+                        /*{data: 'influencer_count', className: "text-center"},
                         {data: 'silver_influencer_count', className: "text-center"},
                         {data: 'gold_influencer_count', className: "text-center"},
                         {data: 'platinum_influencer_count', className: "text-center"},
@@ -120,7 +120,7 @@
                                 let sponsor = row.sponsor;
                                 return `${sponsor_id}: ${sponsor}`;
                             }
-                        },
+                        },*/
                         {data: 'rank_date', className: "text-center"},
                     ],
                     columnDefs: [
@@ -260,7 +260,6 @@
 
             },
             viewEnrollment() {
-
                 this.enrollment.filters.start_date = this.enrollment.start_date;
                 this.enrollment.filters.rank_id = this.enrollment.rank_id;
 

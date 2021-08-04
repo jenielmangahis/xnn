@@ -287,7 +287,7 @@ class RankHistory
             ")
             ->where('dv.volume_date', $start_date);
 
-        /*if (!!$user_id) {
+        if (!!$user_id) {
             $query->whereRaw("EXISTS(
                 WITH RECURSIVE downline (user_id, parent_id, `level`) AS (
                     SELECT 
@@ -309,7 +309,7 @@ class RankHistory
                 )
                 SELECT 1 FROM downline d WHERE d.user_id = dv.user_id
             )", [$user_id]);
-        }*/
+        }
 
 
         if (!!$rank_id) {
