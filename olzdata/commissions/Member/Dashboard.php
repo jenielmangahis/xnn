@@ -17,6 +17,10 @@ use Commissions\CommissionTypes\SparkleStartProgram;
 use Commissions\CommissionTypes\RankAdvancementBonus;
 use Commissions\CommissionTypes\MonthlyLevelCommission;
 
+use Commissions\CommissionTypes\FreeJewelryIncentive;
+use Commissions\CommissionTypes\SilverStartUp;
+use Commissions\CommissionTypes\PersonalSalesBonus;
+
 use Commissions\VolumesAndRanks;
 use Illuminate\Support\Facades\DB;
 
@@ -701,11 +705,20 @@ class Dashboard
         $isQualifiedForSparkleStartProgram    = $sparkleStartProgram->isQualifiedForSparkleStartProgram($user_id) == true ? 'Qualified' : 'Not Qualified';
         $isQualifiedForRankAdvancementBonus   = $rankAdvancementBonus->isQualifiedForRankAdvancementBonus($user_id) == true ? 'Qualified' : 'Not Qualified';
         
+        $isQualifiedForFreeJewelryIncentive   = FreeJewelryIncentive::userIsQualified($user_id)  == true ? 'Qualified' : 'Not Qualified';
+        $isQualifiedForPersonalSalesBonus     = PersonalSalesBonus::userIsQualified($user_id) == true ? 'Qualified' : 'Not Qualified';
+        $isQualifiedForSilverStartUp          = SilverStartUp::userIsQualified($user_id) == true ? 'Qualified' : 'Not Qualified';
+
+
         $result = [
             'is_qualified_weekly_direct_profit' => $isQualifiedForWeeklyDirectProfit,
             'is_qualified_monthly_level_commission' => $isQualifiedForMonthlyLevelCommission,
             'is_qualified_sparkle_start_program' => $isQualifiedForSparkleStartProgram,
-            'is_qualified_rank_advancement_bonus' => $isQualifiedForRankAdvancementBonus
+            'is_qualified_rank_advancement_bonus' => $isQualifiedForRankAdvancementBonus,
+            
+            'is_qualified_free_jewelry_incentive' => $isQualifiedForFreeJewelryIncentive,
+            'is_qualified_personal_sales_bonus' => $isQualifiedForPersonalSalesBonus,
+            'is_qualified_silver_startup' => $isQualifiedForSilverStartUp
         ];
 
         return $result;

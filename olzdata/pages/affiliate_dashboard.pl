@@ -135,7 +135,7 @@ print <<EOS;
                             <div class="h6 mb-0 mt-2 font-weight-bold">
                                 Personal Sales Bonus:
                                 <span v-if="!isRankLoaded"><i class="fa fa-spinner fa-spin"></i></span>
-                                <span v-else>Not Qualified</span>
+                                <span v-else>{{ currentQualificationDetails.isQualifiedPersonalSalesBonus }}</span>
                             </div>                            
                             <div class="h6 mb-0 mt-2 font-weight-bold">
                                 Level Commission:
@@ -155,7 +155,7 @@ print <<EOS;
                             <div class="h6 mb-0 mt-2 font-weight-bold">
                                 Silver Start Up Program:
                                 <span v-if="!isRankLoaded"><i class="fa fa-spinner fa-spin"></i></span>
-                                <span v-else>Not Qualified</span>
+                                <span v-else>{{ currentQualificationDetails.isQualifiedSilverStartup }}</span>
                             </div>         
                             <div class="h6 mb-0 mt-2 font-weight-bold">
                                 Sparkle Start Up Program:
@@ -165,7 +165,7 @@ print <<EOS;
                             <div class="h6 mb-0 mt-2 font-weight-bold">
                                 Monthly Free Jewelry Incentive:
                                 <span v-if="!isRankLoaded"><i class="fa fa-spinner fa-spin"></i></span>
-                                <span v-else>Not Qualified</span>
+                                <span v-else>{{ currentQualificationDetails.isQualifiedFreeJewelryIncentive }}</span>
                             </div>                                                                                                                                                                
                         </div>
                     </div>
