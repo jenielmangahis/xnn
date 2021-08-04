@@ -310,7 +310,7 @@ print <<EOS;
             <div class="progress" style="height:2rem;">
               <div class="progress-bar" role="progressbar" aria-valuenow="100"
               aria-valuemin="0" aria-valuemax="100" v-bind:style="{width: sparkleStartUpDetails.sparklePercentage + '%'}">   
-                <span v-if="!isSparkleStartupProgramLoaded"><i class="fa fa-spinner fa-spin"></i></span>
+                <span style="padding-left:10px;" v-if="!isSparkleStartupProgramLoaded"><i class="fa fa-spinner fa-spin"></i></span>
                 <span style="padding-left:10px;" v-else>{{ sparkleStartUpDetails.sparkleTotalPRS }} / 500.00 PRS</span>            
               </div>
             </div>
@@ -324,7 +324,7 @@ print <<EOS;
             <div class="progress" style="height:2rem;">
               <div class="progress-bar" role="progressbar" aria-valuenow="100"
               aria-valuemin="0" aria-valuemax="100" v-bind:style="{width: bashStartUpDetails.bashPercentage + '%'}">   
-                <span v-if="!isBashStartupProgramLoaded"><i class="fa fa-spinner fa-spin"></i></span>
+                <span style="padding-left:10px;" v-if="!isBashStartupProgramLoaded"><i class="fa fa-spinner fa-spin"></i></span>
                 <span style="padding-left:10px;" v-else>{{ bashStartUpDetails.bashTotalPRS }} / 3,600.00 PRS</span>            
               </div>
             </div>
