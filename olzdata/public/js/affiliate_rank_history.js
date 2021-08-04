@@ -92,11 +92,11 @@
                         },
                         {data: 'referral_points', className: "text-center"}, // render: $.fn.dataTable.render.number(',', '.', 2, '$')
                         {data: 'coach_points', className: "text-center"},
-                        {data: 'organization_points', className: "text-center"},
+                       /* {data: 'organization_points', className: "text-center"},
                         {data: 'team_group_points', className: "text-center"},
                         {data: 'preferred_customer_count', className: "text-center"},
-                        /*{data: 'influencer_count', className: "text-center"},
-                        {data: 'silver_influencer_count', className: "text-center"},
+                        {data: 'influencer_count', className: "text-center"},*/
+                        /*{data: 'silver_influencer_count', className: "text-center"},
                         {data: 'gold_influencer_count', className: "text-center"},
                         {data: 'platinum_influencer_count', className: "text-center"},
                         {data: 'diamond_influencer_count', className: "text-center"},
