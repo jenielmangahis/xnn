@@ -105,6 +105,14 @@ class RankHistory
         $start_date = isset($filters['start_date']) ? $filters['start_date'] : null;
         $end_date = isset($filters['end_date']) ? $filters['end_date'] : null;
         $rank_id = isset($filters['rank_id']) ? $filters['rank_id'] : "";
+        $level   = 0;
+        
+        if (!!$user_id) {
+
+            $volume = DailyVolume::ofMember($user_id)->date($start_date)->first();
+
+            $level = $volume === null ? 0 : +$volume->level;
+        }
 
         if (!$start_date || !$end_date) {
             return compact('recordsTotal', 'draw', 'recordsFiltered', 'data', 'start_date', 'end_date', 'user_id');
@@ -112,17 +120,19 @@ class RankHistory
 
         $query = DB::table('cm_daily_volumes AS dv')
             ->join("cm_daily_ranks AS dr", "dr.volume_id", "=", "dv.id")
+            ->join("users AS u", "u.id", "=", "dr.user_id")
             ->join("cm_ranks AS cr", "cr.id", "=", "dr.rank_id")
             ->join("cm_ranks AS pr", "pr.id", "=", "dr.paid_as_rank_id")
             ->selectRaw("
                 dr.rank_id,
+                CONCAT(u.fname, ' ', u.lname) AS member,
                 cr.name AS current_rank,
                 dr.paid_as_rank_id,
                 pr.name AS paid_as_rank,
                 dv.prs,
                 dv.grs,
                 pr.sponsored_qualified_representatives_count,
-                dr.is_active,
+                dv.level - $level AS level,
                 dr.rank_date
             ")
             ->where('dv.user_id', $user_id)

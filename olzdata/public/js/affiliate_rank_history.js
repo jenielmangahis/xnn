@@ -119,12 +119,19 @@
                         data: function (d) {
                             d.start_date = _this.personal.filters.start_date;
                             d.end_date = _this.personal.filters.end_date;
-                            d.rank_id = _this.personal.filters.rank_id;
+                            d.rank_id = _this.personal.filters.personal_rank_id;
                         },
                     },
                     order: [[0, 'desc']],
                     columns: [
-                        {data: 'rank_date', className: "text-center"},
+                        {
+                            data: 'user_id',
+                            render: function (data, type, row, meta) {
+                                let user_id = row.user_id;
+                                let member = row.member;
+                                return `${user_id}: ${member}`;
+                            }
+                        },
                         {
                             data: 'rank_id',
                             render: function (data, type, row, meta) {
