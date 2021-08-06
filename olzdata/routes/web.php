@@ -62,6 +62,7 @@ Route::prefix('member/enroller-tree')->namespace('Member')->middleware('jwt.auth
     Route::get('parent/{id}/children/{page_no}/{start_date}', 'EnrollerTreeController@children');
     Route::get('order-history', 'EnrollerTreeController@orderHistory');
     Route::get('user-downlines', 'EnrollerTreeController@getDownlines');
+    Route::get('wishlist', 'EnrollerTreeController@wishlist');
 });
 
 Route::prefix('member/placement-tree')->namespace('Member')->middleware('jwt.auth')->group(function(){
