@@ -134,18 +134,8 @@
                         {data: 'prs', className: "text-center"},
                         {data: 'grs', className: "text-center"},
                         {data: 'sponsored_qualified_representatives_count', className: "text-center"},
-                        {
-                            data: 'is_active',
-                            className: "text-center",
-                            render: function (data, type, row, meta) {
-
-                                if (+row.is_active) {
-                                    return `<span class="label label-success">Yes</span>`;
-                                }
-
-                                return `<span class="label label-warning">No</span>`;
-                            }
-                        },
+                        {data: 'level', className: "text-center"},
+                        {data: 'rank_date', className: "text-center"},
                     ],
                     columnDefs: [
 

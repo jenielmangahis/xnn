@@ -165,10 +165,11 @@ print <<EOS;
                                 <tr class="table__row">
                                     <th class="table__cell">Date</th>
                                     <th class="table__cell">Paid-as $rank_title</th>
-                                        <th class="table__cell">PRS</th>
-                                        <th class="table__cell">GRS</th>
-                                        <th class="table__cell">Sponsored Qualified Representatives</th>
-                                    <th class="table__cell">Active</th>
+                                    <th class="table__cell">PRS</th>
+                                    <th class="table__cell">GRS</th>
+                                    <th class="table__cell">Sponsored Qualified Representatives</th>
+                                    <th class="table__cell">Level</th>
+                                    <th class="table__cell">Date</th>
                                 </tr>
                                 </thead>
                                 <tbody class="table__body">

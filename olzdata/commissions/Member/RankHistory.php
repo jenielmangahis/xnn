@@ -110,11 +110,21 @@ class RankHistory
             return compact('recordsTotal', 'draw', 'recordsFiltered', 'data', 'start_date', 'end_date', 'user_id');
         }
 
+        $level = 0;
+        if (!!$user_id) {
+
+            $volume = DailyVolume::ofMember($user_id)->date($start_date)->first();
+
+            $level = $volume === null ? 0 : +$volume->level;
+        }
+
         $query = DB::table('cm_daily_volumes AS dv')
             ->join("cm_daily_ranks AS dr", "dr.volume_id", "=", "dv.id")
+            ->join("users AS u", "u.id", "=", "dr.user_id")
             ->join("cm_ranks AS cr", "cr.id", "=", "dr.rank_id")
             ->join("cm_ranks AS pr", "pr.id", "=", "dr.paid_as_rank_id")
             ->selectRaw("
+                CONCAT(u.fname, ' ', u.lname) AS member,
                 dr.rank_id,
                 cr.name AS current_rank,
                 dr.paid_as_rank_id,
@@ -122,6 +132,7 @@ class RankHistory
                 dv.prs,
                 dv.grs,
                 dv.sponsored_qualified_representatives_count,
+                dv.level - $level AS level,
                 dr.is_active,
                 dr.rank_date
             ")
