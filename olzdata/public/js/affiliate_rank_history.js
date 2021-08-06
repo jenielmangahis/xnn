@@ -45,6 +45,7 @@
 
             today: moment().format("YYYY-MM-DD"),
             dtEnrollment: null,
+            dtAdminEnrollment: null,
             dtPersonal: null,
             dtHighest: null,
         },
@@ -99,6 +100,44 @@
                                 return `<span class="label label-warning">No</span>`;
                             }
                         },
+                        {data: 'level', className: "text-center"},
+                        {data: 'rank_date', className: "text-center"},
+                    ],
+                    columnDefs: [
+                        {responsivePriority: 1, targets: 0},
+                        {responsivePriority: 2, targets: -1},
+                        {responsivePriority: 3, targets: -3},
+                        {responsivePriority: 4, targets: -4},
+                    ]
+                });
+
+                this.dtAdminEnrollment = $("#table-admin-rank-history-enrollment").DataTable({
+                    processing: true,
+                    serverSide: true,
+                    responsive: true,
+                    ajax: {
+                        url: `${api_url}member/rank-history/enrollment`,
+                        data: function (d) {
+                            d.start_date = _this.enrollment.filters.start_date;
+                            d.rank_id = _this.enrollment.filters.rank_id;
+                        },
+                    },
+                    order: [[0, 'asc']],
+                    columns: [
+                        {
+                            data: 'user_id',
+                            render: function (data, type, row, meta) {
+                                let user_id = row.user_id;
+                                let member = row.member;
+                                return `${user_id}: ${member}`;
+                            }
+                        },
+                        {data: 'current_rank', className: "text-center"}, // render: $.fn.dataTable.render.number(',', '.', 2, '$')
+                        {data: 'paid_as_rank', className: "text-center"}, // render: $.fn.dataTable.render.number(',', '.', 2, '$')
+                        {data: 'prs', className: "text-center"}, // render: $.fn.dataTable.render.number(',', '.', 2, '$')
+                        {data: 'grs', className: "text-center"},
+                        {data: 'sponsored_qualified_representatives_count', className: "text-center"},
+                        {data: 'sponsored_leader_or_higher_count', className: "text-center"},                        
                         {data: 'level', className: "text-center"},
                         {data: 'rank_date', className: "text-center"},
                     ],
@@ -223,7 +262,19 @@
                         this.dtHighest.responsive.recalc();
                     }
 
-                })
+                });
+
+                $('#nav-admin-tab-report a[data-toggle="tab"]').on('shown.bs.tab show.bs.tab',  (e) => {
+
+                    let tab = $(e.target).attr("href");
+
+                    if(tab === "#tree") {
+                        this.dtAdminEnrollment.responsive.recalc();
+                    } else if(tab === "#new-highest-rank") {
+                        this.dtHighest.responsive.recalc();
+                    }
+
+                });
 
 
             },
@@ -234,6 +285,14 @@
 
                 this.dtEnrollment.clear().draw();
                 this.dtEnrollment.responsive.recalc();
+            },
+            viewAdminEnrollment() {
+
+                this.enrollment.filters.start_date = this.enrollment.start_date;
+                this.enrollment.filters.rank_id = this.enrollment.rank_id;
+
+                this.dtAdminEnrollment.clear().draw();
+                this.dtAdminEnrollment.responsive.recalc();
             },
             viewPersonal() {
 

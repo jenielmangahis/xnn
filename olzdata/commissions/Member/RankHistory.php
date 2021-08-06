@@ -277,6 +277,7 @@ class RankHistory
                 dv.prs,
                 dv.grs,
                 dv.sponsored_qualified_representatives_count,
+                dv.sponsored_leader_or_higher_count,
                 dr.is_active,
                 dv.level - $level AS level,
                 u.sponsorid AS sponsor_id,

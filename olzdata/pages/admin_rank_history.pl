@@ -30,7 +30,7 @@ print <<EOS;
     <div class="row">
         <div class="col-md-12">
             <!-- Nav tabs -->
-            <ul class="nav nav-tabs" role="tablist" id='nav-tab-report'>
+            <ul class="nav nav-tabs" role="tablist" id='nav-admin-tab-report'>
                 <li class="nav-item">
                     <a class="nav-link active" href="#tree" aria-controls="tree" role="tab" data-toggle="tab" style="color: black !important;">$rank_title History</a>
                 </li>
@@ -83,7 +83,7 @@ print <<EOS;
                                         <button
                                                 type="button"
                                                 class="btn btn-primary btn-block"
-                                                v-on:click.prevent="viewEnrollment">
+                                                v-on:click.prevent="viewAdminEnrollment">
                                             View
                                         </button>
                                     </div>
@@ -112,25 +112,17 @@ print <<EOS;
                     <div class="row">
                         <div class="col-md-12">
                             <div class="table-responsive">
-                                <table id="table-rank-history-enrollment" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
+                                <table id="table-admin-rank-history-enrollment" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
                                     <thead class="table__header table__header--bg-primary">
                                     <tr class="table__row">
                                         <th class="table__cell">Name</th>
                                         <th class="table__cell">Current $rank_title</th>
                                         <th class="table__cell">Paid-as $rank_title</th>
-                                        <th class="table__cell">Coach Points</th>
-                                        <th class="table__cell">Referral Points</th>
-                                        <th class="table__cell">Org. Points</th>
-                                        <th class="table__cell">Team Group Points</th>
-                                        <th class="table__cell">Preferred Customers</th>
-                                        <th class="table__cell">Influencers</th>
-                                        <th class="table__cell">Silver Influencers</th>
-                                        <th class="table__cell">Gold Influencers</th>
-                                        <th class="table__cell">Platinum Influencers</th>
-                                        <th class="table__cell">Diamond Influencers</th>
-                                        <th class="table__cell">Active</th>
-                                        <th class="table__cell">Level</th>
-                                        <th class="table__cell">Sponsor</th>
+                                        <th class="table__cell">PRS</th>
+                                        <th class="table__cell">GRS</th>
+                                        <th class="table__cell">Sponsored Qualified Representatives</th>
+                                        <th class="table__cell">Sponsored Leader or Higher</th>
+                                        <th class="table__cell">Level 1 Leader</th>
                                         <th class="table__cell">Date</th>
                                     </tr>
                                     </thead>
