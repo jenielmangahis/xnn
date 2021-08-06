@@ -86,9 +86,9 @@ print <<EOS;
                                     <tr class="table__row">
                                         <th class="table__cell">Name</th>
                                         <th class="table__cell">Paid-as $rank_title</th>
-                                        <th class="table__cell">CS</th>
-                                        <th class="table__cell">DS</th>
-                                        <th class="table__cell">MSR</th>
+                                        <th class="table__cell">PRS</th>
+                                        <th class="table__cell">GRS</th>
+                                        <th class="table__cell">Sponsored Qualified Representatives</th>
                                         <th class="table__cell">Active</th>
                                         <th class="table__cell">Level</th>
                                         <th class="table__cell">Date</th>

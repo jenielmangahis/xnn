@@ -270,10 +270,9 @@ class RankHistory
                 dr.paid_as_rank_id,
                 pr.name AS paid_as_rank,
 
-                dv.cs,
-                dv.ds,
-                pr.msr,
-
+                dv.prs,
+                dv.grs,
+                pr.sponsored_qualified_representatives_count,
                 dr.is_active,
                 dv.level - $level AS level,
                 u.sponsorid AS sponsor_id,

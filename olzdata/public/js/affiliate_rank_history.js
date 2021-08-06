@@ -84,9 +84,9 @@
                                 return row.paid_as_rank;
                             }
                         },
-                        {data: 'cs', className: "text-center"}, // render: $.fn.dataTable.render.number(',', '.', 2, '$')
-                        {data: 'ds', className: "text-center"},
-                        {data: 'msr', className: "text-center"},
+                        {data: 'prs', className: "text-center"}, // render: $.fn.dataTable.render.number(',', '.', 2, '$')
+                        {data: 'grs', className: "text-center"},
+                        {data: 'sponsored_qualified_representatives_count', className: "text-center"},
                         {
                             data: 'is_active',
                             className: "text-center",
