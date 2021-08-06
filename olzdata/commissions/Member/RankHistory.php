@@ -119,16 +119,9 @@ class RankHistory
                 cr.name AS current_rank,
                 dr.paid_as_rank_id,
                 pr.name AS paid_as_rank,
-                dv.referral_points,
-                dv.coach_points,
-                dv.organization_points,
-                dv.team_group_points,
-                dv.preferred_customer_count,
-                dv.influencer_count,
-                dv.silver_influencer_count,
-                dv.gold_influencer_count,
-                dv.platinum_influencer_count,
-                dv.diamond_influencer_count,
+                dv.prs,
+                dv.grs,
+                pr.sponsored_qualified_representatives_count,
                 dr.is_active,
                 dr.rank_date
             ")
@@ -269,7 +262,6 @@ class RankHistory
                 cr.name AS current_rank,
                 dr.paid_as_rank_id,
                 pr.name AS paid_as_rank,
-
                 dv.prs,
                 dv.grs,
                 dv.sponsored_qualified_representatives_count,

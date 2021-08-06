@@ -170,7 +170,6 @@ print <<EOS;
                                         <th class="table__cell">PRS </th>
                                         <th class="table__cell">GRS </th>
                                         <th class="table__cell">Sponsored Qualified Representatives </th>
-                                        <th class="table__cell">Level 1 Leader </th>
                                         <th class="table__cell">Level </th>
                                         <th class="table__cell">Date </th>
                                     </tr>
