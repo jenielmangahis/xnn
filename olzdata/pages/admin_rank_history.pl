@@ -83,7 +83,7 @@ print <<EOS;
                                         <button
                                                 type="button"
                                                 class="btn btn-primary btn-block"
-                                                v-on:click.prevent="viewAdminEnrollment">
+                                                v-on:click.prevent="viewEnrollment">
                                             View
                                         </button>
                                     </div>
@@ -112,7 +112,7 @@ print <<EOS;
                     <div class="row">
                         <div class="col-md-12">
                             <div class="table-responsive">
-                                <table id="table-admin-rank-history-enrollment" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
+                                <table id="table-rank-history-enrollment" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
                                     <thead class="table__header table__header--bg-primary">
                                     <tr class="table__row">
                                         <th class="table__cell">Name</th>
