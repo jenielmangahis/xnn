@@ -121,7 +121,7 @@ class RankHistory
                 pr.name AS paid_as_rank,
                 dv.prs,
                 dv.grs,
-                pr.sponsored_qualified_representatives_count,
+                dv.sponsored_qualified_representatives_count,
                 dr.is_active,
                 dr.rank_date
             ")
