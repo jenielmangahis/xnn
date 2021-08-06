@@ -124,6 +124,7 @@ class RankHistory
             ->join("cm_ranks AS cr", "cr.id", "=", "dr.rank_id")
             ->join("cm_ranks AS pr", "pr.id", "=", "dr.paid_as_rank_id")
             ->selectRaw("
+                dv.user_id,
                 CONCAT(u.fname, ' ', u.lname) AS member,
                 dr.rank_id,
                 cr.name AS current_rank,

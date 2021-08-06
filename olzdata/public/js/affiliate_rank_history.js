@@ -124,7 +124,14 @@
                     },
                     order: [[0, 'desc']],
                     columns: [
-                        {data: 'rank_date', className: "text-center"},
+                        {
+                            data: 'user_id',
+                            render: function (data, type, row, meta) {
+                                let user_id = row.user_id;
+                                let member = row.member;
+                                return `${user_id}: ${member}`;
+                            }
+                        },
                         {
                             data: 'paid_as_rank_id',
                             render: function (data, type, row, meta) {

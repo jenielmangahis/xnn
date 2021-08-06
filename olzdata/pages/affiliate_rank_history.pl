@@ -163,7 +163,7 @@ print <<EOS;
                             <table id="table-rank-history-personal" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
                                 <thead class="table__header table__header--bg-primary">
                                 <tr class="table__row">
-                                    <th class="table__cell">Date</th>
+                                    <th class="table__cell">Name</th>
                                     <th class="table__cell">Paid-as $rank_title</th>
                                     <th class="table__cell">PRS</th>
                                     <th class="table__cell">GRS</th>
