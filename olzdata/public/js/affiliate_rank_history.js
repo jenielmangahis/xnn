@@ -119,42 +119,33 @@
                         data: function (d) {
                             d.start_date = _this.personal.filters.start_date;
                             d.end_date = _this.personal.filters.end_date;
-                            d.rank_id = _this.personal.filters.personal_rank_id;
+                            d.rank_id = _this.personal.filters.rank_id;
                         },
                     },
                     order: [[0, 'desc']],
                     columns: [
-                        {
-                            data: 'user_id',
-                            render: function (data, type, row, meta) {
-                                let user_id = row.user_id;
-                                let member = row.member;
-                                return `${user_id}: ${member}`;
-                            }
-                        },
-                        {
-                            data: 'rank_id',
-                            render: function (data, type, row, meta) {
-                                return row.current_rank;
-                            }
-                        },
+                        {data: 'rank_date', className: "text-center"},
                         {
                             data: 'paid_as_rank_id',
                             render: function (data, type, row, meta) {
                                 return row.paid_as_rank;
                             }
                         },
+                        {data: 'cs', className: "text-center"},
+                        {data: 'ds', className: "text-center"},
+                        {data: 'msr', className: "text-center"},
                         {
-                            data: 'rank_id',
+                            data: 'is_active',
+                            className: "text-center",
                             render: function (data, type, row, meta) {
-                                return row.highest_rank;
+
+                                if (+row.is_active) {
+                                    return `<span class="label label-success">Yes</span>`;
+                                }
+
+                                return `<span class="label label-warning">No</span>`;
                             }
                         },
-                        {data: 'prs', className: "text-center"}, // render: $.fn.dataTable.render.number(',', '.', 2, '$')
-                        {data: 'grs', className: "text-center"},
-                        {data: 'sponsored_qualified_representatives_count', className: "text-center"},
-                        {data: 'level', className: "text-center"},
-                        {data: 'rank_date', className: "text-center"},
                     ],
                     columnDefs: [
 

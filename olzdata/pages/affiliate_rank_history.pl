@@ -160,22 +160,19 @@ print <<EOS;
                     <div class="row mt-3">
                         <div class="col-md-12">
                             <div class="table-responsive">
-                            <table id="table-rank-history-personal" class="table table-striped table-bordered dt-responsive nowrap collapsed" style="width:100%">
+                            <table id="table-rank-history-personal" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
                                 <thead class="table__header table__header--bg-primary">
-
-                                    <tr class="table__row table-custom-border">
-                                        <th class="table__cell">Name </th>
-                                        <th class="table__cell">Current $rank_title </th>
-                                        <th class="table__cell">Paid-as $rank_title </th>
-                                        <th class="table__cell">PRS </th>
-                                        <th class="table__cell">GRS </th>
-                                        <th class="table__cell">Sponsored Qualified Representatives </th>
-                                        <th class="table__cell">Level </th>
-                                        <th class="table__cell">Date </th>
-                                    </tr>
-                                    </thead>
-                                    <tbody class="table__body">
-                                    </tbody>
+                                <tr class="table__row">
+                                    <th class="table__cell">Date</th>
+                                    <th class="table__cell">Paid-as $rank_title</th>
+                                        <th class="table__cell">CS</th>
+                                        <th class="table__cell">DS</th>
+                                        <th class="table__cell">MSR</th>
+                                    <th class="table__cell">Active</th>
+                                </tr>
+                                </thead>
+                                <tbody class="table__body">
+                                </tbody>
                             </table>
                             </div>
                         </div>
