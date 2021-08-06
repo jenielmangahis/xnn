@@ -177,6 +177,12 @@
                             }
                         },
                         {
+                            data: 'paid_as_rank',
+                            render: function (data, type, row, meta) {
+                                return row.paid_as_rank;
+                            }
+                        },
+                        {
                             data: 'rank_id',
                             render: function (data, type, row, meta) {
                                 return row.highest_rank;

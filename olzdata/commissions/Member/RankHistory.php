@@ -340,18 +340,22 @@ class RankHistory
             ->join("users AS u", "u.id", "=", "a.user_id")
             ->join("cm_ranks AS r", "r.id", "=", "a.rank_id")
             ->join("cm_daily_volumes AS dv", "dv.user_id", "=", "a.user_id")
+            ->join("cm_daily_ranks AS dr", "dr.volume_id", "=", "dv.id")
+            ->join("cm_ranks AS pr", "pr.id", "=", "dr.paid_as_rank_id")
             ->leftJoin("users AS s", "s.id", "=", "u.sponsorid")
             ->selectRaw("
                 dv.user_id,
                 CONCAT(u.fname, ' ', u.lname) AS member,
                 a.rank_id,
                 r.name AS highest_rank,
+                pr.name AS paid_as_rank,
                 dv.level - $level AS level,
                 u.sponsorid AS sponsor_id,
                 CONCAT(s.fname, ' ', s.lname) AS sponsor,
                 a.date_achieved
             ")
-            ->where('dv.volume_date', $end_date)
+             ->where('dv.volume_date', $end_date)
+             //->whereBetween('dv.volume_date', [$start_date, $end_date])
             // ->where('a.date_achieved', '<=', $start_date)
             ->whereRaw('a.rank_id = (
                     SELECT aa.rank_id

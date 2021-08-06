@@ -257,11 +257,12 @@ print <<EOS;
                             <table id="table-rank-history-highest" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
                                 <thead class="table__header table__header--bg-primary">
                                 <tr class="table__row">
-                                    <th class="table__cell">Date  </th>
-                                    <th class="table__cell">Notes  </th>
-                                    <th class="table__cell">Amount</th>
-                                    <th class="table__cell">Level  </th>
-                                    <th class="table__cell">Sponsor  </th>
+                                    <th class="table__cell">Name</th>
+                                    <th class="table__cell">Paid as $rank_title</th>
+                                    <th class="table__cell">Highest $rank_title Achieved</th>
+                                    <th class="table__cell">Date Achieved</th>
+                                    <th class="table__cell">Level</th>
+                                    <th class="table__cell">Sponsor</th>
                                 </tr>
                                 </thead>
                                 <tbody class="table__body">
