@@ -257,11 +257,13 @@ print <<EOS;
     
     <div class="col-md-12" style="padding: 40px 0px;">
         <div id="countdown-wrap">
+            <span v-if="!isSilverStartupProgramLoaded"><i class="fa fa-spinner fa-spin"></i></span>
+            <span v-else>{{ silverStartUpDetails.silverNotice }} </span>
             <div class="progress" style="height:2rem;">
               <div class="progress-bar" role="progressbar" aria-valuenow="100"
-              aria-valuemin="0" aria-valuemax="100" style="width:100%;text-align:left;padding-left:14px;">
-                <span v-if="!isSilverStartupProgramLoaded"><i class="fa fa-spinner fa-spin"></i></span>
-                <span v-else><b>Silver Start Up Program</b> Progress {{ silverStartUpDetails.silverTotalPRS }} worth of Gift Cards so far</span>
+              aria-valuemin="0" aria-valuemax="100" v-bind:style="{width: silverStartUpDetails.silverPercentage + '%'}">   
+                <span style="padding-left:10px;" v-if="!isSparkleStartupProgramLoaded"><i class="fa fa-spinner fa-spin"></i></span>
+                <span style="padding-left:10px;" v-else>{{ silverStartUpDetails.silverTotalPRS }} / 4,000.00 PRS</span>            
               </div>
             </div>
             <div class="goal-stat">

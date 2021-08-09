@@ -32,7 +32,9 @@
                 isQualifiedForRankAdvancementBonus: "",
             },
             silverStartUpDetails: {
+                silverNotice: "",
                 silverTotalPRS: 0,
+                silverPercentage: 0,
             },
             sparkleStartUpDetails: {
                 sparkleNotice: "",
@@ -301,6 +303,8 @@
                         this.silverStartUpDetailsState = "loaded";
                         
                         this.silverStartUpDetails.silverTotalPRS = typeof details.silver_total_prs !== "undefined" ? details.silver_total_prs : 0;
+                        this.silverStartUpDetails.silverNotice = "Silver Start Up Program Progress " + this.silverStartUpDetails.silverTotalPRS + " worth of Gift Cards so far";
+                        this.silverStartUpDetails.silverPercentage = (this.silverStartUpDetails.silverTotalPRS / 4000) * 100;
                     })
                     .catch(error => {
                         this.silverStartUpDetailsState = "error";
