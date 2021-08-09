@@ -295,7 +295,7 @@ print <<EOS;
                     <div class="form-group">
                         <div class="col-sm-12">
                             <div class="form-group form-check">
-                                <input type="checkbox" :name="" class="form-check-input" id="">
+                                <input type="checkbox" name="" class="form-check-input" id="is-sharing-link-order">
                                 <label class="form-check-label" for="exampleCheck1">Mark as Sharing link order</label>
                             </div>
                         </div>

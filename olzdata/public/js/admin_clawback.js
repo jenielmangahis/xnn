@@ -374,7 +374,7 @@
 
                     this.is_saving = 1;
 
-                    client.post(`admin/move-order/orders/${this.order.order_id}/change`, {modified: $('#member').val(), ...this.order}).then(response => {
+                    client.post(`admin/move-order/orders/${this.order.order_id}/change`, {modified: $('#member').val(), is_sharing_link_order: $('#sharing_link').val(), ...this.order}).then(response => {
 
                         $('#modal-move').modal('hide');
                         // swal.close();
