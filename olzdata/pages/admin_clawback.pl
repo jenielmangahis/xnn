@@ -19,36 +19,45 @@ print <<EOS;
     <div class="row">
         <div class="col-lg-12" >
             <ul class="nav nav-tabs" role="tablist" id='nav-tab-report'>
-                <li role="presentation" class="active"><a href="#tab-orders" aria-controls="tab-orders" role="tab" data-toggle="tab">Orders</a></li>
-                <li role="presentation"><a href="#tab-logs" aria-controls="tab-logs" role="tab" data-toggle="tab">Move Logs</a></li>
+                <li class="nav-item">
+                    <a class="nav-link active" href="#tab-orders" aria-controls="tab-orders" role="tab" data-toggle="tab" style="color: black !important;">Orders</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#tab-logs" aria-controls="tab-logs" role="tab" data-toggle="tab" style="color: black !important;">Move Logs</a>
+                </li>
             </ul>
             <!-- Tab panes -->
             <div class="tab-content" style="padding: 15px;border: 1px solid #ddd;border-top: none;">
                 <div role="tabpanel" class="tab-pane active" id="tab-orders">
-
-                    <form class="form-horizontal">
-                        <div class="form-group">
-                            <div class="col-sm-3 col-md-3 col-lg-3">
-                                <label for="start-date">From</label>
-                                <input id="start-date" type="text" class="form-control flat">
-                            </div>
-                            <div class="col-sm-3 col-md-3 col-lg-3">
-                                <label for="end-date">To</label>
-                                <input id="end-date" type="text" class="form-control flat">
-                            </div>
+                    <div class="row mb-5">
+                        <div class="col-md-4">
+                            <form class="form-horizontal">
+                                <div class="form-group">
+                                    <div class="col-md-12">
+                                        <label for="start-date">From</label>
+                                        <input id="start-date" type="text" class="form-control flat">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-md-12">
+                                        <label for="end-date">To</label>
+                                        <input id="end-date" type="text" class="form-control flat">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-md-12">
+                                        <label for="purchaser-id">Purchaser (Optional)</label>
+                                        <select2-autocomplete-member id="purchaser-id" :url="autocompleteUrl" v-model="filters.memberId"></select2-autocomplete-member>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="col-sm-12">
+                                        <button id="button-view-orders" type="button" class="btn btn-primary btn-block" >View Orders</button>
+                                    </div>
+                                </div>
+                            </form>
                         </div>
-                        <div class="form-group">
-                            <div class="col-sm-3 col-md-3 col-lg-3">
-                                <label for="purchaser-id">Purchaser (Optional)</label>
-                                <select2-autocomplete-member id="purchaser-id" :url="autocompleteUrl" v-model="filters.memberId"></select2-autocomplete-member>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="col-sm-12">
-                                <button id="button-view-orders" type="button" class="btn btn-primary" >View Orders</button>
-                            </div>
-                        </div>
-                    </form>
+                    </div>
 
                     <table id="table-orders" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%;">
                         <thead class="table__header table__header--bg-primary">
