@@ -3,7 +3,7 @@
 
 namespace Commissions\Member;
 
-
+ 
 use App\AchievedRank;
 use App\Affiliate;
 use App\DailyVolume;
@@ -15,6 +15,7 @@ use Commissions\CommissionTypes\WeeklyDirectProfit;
 use Commissions\CommissionTypes\SparkleStartProgram;
 use Commissions\CommissionTypes\RankAdvancementBonus;
 use Commissions\CommissionTypes\MonthlyLevelCommission;
+use Commissions\CommissionTypes\RankConsistency;
 
 use Commissions\CommissionTypes\FreeJewelryIncentive;
 use Commissions\CommissionTypes\SilverStartUp;
@@ -686,7 +687,8 @@ class Dashboard
     }
 
     public function getCurrentQualificationDetails($user_id)
-    {
+    {   $today      = date("Y-m-d");
+
         $isQualifiedForWeeklyDirectProfit     = WeeklyDirectProfit::isQualifiedForWeeklyDirectProfit($user_id) == true ? 'Qualified' : 'Not Qualified';
         $isQualifiedForMonthlyLevelCommission = MonthlyLevelCommission::isQualifiedForMonthlyLevelCommission($user_id) == true ? 'Qualified' : 'Not Qualified';
         $isQualifiedForSparkleStartProgram    = SparkleStartProgram::isQualifiedForSparkleStartProgram($user_id) == true ? 'Qualified' : 'Not Qualified';

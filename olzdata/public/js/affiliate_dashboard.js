@@ -187,6 +187,7 @@
 
                         this.currentQualificationState = "loaded";
 
+                      
                         this.currentQualificationDetails.isQualifiedForWeeklyDirectProfit = typeof details.is_qualified_weekly_direct_profit !== "undefined" ? details.is_qualified_weekly_direct_profit : 'Not Qualified';
                         this.currentQualificationDetails.isQualifiedForMonthlyLevelCommission = typeof details.is_qualified_monthly_level_commission !== "undefined" ? details.is_qualified_monthly_level_commission : 'Not Qualified';
                         this.currentQualificationDetails.isQualifiedForSparkleStartProgram = typeof details.is_qualified_sparkle_start_program !== "undefined" ? details.is_qualified_sparkle_start_program : 'Not Qualified';
