@@ -15,7 +15,7 @@ use Commissions\CommissionTypes\WeeklyDirectProfit;
 use Commissions\CommissionTypes\SparkleStartProgram;
 use Commissions\CommissionTypes\RankAdvancementBonus;
 use Commissions\CommissionTypes\MonthlyLevelCommission;
-use Commissions\CommissionTypes\RankConsistency;
+use App\RankConsistency;
 
 use Commissions\CommissionTypes\FreeJewelryIncentive;
 use Commissions\CommissionTypes\SilverStartUp;
@@ -689,6 +689,7 @@ class Dashboard
     public function getCurrentQualificationDetails($user_id)
     {   $today      = date("Y-m-d");
 
+
         $isQualifiedForWeeklyDirectProfit     = WeeklyDirectProfit::isQualifiedForWeeklyDirectProfit($user_id) == true ? 'Qualified' : 'Not Qualified';
         $isQualifiedForMonthlyLevelCommission = MonthlyLevelCommission::isQualifiedForMonthlyLevelCommission($user_id) == true ? 'Qualified' : 'Not Qualified';
         $isQualifiedForSparkleStartProgram    = SparkleStartProgram::isQualifiedForSparkleStartProgram($user_id) == true ? 'Qualified' : 'Not Qualified';
@@ -696,6 +697,7 @@ class Dashboard
         $isQualifiedForFreeJewelryIncentive   = FreeJewelryIncentive::userIsQualified($user_id)  == true ? 'Qualified' : 'Not Qualified';
         $isQualifiedForPersonalSalesBonus     = PersonalSalesBonus::userIsQualified($user_id) == true ? 'Qualified' : 'Not Qualified';
         $isQualifiedForSilverStartUp          = SilverStartUp::userIsQualified($user_id) == true ? 'Qualified' : 'Not Qualified';
+        $isQualifiedForRankConsistency        = RankConsistency::userIsQualified($user_id) == true ? 'Qualified' : 'Not Qualified';
 
         $result = [
             'is_qualified_weekly_direct_profit' => $isQualifiedForWeeklyDirectProfit,
@@ -704,7 +706,8 @@ class Dashboard
             'is_qualified_rank_advancement_bonus' => $isQualifiedForRankAdvancementBonus,
             'is_qualified_free_jewelry_incentive' => $isQualifiedForFreeJewelryIncentive,
             'is_qualified_personal_sales_bonus' => $isQualifiedForPersonalSalesBonus,
-            'is_qualified_silver_startup' => $isQualifiedForSilverStartUp
+            'is_qualified_silver_startup' => $isQualifiedForSilverStartUp,
+            'is_qualified_for_rank_consistency' => $isQualifiedForRankConsistency
         ];
 
         return $result;

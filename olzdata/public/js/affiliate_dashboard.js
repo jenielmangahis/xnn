@@ -195,6 +195,7 @@
                         this.currentQualificationDetails.isQualifiedFreeJewelryIncentive = typeof details.is_qualified_free_jewelry_incentive !== "undefined" ? details.is_qualified_free_jewelry_incentive : 'Not Qualified';
                         this.currentQualificationDetails.isQualifiedPersonalSalesBonus = typeof details.is_qualified_personal_sales_bonus !== "undefined" ? details.is_qualified_personal_sales_bonus : 'Not Qualified';
                         this.currentQualificationDetails.isQualifiedSilverStartup = typeof details.is_qualified_silver_startup !== "undefined" ? details.is_qualified_silver_startup : 'Not Qualified';
+                        this.currentQualificationDetails.isQualifiedRankConsistency = typeof details.is_qualified_for_rank_consistency !== "undefined" ? details.is_qualified_for_rank_consistency : 'Not Qualified';
 
                     })
                     .catch(error => {

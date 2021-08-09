@@ -156,7 +156,7 @@ print <<EOS;
                             <div class="h6 mb-0 mt-2 font-weight-bold">
                                 Rank Consistency Bonus:
                                 <span v-if="!isRankLoaded"><i class="fa fa-spinner fa-spin"></i></span>
-                                <span v-else>Not Qualified</span>
+                                <span v-else>{{ currentQualificationDetails.isQualifiedRankConsistency }}</span>
                             </div>
                             <div class="h6 mb-0 mt-2 font-weight-bold">
                                 Silver Start Up Program:
