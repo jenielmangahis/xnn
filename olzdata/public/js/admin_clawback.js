@@ -370,7 +370,7 @@
                     showCancelButton: true,
                     closeOnConfirm: false,
                     showLoaderOnConfirm: true,
-                }, () => {
+                }, function () {
 
                     this.is_saving = 1;
 
