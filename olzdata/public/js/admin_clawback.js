@@ -370,12 +370,15 @@
                     showCancelButton: true,
                     closeOnConfirm: false,
                     showLoaderOnConfirm: true,
-                }, function () {
-
+                })
+                .then((result) => {
                     this.is_saving = 1;
 
-                    client.post(`admin/move-order/orders/${this.order.order_id}/change`, {modified: $('#member').val(), is_sharing_link_order: $('#is-sharing-link').val(), ...this.order}).then(response => {
-
+                    client.post(`admin/move-order/orders/${this.order.order_id}/change`, {
+                        modified: $('#member').val(), 
+                        is_sharing_link_order: $('#is-sharing-link').val(), 
+                        ...this.order
+                    }).then(response => {
                         $('#modal-move').modal('hide');
                         // swal.close();
                         swal("Successfully updated!", "", "success");
@@ -383,12 +386,9 @@
                         $dt.responsive.recalc();
                         $dtLogs.clear().draw();
                         $dtLogs.responsive.recalc();
-
                     }).catch(this.axiosErrorHandler).finally(()=> {
-
                         this.is_saving = 0;
                     });
-
                 });
             },
             axiosErrorHandler(error) {
