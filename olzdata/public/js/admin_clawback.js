@@ -145,6 +145,7 @@
                         {data    : 'old_transaction_date'},
                         {data    : 'created_at'},
                         {data    : 'changed_by'},
+                        {data    : 'is_sharing_link_order'},
                     ]
                 });
             },

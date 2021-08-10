@@ -129,6 +129,7 @@ class MoveOrder
                 CONCAT(ou.fname, ' ', ou.lname) old_purchaser,
                 CONCAT(os.fname, ' ', os.lname) old_sponsor,
                 CONCAT(m.fname, ' ', m.lname) changed_by,
+                IF(l.is_sharing_link_order = 1,'Yes','No') AS is_sharing_link_order,
                 l.created_at,
                 l.old_transaction_date,
                 l.new_transaction_date,

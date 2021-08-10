@@ -90,6 +90,7 @@ print <<EOS;
                             <th class="table__cell">Old Transaction Date</th>
                             <th class="table__cell">Date</th>
                             <th class="table__cell">Changed by</th>
+                            <th class="table__cell">Is Sharing Link Order</th>
                         </tr>
                         </thead>
                         <tbody class="table__body">
