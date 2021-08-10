@@ -2,7 +2,7 @@ print <<EOS;
 
 <link rel="stylesheet" href="$commission_engine_api_url/css/app.css?v=$app_css_version" />
 <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.3/css/responsive.bootstrap.min.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/eonasdan-bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.css" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/css/select2.min.css" />
 <link rel="stylesheet" href="$commission_engine_api_url/css/datepicker.css?v=$app_css_version" />
 <link rel="stylesheet" href="$commission_engine_api_url/css/select2-bootstrap.css"/>
@@ -90,7 +90,7 @@ print <<EOS;
                             <th class="table__cell">Old Transaction Date</th>
                             <th class="table__cell">Date</th>
                             <th class="table__cell">Changed by</th>
-                            <th class="table__cell">Is Sharing Link Order</th>
+                            <th class="table__cell">Sharing Link Order</th>
                         </tr>
                         </thead>
                         <tbody class="table__body">
