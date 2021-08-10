@@ -175,7 +175,7 @@
                 // Transaction Date
                 $('#transaction-date').datetimepicker({
                     defaultDate: moment(),
-                    format: 'YYYY-MM-DD HH:mm:ss',
+                    format: 'YYYY-MM-DD',
                 });
 
                 $('#transaction-date').on('dp.change', e => {_this.order.transaction_date = $('#transaction-date').val()});
