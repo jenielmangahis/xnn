@@ -40,7 +40,7 @@
                     commission_value: null,
                     is_full_order: null,
                     new_purchaser_id: null,
-                    is_clawback: 0
+                    is_clawback: 0,
                 },
 
                 error: {
