@@ -22,6 +22,7 @@ class MoveInvoiceLogs extends Model
         'changed_by_id',
         'old_transaction_date',
         'new_transaction_date',
+        'is_sharing_link_order'
     ];
 
 }

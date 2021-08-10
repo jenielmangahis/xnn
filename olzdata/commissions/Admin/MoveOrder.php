@@ -231,10 +231,6 @@ class MoveOrder
                 $is_sharing_link_order = 0;
             }
 
-            echo "<pre>";
-            print_r($data);
-            exit;
-
             $log = new MoveInvoiceLogs();
             $log->transaction_id = $transaction->id;
             $log->new_user_id = $newPurchaser->id;
@@ -242,8 +238,8 @@ class MoveOrder
             $log->old_user_id = $oldPurchaserId;
             $log->old_sponsor_id = $oldSponsorId;
             $log->changed_by_id = $loginUser->id;
-            $log->old_transaction_date = $oldTransactionDate;
-            $log->new_transaction_date = $data['transaction_date'];
+            $log->old_transaction_date  = $oldTransactionDate;
+            $log->new_transaction_date  = $data['transaction_date'];
             $log->is_sharing_link_order = $is_sharing_link_order;
             $log->save();
 
