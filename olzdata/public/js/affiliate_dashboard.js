@@ -33,6 +33,7 @@
             },
             silverStartUpDetails: {
                 silverNotice: "",
+                silverDaysDiff: 0,
                 silverTotalPRS: 0,
                 silverPercentage: 0,
             },
@@ -305,6 +306,7 @@
                         this.silverStartUpDetails.silverTotalPRS = typeof details.silver_total_prs !== "undefined" ? details.silver_total_prs : 0;
                         this.silverStartUpDetails.silverNotice = "Silver Start Up Program Progress " + this.silverStartUpDetails.silverTotalPRS + " worth of Gift Cards so far";
                         this.silverStartUpDetails.silverPercentage = (this.silverStartUpDetails.silverTotalPRS / 4000) * 100;
+                        this.silverStartUpDetails.silverDaysDiff = typeof details.days_diff !== "undefined" ? details.days_diff : 0;
                     })
                     .catch(error => {
                         this.silverStartUpDetailsState = "error";
@@ -322,6 +324,7 @@
                         let details = response.data;
 
                         this.sparkleStartUpDetailsState = "loaded";
+
                         this.sparkleStartUpDetails.sparkleMemberId = typeof details.muser_id !== "undefined" ? details.muser_id : 0;
                         this.sparkleStartUpDetails.sparkleTotalPRS = typeof details.sparkle_total_prs !== "undefined" ? details.sparkle_total_prs : 0;
                         this.sparkleStartUpDetails.daysDiff = typeof details.days_diff !== "undefined" ? details.days_diff : 0;

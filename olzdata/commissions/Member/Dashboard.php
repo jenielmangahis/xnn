@@ -597,7 +597,8 @@ class Dashboard
     public function getSilverStartupDetails($user_id)
     {
        $sql = "
-            SELECT COALESCE(dv.prs, 0.00) AS silver_total_prs
+            SELECT COALESCE(dv.prs, 0.00) AS silver_total_prs,
+                DATEDIFF(NOW(), ca.affiliated_date) AS days_diff
             FROM cm_daily_volumes AS dv
             LEFT JOIN cm_affiliates ca ON dv.user_id = ca.user_id
             WHERE dv.user_id = :member_id
@@ -663,7 +664,7 @@ class Dashboard
          $today_year   = date("Y", strtotime($today));
          $start_date   = date($today_year . "-07-07", strtotime(date("Y-m-d", strtotime($start_date)) . " - 1 year"));               
         }
-        
+
         $end_date   = date("Y-06-30", strtotime(date("Y-m-d", strtotime($start_date)) . " + 1 year"));
 		
         $days_diff  = ceil(abs(strtotime($today) - strtotime($start_date)) / 86400);
