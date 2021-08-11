@@ -9,14 +9,14 @@ print <<EOS;
     display: inline-block;    
     background-color: #007BFF;
     margin-top: 3px;
-    width: 10.84%;
+    width: 12.23%;
     text-align: center;
     color: #ffffff;
 }
 .bash-goal{
     display: inline-block;
     margin-top: 3px;
-    width: 16.46%;
+    width: 16.4%;
     text-align: center;
     background-color: #007BFF;
     padding: 9px;
@@ -303,10 +303,6 @@ print <<EOS;
             </div>
             <div class="goal-stat">
                 <span class="goal-number">\$2000</span><br/>
-                <span class="goal-label">\$50 Gift Card</span>
-            </div>
-            <div class="goal-stat">
-                <span class="goal-number">\$2500</span><br/>
                 <span class="goal-label">\$50 Gift Card</span>
             </div>
             <div class="goal-stat">
