@@ -6,11 +6,21 @@ print <<EOS;
 
 <style>
 .goal-stat{
-    display:inline-block;
-    margin:20px;
+    display: inline-block;    
+    background-color: #007BFF;
+    margin-top: 3px;
+    width: 10.84%;
+    text-align: center;
+    color: #ffffff;
 }
 .bash-goal{
-    margin-right:171px;
+    display: inline-block;
+    margin-top: 3px;
+    width: 19.76%;
+    text-align: center;
+    background-color: #007BFF;
+    padding: 9px;
+    color: #ffffff;
 }
 .progress{
     background-color: #737574 !important;
@@ -327,7 +337,7 @@ print <<EOS;
               <div class="progress-bar" role="progressbar" aria-valuenow="100"
               aria-valuemin="0" aria-valuemax="100" v-bind:style="{width: bashStartUpDetails.bashPercentage + '%'}">   
                 <span style="padding-left:10px;" v-if="!isBashStartupProgramLoaded"><i class="fa fa-spinner fa-spin"></i></span>
-                <span style="padding-left:10px;" v-else>{{ bashStartUpDetails.bashTotalPRS }} / 3,600.00 PRS</span>            
+                <span style="padding-left:10px;" v-else>{{ bashStartUpDetails.bashTotalPRS }} / 36,000.00 PRS</span>            
               </div>
             </div>
 

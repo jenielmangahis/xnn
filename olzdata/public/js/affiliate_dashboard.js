@@ -364,7 +364,7 @@
                         }
 
                         if( this.bashStartUpDetails.bashTotalPRS > 0 ){
-                            this.bashStartUpDetails.bashPercentage = Math.round((this.bashStartUpDetails.bashTotalPRS / 3600) * 100);
+                            this.bashStartUpDetails.bashPercentage = Math.round((this.bashStartUpDetails.bashTotalPRS / 36000) * 100);
                         }else{
                             this.bashStartUpDetails.bashPercentage = 0;
                         }
