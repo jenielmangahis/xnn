@@ -33,7 +33,7 @@
             },
             silverStartUpDetails: {
                 silverNotice: "",
-                silverDaysDiff: 0,
+                silverDaysDiffAffiliatedDate: 0,
                 silverTotalPRS: 0,
                 silverPercentage: 0,
             },
@@ -306,7 +306,7 @@
                         this.silverStartUpDetails.silverTotalPRS = typeof details.silver_total_prs !== "undefined" ? details.silver_total_prs : 0;
                         this.silverStartUpDetails.silverNotice = "Silver Start Up Program Progress " + this.silverStartUpDetails.silverTotalPRS + " worth of Gift Cards so far";
                         this.silverStartUpDetails.silverPercentage = (this.silverStartUpDetails.silverTotalPRS / 4000) * 100;
-                        this.silverStartUpDetails.silverDaysDiff = typeof details.days_diff !== "undefined" ? details.days_diff : 0;
+                        this.silverStartUpDetails.silverDaysDiffAffiliatedDate = typeof details.diff_affiliated_date !== "undefined" ? details.diff_affiliated_date : 0;
                     })
                     .catch(error => {
                         this.silverStartUpDetailsState = "error";

@@ -598,7 +598,7 @@ class Dashboard
     {
        $sql = "
             SELECT COALESCE(dv.prs, 0.00) AS silver_total_prs,
-                DATEDIFF(NOW(), ca.affiliated_date) AS days_diff
+                DATEDIFF(NOW(), ca.affiliated_date) AS diff_affiliated_date,
             FROM cm_daily_volumes AS dv
             LEFT JOIN cm_affiliates ca ON dv.user_id = ca.user_id
             WHERE dv.user_id = :member_id
