@@ -278,7 +278,7 @@ print <<EOS;
 
     </div>
     
-    <div class="col-md-12" style="padding: 40px 0px;" v-if="parseInt(silverStartUpDetails.silverDaysDiffAffiliatedDate) <= 90">
+    <div class="col-md-12" style="padding: 40px 0px;" v-if="silverStartUpDetails.silverDaysDiffAffiliatedDate <= 90">
         <div id="countdown-wrap">
             <span v-if="!isSilverStartupProgramLoaded"><i class="fa fa-spinner fa-spin"></i></span>
             <span v-else>{{ silverStartUpDetails.silverNotice }} </span>
@@ -324,7 +324,7 @@ print <<EOS;
         </div>
     </div>
 
-    <div class="col-md-12" style="padding: 40px 0px;">
+    <div class="col-md-12" style="padding: 40px 0px;" v-if="sparkleStartUpDetails.sparkleDaysDiffAffiliatedDate <= 10">
         <div id="countdown-wrap">
             <span v-if="!isSparkleStartupProgramLoaded"><i class="fa fa-spinner fa-spin"></i></span>
             <span v-else>{{ sparkleStartUpDetails.sparkleNotice }} </span>

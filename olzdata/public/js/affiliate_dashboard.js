@@ -39,6 +39,7 @@
             },
             sparkleStartUpDetails: {
                 sparkleNotice: "",
+                sparkleDaysDiffAffiliatedDate: 0,
                 daysDiff: 0,
                 sparkleTotalPRS: 0,
                 sparkleMemberId: 0,
@@ -328,6 +329,7 @@
                         this.sparkleStartUpDetails.sparkleMemberId = typeof details.muser_id !== "undefined" ? details.muser_id : 0;
                         this.sparkleStartUpDetails.sparkleTotalPRS = typeof details.sparkle_total_prs !== "undefined" ? details.sparkle_total_prs : 0;
                         this.sparkleStartUpDetails.daysDiff = typeof details.days_diff !== "undefined" ? details.days_diff : 0;
+                        this.sparkleStartUpDetails.sparkleDaysDiffAffiliatedDate = typeof details.diff_affiliated_date !== "undefined" ? details.diff_affiliated_date : 0;
 
                         if( details.sparkle_total_prs >= 500 ){
                             this.sparkleStartUpDetails.sparkleNotice = "Sparkle Start Program Progress : You have reached your goal of having $500.00 PRS"; 
