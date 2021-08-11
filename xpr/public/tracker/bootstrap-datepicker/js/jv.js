@@ -1,0 +1,3 @@
+function alma(){
+	alert('jvpogi');
+}
