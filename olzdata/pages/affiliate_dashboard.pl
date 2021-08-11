@@ -285,7 +285,7 @@ print <<EOS;
             <div class="progress" style="height:2rem;">
               <div class="progress-bar" role="progressbar" aria-valuenow="100"
               aria-valuemin="0" aria-valuemax="100" v-bind:style="{width: silverStartUpDetails.silverPercentage + '%'}">   
-                <span style="padding-left:10px;" v-if="!isSparkleStartupProgramLoaded"><i class="fa fa-spinner fa-spin"></i></span>
+                <span style="padding-left:10px;" v-if="!isSilverStartupProgramLoaded"><i class="fa fa-spinner fa-spin"></i></span>
                 <span style="padding-left:10px;" v-else>{{ silverStartUpDetails.silverTotalPRS }} / 4,000.00 PRS</span>            
               </div>
             </div>

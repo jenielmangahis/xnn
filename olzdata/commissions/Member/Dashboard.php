@@ -649,6 +649,10 @@ class Dashboard
 
         $result = $stmt->fetch(\PDO::FETCH_ASSOC);
 
+        echo "<pre>";
+        print_r($result);
+        exit;
+
         return $result;
     }
 
