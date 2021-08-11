@@ -16,7 +16,7 @@ print <<EOS;
 .bash-goal{
     display: inline-block;
     margin-top: 3px;
-    width: 19.76%;
+    width: 16.46%;
     text-align: center;
     background-color: #007BFF;
     padding: 9px;
@@ -28,6 +28,19 @@ print <<EOS;
 .progress-bar{
     text-align:left;
 }
+
+@media only screen and (max-width: 600px) {
+   .goal-stat{
+        width: 10.2% !important;
+    }
+    .bash-goal{
+        width: 18.98% !important;
+    }
+    .tool-container #countdown-wrap span {
+        font-size: 9px !important;
+    }
+}
+
 </style>
 
 <div class="dashboard tool-container" v-cloak>
@@ -340,9 +353,11 @@ print <<EOS;
                 <span style="padding-left:10px;" v-else>{{ bashStartUpDetails.bashTotalPRS }} / 36,000.00 PRS</span>            
               </div>
             </div>
-
             <div class="goal-stat bash-goal">
                 <span class="goal-number">\$6000</span>                
+            </div>
+            <div class="goal-stat bash-goal">
+                <span class="goal-number">\$12,000</span>                
             </div>
             <div class="goal-stat bash-goal">
                 <span class="goal-number">\$18,000</span>
