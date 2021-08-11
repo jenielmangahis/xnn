@@ -84,7 +84,7 @@ Route::prefix('member/dashboard')->namespace('Member')->middleware('jwt.auth')->
     Route::get('current-rank-details', 'DashboardController@currentRankDetails');
     Route::get('current-qualification-details', 'DashboardController@currentQualificationDetails');
     Route::get('silver-startup-details', 'DashboardController@silverStartUpDetails');
-    Route::get('sparkle-startup-details', 'DashboardController@silverStartUpDetails');
+    Route::get('sparkle-startup-details', 'DashboardController@sparkleStartUpDetails');
     Route::get('bash-925-startup-details', 'DashboardController@bash925StartUpDetails');
     Route::get('gift-cards', 'DashboardController@giftCards');
     Route::get('title-achievement-bonus-details', 'DashboardController@titleAchievementBonusDetails');

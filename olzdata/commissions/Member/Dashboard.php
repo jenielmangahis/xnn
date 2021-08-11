@@ -612,7 +612,7 @@ class Dashboard
 
         $result = $stmt->fetch(\PDO::FETCH_ASSOC);
 
-        return $result['silver_total_prs'];
+        return $result;
     }
 
     public function getSparkleStartupDetails($user_id)
@@ -648,10 +648,6 @@ class Dashboard
         $stmt->execute();
 
         $result = $stmt->fetch(\PDO::FETCH_ASSOC);
-
-        echo "<pre>";
-        print_r($result);
-        exit;
 
         return $result;
     }
