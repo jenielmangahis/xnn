@@ -76,8 +76,11 @@ final class BuilderBonus extends Console
                 FROM cm_daily_volumes AS dv
                     LEFT JOIN cm_affiliates AS ca ON dv.user_id = ca.user_id 
                     LEFT JOIN users AS u ON dv.user_id = u.id 
-                WHERE ca.cat_id IN(13,16,14) 
-                    AND dv.cv >= 50 AND dv.user_id = :user_id
+                WHERE dv.cv >= 50 AND dv.user_id = (
+                        SELECT uu.id 
+                        FROM users uu 
+                        WHERE uu.leaderid = :user_id
+                    )
                 GROUP BY ca.user_id 
             ";
 
