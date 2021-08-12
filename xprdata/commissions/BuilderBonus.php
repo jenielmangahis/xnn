@@ -13,16 +13,12 @@ use DateTime;
 
 final class BuilderBonus extends Console
 {
-    const MAX_POINTS = 200;
-    const MIN_ACTIVE_POINTS = 40;
-
     protected $db;
     protected $end_date;
     protected $start_date;
-    protected $affiliates;
-    protected $customers;
+    protected $qualified_members;
+    protected $members_builder_bonus;
     protected $root_user_id;
-    protected $rank_requirements;
 
     public function __construct($end_date = null)
     {
@@ -44,8 +40,8 @@ final class BuilderBonus extends Console
             $this->getQualifiedMembers();
             
             $this->log("Processing builder bonus");
+            $this->computeBuilderBonus();
             $this->processBuilderBonus();
-
         }, 3);
     }
 
@@ -66,12 +62,40 @@ final class BuilderBonus extends Console
         $stmt->execute();
         $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-        return +$stmt->fetchColumn() > 0;
+        foreach($result as $r){
+            $this->qualified_members[$r->user_id] = $r->user_id;
+        }
+    }
+
+    private function computeBuilderBonus()
+    {
+        foreach($this->qualified_members as $key => $value){
+            //Get member qualified consultants
+            $sql = "
+                SELECT dv.user_id, ca.cat_id, MAX(dv.cv) AS total_cv
+                FROM cm_daily_volumes AS dv
+                    LEFT JOIN cm_affiliates AS ca ON dv.user_id = ca.user_id 
+                    LEFT JOIN users AS u ON dv.user_id = u.id 
+                WHERE ca.cat_id IN(13,16,14) 
+                    AND dv.cv >= 50 AND dv.user_id = :user_id
+                GROUP BY ca.user_id 
+            ";
+
+            $db = DB::connection()->getPdo();
+            $stmt = $db->prepare($sql);
+            $stmt->bindParam(":user_id", $key);
+            $stmt->execute();
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $total_qualified     = count($result);
+            $total_builder_bonus = 100 * $total_qualified;
+
+            $this->members_builder_bonus[] = ['member_id' => $key, 'total_builder_bonus' => $total_builder_bonus];
+        }
     }
 
     private function processBuilderBonus()
     {
-        
+        //Inser builder bonus data
     }
 
     protected function setDates($end_date = null)
