@@ -17,6 +17,7 @@ use App\OfficeGiftCard;
 use Commissions\BackgroundWorkerLogger;
 use Commissions\CsvReport;
 use Commissions\CommissionTypes\SampleCommission;
+use Commissions\CommissionTypes\BuilderBonus;
 use Commissions\Exceptions\AlertException;
 use Commissions\Repositories\PayoutRepository;
 use Illuminate\Support\Facades\DB;

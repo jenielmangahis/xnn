@@ -6,104 +6,92 @@ namespace Commissions\CommissionTypes;
 use App\Rank;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
-use App\DailyVolume;
 use \PDO;
 use DateTime;
 
+use App\DailyVolume;
 use App\CommissionPeriod;
 use Commissions\CommissionTypes\CommissionType;
+use Commissions\Contracts\CommissionTypeInterface;
 
 
-final class BuilderBonus extends Console
+class BuilderBonus extends CommissionType implements CommissionTypeInterface
 {
     protected $db;
-    protected $end_date;
-    protected $start_date;
-    protected $qualified_members;
-    protected $members_builder_bonus;
-    protected $root_user_id;
 
-    public function __construct($end_date = null)
+    public function generateCommission($start, $length)
     {
-        $this->db = DB::connection()->getPdo();
-        $this->root_user_id = 3;
+        $this->log("Processing builder bonus");
 
-        $this->setDates($end_date);
+        $consultants = $this->getQualifiedConsultants();
+        foreach( $consultants as $c ){
+            $sponsor_id = $c['sponsor_id'];
+            $user_id    = $c['user_id'];
+
+            $this->insertPayout(
+                $sponsor_id,
+                $user_id,
+                100,
+                0,
+                0,
+                " $sponsor_id has earned a builder bonus amounting of 100 ",
+                $c['transaction_id'],
+                0,
+                $sponsor_id
+            );
+        }
+
     }
 
-    private function process($commission_period_id)
+    private function getQualifiedConsultants()
     {
-        $period = CommissionPeriod::find($commission_period_id);
-        
-        DB::transaction(function () {
-            $this->setMainParameters();
 
-            CommissionTypes::log("Start Date: " . $this->getStartDate());
-            CommissionTypes::log("End Date: " . $this->getEndDate());
-
-            CommissionTypes::log("Fetching qualified members");
-            $this->getQualifiedMembers();
-            
-            CommissionTypes::log("Processing builder bonus");
-            $this->computeBuilderBonus();
-            $this->processBuilderBonus();
-        }, 3);
-    }
-
-    private function getQualifiedMembers()
-    {
+        $start_date = $this->getPeriodStartDate();
+        $end_date   = $this->getPeriodEndDate();
 
         $sql = "
-            SELECT dv.user_id, ca.cat_id, MAX(dv.cv) AS total_cv
-            FROM cm_daily_volumes AS dv
-                LEFT JOIN cm_affiliates AS ca ON dv.user_id = ca.user_id 
-                LEFT JOIN users AS u ON dv.user_id = u.id 
-            WHERE ca.cat_id IN(13,16,14) AND dv.cv >= 50      
-            GROUP BY ca.user_id 
+            SELECT 
+                t.transaction_id,
+                t.sponsor_id,
+                t.user_id
+            FROM v_cm_transactions t  
+            JOIN users u ON t.sponsor_id = u.id
+            JOIN cm_daily_volumes cdv ON t.sponsor_id = cdv.user_id
+            JOIN cm_daily_ranks cdr ON cdr.volume_id = cdv.id 
+            WHERE 
+                t.purchaser_catid IN('8074,8077,8080,8083') AND 
+                t.is_autoship = 1 
+                AND 
+                    t.transaction_date BETWEEN '$start_date' AND '$end_date'
+                AND 
+                EXISTS (
+                    SELECT 1
+                    FROM oc_autoship oa 
+                    WHERE oa.trans_id = t.transaction_id
+                )
+                AND 
+                (
+                    SELECT SUM(dva.cv) 
+                    FROM cm_daily_volumes dva 
+                    WHERE dva.user_id = t.sponsor_id
+                ) >= 50
+                AND 
+                (
+                    SELECT SUM(ta.computed_rv) 
+                    FROM v_cm_transactions ta 
+                    WHERE ta.user_id = t.sponsor_id
+                ) >= 400 
+                AND u.active = 'Yes'
+                AND cdr.rank_id >= 1
+                AND cdr.rank_date = '$end_date'
+            GROUP BY t.sponsor_id
         ";
 
         $db = DB::connection()->getPdo();
         $stmt = $db->prepare($sql);
         $stmt->execute();
         $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-        foreach($result as $r){
-            $this->qualified_members[$r->user_id] = $r->user_id;
-        }
-    }
-
-    private function computeBuilderBonus()
-    {
-        foreach($this->qualified_members as $key => $value){
-            //Get member qualified consultants
-            $sql = "
-                SELECT dv.user_id, ca.cat_id, MAX(dv.cv) AS total_cv
-                FROM cm_daily_volumes AS dv
-                    LEFT JOIN cm_affiliates AS ca ON dv.user_id = ca.user_id 
-                    LEFT JOIN users AS u ON dv.user_id = u.id 
-                WHERE dv.cv >= 50 AND dv.user_id = (
-                        SELECT uu.id 
-                        FROM users uu 
-                        WHERE uu.leaderid = :user_id
-                    )
-                GROUP BY ca.user_id 
-            ";
-
-            $db = DB::connection()->getPdo();
-            $stmt = $db->prepare($sql);
-            $stmt->bindParam(":user_id", $key);
-            $stmt->execute();
-            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-            $total_qualified     = count($result);
-            $total_builder_bonus = 100 * $total_qualified;
-
-            $this->members_builder_bonus[] = ['member_id' => $key, 'total_builder_bonus' => $total_builder_bonus];
-        }
-    }
-
-    private function processBuilderBonus()
-    {
-        //Insert builder bonus data
+        return $result;
     }
 
     protected function setDates($end_date = null)
