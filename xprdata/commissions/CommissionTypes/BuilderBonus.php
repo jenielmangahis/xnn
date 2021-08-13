@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Commissions;
+namespace Commissions\CommissionTypes;
 
 use App\Rank;
 use Carbon\Carbon;
@@ -9,6 +9,9 @@ use Illuminate\Support\Facades\DB;
 use App\DailyVolume;
 use \PDO;
 use DateTime;
+
+use App\CommissionPeriod;
+use Commissions\CommissionTypes\CommissionType;
 
 
 final class BuilderBonus extends Console
@@ -28,18 +31,20 @@ final class BuilderBonus extends Console
         $this->setDates($end_date);
     }
 
-    private function process()
+    private function process($commission_period_id)
     {
+        $period = CommissionPeriod::find($commission_period_id);
+        
         DB::transaction(function () {
             $this->setMainParameters();
 
-            $this->log("Start Date: " . $this->getStartDate());
-            $this->log("End Date: " . $this->getEndDate());
+            CommissionTypes::log("Start Date: " . $this->getStartDate());
+            CommissionTypes::log("End Date: " . $this->getEndDate());
 
-            $this->log("Fetching qualified members");
+            CommissionTypes::log("Fetching qualified members");
             $this->getQualifiedMembers();
             
-            $this->log("Processing builder bonus");
+            CommissionTypes::log("Processing builder bonus");
             $this->computeBuilderBonus();
             $this->processBuilderBonus();
         }, 3);
@@ -98,7 +103,7 @@ final class BuilderBonus extends Console
 
     private function processBuilderBonus()
     {
-        //Inser builder bonus data
+        //Insert builder bonus data
     }
 
     protected function setDates($end_date = null)

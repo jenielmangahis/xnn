@@ -3,7 +3,7 @@
 namespace App\Console\Commands\Commission;
 
 use Carbon\Carbon;
-use Commissions\BuilderBonus;
+use Commissions\CommissionTypes\BuilderBonus;
 use Illuminate\Console\Command;
 
 class RunBuilderBonus extends Command
