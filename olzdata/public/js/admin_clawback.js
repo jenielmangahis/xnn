@@ -295,57 +295,55 @@
                 let $form = $('#form-refund-order');
 
                 swal({
-                        title: "Are you sure you want to clawback/refund Order ID " + $('#form-refund-order [name="transaction_id"]').val() + "? " + (type == 'commission' ? "(Commission Only)" :"(Merchant & Commission)"),
-                        text: "You cannot undo this.",
-                        type: "warning",
-                        showCancelButton: true,
-                        confirmButtonClass: "btn-danger",
-                        confirmButtonText: "Confirm Refund",
-                        closeOnConfirm: false,
-                        showLoaderOnConfirm: true,
-                    },
-                    function () {
-
-                        // if (!proceed) {
-                        //     swal.close();
-                        //     return;
-                        // }
-                        console.log($form.serialize() + "&set_user_id=" + $('#member').val() + "&type=" + type);
-                        $.post(api_url + 'admin/clawback/refund-order', $form.serialize() + "&set_user_id=" + $('#member').val() + "&type=" + type, function (result) {
-                            console.log(result);
-                            $('#modal-refund-order').modal('hide');
-                            $dt.clear().draw();
-                            $dt.responsive.recalc()
-                            $this.error.message = null;
-                            $this.order = {
-                                order_id: null,
-                                purchaser: null,
-                                sub_total: null,
-                                tax: null,
-                                shipping_fee: null,
-                                total: null,
-                                percentage_off: null,
-                                amount_off: null,
-                                commission_value: null,
-                                is_full_order: null,
-                                is_clawback: 0
-                            };
-                            swal("Successfully added for clawback/refund!", "", "success");
-                        }, 'json').fail(function (xhr, status, error) {
-                            if(xhr.responseJSON.message != undefined && xhr.responseJSON.message == "Validation error") {
-                                let errors = xhr.responseJSON.errors;
-                                $this.error.message = errors[Object.keys(errors)[0]][0];
-                            } else if(xhr.responseJSON.error != undefined && typeof xhr.responseJSON.error === "string") {
-                                $this.error.message = xhr.responseJSON.error;
-                            } else if(xhr.responseJSON.message != undefined) {
-                                $this.error.message = xhr.responseJSON.message;
-                            } else {
-                                $this.error.message = 'Something went wrong!';
-                            }
-                            swal.close();
-                        });
-
+                    title: "Are you sure you want to clawback/refund Order ID " + $('#form-refund-order [name="transaction_id"]').val() + "? " + (type == 'commission' ? "(Commission Only)" :"(Merchant & Commission)"),
+                    text: "You cannot undo this.",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonClass: "btn-danger",
+                    confirmButtonText: "Confirm Refund",
+                    closeOnConfirm: false,
+                    showLoaderOnConfirm: true,
+                })
+                .then((result) => {
+                    // if (!proceed) {
+                    //     swal.close();
+                    //     return;
+                    // }
+                    console.log($form.serialize() + "&set_user_id=" + $('#member').val() + "&type=" + type);
+                    $.post(api_url + 'admin/clawback/refund-order', $form.serialize() + "&set_user_id=" + $('#member').val() + "&type=" + type, function (result) {
+                        console.log(result);
+                        $('#modal-refund-order').modal('hide');
+                        $dt.clear().draw();
+                        $dt.responsive.recalc()
+                        $this.error.message = null;
+                        $this.order = {
+                            order_id: null,
+                            purchaser: null,
+                            sub_total: null,
+                            tax: null,
+                            shipping_fee: null,
+                            total: null,
+                            percentage_off: null,
+                            amount_off: null,
+                            commission_value: null,
+                            is_full_order: null,
+                            is_clawback: 0
+                        };
+                        swal("Successfully added for clawback/refund!", "", "success");
+                    }, 'json').fail(function (xhr, status, error) {
+                        if(xhr.responseJSON.message != undefined && xhr.responseJSON.message == "Validation error") {
+                            let errors = xhr.responseJSON.errors;
+                            $this.error.message = errors[Object.keys(errors)[0]][0];
+                        } else if(xhr.responseJSON.error != undefined && typeof xhr.responseJSON.error === "string") {
+                            $this.error.message = xhr.responseJSON.error;
+                        } else if(xhr.responseJSON.message != undefined) {
+                            $this.error.message = xhr.responseJSON.message;
+                        } else {
+                            $this.error.message = 'Something went wrong!';
+                        }
+                        swal.close();
                     });
+                });
             },
             showMoveOrder(order) {
                 this.order.invoice = order.invoice;
