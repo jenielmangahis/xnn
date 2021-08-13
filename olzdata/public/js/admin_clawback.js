@@ -255,8 +255,7 @@
                 // if(this.is_clawback) return;
 
                 let _this = this;
-
-                Swal.fire({
+                swal({
                     title: "Are you sure you want to clawback/refund Order ID " + this.transaction_id + " - Items? " + (type == 'commission' ? "(Commission Only)" :"(Merchant & Commission)"),
                     text: "You cannot undo this.",
                     type: "warning",
@@ -265,7 +264,8 @@
                     confirmButtonText: "Confirm Refund",
                     closeOnConfirm: false,
                     showLoaderOnConfirm: true,
-                }).then((result) => {
+                })
+                .then((result) => {
                     client.post(`admin/clawback/refund-order-products`, {
                         products : _this.products,
                         transaction_id: _this.transaction_id,
