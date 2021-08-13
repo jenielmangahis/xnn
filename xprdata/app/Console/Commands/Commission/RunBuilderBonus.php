@@ -29,7 +29,7 @@ class RunBuilderBonus extends Command
      *
      * @return void
      */
-    public function __construct(VolumesAndRanks $builderBonus)
+    public function __construct(BuilderBonus $builderBonus)
     {
         parent::__construct();
         $this->builderBonus = $builderBonus;
