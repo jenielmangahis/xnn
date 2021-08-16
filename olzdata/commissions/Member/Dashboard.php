@@ -660,10 +660,10 @@ class Dashboard
         $start_date = date("Y-07-01");
 
         if( $today < $start_date ){
-         $start_date   = date("Y-07-07", strtotime(date("Y-m-d", strtotime($start_date)) . " - 1 year"));               
+			$start_date   = date("Y-07-01", strtotime(date("Y-m-d", strtotime($start_date)) . " - 1 year"));               
         }else{
-         $today_year   = date("Y", strtotime($today));
-         $start_date   = date($today_year . "-07-07", strtotime(date("Y-m-d", strtotime($start_date)) . " - 1 year"));               
+			$today_year   = date("Y", strtotime($today));
+			$start_date   = date($today_year . "-07-01", strtotime(date("Y-m-d", strtotime($start_date)) . " - 1 year"));               
         }
 
         $end_date   = date("Y-06-30", strtotime(date("Y-m-d", strtotime($start_date)) . " + 1 year"));
