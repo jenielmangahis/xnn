@@ -262,7 +262,10 @@
                     showCancelButton: true,
                     confirmButtonClass: "btn-danger",
                     //confirmButtonText: "Confirm Refund",
-                    buttons: [true, "Confirm Refund"],
+                    buttons: {
+                        cancel: true,
+                        confirm: "Confirm Refund",
+                    },                    
                     closeOnConfirm: false,
                     showLoaderOnConfirm: true,
                 })
@@ -301,7 +304,10 @@
                     //showCancelButton: true,
                     confirmButtonClass: "btn-danger",
                     //confirmButtonText: "Confirm Refund",
-                    buttons: [true, "Confirm Refund"],
+                    buttons: {
+                        cancel: true,
+                        confirm: "Confirm Refund",
+                    },  
                     closeOnConfirm: false,
                     showLoaderOnConfirm: true,
                 })
