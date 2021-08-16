@@ -263,24 +263,29 @@
                     closeModal: false,
                 })
                 .then((result) => {
-                    client.post(`admin/clawback/refund-order-products`, {
-                        products : _this.products,
-                        transaction_id: _this.transaction_id,
-                        set_user_id: $('#member').val(),
-                        type: type
-                    }).then(response => {
+                    if( result ){
+                        client.post(`admin/clawback/refund-order-products`, {
+                            products : _this.products,
+                            transaction_id: _this.transaction_id,
+                            set_user_id: $('#member').val(),
+                            type: type
+                        }).then(response => {
 
-                        $dt.clear().draw();
-                        $dt.responsive.recalc();
+                            $dt.clear().draw();
+                            $dt.responsive.recalc();
 
-                        _this.products = [];
-                        _this.transaction_id = null;
+                            _this.products = [];
+                            _this.transaction_id = null;
 
-                        $('#modal-order-items').modal('hide');
-                        swal("Successfully added for clawback/refund!", "", "success");
-                    }).catch(this.axiosErrorHandler).finally(()=> {
+                            $('#modal-order-items').modal('hide');
+                            swal("Successfully added for clawback/refund!", "", "success");
+                        }).catch(this.axiosErrorHandler).finally(()=> {
 
-                    });
+                        });
+                    }else{
+                       swal.close(); 
+                    }
+                    
                 });
             },
             onSubmitRefund: function (type){
