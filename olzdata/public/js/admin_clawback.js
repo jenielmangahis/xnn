@@ -258,22 +258,9 @@
                 swal({
                     title: "Are you sure you want to clawback/refund Order ID " + this.transaction_id + " - Items? " + (type == 'commission' ? "(Commission Only)" :"(Merchant & Commission)"),
                     text: "You cannot undo this.",
-                    type: "warning",
-                    showCancelButton: true,
-                    confirmButtonClass: "btn-danger",
-                    //confirmButtonText: "Confirm Refund",
-                    buttons: {
-                        cancel: {
-                            text: "Cancel",
-                            value: null,
-                            visible: true,
-                            className: "",
-                            closeModal: true,
-                        },
-                        confirm: "Confirm Refund",
-                    },                    
-                    closeOnConfirm: false,
-                    showLoaderOnConfirm: true,
+                    icon: "warning",
+                    buttons: ["Cancel", "Confirm Refund"],
+                    closeModal: false
                 })
                 .then((result) => {
                     client.post(`admin/clawback/refund-order-products`, {
