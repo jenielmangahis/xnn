@@ -307,7 +307,7 @@
                         
                         this.silverStartUpDetails.silverTotalPRS = typeof details.silver_total_prs !== "undefined" ? details.silver_total_prs : 0;
                         this.silverStartUpDetails.silverTotalGiftCards = typeof details.total_gift_cards !== "undefined" ? details.total_gift_cards : 0;
-                        this.silverStartUpDetails.silverNotice = "Silver Start Up Program Progress " + this.silverStartUpDetails.silverTotalPRS.toFixed(2) + " worth of Gift Cards so far";
+                        this.silverStartUpDetails.silverNotice = "Silver Start Up Program Progress " + parseFloat(this.silverStartUpDetails.silverTotalGiftCards).toFixed(2) + " worth of Gift Cards so far";
                         this.silverStartUpDetails.silverPercentage = (this.silverStartUpDetails.silverTotalPRS / 4000) * 100;
                         this.silverStartUpDetails.silverDaysDiffAffiliatedDate = typeof details.diff_affiliated_date !== "undefined" ? details.diff_affiliated_date : 0;
                     })
