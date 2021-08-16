@@ -305,7 +305,13 @@
                     confirmButtonClass: "btn-danger",
                     //confirmButtonText: "Confirm Refund",
                     buttons: {
-                        cancel: true,
+                        cancel: {
+                            text: "Cancel",
+                            value: null,
+                            visible: false,
+                            className: "",
+                            closeModal: true,
+                        },
                         confirm: "Confirm Refund",
                     },  
                     closeOnConfirm: false,
