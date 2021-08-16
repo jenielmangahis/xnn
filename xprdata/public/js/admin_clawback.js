@@ -297,14 +297,14 @@
                         title: "Are you sure you want to clawback/refund Order ID " + $('#form-refund-order [name="transaction_id"]').val() + "? " + (type == 'commission' ? "(Commission Only)" :"(Merchant & Commission)"),
                         text: "You cannot undo this.",
                         type: "warning",
-                        showCancelButton: true,
+                        buttons: [true, "Confirm Refund"],
+                        //showCancelButton: true,
                         confirmButtonClass: "btn-danger",
-                        confirmButtonText: "Confirm Refund",
+                        //confirmButtonText: "Confirm Refund",
                         closeOnConfirm: false,
                         showLoaderOnConfirm: true,
                     },
                     function () {
-
                         // if (!proceed) {
                         //     swal.close();
                         //     return;
