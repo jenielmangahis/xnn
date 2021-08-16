@@ -599,7 +599,7 @@ class Dashboard
        $sql = "
             SELECT COALESCE(dv.prs, 0.00) AS silver_total_prs,
                 (
-                  SELECT SUM(cgc.amount) 
+                  SELECT COALESCE(SUM(cgc.amount), 0)
                   FROM cm_gift_cards cgc 
                   WHERE cgc.user_id = dv.user_id AND cgc.source = 'Silver Start Up - 90 Days'
                 ) AS total_gift_cards,
