@@ -598,6 +598,11 @@ class Dashboard
     {
        $sql = "
             SELECT COALESCE(dv.prs, 0.00) AS silver_total_prs,
+                (
+                  SELECT SUM(cgc.amount) 
+                  FROM cm_gift_cards cgc 
+                  WHERE cgc.user_id = dv.user_id AND cgc.source = 'Silver Start Up - 90 Days'
+                ) AS total_gift_cards,
                 DATEDIFF(NOW(), ca.affiliated_date) AS diff_affiliated_date
             FROM cm_daily_volumes AS dv
             LEFT JOIN cm_affiliates ca ON dv.user_id = ca.user_id
