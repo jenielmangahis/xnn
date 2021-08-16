@@ -259,8 +259,20 @@
                     title: "Are you sure you want to clawback/refund Order ID " + this.transaction_id + " - Items? " + (type == 'commission' ? "(Commission Only)" :"(Merchant & Commission)"),
                     text: "You cannot undo this.",
                     icon: "warning",
-                    buttons: ["Cancel", "Confirm Refund"],
-                    closeModal: false
+                    confirm: {
+                      text: "Confirm Refund",
+                      value: true,
+                      visible: true,
+                      className: "",
+                      closeModal: true
+                    },
+                    cancel: {
+                      text: "Cancel",
+                      value: false,
+                      visible: true,
+                      className: "",
+                      closeModal: true,
+                    }
                 })
                 .then((result) => {
                     client.post(`admin/clawback/refund-order-products`, {
