@@ -261,7 +261,8 @@
                     type: "warning",
                     showCancelButton: true,
                     confirmButtonClass: "btn-danger",
-                    confirmButtonText: "Confirm Refund",
+                    //confirmButtonText: "Confirm Refund",
+                    buttons: [true, "Confirm Refund"],
                     closeOnConfirm: false,
                     showLoaderOnConfirm: true,
                 })
@@ -297,9 +298,10 @@
                     title: "Are you sure you want to clawback/refund Order ID " + $('#form-refund-order [name="transaction_id"]').val() + "? " + (type == 'commission' ? "(Commission Only)" :"(Merchant & Commission)"),
                     text: "You cannot undo this.",
                     type: "warning",
-                    showCancelButton: true,
+                    //showCancelButton: true,
                     confirmButtonClass: "btn-danger",
-                    confirmButtonText: "Confirm Refund",
+                    //confirmButtonText: "Confirm Refund",
+                    buttons: [true, "Confirm Refund"],
                     closeOnConfirm: false,
                     showLoaderOnConfirm: true,
                 })
