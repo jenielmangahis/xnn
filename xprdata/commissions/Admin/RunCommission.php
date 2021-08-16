@@ -537,6 +537,8 @@ class RunCommission
 
         switch (+$commission_type_id) {
             case config('commission.commission-types.sample-commission'):
+            case config('commission.commission-types.builder-bonus'):
+                return new BuilderBonus($period, $background_worker_logger, $payout_repository);
             default:
                 return new SampleCommission($period, $background_worker_logger, $payout_repository);
         }
