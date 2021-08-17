@@ -15,7 +15,7 @@ use Commissions\CommissionTypes\CommissionType;
 use Commissions\Contracts\CommissionTypeInterface;
 
 
-class BuilderBonus extends CommissionType implements CommissionTypeInterface
+class BuilderBonus extends CommissionType
 {
     protected $db;
 
