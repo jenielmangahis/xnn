@@ -18,7 +18,7 @@ class BuilderBonus extends CommissionType implements CommissionTypeInterface
 
     public function count()
     {
-        return count($this->getOrders());
+        return count($this->getQualifiedConsultants());
     }
     
     public function generateCommission($start, $length)
