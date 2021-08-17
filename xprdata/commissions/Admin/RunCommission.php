@@ -139,7 +139,7 @@ class RunCommission
                 $commission->beforeCommissionRun();
 
                 Clawback::deleteClawbackPendingPayoutsByPeriod($commission_period_id);
-                GiftCard::deleteByPeriod($commission_period_id);
+                //GiftCard::deleteByPeriod($commission_period_id);
 
                 DB::table("cm_commission_payouts")
                     ->join('cm_commission_periods AS pr', 'pr.id', '=', 'cm_commission_payouts.commission_period_id')
