@@ -77,12 +77,12 @@ class BuilderBonus extends CommissionType implements CommissionTypeInterface
                     FROM cm_daily_volumes dva 
                     WHERE dva.user_id = t.sponsor_id
                 ) >= 50
-                AND 
+                /*AND 
                 (
                     SELECT SUM(ta.computed_rv) 
                     FROM v_cm_transactions ta 
                     WHERE ta.user_id = t.sponsor_id
-                ) >= 400 
+                ) >= 400*/ 
                 AND u.active = 'Yes'
                 AND cdr.rank_id >= 1
                 AND cdr.rank_date = '$end_date'
