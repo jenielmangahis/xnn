@@ -501,11 +501,12 @@ class RunCommission
                     $query->lockForUpdate();
                 }])->lockForUpdate()->find($background_worker_process_id);
 
+                $b = $process->worker;
+                
                 if ($process != null) {
                     $process->status = BackgroundWorkerProcess::STATUS_FAILED;
                     $process->save();
-
-                    $b = $process->worker;
+                    
                     // $b->total_task_done = $b->total_task;
                     $b->is_running = 'FAILED';
                     $b->save();
