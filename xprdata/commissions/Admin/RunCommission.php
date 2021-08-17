@@ -509,8 +509,6 @@ class RunCommission
                     // $b->total_task_done = $b->total_task;
                     $b->is_running = 'FAILED';
                     $b->save();
-                }else{
-                    $b = BackgroundWorkerProcess::find($background_worker_process_id)->worker;
                 }
 
                 $runningProcesses = $b->processes()->running()->get();
