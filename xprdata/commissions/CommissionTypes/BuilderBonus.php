@@ -16,6 +16,11 @@ class BuilderBonus extends CommissionType implements CommissionTypeInterface
 {
     protected $db;
 
+    public function count()
+    {
+        return count($this->getOrders());
+    }
+    
     public function generateCommission($start, $length)
     {
         $this->log("Processing builder bonus");
