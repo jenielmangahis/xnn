@@ -501,12 +501,11 @@ class RunCommission
                     $query->lockForUpdate();
                 }])->lockForUpdate()->find($background_worker_process_id);
 
-                $b = $process->worker;
-                
                 if ($process != null) {
                     $process->status = BackgroundWorkerProcess::STATUS_FAILED;
                     $process->save();
-                    
+
+                    $b = $process->worker;
                     // $b->total_task_done = $b->total_task;
                     $b->is_running = 'FAILED';
                     $b->save();
@@ -537,7 +536,7 @@ class RunCommission
         $payout_repository = new PayoutRepository();
 
         switch (+$commission_type_id) {
-            case 3://config('commission.commission-types.builder-bonus'):
+            case config('commission.commission-types.builder-bonus'):
                 return new BuilderBonus($period, $background_worker_logger, $payout_repository);    
             case config('commission.commission-types.sample-commission'):
             default:

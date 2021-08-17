@@ -3,19 +3,16 @@
 
 namespace Commissions\CommissionTypes;
 
-use App\Rank;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use \PDO;
 use DateTime;
 
-use App\DailyVolume;
-use App\CommissionPeriod;
 use Commissions\CommissionTypes\CommissionType;
 use Commissions\Contracts\CommissionTypeInterface;
 
 
-class BuilderBonus extends CommissionType
+class BuilderBonus extends CommissionType implements CommissionTypeInterface
 {
     protected $db;
 
