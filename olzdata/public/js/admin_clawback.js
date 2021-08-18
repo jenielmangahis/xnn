@@ -40,6 +40,7 @@
                     commission_value: null,
                     is_full_order: null,
                     new_purchaser_id: null,
+                    sharing_link_order: null,
                     is_clawback: 0
                 },
 
@@ -375,7 +376,7 @@
 
                         client.post(`admin/move-order/orders/${this.order.order_id}/change`, {
                             modified: $('#member').val(), 
-                            is_sharing_link_order: $('#is-sharing-link').val(), 
+                            is_sharing_link_order: this.order.sharing_link_order, 
                             ...this.order
                         }).then(response => {
                             $('#modal-move').modal('hide');
