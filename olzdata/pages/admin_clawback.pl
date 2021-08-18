@@ -83,24 +83,24 @@ print <<EOS;
                     </table>
                 </div>
                 <div role="tabpanel" class="tab-pane" id="tab-logs">
-
-                    <table id="table-logs" class="table table-bordered" style="width: 100%;">
-                        <thead class="table__header table__header--bg-primary">
-                        <tr class="table__row">
-                            <th class="table__cell">Order ID</th>
-                            <th class="table__cell">New Purchaser</th>
-                            <th class="table__cell">Old Purchaser</th>
-                            <th class="table__cell">New Transaction Date</th>
-                            <th class="table__cell">Old Transaction Date</th>
-                            <th class="table__cell">Date</th>
-                            <th class="table__cell">Changed by</th>
-                            <th class="table__cell">Sharing Link Order</th>
-                        </tr>
-                        </thead>
-                        <tbody class="table__body">
-                        </tbody>
-                    </table>
-
+                    <div class="table-responsive">
+                        <table id="table-logs" class="table table-bordered" style="width: 100%;">
+                            <thead class="table__header table__header--bg-primary">
+                            <tr class="table__row">
+                                <th class="table__cell">Order ID</th>
+                                <th class="table__cell">New Purchaser</th>
+                                <th class="table__cell">Old Purchaser</th>
+                                <th class="table__cell">New Transaction Date</th>
+                                <th class="table__cell">Old Transaction Date</th>
+                                <th class="table__cell">Date</th>
+                                <th class="table__cell">Changed by</th>
+                                <th class="table__cell">Sharing Link Order</th>
+                            </tr>
+                            </thead>
+                            <tbody class="table__body">
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
 
