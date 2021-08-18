@@ -98,46 +98,21 @@ print <<EOS;
                                 Sponsored Leader or higher:
                                 <span v-if="!isRankLoaded"><i class="fa fa-spinner fa-spin"></i></span>
                                 <span v-else>{{ currentRankDetails.sponsoredLeaderHigher }}</span>
-                            </div> 
-                            <div class="h6 mb-0 mt-2 mb-3 font-weight-bold">
-                                Level 1 Leader 1:
-                                <span v-if="!isRankLoaded"><i class="fa fa-spinner fa-spin"></i></span>
-                                <span v-else></span>
-                            </div>                                                                                     
+                            </div>                                                                               
 
                             <div class="h6 mb-0 mt-4 font-weight-bold">
                                 Next Rank:
                                 <span v-if="!isRankLoaded"><i class="fa fa-spinner fa-spin"></i></span>
                                 <span v-else>{{ currentRankDetails.nextRank }}</span>
                             </div>
-                            <div class="h6 mb-0 mt-1 font-weight-bold">
+                            <div class="h5 mb-0 mt-1 font-weight-bold">
                                 Needs:
                                 <span v-if="!isRankLoaded"><i class="fa fa-spinner fa-spin"></i></span>
-                            </div>
-                            <div class="h6 mb-0 mt-2 font-weight-bold">
-                                PRS:
-                                <span v-if="!isRankLoaded"><i class="fa fa-spinner fa-spin"></i></span>
-                                <span v-else>{{ currentRankDetails.needsPRS }}</span>
-                            </div>  
-                            <div class="h6 mb-0 mt-2 font-weight-bold">
-                                GRS:
-                                <span v-if="!isRankLoaded"><i class="fa fa-spinner fa-spin"></i></span>
-                                <span v-else>{{ currentRankDetails.needsGRS }}</span>
-                            </div>   
-                            <div class="h6 mb-0 mt-2 font-weight-bold">
-                                Sponsored Qualified Representatives:
-                                <span v-if="!isRankLoaded"><i class="fa fa-spinner fa-spin"></i></span>
-                                <span v-else>{{ currentRankDetails.sponsoredQualifiedRepresentativesCount }}</span>
-                            </div>
-                            <div class="h6 mb-0 mt-2 font-weight-bold">
-                                Sponsored Leader or higher:
-                                <span v-if="!isRankLoaded"><i class="fa fa-spinner fa-spin"></i></span>
-                                <span v-else>{{ currentRankDetails.sponsoredLeaderHigher }}</span>
-                            </div> 
-                            <div class="h6 mb-0 mt-2 mb-3 font-weight-bold">
-                                Level 1 Leader 1:
-                                <span v-if="!isRankLoaded"><i class="fa fa-spinner fa-spin"></i></span>
-                                <span v-else></span>
+                                <div v-else>
+                                    <ul class="list-unstyled">
+                                        <li v-for="(n, index) in currentRankDetails.needs" v-bind:key="n.description">{{n.description}}: <span>{{n.value}}</span> </li>
+                                    </ul>
+                                </div>
                             </div>                                                                                
 
                         </div>
