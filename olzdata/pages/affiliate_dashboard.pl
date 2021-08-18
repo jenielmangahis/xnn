@@ -98,13 +98,7 @@ print <<EOS;
                                 Sponsored Leader or higher:
                                 <span v-if="!isRankLoaded"><i class="fa fa-spinner fa-spin"></i></span>
                                 <span v-else>{{ currentRankDetails.sponsoredLeaderHigher }}</span>
-                            </div> 
-                            <div class="h6 mb-0 mt-2 mb-3 font-weight-bold">
-                                Level 1 Leader 1:
-                                <span v-if="!isRankLoaded"><i class="fa fa-spinner fa-spin"></i></span>
-                                <span v-else></span>
-                            </div>                                                                                     
-
+                            </div>
                             <div class="h6 mb-0 mt-4 font-weight-bold">
                                 Next Rank:
                                 <span v-if="!isRankLoaded"><i class="fa fa-spinner fa-spin"></i></span>
