@@ -764,11 +764,6 @@ final class VolumesAndRanks extends Console
 
     public static function getNextRankRequirementsByDailyVolume(DailyVolume $volume, Rank $next_rank)
     {
-        echo "<pre>";
-        echo "test";
-        print_r($volume);
-        print_r($next_rank);
-        exit;
         if ($next_rank === null || $volume === null) return [];
 
         $needs = [];
@@ -841,12 +836,16 @@ final class VolumesAndRanks extends Console
         }
 
 
-        if (false && "test") {
+        /*if (false && "test") {
             $needs[] = [
                 'html' => '<h1>HTML TEST</h1>',
             ];
-        }
+        }*/
 
+        $needs[] = [
+                'html' => '<h1>HTML TEST</h1>',
+            ];
+            
         return $needs;
     }
 
