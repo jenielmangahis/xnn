@@ -172,11 +172,12 @@ class Dashboard
             $result['referral_points_details'] = [];
         }
 
-        /*if ($result['next_rank_id'] !== null) {
+        if ($result['next_rank_id'] !== null) {
             $result['needs'] = VolumesAndRanks::getNextRankRequirementsByDailyVolume(DailyVolume::ofMember($user_id)->today()->first(), Rank::find($result['next_rank_id']));
         } else {
             $result['needs'] = [];
-        }*/
+        }
+        
         $result['needs'] = [];
 
         return $result;
