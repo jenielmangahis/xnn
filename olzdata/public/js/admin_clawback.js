@@ -364,33 +364,34 @@
             save() {
                 swal({
                     title: `Are you sure you want to update Order ID ${this.order.order_id}?`,
-                    // text: "You cannot undo this.",
-                    type: "warning",
-                    confirmButtonClass: "btn-success",
-                    confirmButtonText: "Confirm",
-                    cancelButtonText: "Cancel",
-                    showCancelButton: true,
-                    closeOnConfirm: false,
-                    showLoaderOnConfirm: true,
+                    //text: "You cannot undo this.",
+                    icon: "warning",
+                    buttons: ["Cancel", "Confirm"],
+                    closeModal: false,
                 })
                 .then((result) => {
-                    this.is_saving = 1;
+                    if( result ){
+                        this.is_saving = 1;
 
-                    client.post(`admin/move-order/orders/${this.order.order_id}/change`, {
-                        modified: $('#member').val(), 
-                        is_sharing_link_order: $('#is-sharing-link').val(), 
-                        ...this.order
-                    }).then(response => {
-                        $('#modal-move').modal('hide');
-                        // swal.close();
-                        swal("Successfully updated!", "", "success");
-                        $dt.clear().draw();
-                        $dt.responsive.recalc();
-                        $dtLogs.clear().draw();
-                        $dtLogs.responsive.recalc();
-                    }).catch(this.axiosErrorHandler).finally(()=> {
-                        this.is_saving = 0;
-                    });
+                        client.post(`admin/move-order/orders/${this.order.order_id}/change`, {
+                            modified: $('#member').val(), 
+                            is_sharing_link_order: $('#is-sharing-link').val(), 
+                            ...this.order
+                        }).then(response => {
+                            $('#modal-move').modal('hide');
+                            // swal.close();
+                            swal("Successfully updated!", "", "success");
+                            $dt.clear().draw();
+                            $dt.responsive.recalc();
+                            $dtLogs.clear().draw();
+                            $dtLogs.responsive.recalc();
+                        }).catch(this.axiosErrorHandler).finally(()=> {
+                            this.is_saving = 0;
+                        });
+                    }else{
+                        swal.close(); 
+                    }
+                    
                 });
             },
             axiosErrorHandler(error) {
