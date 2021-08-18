@@ -177,8 +177,8 @@ class Dashboard
         } else {
             $result['needs'] = [];
         }
-        
-        $result['needs'] = [];
+
+        //$result['needs'] = [];
 
         return $result;
     }

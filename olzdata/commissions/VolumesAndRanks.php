@@ -836,16 +836,12 @@ final class VolumesAndRanks extends Console
         }
 
 
-        /*if (false && "test") {
+        if (false && "test") {
             $needs[] = [
                 'html' => '<h1>HTML TEST</h1>',
             ];
-        }*/
+        }
 
-        $needs[] = [
-                'html' => '<h1>HTML TEST</h1>',
-            ];
-            
         return $needs;
     }
 
