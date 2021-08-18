@@ -226,7 +226,7 @@ class MoveOrder
             $transaction->transactiondate = $data['transaction_date'];
             $transaction->save();
 
-            if( isset($data['is_sharing_link_order']) ){
+            if( $data['is_sharing_link_order'] == 'on' ){
                 $is_sharing_link_order = 1;
             }else{
                 $is_sharing_link_order = 0;
