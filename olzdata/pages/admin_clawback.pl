@@ -7,6 +7,7 @@ print <<EOS;
 <link rel="stylesheet" href="$commission_engine_api_url/css/datepicker.css?v=$app_css_version" />
 <link rel="stylesheet" href="$commission_engine_api_url/css/select2-bootstrap.css"/>
 <link rel="stylesheet" href="$commission_engine_api_url/css/admin_clawback.css?v=1" />
+<link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css" rel="stylesheet">
 <style>
 .hidden{
     display:none;
