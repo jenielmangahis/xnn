@@ -8,7 +8,6 @@ use Illuminate\Support\Facades\DB;
 use \PDO;
 use DateTime;
 
-use Commissions\CommissionTypes\CommissionType;
 use Commissions\Contracts\CommissionTypeInterface;
 
 
