@@ -37,7 +37,7 @@ class CommissionAdjustment extends Model
                 CONCAT('Commission Adjustment: ', IFNULL(a.remarks, 'None'))
             FROM cm_commission_adjustments a
             JOIN cm_commission_periods pr ON pr.id = a.commission_period_id
-            WHERE a.is_deleted = 0
+            WHERE a.isdeleted = 0
                 AND pr.is_locked = 0
                 AND pr.id = ?
         ", [$period_id]);
