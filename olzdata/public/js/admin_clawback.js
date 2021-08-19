@@ -174,11 +174,10 @@
                 $('#end-date').ddatepicker('setDate', new Date());
 
                 // Transaction Date
-                /*$('#transaction-date').datetimepicker({
+                $('#transaction-date').datetimepicker({
                     defaultDate: moment(),
                     format: 'YYYY-MM-DD HH:mm:ss',
-                });*/
-                $('#datetimepicker1').datetimepicker();
+                });
 
                 $('#transaction-date').on('dp.change', e => {_this.order.transaction_date = $('#transaction-date').val()});
             },

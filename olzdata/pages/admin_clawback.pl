@@ -2,14 +2,11 @@ print <<EOS;
 
 <link rel="stylesheet" href="$commission_engine_api_url/css/app.css?v=$app_css_version" />
 <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.3/css/responsive.bootstrap.min.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/eonasdan-bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/css/select2.min.css" />
 <link rel="stylesheet" href="$commission_engine_api_url/css/datepicker.css?v=$app_css_version" />
 <link rel="stylesheet" href="$commission_engine_api_url/css/select2-bootstrap.css"/>
 <link rel="stylesheet" href="$commission_engine_api_url/css/admin_clawback.css?v=1" />
-
-<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.css" rel="stylesheet">
-
 <style>
 .hidden{
     display:none;
@@ -279,12 +276,7 @@ print <<EOS;
                     <div class="form-group">
                         <div class="col-sm-12">
                             <label for="transaction-date">Transaction Date</label>
-                            <div class='input-group date' id='datetimepicker1'>
-                               <input class="form-control" id="transaction-date" v-model="order.transaction_date" onkeydown="return false"/>
-                               <span class="input-group-addon">
-                               <span class="glyphicon glyphicon-calendar"></span>
-                               </span>
-                            </div>
+                            <input class="form-control" id="transaction-date" v-model="order.transaction_date" onkeydown="return false"/>
                         </div>
                     </div>
                     <div class="form-group">
@@ -337,9 +329,6 @@ print <<EOS;
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/js/bootstrap-datepicker.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/eonasdan-bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
 <script src="$commission_engine_api_url/js/admin_clawback.js?v=1"></script>
-
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment-with-locales.min.js"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
 
 EOS
 1;
