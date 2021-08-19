@@ -27,9 +27,9 @@ class CommissionAdjustment extends Model
             SELECT
                 a.commission_period_id,
                 a.transaction_id,
-                a.purchaser_id AS userid,
-                a.user_id AS sponsor_id,
-                a.user_id payee_id,
+                a.purchaser_id AS user_id,
+                a.userid AS sponsor_id,
+                a.userid payee_id,
                 a.`level`,
                 a.amount AS cv,
                 1, -- kay wala naga pangayog ug cv sa tool
