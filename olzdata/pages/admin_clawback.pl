@@ -6,6 +6,7 @@ print <<EOS;
 <link rel="stylesheet" href="$commission_engine_api_url/css/datepicker.css?v=$app_css_version" />
 <link rel="stylesheet" href="$commission_engine_api_url/css/select2-bootstrap.css"/>
 <link rel="stylesheet" href="$commission_engine_api_url/css/admin_clawback.css?v=1" />
+
 <div class="tool-container tool-container--default" id="app-clawback">
 
     <div class="row">
@@ -318,8 +319,6 @@ print <<EOS;
 
 <script src="$commission_engine_api_url/js/app.js?v=$app_js_version"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/js/select2.full.min.js"></script>
-<script src="https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js"></script>
-<script src="https://cdn.datatables.net/responsive/2.2.3/js/responsive.bootstrap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/js/bootstrap-datepicker.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/eonasdan-bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
 <script src="$commission_engine_api_url/js/admin_clawback.js?v=1"></script>
