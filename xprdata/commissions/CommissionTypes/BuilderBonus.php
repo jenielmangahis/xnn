@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Commissions\CommissionTypes;
 
 use Carbon\Carbon;
@@ -22,10 +21,11 @@ class BuilderBonus extends CommissionType implements CommissionTypeInterface
     
     public function generateCommission($start, $length)
     {
-        $this->log("Processing builder bonus");
-
         $consultants = $this->getQualifiedConsultants();
         foreach( $consultants as $c ){
+
+            $this->log("Processing builder bonus for user id : " . $user_id);
+
             $sponsor_id = $c['sponsor_id'];
             $user_id    = $c['user_id'];
 
