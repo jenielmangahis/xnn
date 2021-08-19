@@ -134,7 +134,7 @@ print <<EOS;
                             <!--Table head-->
                             <tbody class="table__body">
                             <tr v-if="products.length == 0" class="table__row text-center">
-                                <td colspan="6">No records found</td>
+                                <td colspan="8">No records found</td>
                             </tr>
                             <tr v-for="(product, index) in products" class="table__row">
                                 <td class="table__cell text-center">{{ product.transaction_product_id }}</td>
