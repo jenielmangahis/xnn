@@ -175,6 +175,8 @@
 
                 // Transaction Date
                 $('#transaction-date').datetimepicker({
+                    inline: true,
+                    sideBySide: true,
                     defaultDate: moment(),
                     format: 'YYYY-MM-DD HH:mm:ss',
                 });
