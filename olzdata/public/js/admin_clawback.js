@@ -340,7 +340,7 @@
                                 $this.error.message = xhr.responseJSON.message;
                             } else {
                                 if( xhr.responseJSON.error != undefined ){
-                                    $this.error.message = xhr.responseJSON.error.message;
+                                    $this.error.message = "Cannot Process : " + xhr.responseJSON.error.message;
                                 }else{
                                     $this.error.message = 'Something went wrong!';  
                                 }                                
