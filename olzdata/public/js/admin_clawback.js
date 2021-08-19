@@ -339,7 +339,12 @@
                             } else if(xhr.responseJSON.message != undefined) {
                                 $this.error.message = xhr.responseJSON.message;
                             } else {
-                                $this.error.message = 'Something went wrong!';
+                                if( xhr.responseJSON.error != undefined ){
+                                    $this.error.message = xhr.responseJSON.error.message;
+                                }else{
+                                    $this.error.message = 'Something went wrong!';  
+                                }                                
+                                //$this.error.message = 'Something went wrong!';
                             }
                             swal.close();
                         });
