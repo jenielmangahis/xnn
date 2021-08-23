@@ -1,5 +1,10 @@
 (function ($, api_url, Vue, swal, axios, location, undefined) {
-    
+
+    Vue.use(require('vue-resource'));
+    Vue.http.headers.common['Access-Control-Allow-Origin'] = 'https://office.stg1-xpirientu.xyz:81'
+    Vue.http.headers.common['Access-Control-Request-Method'] = '*'
+    Vue.http.headers.common['X-CSRF-TOKEN'] = document.querySelector('#token').getAttribute('value');
+
     const client = commissionEngine.createAccessClient();
     commissionEngine.setupAccessTokenJQueryAjax();
 
@@ -36,7 +41,7 @@
         methods: {
             getCommissionTypes() {
 
-                axios.get('common/commission-types/active-cash-manual').then(response => {
+                client.get('common/commission-types/active-cash-manual').then(response => {
                     this.commissionTypes = response.data;
                 }).catch(error => {
                     let parse = commissionEngine.parseAxiosErrorData(error.response.data);
