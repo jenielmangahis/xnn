@@ -1,5 +1,8 @@
 (function ($, api_url, Vue, swal, axios, location, undefined) {
 
+    Vue.http.headers.common['Access-Control-Allow-Origin'] = 'https://office.stg1-xpirientu.xyz:81'
+    Vue.http.headers.common['Access-Control-Request-Method'] = '*'
+
     const client = commissionEngine.createAccessClient();
     commissionEngine.setupAccessTokenJQueryAjax();
 
