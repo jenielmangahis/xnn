@@ -10,10 +10,6 @@
 |
 */
 
-header('Access-Control-Allow-Origin: https://office.stg1-xpirientu.xyz')
-header('Access-Control-Allow-Methods: GET, PUT, POST, DELETE, OPTIONS'); 
-header('Access-Control-Allow-Headers: X-CSRF-TOKEN, X-Requested-With');
-
 Route::get('/', function () {
     return view('welcome');
 });
