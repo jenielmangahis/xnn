@@ -173,7 +173,13 @@ class Dashboard
         }
 
         if ($result['next_rank_id'] !== null) {
-            $result['needs'] = VolumesAndRanks::getNextRankRequirementsByDailyVolume(DailyVolume::ofMember($user_id)->today()->first(), Rank::find($result['next_rank_id']));
+            $dailyVolume = DailyVolume::ofMember($user_id)->today()->first();
+            if( $dailyVolume ){
+                $result['needs'] = VolumesAndRanks::getNextRankRequirementsByDailyVolume(DailyVolume::ofMember($user_id)->today()->first(), Rank::find($result['next_rank_id']));
+            }else{
+                $result['needs'] = [];
+            }
+            
         } else {
             $result['needs'] = [];
         }
