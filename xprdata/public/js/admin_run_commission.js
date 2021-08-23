@@ -36,7 +36,7 @@
         methods: {
             getCommissionTypes() {
 
-                axios.get('https://office.stg1-xpirientu.xyz:81/common/commission-types/active-cash-manual').then(response => {
+                client.get('common/commission-types/active-cash-manual').then(response => {
                     this.commissionTypes = response.data;
                 }).catch(error => {
                     let parse = commissionEngine.parseAxiosErrorData(error.response.data);
