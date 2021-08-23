@@ -2,7 +2,8 @@
 
     Vue.http.headers.common['Access-Control-Allow-Origin'] = 'https://office.stg1-xpirientu.xyz:81'
     Vue.http.headers.common['Access-Control-Request-Method'] = '*'
-
+    Vue.http.headers.common['X-CSRF-TOKEN'] = document.querySelector('#token').getAttribute('value');
+    
     const client = commissionEngine.createAccessClient();
     commissionEngine.setupAccessTokenJQueryAjax();
 
