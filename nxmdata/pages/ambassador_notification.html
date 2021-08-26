@@ -1,0 +1,66 @@
+<link rel="stylesheet" type="text/css" href="css/jquery-ui.css">
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css"/>
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"/>
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.10/css/dataTables.bootstrap.min.css"/>
+
+<script src="https://code.jquery.com/jquery-1.11.3.js"></script>
+<script src="https://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+<script src="https://cdn.datatables.net/1.10.10/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.10/js/dataTables.bootstrap.min.js"></script>
+
+<script src="js/jquery-ui.js"></script>
+
+<script src="js/ambassador_notification.js"></script>
+<input type="hidden" id="member" value="35" />
+
+
+<style>
+	#overlay {
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        right: 0;
+        background: #000;
+        opacity: 0.8;
+        filter: alpha(opacity=80);
+        width: 100%;
+        height: 100%;
+    }
+
+    #loading {
+        width: 50px;
+        height: 57px;
+        position: absolute;
+        /*background: url('img/loading.gif') no-repeat top right;*/
+        top: 50%;
+        left: 50%;
+        margin: -28px 0 0 -25px;
+    }
+</style>
+<div class="container">
+	
+	<div class="row">
+		<h3>Ambassador Notification Report </h3>
+		<hr />
+		<table id="history" class="table table-striped table-bordered"  cellspacing="0" width="100%">
+			 <thead>
+				<tr>
+					<th style="align:left;">Registrant</th>
+					<th style="align:left;">Ticket</th>
+					<th style="align:left;">Status</th>
+					<th style="align:left;">Date Attended</th>
+				</tr>
+			</thead>
+			<tbody>
+			
+			</tbody>
+		</table>
+	</div>
+</div>
+<br />
+
+
+
+

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.10/css/dataTables.bootstrap.min.css"/>
+    <link rel="stylesheet" href="css/auto_commission.css"/>
+    <link rel="stylesheet" href="css/sweetalert.css">    
+</head>
+<body>
+    <br/>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4" id="get_commission_type">
+                <p><b>Step 1. Choose Commission Type:</b></p>
+                <div id="get_commission_period_type">
+                    <select class="form-control" id="commission_period_type"></select>
+                </div>
+            </div>
+            <div class="col-md-4" style="" id="get_commission_period">
+                <div style="display:none;" id="get_commission_period_options">
+                    <p><b>Step 2. Choose Commission Period:</b><p>
+                </div>
+                <div style="display: none;" id="select_commission_period">
+                    <select class="form-control" id="commission_period"></select>
+                </div>
+            </div>
+            <div class="col-md-4" id="get_commissions" style="display:none;">
+                <input class="btn btn-primary" type="button" id="generate_commissions" style="margin-top: 30px"  value="View Report" />
+            </div>
+        </div>
+        <hr />
+        <div class="row">
+            <div class="col-md-12">
+                <div id="get_commission_period_download" style="display:none;">
+                    <p><b>Step 3. Download Commissions:</b><p>
+                </div>
+                <div id="commissions" style="display:none;"></div>
+            </div>
+        </div>
+        <hr />
+        <div class="row">
+            <div class="col-md-12">
+                <div id="lock_commissions" style="display:none;">
+                    <p><b>Step 4. Lock Commissions:</b><p>
+                    <p>Note: You can skip this step if you want to run commissions again for these commission period.</p>
+                    <input type="button" class="btn btn-danger" id="lock_commission_period"  value="LOCK COMMISSION PERIOD" />
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="loading" style="display:none;"/></div> 
+    <div id="confirm_lock" title="Lock Commission Period?" style="display:none;">
+        <p>
+            <span class="ui-icon ui-icon-alert" style="float: left; margin: 0 auto;"></span>
+            The commission period will be permanently locked. Are you sure?
+        </p>
+    </div>
+    <div id="result">
+        <!-- dynamice content. -->
+    </div>
+
+    <script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.js"></script>
+    <script type="text/javascript" src="js/jquery-ui.js"></script>
+    <script type="text/javascript" src="js/sweetalert.js"></script> 
+    <script type="text/javascript" src="js/auto_commissions.js"></script>
+</body>
+</html>

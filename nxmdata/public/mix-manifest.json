@@ -1,0 +1,13 @@
+{
+    "/js/app.js": "/js/app.js",
+    "/css/app.css": "/css/app.css",
+    "/css/affiliate_historical_commission.css": "/css/affiliate_historical_commission.css",
+    "/css/admin_run_commission.css": "/css/admin_run_commission.css",
+    "/css/admin_pay_commission.css": "/css/admin_pay_commission.css",
+    "/css/admin_withdrawal_request.css": "/css/admin_withdrawal_request.css",
+    "/css/select2-bootstrap.css": "/css/select2-bootstrap.css",
+    "/css/datepicker.css": "/css/datepicker.css",
+    "/css/jquery.treetable.css": "/css/jquery.treetable.css",
+    "/css/jquery.treetable.theme.default.css": "/css/jquery.treetable.theme.default.css",
+    "/css/datatables.css": "/css/datatables.css"
+}

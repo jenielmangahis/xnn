@@ -1,0 +1,10 @@
+AddType image/png .png
+AddType audio/webm .webm
+AddType video/webm .webm
+AddType audio/mpeg3 .mp3
+AddType audio/x-mpeg-3 .mp3
+AddType video/mpeg .mp3
+AddType video/x-mpeg .mp3
+AddType audio/x-ms-wax .wmv
+AddType video/mp4 .mp4
+AddType image/jpg .jpg

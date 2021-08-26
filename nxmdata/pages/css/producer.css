@@ -1,0 +1,49 @@
+#get_profile_by_date{
+	display: table;
+	margin: auto;
+}
+
+#select_profile_dates #date_from, #select_profile_dates #date_to {
+	float: left;
+	margin-right: 10px;
+}
+
+#select_profile_dates #view {
+	float: right;
+	margin-top: 17px;
+}
+
+#select_profile .left {
+	margin: 50px 50px 0px 0px;
+	font-weight: bold;
+}
+
+#select_profile_dates {
+	margin-top: 5px;
+}
+	
+.pcbTbl{
+	border-spacing: 2px;
+	border-collapse: collapse;
+	margin-left:auto; 
+	margin-right:auto;
+}	
+	
+ .pcbTbl td
+{
+	padding: 10px;
+	background: #fff;
+	
+}			
+.tablesorter-blue{
+	margin-left:auto; 
+	margin-right:auto;
+}
+.tablesorter{
+	margin-left:auto; 
+	margin-right:auto;
+}	
+
+#producer-div{
+	min-height: 300px;
+}

@@ -1,0 +1,29 @@
+@charset "utf-8";
+/* CSS Document */
+
+body{background-color:#dfdfde;}
+.whiteBG{
+    background-color: #fff;
+    margin-top: 50px;
+    padding: 45px 10px;
+}
+.pad{padding-bottom:30px;}
+.btn1 {
+    -moz-user-select: none;
+    background-color: #ec582b;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    color: #fff;
+    cursor: pointer;
+    display: inline-block;
+    font-size: 14px;
+    font-weight: bold;
+    line-height: 1.42857;
+    margin-bottom: 0;
+    padding: 6px 12px;
+    text-align: center;
+    text-transform: uppercase;
+    vertical-align: middle;
+    white-space: nowrap;
+    width: 100%;
+}

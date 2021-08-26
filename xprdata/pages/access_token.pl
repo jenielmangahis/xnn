@@ -4,7 +4,7 @@ use HTTP::Request;
 
 our $app_js_version = "1.4";
 our $app_css_version = "1.2";
-our $commission_engine_api_url = "https://office.stg1-xpirientu.xyz:81/";
+our $commission_engine_api_url = "https://office.stg1-xpirientu.xyz:81/"; 
 
 our $rank_title = "Rank";
 our $rank_title_plural = "Ranks";

@@ -1,0 +1,24 @@
+Traffic Tracking Usage
+
+URL = https://backoffice.toolsrock.com:81/phpfiles/tracker.php
+PARAMETERS :
+	- userid (required)
+	- type (required) [data for type : all,range,monthly,yearly]
+	- datefrom (used only if type is range)
+	- dateto (used only if type is range)
+	- month (used only if type is monthly)
+	- year (used on if type is monthly and yearly)
+	
+USAGE :
+
+- ALL (all)
+	https://backoffice.toolsrock.com:81/phpfiles/tracker.php?userid=13355&type=all
+
+- RANGE (range)
+	https://backoffice.toolsrock.com:81/phpfiles/tracker.php?userid=13355&type=range&datefrom=2015/12/01&dateto=2015/12/30
+	
+- MONTHLY (monthly)
+	https://backoffice.toolsrock.com:81/phpfiles/tracker.php?userid=13355&type=monthly&month=12&year=2015
+	
+- YEARLY (yearly)
+	https://backoffice.toolsrock.com:81/phpfiles/tracker.php?userid=13355&type=yearly&year=2015

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>EDW</title>
+	
+	<!-- JQuery -->
+	<script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.js"></script>
+	
+	<!-- bootstrap -->
+	<script type="text/javascript" src="https://cdn.datatables.net/1.10.10/js/dataTables.bootstrap.min.js"></script>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"/>
+	
+	<!-- Sweet alert -->
+	<script type="text/javascript" src="js/sweetalert.js"></script>
+	<link rel="stylesheet" href="css/sweetalert.css">
+	
+	<script type="text/javascript">
+	    var api_url = "https://office.stg-naxum.xyz:81/";
+	    
+	    $(document).ready(function() {
+	        
+	        fetchKoKardDetails();
+	        $('#btn-submit').on('click', btnSubmit_Click);
+	    }); /* $(document).ready(function() */
+
+	    btnSubmit_Click() {
+	    	var url2 = api_url + 'updatepropayinfo/';
+            var data = $('#frm-propay').serialize();
+            
+            $.ajax({
+                 url: url2
+                ,data:data
+                ,type:"POST"
+                ,dataType: "json"
+                ,success:function(data) {
+                	swal("Saved", "Your ProPay info has been updated.", "info");
+                }
+            });
+	    } /* btnSubmit_Click() */
+
+	    function fetchKoKardDetails() {
+	    	var url = api_url + 'affiliatepropay/' + $('#user_id').val();
+	    	
+	    	$.ajax({
+	              url 		: url
+	            , type 		: "GET"
+	            , dataType 	: "json"
+	            , success 	: fetchKoKardDetails_onSuccess
+	        });
+	    } /* fetchKoKardDetails */
+
+	    function fetchKoKardDetails_onSuccess(data) {
+
+	    	if (!data) {
+
+            	$('#is_new').val('1');
+            } else {
+            	
+                $('#is_new').val('0');
+                $("#account_number").val(data.account_number);
+                $("#first_name").val(data.first_name);
+                $("#last_name").val(data.last_name);
+            }
+	    } /* fetchKoKardDetails_onSuccess */
+	</script>
+</head>
+<body>
+	<div class="container">
+	    <div class="row">
+	        <h3>Ko-Kard Details</h3>
+	    </div>
+	    <hr />
+		<div id="dynamic-txt-container-propay" page-name="propay" class="container dynamic-txt"></div>
+	    <div class="row">
+	        <form id="frm-propay" name="frm-propay" method="post">
+	            <input type="hidden" name="user_id" value="32" id="user_id"/>
+	            <input type="hidden" name="is_new" value="1" id="is_new"/>
+	            <div class="form-group">
+	                <label for="account_number">Account Number</label>
+	                <input type="text" class="form-control" id="account_number" name="account_number" placeholder="Account Number">
+	            </div>
+	            <div class="form-group">
+	                <label for="first_name">First Name</label>
+	                <input type="text" class="form-control" id="first_name" name="first_name" placeholder="First Name">
+	            </div>
+	            <div class="form-group">
+	                <label for="last_name">Last Name</label>
+	                <input type="text" class="form-control" id="last_name" name="last_name" placeholder="Last Name">
+	            </div>
+	            <hr/>
+	            <button type="button" id="btn-submit" class="btn btn-primary">Submit</button>
+	        </form>
+	    </div>
+	</div>
+</body>
+</html>

@@ -1,0 +1,98 @@
+// Fonts
+@import url("https://fonts.googleapis.com/css?family=Roboto:300,400,700");
+
+// Variables
+@import "variables";
+
+[v-cloak] {
+  display: none;
+}
+
+@import "menutab";
+
+// Bootstrap
+.tool-container {
+
+  &--default {
+    margin-bottom: 20px;
+    background-color: #fff;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    padding: 15px;
+  }
+
+  &__actions {
+    margin-bottom: 15px;
+  }
+
+  //@import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
+  @import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap/variables";
+  @import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap/mixins";
+  @import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap/buttons";
+  @import "datatables";
+  @import "tables";
+  @import "border";
+  @import "checkbox-radio";
+
+  .form-inline {
+    display: block;
+    -ms-flex-flow: unset !important;
+    flex-flow: unset !important;
+    -ms-flex-align: unset !important;
+    align-items: normal !important;
+  }
+
+  .text-primary {
+    color: $brand-primary !important;
+  }
+
+  //.modal-header {
+  //  display: unset;
+  //  -ms-flex-align: unset;
+  //  align-items: unset;
+  //  -ms-flex-pack: unset;
+  //  justify-content: unset;
+  //
+  //  .close {
+  //    margin: -2px;
+  //  }
+  //
+  //}
+
+  .select2-search__field {
+    width: 100% !important;
+  }
+
+  .modal-footer {
+    .btn {
+      margin-bottom: 0 !important;
+      margin-top: 0 !important;
+    }
+
+    .btn:not(:first-child) {
+      margin-left: 4px !important;
+    }
+
+    .btn:not(:last-child) {
+      margin-right: 4px !important;
+    }
+  }
+
+}
+
+.datepicker-dropdown {
+
+  min-width: 0;
+  color: #333 !important;
+  background-color: #fff !important;
+
+  th, td {
+    padding: 5px 5px !important;
+  }
+}
+
+@import "datepicker";
+
+table.treetable span {
+  padding: .2em .6em .3em !important;
+}

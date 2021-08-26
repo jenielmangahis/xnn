@@ -1,0 +1,60 @@
+
+<link rel="stylesheet" type="text/css" href="css/jquery-ui.css">
+<link rel="stylesheet" type="text/css" href="css/theme.jui.css">
+<link rel="stylesheet" type="text/css" href="css/common.css">
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.10/css/jquery.dataTables.min.css">
+<script src="https://code.jquery.com/jquery-1.11.3.js"></script>
+<script src="https://cdn.datatables.net/1.10.10/js/jquery.dataTables.min.js"></script>
+<script src="js/jquery-ui.js"></script>
+<script src="js/jquery.tablesorter.js"></script>
+<script src="js/jquery.tablesorter.widgets.js"></script>
+<script src="js/common.js"></script>
+
+<script src="js/affiliate_report.js"></script>
+<input type="hidden" id="member" value="45" />
+<div id="main-dashboard">
+	<table class="tablesorter" id="summary">
+		<thead>
+			<tr>
+				<th>Life Time Points</th>
+				<th>Current Points</th>
+				<th>Redeemed Points</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>				
+				<td><span id="life-pts"></span></td>
+				<td><span id="current-pts"></span></td>
+				<td><span id="redeemed-pts"></span></td>
+			</tr>
+		</tbody>
+		
+	</table>
+</div>
+<div>
+	<table class="tablesorter" id="history">
+	</table>
+</div>
+
+<div id="result" style="display:none;">
+	<br /><br />
+	
+	<table id="history2" class="display nowrap" cellspacing="0" width="100%">
+         <thead>
+            <tr>
+                <th style="align:left;">Points</th>
+                <th style="align:left;">Transaction Type</th>
+                <th style="align:left;">Note</th>
+                <th style="align:left;">Date</th>
+            </tr>
+        </thead>
+		<tbody>
+		
+        </tbody>
+    </table>
+	
+	
+</div>
+
+
+

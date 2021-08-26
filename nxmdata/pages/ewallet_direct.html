@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>EDW</title>
+	<link rel="stylesheet" type="text/css" href="css/jquery-ui.css">
+	<link rel="stylesheet" href="https://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css"/>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"/>
+	<link rel="stylesheet" href="https://cdn.datatables.net/1.10.10/css/dataTables.bootstrap.min.css"/>
+	<link rel="stylesheet" href="css/affiliate_historical_comm.css"/>
+
+	<script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.js"></script>
+	<script type="text/javascript" src="https://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+	<script type="text/javascript" src="https://cdn.datatables.net/1.10.10/js/jquery.dataTables.min.js"></script>
+	<script type="text/javascript" src="https://cdn.datatables.net/1.10.10/js/dataTables.bootstrap.min.js"></script>
+	
+	<style type="text/css">
+		.form-horizontal .control-label{
+			/* text-align: right; */
+			text-align: left;
+			/*background-color: #ffa;*/
+			padding-left: 0px;
+		}
+	</style>
+	
+	<!-- Custom Js -->	
+	<script type="text/javascript">
+
+		$(document).ready(onReady);
+
+		function onReady() {
+			var options = 
+					{
+						 dateFormat	: 'yy-mm-dd'
+						,altField	: '#thealtdate'
+						,altFormat	: 'yy-mm-dd'
+	    			}
+
+	    	loadCurrencyCode();
+			$("#birthdate").datepicker(options);
+			$("#btn-hello").on("click", btnHello_Click);
+		}
+
+		function btnHello_Click() {
+
+			$.ajax({
+				 url : "https://api.payap.co/users/101"
+				,headers: {"Access-Control-Allow-Origin": "*"}
+				,type: "GET"
+				,dataType : "json"
+				,data : {}
+				,success : function(data) {
+					console.log(data);
+				}
+			});
+		}
+
+		function loadCurrencyCode() {
+			
+			$.ajax({
+				 url : "https://office.stg-naxum.xyz:81/index.php/payap_fetch_country_codes"
+				,type : "POST"
+				,dataType : "json"
+				,success : wrapCurrencyToCombo
+			});
+		}
+
+		function wrapCurrencyToCombo(data) {
+			$currency = $("#currency");
+
+			$currency.html("");
+			$.each(data, function(index, value) {
+				$("<option>")
+					.attr("value", value.code)
+					.attr("text", value.currency)
+					.html(value.code + '-' + value.country)
+					.appendTo($currency);
+			});
+		}
+
+	</script>
+</head>
+<body>
+	<div class="container">
+	    <div class="row">
+	        <h3>eWallet Direct Details</h3>
+	    </div>
+	    <div class="row">
+	    	<div id="dynamic-txt-container-propay" page-name="propay" class="container dynamic-txt"></div>
+	    	<hr />
+	        <div class="col-sm-8" style="padding-left: 0px;">
+		        <form class="form-horizontal" id="ewallet" name="frm-propay" method="post">
+		            <input type="hidden" name="user_id" value="32" id="user_id"/>
+		            <input type="hidden" name="is_new" value="1" id="is_new"/>
+		            <div class="form-group" style="margin-left: 0px;">
+		                <label for="account_number" class="col-sm-2 control-label text-left">User ID:</label>
+		                <div class="col-sm-3">
+		                	<input type="text" name="mobile_number" placeholder="User ID" class="form-control" id="mobile_number">
+		                </div>
+		            </div>
+		            <div class="form-group" style="margin-left: 0px;">
+		                <label for="account_number" class="col-sm-2 control-label text-left">Mobile No.</label>
+		                <div class="col-sm-5">
+		                	<input type="text" name="mobile_number" placeholder="Mobile Number" class="form-control" id="mobile_number">
+		                </div>
+		            </div>
+		            <div class="form-group" style="margin-left: 0px;">
+		                <label for="first_name" class="col-sm-2 control-label text-left">First Name</label>
+		                <div class="col-sm-8">
+		                	<input type="text" class="form-control" name="first_name" placeholder="First Name" id="first_name">	
+		                </div>
+		            </div>
+		            <div class="form-group" style="margin-left: 0px;">
+		                <label for="last_name" class="col-sm-2 control-label text-left">Last Name</label>
+		                <div class="col-sm-8">
+		                	<input type="text" class="form-control" id="last_name" name="last_name" placeholder="Last Name">	
+		                </div>
+		            </div>
+		            <div class="form-group" style="margin-left: 0px;">
+		            	<label for="date-range-from" class="col-sm-2 control-label text-left">Birthdate</label>
+		            	<div class="col-sm-4">
+		            		<input class="form-control" type="text" placeholder="yyyy-mm-dd" id="birthdate">
+		            	</div>
+		            </div>
+		            <div class="form-group" style="margin-left: 0px;">
+		                <label for="last_name" class="col-sm-2 control-label text-left">Currency</label>
+		                <div class="col-sm-8">
+		                	<select class="form-control" id="currency"></select>
+		                </div>
+		            </div>
+		            <hr/>
+		            <button type="button" id="btn-submit" class="btn btn-primary">Submit</button>
+		        </form>	
+	        </div>
+	    </div>
+	</div>
+</body>
+</html>

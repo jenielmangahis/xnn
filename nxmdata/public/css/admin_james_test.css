@@ -1,0 +1,8 @@
+.tool-container .btn-success {
+  background-color: #f00;
+}
+
+.tool-container .table__header--bg-primary {
+  background-color: #ff0000;
+  color: #fff;
+}

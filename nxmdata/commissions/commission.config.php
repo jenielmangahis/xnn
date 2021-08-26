@@ -1,0 +1,15 @@
+<?php
+
+define("RETAIL_COMMISSION_PERCENTAGE", 0.50);
+define("OVERRIDE_PERCENTAGE", 0.25);
+define("RETAIL_COMMISSION_PAYOUT_ID", 1);
+define("OVERRIDE_COMMISSION_PAYOUT_ID", 3);
+define("REFUND_STATUS_ID", 4);
+define("COMMISSIONABLE_STATUS_ID", 3);
+define("AFFILIATE", 1);
+
+//CAT IDs
+define("CUSTOMER", 8131);
+define("IBP", 8132);
+
+?>

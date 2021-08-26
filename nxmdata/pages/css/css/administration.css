@@ -1,0 +1,118 @@
+body {
+	font: 12px normal Helvetica, Arial, sans-serif;
+	color: #222;
+	line-height: 1.5em;
+	background: #e5e5e5;
+}
+a{
+	text-decoration: none;
+}
+
+h3{
+	display: block;
+	background: #333;
+	color: #fff;
+	font-weight: bold;
+	padding: 9px 15px;
+	text-decoration: none;
+	position: relative;
+	min-height: 0;
+	margin: 0px;
+
+}
+
+h3 a {
+	color: #fff;
+}
+
+h3 a:hover{
+	color: #d54e21;
+}
+
+
+ol, ul {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+.clear{
+	clear: both;
+}
+
+.dashboard_item .menu{
+	font-size: 14px;
+	font-weight: bold;
+	padding: 10px;
+}
+
+.dashboard_item .menu li{
+	padding: 2px;
+}
+
+.dashboard_item{
+	display: inline-block;
+	background: #fff;
+	border-bottom: 2px solid #333;
+	width: 300px;
+}
+
+.dashboard_item .menu a{
+	color: #21759b;
+}
+
+.dashboard_item .menu a:hover{
+	color: #d54e21;
+}
+
+.overlay{position:absolute; left:0px; top:0px; width:100%; height:100%; z-index:98;}
+
+.results {
+	width:400px;
+	z-index:99;
+	position:relative;
+	margin-left: 236px;
+	margin-top: -10px;
+}
+.inputbox input {position:relative; z-index:99; width: 400px; }
+.item{
+	background: #CCC;
+	width: 400px;
+	padding: 5px;
+	clear:both;
+
+	
+}
+.item:hover{
+	background: #21759b;
+	cursor: pointer;
+}
+
+
+.login form p label {
+	padding: 5px;
+
+}
+.error{
+	font-weight: bold;
+	color: red;
+}
+
+.download{
+	text-align: right;
+	width: auto;
+	font-weight: bolder;
+	padding-right: 35px;
+	padding-top: 10px;
+	font-size: 11px;
+	display: flex;
+}
+.download a{
+	color: #333;
+	text-decoration: none;
+}
+
+.download a:hover{
+	color: #21759b;
+	cursor: pointer;
+}

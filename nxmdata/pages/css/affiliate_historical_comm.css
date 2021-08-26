@@ -1,0 +1,41 @@
+#overlay {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    background: #000;
+    opacity: 0.8;
+    filter: alpha(opacity=80);
+    width: 100%;
+    height: 100%;
+}
+
+#loading {
+    width: 50px;
+    height: 57px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin: -28px 0 0 -25px;
+}
+
+ #col-commission-period
+,#col-generate-historical-commission
+,#col-commission-period-daily-mode  {
+    display:none;
+}
+
+#generate_commissions {
+    margin-top: 30px;
+}
+
+.input-w label {
+    display: inline-block;
+    vertical-align: middle;    
+}
+
+.input-w input {
+    display: inline-block;
+    vertical-align: middle;
+}

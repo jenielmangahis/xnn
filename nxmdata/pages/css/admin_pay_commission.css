@@ -1,0 +1,63 @@
+body {
+	margin-top: 10px;
+}
+
+#overlay {
+	position: absolute;
+	left: 0;
+	top: 0;
+	bottom: 0;
+	right: 0;
+	background: #000;
+	opacity: 0.8;
+	filter: alpha(opacity=80);
+	width:100%; 
+	height:100%;
+}
+
+#loading {
+	width: 50px;
+	height: 57px;
+	position: absolute;
+   /*background: url('img/loading.gif') no-repeat top right;*/
+	top: 50%;
+	left: 50%;
+	margin: -28px 0 0 -25px;
+}
+
+td {
+	text-align:center;
+}
+
+#total {
+	padding : 25px;
+	margin-top : 20px;
+	display : block;
+	color : white;
+	font-weight : bold;
+	text-align : left !important;
+}
+
+#generate_report {
+	margin-top: 30px
+}
+
+#select_commission_period {
+	display : none;
+}
+
+#get_commission_period {
+	display : none;
+}
+
+#get_commissions {
+	display : none;
+}
+
+#get_commission_period_options {
+	display : none;
+}
+
+#result {
+	display : none;	
+}

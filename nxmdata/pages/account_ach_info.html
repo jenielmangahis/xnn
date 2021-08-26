@@ -1,0 +1,107 @@
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
+<script src="https://code.jquery.com/jquery-1.11.3.js"></script>
+<script src="https://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+
+<script type="text/javascript">
+	var api_url = "https://office.responseaffiliate.com:81/";
+	//var api_url = "http://pks.api/";
+	
+	$(document).ready(function(){
+		$('input[type=radio][name=b_type]').change(function() {
+			if (this.value == 'personal') {
+				$('#personal').show();
+				$('#business').hide();
+			}
+			else if (this.value == 'business') {
+				$('#personal').hide();
+				$('#business').show();
+			}
+		});
+		
+		$('#btn_submit').on('click',function(){
+			var url2 = api_url + 'updateach/';
+			var data = $('#frm_ach').serialize();
+			$.ajax({		  
+			  url: url2,
+			  data:data,
+			  type:"POST",
+			  dataType: "json",
+			  success:function(data){
+				  window.location='account_ach_info.html';				  			  
+			  }
+			});
+		});
+		
+		
+		
+		var url = api_url + 'getuserach/' + $('#user_id').val();
+		$.ajax({		  
+		  url: url,
+		  type:"GET",
+		  dataType: "json",
+		  success:function(data){
+			  
+			  if(!data){+
+				$('#is_new').val('1');
+				$('#user_details').html($('#user_id').val() + ' ' + $('#user_name').val());
+			  }else{
+			  
+				$('#is_new').val('0');
+				$('#user_details').html($('#user_id').val() + ' ' + $('#user_name').val());
+				
+				if(data.type=="personal"){
+					$('#personal').show();
+					$('#business').hide();
+					$('#rb_personal').prop('checked',true);
+					$('#rb_business').prop('checked',false);
+				}else{
+					$('#personal').hide();
+					$('#business').show();					
+					$('#rb_personal').prop('checked',false);
+					$('#rb_business').prop('checked',true);
+				}
+				
+				$("#company").val(data.business);
+				$("#first_name").val(data.firstname);
+				$("#last_name").val(data.lastname);
+				$("#account_type").val(data.account_type);
+				$("#account_number").val(data.account_number);
+				$("#routing_number").val(data.routing_number);
+			  }
+			  
+		  }
+		});
+		
+	});
+</script>
+
+<h1> ACH Information </h1>
+
+<form method="post" id="frm_ach">
+	<input type="hidden" name="user_id"  id="user_id" value="43" />
+	<input type="hidden" name="user_name"  id="user_name" value="Jojo" />
+	<input type="hidden" name="is_new"  id="is_new" value="1" />
+	<p>User : <span id="user_details"></span></p>
+	<p>Vendor : PNC Bank</p>
+	<p>Type :  <input type="radio" id="rb_personal" checked="checked" name="b_type" value="personal"> Personal &nbsp;&nbsp;&nbsp;
+			   <input type="radio" id="rb_business" name="b_type" value="business"> Bussiness<br></p>
+	<span id="business" style="display:none">
+		<p>Company Name : <input type="text" id="company" name="ompany" /></p>
+	</span>
+	
+	<span id="personal">
+		<p>First Name : <input type="text" id="first_name" name="first_name" /></p>
+		<p>Last Name : <input type="text" id="last_name" name="last_name" /></p>
+	</span>
+	<p>Account Type : <select id="account_type" name="account_type">
+											<option value="">--- Account Type ---</option>
+											<option value="c">Checking Account</option>
+											<option value="s">Savings Account</option>
+									</select>
+	</p>
+	
+	<p>Account Number : <input type="text" id="account_number" name="account_number" /></p>
+	<p>Routing Number : <input type="text" id="routing_number" name="routing_number" /></p>
+
+	<p><input id="btn_submit" type="button" value="Submit" /></p>
+</form>

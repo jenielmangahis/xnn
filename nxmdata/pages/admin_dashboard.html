@@ -1,0 +1,99 @@
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css"/>
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"/>
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.10/css/dataTables.bootstrap.min.css"/>
+
+<script src="https://code.jquery.com/jquery-1.11.3.js"></script>
+<script src="https://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+<script src="https://cdn.datatables.net/1.10.10/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.10/js/dataTables.bootstrap.min.js"></script>
+
+<style>
+
+    #text_background {
+        display: block;
+        background: #333;
+        color: #fff;
+        font-weight: bold;
+        padding: 9px 15px;
+        text-decoration: none;
+        position: relative;
+        min-height: 0;
+        margin: 0px;
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+
+    #titles {
+        display: block;
+        background: #333;
+        color: #fff;
+        font-weight: bold;
+        padding: 9px 15px;
+        text-decoration: none;
+        position: relative;
+        min-height: 0;
+        margin: 0px;
+
+    }
+
+    h5 {
+        font-weight: bold;
+        margin: 15px;
+    }
+
+    ul {
+        list-style-type: none;
+    }
+
+    a {
+        text-decoration: none !important;
+    }
+
+    a:hover
+    {
+        color: #91242b;
+    }
+
+</style>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div id="admin_dashboard">
+                <h5 id="text_background">ADMINISTRATOR DASHBOARD <span class="pull-right">Welcome!</span></h5>
+            </div>
+
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-4">
+                        <h5 id="titles">Reports</h5>
+                        <h5><a href="admin_commission_report.html" target="_blank">Commissions Report</a></h5>
+                        <h5><a href="admin_transaction_report.html" target="_blank">Transaction Report</a></h5>
+                    </div>
+                </div>
+            </div>
+
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-4">
+                        <h5 id="titles">Utilities</h5>
+                        <h5><a href="admin_clawback.html" target="_blank">Clawback</a></h5>
+                        <h5><a href="admin_commission_override.html" target="_blank">Manual Direct Commission Override</a></h5>
+                    </div>
+                </div>
+            </div>
+
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-4">
+                        <h5 id="titles">Auto Commission</h5>
+                        <h5><a href="auto_commission.html" target="_blank">Run Commissions</a></h5>
+                        <h5><a href="admin_pay_commission.html" target="_blank">Pay Commissions</a></h5>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
