@@ -1,0 +1,191 @@
+[33mcommit 81d4f47f192767d4d8260db128de83519bb7c285[m[33m ([m[1;36mHEAD -> [m[1;32mmaster[m[33m, [m[1;31morigin/master[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Author: vienzent <vienzent.0000@gmail.com>
+Date:   Thu Apr 8 07:09:36 2021 +0800
+
+    Updated Run Commission and Payout Interfaces
+
+[1mdiff --git a/commissions/Admin/RunCommission.php b/commissions/Admin/RunCommission.php[m
+[1mindex 90c22c4..5d752b4 100755[m
+[1m--- a/commissions/Admin/RunCommission.php[m
+[1m+++ b/commissions/Admin/RunCommission.php[m
+[36m@@ -27,6 +27,7 @@[m [mclass RunCommission[m
+     const RUN_SCRIPT = 'artisan commission:run-commission';[m
+     const LOG_PATH = "logs/run_commission";[m
+     const CHUNK_COUNT = 50;[m
+[32m+[m[32m    const PROCESS_LIMIT = 50;[m
+ [m
+     public function lock($commission_period_id)[m
+     {[m
+[36m@@ -132,8 +133,9 @@[m [mclass RunCommission[m
+ [m
+                 $commission = static::getCommissionTypeClass($commission_type_id, $commission_period_id);[m
+                 $is_single_process = $commission->isSingleProcess();[m
+[31m-                $chunk = static::CHUNK_COUNT;[m
+                 $count = $commission->count();[m
+[32m+[m[32m                $commission->setItemCount($count);[m
+[32m+[m[32m                $chunk = $commission->getChunkCount();[m
+ [m
+                 $commission->beforeCommissionRun();[m
+ [m
+[36m@@ -152,6 +154,25 @@[m [mclass RunCommission[m
+                     $chunk_count = ceil($count / $chunk);[m
+                 }[m
+ [m
+[32m+[m[32m                if($chunk_count > static::PROCESS_LIMIT) {[m
+[32m+[m[32m                    throw new AlertException("Process limit exceeded. Please increasing the chucking.");[m
+[32m+[m
+[32m+[m[32m                    /**[m
+[32m+[m[32m                     * NOTE:[m
+[32m+[m[32m                     *[m
+[32m+[m[32m                     * Giadd ni sya na checking para dili maangol ang server[m
+[32m+[m[32m                     *[m
+[32m+[m[32m                     * Para ma increase ang chunking, need nimu i override ang getChunkCount sa commission type. Ang default na value kay 50[m
+[32m+[m[32m                     *[m
+[32m+[m[32m                     * Kung daghan na jud kaau ang mga order (+2500) na gina process, pwede nimu ing.anion ang getChunkCount[m
+[32m+[m[32m                     *[m
+[32m+[m[32m                     * public function getChunkCount()[m
+[32m+[m[32m                     * {[m
+[32m+[m[32m                     *      return ceil($this->getItemCount() / 50);[m
+[32m+[m[32m                     * }[m
+[32m+[m[32m                     */[m
+[32m+[m[32m                }[m
+[32m+[m
+                 $background_worker = new BackgroundWorker;[m
+                 $background_worker->value = "{period_id:" . $commission_period_id . "}";[m
+                 $background_worker->total_task = $chunk_count + 3; // +3 for adjustment, claw back, and csv;[m
+[1mdiff --git a/commissions/CommissionTypes/CommissionType.php b/commissions/CommissionTypes/CommissionType.php[m
+[1mindex 2146956..ce4309e 100755[m
+[1m--- a/commissions/CommissionTypes/CommissionType.php[m
+[1m+++ b/commissions/CommissionTypes/CommissionType.php[m
+[36m@@ -20,6 +20,7 @@[m [mabstract class CommissionType[m
+     protected $logger;[m
+     protected $payout_repository;[m
+     protected $db;[m
+[32m+[m[32m    protected $itemCount = 0;[m
+ [m
+     public function __construct(CommissionPeriod $commission_period, BackgroundWorkerLoggerInterface $logger, PayoutRepositoryInterface $payout_repository)[m
+     {[m
+[36m@@ -29,6 +30,25 @@[m [mabstract class CommissionType[m
+         $this->db = DB::connection()->getPdo();[m
+     }[m
+ [m
+[32m+[m[32m    public function getChunkCount()[m
+[32m+[m[32m    {[m
+[32m+[m[32m        if($this->getItemCount() > 2500) {[m
+[32m+[m[32m            return ceil($this->getItemCount() / 50);[m
+[32m+[m[32m        }[m
+[32m+[m
+[32m+[m[32m        return 50;[m
+[32m+[m[32m    }[m
+[32m+[m
+[32m+[m[32m    public function setItemCount($count)[m
+[32m+[m[32m    {[m
+[32m+[m[32m        $this->itemCount = $count;[m
+[32m+[m[32m    }[m
+[32m+[m
+[32m+[m[32m    public function getItemCount()[m
+[32m+[m[32m    {[m
+[32m+[m[32m        return $this->itemCount;[m
+[32m+[m[32m    }[m
+[32m+[m
+     public function log($message = "          ")[m
+     {[m
+         $this->logger->log($message);[m
+[36m@@ -66,14 +86,15 @@[m [mabstract class CommissionType[m
+     }[m
+ [m
+     /**[m
+[31m-     * @param int $sponsor_id  The member who receives the commission[m
+[31m-     * @param int $user_id  The downline or the member itself[m
+[31m-     * @param float $commission_value  The commission value of the transaction or the amount of the bonus[m
+[31m-     * @param float $percent  The percentage of the commission that the member receives[m
+[31m-     * @param float $amount  The payout amount that the member receives[m
+[32m+[m[32m     * @param int $payee_id The member who receives the commission[m
+[32m+[m[32m     * @param int $user_id The downline or the member itself[m
+[32m+[m[32m     * @param float $commission_value The commission value of the transaction or the amount of the bonus[m
+[32m+[m[32m     * @param float $percent The percentage of the commission that the member receives[m
+[32m+[m[32m     * @param float $amount The payout amount that the member receives[m
+      * @param string|null $remarks The remarks[m
+      * @param int $transaction_id The transaction id[m
+      * @param int $level The level of the downline/upline that member receive commission from[m
+[32m+[m[32m     * @param int $sponsor_id[m
+      */[m
+     public function insertPayout($payee_id, $user_id, $commission_value, $percent, $amount, $remarks = '', $transaction_id = 0, $level = 0, $sponsor_id = 0)[m
+     {[m
+[1mdiff --git a/commissions/Contracts/CommissionTypeInterface.php b/commissions/Contracts/CommissionTypeInterface.php[m
+[1mindex 7be11bd..31b3543 100755[m
+[1m--- a/commissions/Contracts/CommissionTypeInterface.php[m
+[1m+++ b/commissions/Contracts/CommissionTypeInterface.php[m
+[36m@@ -14,17 +14,22 @@[m [minterface CommissionTypeInterface[m
+     public function getPeriodEndDate();[m
+     public function getPeriodId();[m
+     public function getCommissionType();[m
+[32m+[m[32m    public function getChunkCount();[m
+[32m+[m[32m    public function setItemCount($count);[m
+[32m+[m[32m    public function getItemCount();[m
+[32m+[m
+     /**[m
+[31m-     * @param int $sponsor_id  The member who receives the commission[m
+[31m-     * @param int $user_id  The downline or the member itself[m
+[31m-     * @param float $commission_value  The commission value of the transaction or the amount of the bonus[m
+[31m-     * @param float $percent  The percentage of the commission that the member receives[m
+[31m-     * @param float $amount  The payout amount that the member receives[m
+[32m+[m[32m     * @param int $payee_id The member who receives the commission[m
+[32m+[m[32m     * @param int $user_id The downline or the member itself[m
+[32m+[m[32m     * @param float $commission_value The commission value of the transaction or the amount of the bonus[m
+[32m+[m[32m     * @param float $percent The percentage of the commission that the member receives[m
+[32m+[m[32m     * @param float $amount The payout amount that the member receives[m
+      * @param string|null $remarks The remarks[m
+      * @param int $transaction_id The transaction id[m
+      * @param int $level The level of the downline/upline that member receive commission from[m
+[32m+[m[32m     * @param int $sponsor_id[m
+      */[m
+[31m-    public function insertPayout($sponsor_id, $user_id, $commission_value, $percent, $amount, $remarks = '',  $transaction_id = 0, $level = 0);[m
+[32m+[m[32m    public function insertPayout($payee_id, $user_id, $commission_value, $percent, $amount, $remarks = '', $transaction_id = 0, $level = 0, $sponsor_id = 0);[m
+ [m
+     /**[m
+      * @return array[m
+[1mdiff --git a/commissions/Contracts/Repositories/PayoutRepositoryInterface.php b/commissions/Contracts/Repositories/PayoutRepositoryInterface.php[m
+[1mindex 1a5ee01..68e09d8 100755[m
+[1m--- a/commissions/Contracts/Repositories/PayoutRepositoryInterface.php[m
+[1m+++ b/commissions/Contracts/Repositories/PayoutRepositoryInterface.php[m
+[36m@@ -7,18 +7,18 @@[m [mnamespace Commissions\Contracts\Repositories;[m
+ interface PayoutRepositoryInterface[m
+ {[m
+     /**[m
+[31m-     * @param int $period_id  The Commission Period ID[m
+[31m-     * @param int $sponsor_id  The sponsor of the downline or the member itself[m
+[31m-     * @param int $payee_id  The member who receives the commission[m
+[31m-     * @param int $user_id  The downline or the member itself[m
+[31m-     * @param float $commission_value  The commission value of the transaction or the amount of the bonus[m
+[31m-     * @param float $percent  The percentage of the commission that the member receives[m
+[31m-     * @param float $amount  The payout amount that the member receives[m
+[32m+[m[32m     * @param int $period_id The Commission Period ID[m
+[32m+[m[32m     * @param int $payee_id The member who receives the commission[m
+[32m+[m[32m     * @param int $user_id The downline or the member itself[m
+[32m+[m[32m     * @param float $commission_value The commission value of the transaction or the amount of the bonus[m
+[32m+[m[32m     * @param float $percent The percentage of the commission that the member receives[m
+[32m+[m[32m     * @param float $amount The payout amount that the member receives[m
+      * @param string|null $remarks The remarks[m
+      * @param int $transaction_id The transaction id[m
+      * @param int $level The level of the downline/upline that member receive commission from[m
+[32m+[m[32m     * @param int $sponsor_id[m
+      */[m
+[31m-    public function insertPayout($period_id, $payee_id, $user_id, $commission_value, $percent, $amount, $remarks = '',  $transaction_id = 0, $level = 0, $sponsor_id);[m
+[32m+[m[32m    public function insertPayout($period_id, $payee_id, $user_id, $commission_value, $percent, $amount, $remarks = '',  $transaction_id = 0, $level = 0, $sponsor_id = 0);[m
+ [m
+     /**[m
+      * @param int $period_id  The Commission Period ID[m
+[1mdiff --git a/commissions/Repositories/PayoutRepository.php b/commissions/Repositories/PayoutRepository.php[m
+[1mindex bfe2a6b..9f3d6a0 100755[m
+[1m--- a/commissions/Repositories/PayoutRepository.php[m
+[1m+++ b/commissions/Repositories/PayoutRepository.php[m
+[36m@@ -14,7 +14,7 @@[m [mclass PayoutRepository implements PayoutRepositoryInterface[m
+     /**[m
+      * @inheritDoc[m
+      */[m
+[31m-    public function insertPayout($period_id, $payee_id, $user_id, $commission_value, $percent, $amount, $remarks = '', $transaction_id = 0, $level = 0, $sponsor_id)[m
+[32m+[m[32m    public function insertPayout($period_id, $payee_id, $user_id, $commission_value, $percent, $amount, $remarks = '', $transaction_id = 0, $level = 0, $sponsor_id = 0)[m
+     {[m
+         $payout = new CommissionPayout();[m
+         $payout->commission_period_id = $period_id;[m

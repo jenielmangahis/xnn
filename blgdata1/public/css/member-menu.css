@@ -1,0 +1,37 @@
+.twelve-menutabs .money-menus { width: 90px !important;}
+.twelve-menutabs .money-menus.active { background-color: #9aa1a5 !important;}
+.btn-primary { background-color: #000 !important; border-color: #000 !important; margin-bottom: 10px !important;}
+.tool-container .border-left-info {border-left: .25rem solid #9aa1a5 !important;}
+.tool-container .table__header--bg-primary {background-color: #9aa1a5 !important}
+.fa-stack-1x, .fa-stack-2x {
+  width: 90%;
+}
+
+.twelve-menutabs .money-menus .fa-stack-1x:before { padding-left: 3px; }
+
+.vert-align { margin: 23px 20px 0 20px;}
+
+.btn-success {
+  background-color: #7b8185 !important;
+  border-color: #7b8185 !important;}
+
+.btn-danger {
+    background-color: #b9c0c4 !important;
+    border-color: #b9c0c4 !important;
+}  
+
+
+
+@media only screen and (max-width: 786px) {
+    .twelve-menutabs :first-child {margin-left: 0 !important;}
+    .twelve-menutabs .money-menus { width: 86px !important;}
+    .table-responsive { border: 0 !important;}
+    .table>caption+thead>tr:first-child>th, .table>colgroup+thead>tr:first-child>th, .table>thead:first-child>tr:first-child>th, .table>caption+thead>tr:first-child>td, .table>colgroup+thead>tr:first-child>td, .table>thead:first-child>tr:first-child>td {
+      border-top: 1px solid #9aa1a5;
+  }    
+  .fa-stack-1x, .fa-stack-2x {
+    width: 100%;
+  }
+  .main-container { padding: 15px 0 !important;}
+  .twelve-menutabs .money-menus .fa-stack-1x:before { padding-left: 0px !important; }
+  }
