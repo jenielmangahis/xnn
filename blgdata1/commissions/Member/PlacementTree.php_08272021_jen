@@ -57,7 +57,7 @@ class PlacementTree extends Console
                         AND t.type = 'product'
                         AND t.transaction_date BETWEEN DATE_SUB(CURRENT_DATE(), INTERVAL 30 DAY) AND CURRENT_DATE()
                 ) has_order_last_30_days,
-                DATE_FORMAT(u.created, '%Y-%m-%d') enrolled_date,
+                u.enrolled_date,
                 s.site AS `sponsor`
             FROM cm_genealogy_placement p
             JOIN users AS u ON u.id = p.user_id
@@ -151,7 +151,7 @@ class PlacementTree extends Console
                         AND t.type = 'product'
                         AND t.transaction_date BETWEEN DATE_SUB(CURRENT_DATE(), INTERVAL 30 DAY) AND CURRENT_DATE()
                 ) has_order_last_30_days,
-                DATE_FORMAT(u.created, '%Y-%m-%d') enrolled_date,
+                u.enrolled_date,
                 s.site AS `sponsor`
             FROM cm_genealogy_placement p
             JOIN users AS u ON u.id = p.user_id
