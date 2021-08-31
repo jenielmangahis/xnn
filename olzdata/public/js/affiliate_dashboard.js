@@ -186,7 +186,7 @@
 
                 this.currentQualificationState = "fetching";
 
-                client.get("member/dashboard/current-qualification-details")
+                client.get(api_url + "member/dashboard/current-qualification-details")
                     .then(response => {
                         let details = response.data;
 
