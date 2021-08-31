@@ -68,6 +68,25 @@ final class VolumesAndRanks extends Console
             $this->log('Initializing Ranks');
             $this->initializeRanks();
 
+            //Calculate Volume and Ranks
+            $this->log('Setting PV');
+            $this->setPv();
+
+            $this->log('Setting GV');
+            $this->setGv();
+
+            //$this->log('Setting BG Level');
+            //$this->setBg();
+
+            $this->log("Setting Bg Minimum Rank");
+            $this->setBgMinimumRank();
+
+            $this->log("Setting Bg Paid-as Rank");
+            $this->setBgRanks();
+
+            $this->log("Setting Influencer Level");
+            $this->setInfluencerLevel();
+
             $this->log("Setting Coach Points");
             $this->setCoachPoints();
 
@@ -99,6 +118,210 @@ final class VolumesAndRanks extends Console
             $this->deletePreviousHighestAchievedRanksThisMonth();
 
         }, 3);
+    }
+
+    private function setInfluencerLevel() {
+        $sql = "
+            UPDATE cm_daily_ranks dv
+            LEFT JOIN (
+                SELECT
+                    t.user_id,
+                    SUM(COALESCE(t.computed_cv, 0)) As pv
+                FROM v_cm_transactions t
+                WHERE DATE(transaction_date) BETWEEN @start_date AND @end_date
+                 --   AND t.`type` = 'product'
+                GROUP BY t.user_id
+            ) AS a ON a.user_id = dv.user_id    -- GET LIFETIME SALES
+            LEFT JOIN (
+                SELECT
+                    user_id,
+                    influencer_level
+                FROM cm_minimum_ranks
+                WHERE @end_date BETWEEN start_date AND end_date
+            ) AS ab ON a.user_id = dv.user_id   -- GET MINIMUM RANK TOOL SETTINGS
+            SET
+                dv.influencer_level = IF(ab.influencer_level is not null, ab.influencer_level,
+                    (
+                        IF(a.pv > 0, (
+                            IF(a.pv >= 25000 AND a.pv < 250000, 2, 3)
+                        ), 1)
+                    )
+                )
+            WHERE dv.rank_date = @end_date
+        ";
+
+        $smt = $this->db->prepare($sql);
+        $smt->execute();
+
+        return $smt->fetchColumn();
+    }
+
+    private function setBgMinimumRank()
+    {
+        $sql = "
+            UPDATE cm_daily_ranks dr
+            JOIN cm_minimum_ranks mr ON mr.user_id = dr.user_id
+            SET dr.min_rank_id = mr.rank_id
+            WHERE mr.is_deleted = 0 AND dr.rank_date = @end_date AND @end_date BETWEEN mr.start_date AND mr.end_date;
+        ";
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute();
+    }
+
+    private function getBgRank(DailyVolume $volume)
+    {
+        foreach ($this->rank_requirements as $rank) {
+
+            if (
+                +$volume->rank->is_active
+                && +$volume->pv >= +$rank->pv
+                && +$volume->gv >= +$rank->gv
+                && +$volume->bg5 >= +$rank->bg5
+                && +$volume->bg6 >= +$rank->bg6
+            ) return +$rank->id;
+
+        }
+
+        return config('commission.ranks.customer');
+    }
+
+    private function setBgRanks()
+    {
+        $volumes = DailyVolume::with('rank')->date($this->getEndDate())
+            //->whereRaw("NOT EXISTS(SELECT 1 FROM cm_daily_ranks dr WHERE dr.volume_id = cm_daily_volumes.id AND FIND_IN_SET(dr.cat_id, '{$this->customers}'))")
+            ->orderBy('level', 'desc')->orderBy('user_id', 'desc')->get();
+
+        $level = null;
+
+        foreach ($volumes as $volume) {
+
+            if ($level !== $volume->level) {
+                $level = $volume->level;
+                $this->log("Processing Level $level");
+            }
+
+            $user_id = +$volume->user_id;
+            $rank = $volume->rank;
+
+            //check if customer
+            if (+$rank->cat_id === 13) {
+                $rank->rank_id = 1;
+                $rank->paid_as_rank_id = 1;
+            } else {
+
+                $rank->rank_id = $this->getBgRank($volume);
+                $rank->paid_as_rank_id = $rank->rank_id > +$rank->min_rank_id ? $rank->rank_id : $rank->min_rank_id;
+
+            }
+
+            $rank->rank_id = $rank->paid_as_rank_id; // added by jen
+            if($rank->paid_as_rank_id > 2) {
+                $rank->is_active = 1;
+            }
+
+            
+            /*
+            if(+$volume->pv >= static::MIN_ACTIVE_PV) {
+                $rank->is_active = 1;
+            }
+            elseif(+$rank->is_active === 0) {
+                $rank->is_active = $this->getNextDelivery($user_id);
+            }
+            */
+            
+            $this->saveAchievedRank($user_id, $rank->paid_as_rank_id);
+
+            $rank->save();
+        }
+    }
+
+    private function setPv()
+    {
+        $sql = "
+            UPDATE cm_daily_volumes dv
+            LEFT JOIN (
+                SELECT
+                    t.user_id,
+                    SUM(COALESCE(t.computed_cv, 0)) As ps
+                FROM v_cm_transactions t
+                WHERE transaction_date BETWEEN @start_date AND @end_date
+                    AND t.`type` = 'product'                    
+                GROUP BY t.user_id
+            ) AS a ON a.user_id = dv.user_id             
+            SET
+                dv.pv = COALESCE(a.ps, 0)
+            WHERE dv.volume_date = @end_date
+        ";
+
+        $smt = $this->db->prepare($sql);
+        $smt->execute();
+
+        return $smt->fetchColumn();
+    }
+
+    private function setGv()
+    {
+        $sql = "
+            UPDATE cm_daily_volumes dv
+            LEFT JOIN (
+                WITH RECURSIVE downline (user_id, parent_id, root_id, `level`, pv) AS (
+                    SELECT 
+                        p.user_id,
+                        p.sponsor_id AS parent_id,
+                        p.user_id AS root_id,
+                        0 AS `level`,
+                        dv.pv AS pv
+                    FROM cm_genealogy_placement p
+                    JOIN cm_daily_volumes dv ON dv.user_id = p.user_id AND dv.volume_date = @end_date
+                    
+                    UNION ALL
+                    
+                    SELECT
+                        p.user_id AS user_id,
+                        p.sponsor_id AS parent_id,
+                        downline.root_id,
+                        downline.`level` + 1 `level`,
+                        dv.pv AS pv
+                    FROM cm_genealogy_placement p
+                    JOIN downline ON downline.user_id = p.sponsor_id
+                    JOIN cm_daily_volumes dv ON dv.user_id = p.user_id AND dv.volume_date = @end_date
+                )
+                SELECT 
+                    d.root_id AS user_id,
+                    SUM(d.pv) AS gv
+                FROM downline d
+                WHERE d.root_id <> d.user_id
+                GROUP BY d.root_id
+            ) AS a ON a.user_id = dv.user_id             
+            SET
+                dv.gv = COALESCE(a.gv, 0)
+            WHERE dv.volume_date = @end_date
+        ";
+
+        $smt = $this->db->prepare($sql);
+        $smt->execute();
+
+        return $smt->fetchColumn();
+    }
+
+    private function setBg()
+    {
+        $minBgLevel = 6;
+        $maxBgLevel = 10;
+
+        while($minBgLevel <= $maxBgLevel){
+            $this->setBgCount($minBgLevel);
+            $minBgLevel++;
+        }
+    }
+
+    private function setBgCount($bgLevel)
+    {
+        $sql = "
+            UPDATE cm_daily_volumes dv 
+                SET bg".$bgLevel."
+        ";
     }
 
     private function setMainParameters()
@@ -238,6 +461,11 @@ final class VolumesAndRanks extends Console
         $smt->execute();
 
         return $smt->fetchColumn();
+    }
+
+    private function calculateRanksAndVolumes()
+    {
+
     }
 
     private function setOrganizationPoints()
