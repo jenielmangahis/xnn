@@ -64,7 +64,7 @@ class Clawback
             ->leftJoin('users AS s', 's.id', '=', 'c.set_user_id')
             ->leftJoin('users AS sponsor', 'sponsor.id', '=', 't.sponsorid')
             ->where('t.status', 'Approved')
-           // ->where('t.type', 'product')
+            ->where('t.type', 'product')
             ->where(function($query) {
                 $query->whereNull('t.credited')
                     ->orWhere('t.credited', '=', '');
@@ -147,15 +147,17 @@ class Clawback
     public function refundOrder($data)
     {
         // validation
+
+        $data['is_full_order'] = 1; // full order only
         if (!isset($data['is_full_order'])) {
             $data['is_full_order'] = 0;
         }
-        
-        if (!isset($data['percent'])) {
+
+        if (isset($data['percent']) && !$data['percent']) {
             $data['percent'] = 0;
         }
 
-        if (!isset($data['amount'])) {
+        if (isset($data['amount']) && !$data['amount']) {
             $data['amount'] = 0;
         }
 
@@ -179,10 +181,9 @@ class Clawback
             'set_user_id' => 'required|integer|exists,users',
         ]);
 
-        if (+$data['percent'] === 0 && +$data['is_full_order'] === 0 && +$data['amount'] === 0) {
-            throw new \Exception("Please select any of the options in Refund Order by: ('% Off' OR 'Amount Off' OR 'Full Order')");
+        if (!$data['percent'] && !$data['is_full_order'] && !$data['amount']) {
+            throw new \Exception("Input some data.");
         }
-
         
         $clawback = ClawbackModel::where('transaction_id', '=', $data['transaction_id'])->first();
 
@@ -214,10 +215,10 @@ class Clawback
             $data['amount_to_deduct'] = $cv;
             $data['amount_to_deduct_price'] = +$transaction->sub_total;
         } 
-        elseif (+$data['percent'] > 0) {
+        else if (false && +$data['percent'] > 0) {
             $data['amount_to_deduct'] = $cv * ($data['percent'] / 100.0);
         } 
-        elseif (+$data['amount'] > 0) {
+        else if (false && +$data['amount'] > 0) {
             $data['amount_to_deduct'] = +$data['amount'];
         } else {
             throw new \Exception("Something went wrong!");
@@ -352,7 +353,7 @@ class Clawback
 
 
                 if (+$clawbackProduct->quantity > $transaction_product->quantity) {
-                    throw new \Exception('Refund Quantity should be lesser than the total item quantity');
+                    throw new \Exception('Order Product ID ' . $product['transaction_product_id'] . ' refund qty should be equal or less than ' . $product['quantity']);
                 }
 
                 $clawbackProduct->save();

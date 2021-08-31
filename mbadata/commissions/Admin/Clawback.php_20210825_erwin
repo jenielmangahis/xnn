@@ -64,7 +64,7 @@ class Clawback
             ->leftJoin('users AS s', 's.id', '=', 'c.set_user_id')
             ->leftJoin('users AS sponsor', 'sponsor.id', '=', 't.sponsorid')
             ->where('t.status', 'Approved')
-           // ->where('t.type', 'product')
+            ->where('t.type', 'product')
             ->where(function($query) {
                 $query->whereNull('t.credited')
                     ->orWhere('t.credited', '=', '');
