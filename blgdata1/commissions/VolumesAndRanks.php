@@ -15,6 +15,7 @@ final class VolumesAndRanks extends Console
 {
     const MAX_POINTS = 200;
     const MIN_ACTIVE_POINTS = 40;
+    const MAX_LEG_RULE = 0.5;
 
     protected $db;
     protected $end_date;
@@ -62,11 +63,17 @@ final class VolumesAndRanks extends Console
             $this->log("Getting rank requirements");
             $this->getRankRequirements();
 
+            /*$this->log('Initializing Volumes');
+            $this->initializeVolumes();*/
+
             $this->log('Initializing Volumes');
-            $this->initializeVolumes();
+            $this->initializeBlgVolumes();
+
+            /*$this->log('Initializing Ranks');
+            $this->initializeRanks();*/
 
             $this->log('Initializing Ranks');
-            $this->initializeRanks();
+            $this->initializeBlgRanks();
 
             //Calculate Volume and Ranks
             $this->log('Setting PV');
@@ -177,6 +184,8 @@ final class VolumesAndRanks extends Console
                 +$volume->rank->is_active
                 && +$volume->pv >= +$rank->pv
                 && +$volume->gv >= +$rank->gv
+                && (+$volume->total_group_volume_left_leg * static::MAX_LEG_RULE) >= +$rank->binary_volume_requirement
+                && (+$volume->total_group_volume_right_leg * static::MAX_LEG_RULE) >= +$rank->binary_volume_requirement
                 && +$volume->bg5 >= +$rank->bg5
                 && +$volume->bg6 >= +$rank->bg6
             ) return +$rank->id;
@@ -958,6 +967,70 @@ final class VolumesAndRanks extends Console
         $stmt->execute();
     }
 
+    private function initializeBlgVolumes()
+    {
+        $sql = "
+            INSERT INTO cm_daily_volumes (
+                user_id, 
+                volume_date, 
+                pv,
+                gv, 
+                pv_current_date,
+                D,
+                group_volume_right_leg,
+                active_personal_enrollment_count,
+                active_personal_enrollment_users,
+                level
+            )
+
+            WITH RECURSIVE downline (user_id, parent_id, `level`, compress_level) AS (
+                SELECT 
+                    id AS user_id,
+                    sponsorid AS parent_id,
+                    downline.compress_level + IF(u.active = 'Yes', 1, 0),
+                    0 AS `level`
+                FROM users
+                WHERE id = @root_user_id AND levelid = 3
+                
+                UNION ALL
+                
+                SELECT
+                    p.id AS user_id,
+                    p.sponsorid AS parent_id,
+                    downline.`level` + 1 `level`,
+                    downline.compress_level + IF(u.active = 'Yes', 1, 0)
+                FROM users p
+                INNER JOIN downline ON p.sponsorid = downline.user_id
+                WHERE p.levelid = 3
+                AND downline.`level` >= 1
+            )
+            SELECT
+                d.user_id, 
+                @end_date volume_date, 
+                0 pv,
+                0 gv,
+                0 pv_current_date,
+                0 group_volume_left_leg,
+                0 group_volume_right_leg,
+                0 active_personal_enrollment_count,
+                NULL active_personal_enrollment_users,
+                d.level
+            FROM downline d
+            ON DUPLICATE KEY UPDATE
+                pv = 0,
+                gv = 0,
+                pv_current_date = 0,
+                group_volume_left_leg = 0,
+                group_volume_right_leg = 0,
+                active_personal_enrollment_count = 0,
+                active_personal_enrollment_users = NULL,
+                level = d.level,
+                updated_at = CURRENT_TIMESTAMP()
+        ";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute();
+    }
+
     private function initializeVolumes()
     {
         $sql = "
@@ -1070,6 +1143,50 @@ final class VolumesAndRanks extends Console
                 level = d.level,
                 updated_at = CURRENT_TIMESTAMP()
         ";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute();
+    }
+
+    private function initializeBlgRanks()
+    {
+        $sql = "
+            INSERT INTO cm_daily_ranks (
+                user_id, 
+                volume_id, 
+                rank_date, 
+                rank_id, 
+                min_rank_id, 
+                paid_as_rank_id,
+                is_active,
+                is_system_active,
+                is_qualified_trader_or_higher,
+                rank_last_90_days
+            )
+            SELECT 
+                dv.user_id, 
+                dv.id AS volume_id, 
+                dv.volume_date AS rank_date, 
+                1 AS rank_id, 
+                1 AS min_rank_id, 
+                1 AS paid_as_rank, 
+                0 AS is_active,
+                0 AS is_system_active,
+                0 AS is_qualified_trader_or_higher,
+                1 AS rank_last_90_days
+            FROM cm_daily_volumes dv
+            WHERE volume_date = @end_date
+            ON DUPLICATE KEY UPDATE 
+                min_rank_id = 1,
+                rank_id = 1,
+                paid_as_rank_id = 1,
+                is_active = 0,
+                is_system_active = 0,
+                is_qualified_trader_or_higher = 0,
+                rank_last_90_days = 1,
+                volume_id = VALUES(volume_id),
+                updated_at = CURRENT_TIMESTAMP();
+        ";
+
         $stmt = $this->db->prepare($sql);
         $stmt->execute();
     }
