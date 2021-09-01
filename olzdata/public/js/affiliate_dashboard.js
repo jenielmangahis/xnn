@@ -186,7 +186,7 @@
 
                 this.currentQualificationState = "fetching";
 
-                client.get("member/dashboard/current-qualification-details")
+                client.get(`${api_url}member/dashboard/current-qualification-details`)
                     .then(response => {
                         let details = response.data;
 
@@ -214,7 +214,7 @@
 
                 this.currentRankDetailsState = "fetching";
 
-                client.get("member/dashboard/current-rank-details")
+                client.get(`${api_url}member/dashboard/current-rank-details`)
                     .then(response => {
                         let details = response.data;
 
@@ -249,7 +249,7 @@
 
                 this.currentBinaryVolumeDeatilsState = "fetching";
 
-                client.get("member/dashboard/current-binary-details")
+                client.get(`${api_url}member/dashboard/current-binary-details`)
                     .then(response => {
                         let details = response.data;
 
@@ -277,7 +277,7 @@
 
                 this.currentEarningsDeatilsState = "fetching";
 
-                client.get("member/dashboard/current-earnings-details")
+                client.get(`${api_url}member/dashboard/current-earnings-details`)
                     .then(response => {
                         let details = response.data;
 
@@ -299,7 +299,7 @@
 
                 this.silverStartUpDetailsState = "fetching";
 
-                client.get("member/dashboard/silver-startup-details")
+                client.get(`${api_url}member/dashboard/silver-startup-details`)
                     .then(response => {
                         let details = response.data;
 
@@ -322,7 +322,7 @@
 
                 this.sparkleStartUpDetailsState = "fetching";
 
-                client.get("member/dashboard/sparkle-startup-details")
+                client.get(`${api_url}member/dashboard/sparkle-startup-details`)
                     .then(response => {
                         let details = response.data;
 
@@ -354,7 +354,7 @@
 
                 this.bashStartUpDetailsState = "fetching";
 
-                client.get("member/dashboard/bash-925-startup-details")
+                client.get(`${api_url}member/dashboard/bash-925-startup-details`)
                     .then(response => {
                         let details = response.data;
 
