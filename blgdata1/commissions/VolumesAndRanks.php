@@ -1258,7 +1258,7 @@ final class VolumesAndRanks extends Console
     {
         $sql = "
             DELETE a FROM cm_achieved_ranks a
-            WHERE a.date_achieved = @end_date AND a.is_migrated = 0
+            WHERE a.date_achieved = @end_date 
         ";
 
         $stmt = $this->db->prepare($sql);
