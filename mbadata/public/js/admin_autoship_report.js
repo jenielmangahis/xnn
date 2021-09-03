@@ -333,7 +333,7 @@
                 this.generateCsv.downloadLinkState = "fetching";
                 this.generateCsv.downloadLink = "";
 
-                client.get(`${this.csvUrl}`, {})
+                client.get(`${this.csvUrl}?year_month=${this.filters.yearMonth}`)
                 .then(response => {
                     this.generateCsv.downloadLinkState = "loaded";
                     this.generateCsv.downloadLink = response.data.link;
