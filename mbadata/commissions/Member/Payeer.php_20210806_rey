@@ -1,0 +1,91 @@
+<?php
+
+
+namespace Commissions\Member;
+
+use Commissions\Clients\Payeer as PayeerClient;
+use Commissions\Exceptions\AlertException;
+use Exception;
+use App\User;
+use App\PayeerUser;
+use Illuminate\Support\Facades\DB;
+
+
+class Payeer
+{
+    const DEBUG = false; // do not set to true
+
+    protected $payeer_client;
+
+    public function __construct(PayeerClient $payeer_client)
+    {
+        $this->payeer_client = $payeer_client;
+
+        if(static::DEBUG)
+        {
+            $this->payeer_client = new PayeerClient('123');
+        }
+    }
+
+    public function createUser($id, $data)
+    {
+        
+        try {
+            $user = User::findOrFail($id);
+
+            DB::transaction(function() use ($user, $id, $data) {
+                
+                $payeerUser = PayeerUser::find($id);
+
+                
+                $result = $this->payeer_client->isAccountExist($data['account_number']);
+
+                
+                // if(!isset($result['errors'])) throw new Exception("Account Number does not exist!");
+                if(!empty($response['errors'])) throw new Exception("Account Number does not exist!");
+                // if($result) throw new Exception("Account Number does not exist!");
+
+                $email = $data['email'];
+                $account_number = $data['account_number'];
+                $user_id = $user->id;
+
+                if(static::DEBUG) {
+                    $e = explode("@", $email);
+                    $email = $e[0] . "+" . time() . "@" . $e[1];
+
+                    $user_id .= "_" . time();
+                }
+                
+                $payeerUser = new PayeerUser();
+                $payeerUser->user_id = $user->id;
+                $payeerUser->account_number = $account_number;
+                $payeerUser->email = $email;
+                $payeerUser->response = json_encode($result);
+                $payeerUser->save();
+
+            });
+
+            return $this->getUser($id);
+        } catch(Exception $ex) {
+            throw new AlertException($ex->getMessage());
+        }
+    }
+
+    public function getUser($id)
+    {
+        // PayeerUser::find(20)->delete();
+        $user = DB::table('users AS u')
+            ->leftJoin('cm_payeer_users AS pu', 'pu.user_id', '=', 'u.id')
+            ->selectRaw("
+                u.id AS user_id,
+                u.fname AS first_name,
+                u.lname AS last_name,
+                IFNULL(pu.email, u.email) AS email,
+                pu.account_number AS account_number
+            ")
+            ->where('u.id', $id)
+            ->first();
+
+        return $user;
+    }
+}

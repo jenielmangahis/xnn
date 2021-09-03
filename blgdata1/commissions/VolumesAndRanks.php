@@ -94,29 +94,29 @@ final class VolumesAndRanks extends Console
             $this->log("Setting Influencer Level");
             $this->setInfluencerLevel();
 
-            $this->log("Setting Coach Points");
-            $this->setCoachPoints();
+            // $this->log("Setting Coach Points");
+            // $this->setCoachPoints();
 
-            $this->log("Setting Organization Points");
-            $this->setOrganizationPoints();
+            // $this->log("Setting Organization Points");
+            // $this->setOrganizationPoints();
 
-            $this->log("Setting Team Group Points");
-            $this->setTeamGroupPoints();
+            // $this->log("Setting Team Group Points");
+            // $this->setTeamGroupPoints();
 
-            $this->log("Setting Preferred Customer Count");
-            $this->setPreferredCustomerCount();
+            // $this->log("Setting Preferred Customer Count");
+            // $this->setPreferredCustomerCount();
 
-            $this->log("Setting Referral Points from New Preferred Customers (3 months)");
-            $this->setReferralPointsFromNewPreferredCustomers();
+            // $this->log("Setting Referral Points from New Preferred Customers (3 months)");
+            // $this->setReferralPointsFromNewPreferredCustomers();
 
-            $this->log("Setting Referral Points from New Active Coaches (3 months)");
-            $this->setReferralPointsFromNewActiveEnrolledCoaches();
+            // $this->log("Setting Referral Points from New Active Coaches (3 months)");
+            // $this->setReferralPointsFromNewActiveEnrolledCoaches();
 
-            $this->log("Setting Minimum Rank");
-            $this->setMinimumRank();
+            // $this->log("Setting Minimum Rank");
+            // $this->setMinimumRank();
 
-            $this->log("Setting Paid-as Rank");
-            $this->setRanks();
+            // $this->log("Setting Paid-as Rank");
+            // $this->setRanks();
 
             $this->log("Setting If Member Is Active");
             $this->setIfMemberIsActive();
@@ -259,7 +259,7 @@ final class VolumesAndRanks extends Console
                 GROUP BY t.user_id
             ) AS a ON a.user_id = dv.user_id             
             SET
-                dv.pv = COALESCE(a.ps, 0)
+                dv.ppv = COALESCE(a.ps, 0)
             WHERE dv.volume_date = @end_date
         ";
 
@@ -311,7 +311,7 @@ final class VolumesAndRanks extends Console
         $smt = $this->db->prepare($sql);
         $smt->execute();
 
-        return $smt->fetchColumn();
+        //return $smt->fetchColumn();
     }
 
     private function setBg()
@@ -970,27 +970,55 @@ final class VolumesAndRanks extends Console
     private function initializeBlgVolumes()
     {
         $sql = "
-            INSERT INTO cm_daily_volumes (
+                INSERT INTO cm_daily_volumes (
                 user_id, 
                 volume_date, 
+                ppv,
+                ppv_capped,
+                pcv,
+                pcv_capped,
                 pv,
-                gv, 
-                pv_current_date,
-                D,
-                group_volume_right_leg,
-                active_personal_enrollment_count,
-                active_personal_enrollment_users,
+                gv,
+                pcv_users,
+                coach_points,
+                organization_points,
+                team_group_points,
+                referral_preferred_customer_points,
+                referral_preferred_customer_users,
+                referral_enrolled_coach_points,
+                referral_enrolled_coach_users,
+                referral_rank_advancement_points,
+                referral_rank_advancement_users,
+                referral_points,
+                personally_enrolled_retention_rate,
+                customer_retention_rate,
+                organization_retention_rate,
+                preferred_customer_count,
+                preferred_customer_users,
+                influencer_count,
+                silver_influencer_count,
+                gold_influencer_count,
+                platinum_influencer_count,
+                emerald_influencer_count,
+                ruby_influencer_count,
+                diamond_influencer_count,
+                double_diamond_influencer_count,
+                triple_diamond_influencer_count,
+                crown_diamond_influencer_count,
+                grace_diamond_influencer_count,
                 level
+             
             )
 
-            WITH RECURSIVE downline (user_id, parent_id, `level`, compress_level) AS (
+            WITH RECURSIVE downline (user_id, parent_id, `level`,`active`, `compress_level`) AS (
                 SELECT 
                     id AS user_id,
                     sponsorid AS parent_id,
-                    downline.compress_level + IF(u.active = 'Yes', 1, 0),
-                    0 AS `level`
-                FROM users
-                WHERE id = @root_user_id AND levelid = 3
+                    0 AS `level`,
+                    active,
+                    0 AS `compress_level`
+                FROM users u
+                WHERE u.id = @root_user_id AND u.levelid = 3
                 
                 UNION ALL
                 
@@ -998,7 +1026,8 @@ final class VolumesAndRanks extends Console
                     p.id AS user_id,
                     p.sponsorid AS parent_id,
                     downline.`level` + 1 `level`,
-                    downline.compress_level + IF(u.active = 'Yes', 1, 0)
+                    p.active,
+                    downline.compress_level + IF(p.active = 'Yes', 1, 0)
                 FROM users p
                 INNER JOIN downline ON p.sponsorid = downline.user_id
                 WHERE p.levelid = 3
@@ -1007,24 +1036,77 @@ final class VolumesAndRanks extends Console
             SELECT
                 d.user_id, 
                 @end_date volume_date, 
+                0 ppv,
+                0 ppv_capped,
+                0 pcv,
+                0 pcv_capped,
                 0 pv,
                 0 gv,
-                0 pv_current_date,
-                0 group_volume_left_leg,
-                0 group_volume_right_leg,
-                0 active_personal_enrollment_count,
-                NULL active_personal_enrollment_users,
+                NULL pcv_users,
+                0 coach_points,
+                0 organization_points,
+                0 team_group_points,
+                0 referral_preferred_customer_points,
+                NULL referral_preferred_customer_users,
+                0 referral_enrolled_coach_points,
+                NULL referral_enrolled_coach_users,
+                0 referral_rank_advancement_points,
+                NULL referral_rank_advancement_users,
+                0 referral_points,
+                0 personally_enrolled_retention_rate,
+                0 customer_retention_rate,
+                0 organization_retention_rate,
+                0 preferred_customer_count,
+                NULL preferred_customer_users,
+                0 influencer_count,
+                0 silver_influencer_count,
+                0 gold_influencer_count,
+                0 platinum_influencer_count,
+                0 emerald_influencer_count,
+                0 ruby_influencer_count,
+                0 diamond_influencer_count,
+                0 double_diamond_influencer_count,
+                0 triple_diamond_influencer_count,
+                0 crown_diamond_influencer_count,
+                0 grace_diamond_influencer_count,
                 d.level
             FROM downline d
             ON DUPLICATE KEY UPDATE
+                ppv = 0,
+                ppv_capped = 0,
+                pcv = 0,
+                pcv_capped = 0,
                 pv = 0,
                 gv = 0,
-                pv_current_date = 0,
-                group_volume_left_leg = 0,
-                group_volume_right_leg = 0,
-                active_personal_enrollment_count = 0,
-                active_personal_enrollment_users = NULL,
+                pcv_users = NULL,
+                coach_points = 0,
+                organization_points = 0,
+                team_group_points = 0,
+                referral_preferred_customer_points = 0,
+                referral_preferred_customer_users = NULL,
+                referral_enrolled_coach_points = 0,
+                referral_enrolled_coach_users = NULL,
+                referral_rank_advancement_points = 0,
+                referral_rank_advancement_users = NULL,
+                referral_points = 0,
+                personally_enrolled_retention_rate = 0,
+                customer_retention_rate = 0,
+                organization_retention_rate = 0,
+                preferred_customer_count = 0,
+                preferred_customer_users = NULL,
+                influencer_count = 0,
+                silver_influencer_count = 0,
+                gold_influencer_count = 0,
+                platinum_influencer_count = 0,
+                emerald_influencer_count = 0,
+                ruby_influencer_count = 0,
+                diamond_influencer_count = 0,
+                double_diamond_influencer_count = 0,
+                triple_diamond_influencer_count = 0,
+                crown_diamond_influencer_count = 0,
+                grace_diamond_influencer_count = 0,
                 level = d.level,
+                created_at = CURRENT_TIMESTAMP(),
                 updated_at = CURRENT_TIMESTAMP()
         ";
         $stmt = $this->db->prepare($sql);
@@ -1157,10 +1239,9 @@ final class VolumesAndRanks extends Console
                 rank_id, 
                 min_rank_id, 
                 paid_as_rank_id,
+                influencer_level,
                 is_active,
-                is_system_active,
-                is_qualified_trader_or_higher,
-                rank_last_90_days
+                is_system_active
             )
             SELECT 
                 dv.user_id, 
@@ -1169,10 +1250,9 @@ final class VolumesAndRanks extends Console
                 1 AS rank_id, 
                 1 AS min_rank_id, 
                 1 AS paid_as_rank, 
+                1 influencer_level,
                 0 AS is_active,
-                0 AS is_system_active,
-                0 AS is_qualified_trader_or_higher,
-                1 AS rank_last_90_days
+                0 AS is_system_active
             FROM cm_daily_volumes dv
             WHERE volume_date = @end_date
             ON DUPLICATE KEY UPDATE 
@@ -1181,8 +1261,7 @@ final class VolumesAndRanks extends Console
                 paid_as_rank_id = 1,
                 is_active = 0,
                 is_system_active = 0,
-                is_qualified_trader_or_higher = 0,
-                rank_last_90_days = 1,
+                influencer_level = 1,
                 volume_id = VALUES(volume_id),
                 updated_at = CURRENT_TIMESTAMP();
         ";

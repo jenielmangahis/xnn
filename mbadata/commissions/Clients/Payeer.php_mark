@@ -1,0 +1,88 @@
+<?php
+
+
+namespace Commissions\Clients;
+
+
+class Payeer
+{
+    protected $account_number;
+    protected $client_id;
+    protected $client_secret;
+    protected $api_url;
+
+    public function __construct(
+        $account_number = 'P32667428',
+        $client_id = '1411571330',
+        $client_secret = "EUtTvurNSiMsm60S",
+        $api_url = "https://payeer.com/ajax/api/api.php")
+    {
+        $this->account_number = $account_number;
+        $this->client_id = $client_id;
+        $this->client_secret = $client_secret;
+        $this->api_url = $api_url;
+    }
+
+    public function sendPayment($payment_id, $user_account_number, $amount)
+    {
+        $data = [
+            'action' => 'transfer',
+            'account' => $this->account_number,
+            'apiId' => $this->client_id,
+            'apiPass' => $this->client_secret,
+            'curIn' => 'USD',
+            'sum' => $amount,
+            'curOut' => 'USD',
+            'to' => $user_account_number,
+        ];
+
+        return $this->postJson($data);
+    }
+
+    private function postJson($data)
+    {
+        $request = json_encode($data);
+
+        $ch = curl_init($this->api_url);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $request);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+        curl_setopt($ch, CURLOPT_HEADER, 0);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        $response = curl_exec($ch);
+        print_r($content);
+        die();
+
+        $err = curl_error($ch);
+        curl_close($ch);
+
+        if($err) {
+            throw new \Exception($err);
+        }
+
+        $r = json_decode($response, true);
+
+        if(!$response || !$r) {
+            $error_message = $err ? $err : "The API response is empty.";
+            logger()->error($error_message);
+            throw new \Exception($error_message);
+        }
+
+        return $r;
+    }
+    
+    public function isAccountExist($user_account_number)
+    {
+        $data = [
+            'action' => 'checkUser',
+            'account' => $this->account_number,
+            'apiId' => $this->client_id,
+            'apiPass' => $this->client_secret,
+            'user' => $user_account_number,
+        ];
+
+        return $this->postJson($data);
+    }
+
+}

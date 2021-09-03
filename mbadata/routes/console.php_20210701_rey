@@ -1,0 +1,402 @@
+<?php
+
+use Illuminate\Support\Facades\DB;
+use Commissions\Admin\RunCommission;
+use Carbon\Carbon;
+use App\User;
+use League\Csv\Reader;
+
+/*
+|--------------------------------------------------------------------------
+| Console Routes
+|--------------------------------------------------------------------------
+|
+| This file is where you may define all of your Closure based console
+| commands. Each Closure is bound to a command instance allowing a
+| simple approach to interacting with each command's IO methods.
+|
+*/
+
+Artisan::command('nxm:test', function () {
+ DB::statement("INSERT INTO cm_car_bonus_settings(bonus_amount,start_date,end_date)
+                VALUES(500,'2021-05-01','2021-05-31')
+");
+})->describe('nxm testing');
+
+Artisan::command('php:info', function () {
+    echo phpinfo();
+})->describe('PHP Info');
+
+Artisan::command('mba:rerun', function () {
+    $run_commission = new RunCommission();
+    $run_commission->run('1711');
+})->describe('MBA rerun');
+
+
+Artisan::command("mba:migrate-users", function () {
+    $this->info('Time started - ' . Carbon::now());
+    $counter = 0;
+
+    // batch 1:
+
+    DB::table("mba_oc_customer AS c")
+        ->leftJoin('mba_ft_individual AS i', 'i.oc_customer_ref_id', '=', 'c.customer_id')
+        ->whereRaw("NOT EXISTS(SELECT 1 FROM users u WHERE u.migrated_user_id = i.id)")
+        ->orderBy("c.customer_id")
+        ->selectRaw("
+            c.customer_id,
+            0 AS sponsorid,
+            IFNULL(i.`user_name`, CONCAT(c.`firstname`, i.id)) AS site,
+            'password123' AS password,
+            'Yes' AS active,
+            IFNULL(c.`firstname`, '') AS fname,
+            IFNULL(c.`lastname`, '') AS lname,
+            '' AS address,
+            '' AS city,
+            '' AS state,
+            '' AS zip,
+            '' AS country,
+            c.`email` AS email,
+            c.`telephone` AS dayphone,
+            c.`telephone` AS evephone,
+            3 AS levelid,
+            c.`telephone` AS cellphone,
+            i.id AS memberid,
+            IFNULL(i.`sponsor_id`, 0) AS sponmemberid,
+            'migrated' AS referurl,
+            i.`date_of_joining` AS enrolled_date,
+            NOW() AS created
+        ")
+        ->chunkById(10000, function ($users) use (&$counter) {
+            $counter++;
+            foreach ($users as $user) {
+                //$this->info(print_r($user, true));
+                $u = new User();
+                $u->sponsorid = $user->sponsorid; // TODO: temporary sponsor. need to update the correct sponsor after all the users are inserted
+                $u->site = $user->site;
+                $u->password = $user->password;
+                $u->active = $user->active;
+                $u->fname = $user->fname;
+                $u->lname = $user->lname;
+                $u->address = $user->address;
+                $u->city = $user->city;
+                $u->state = $user->state;
+                $u->zip = $user->zip;
+                $u->country = $user->country;
+                $u->email = $user->email;
+                $u->dayphone = $user->dayphone;
+                $u->evephone = $user->evephone;
+                $u->levelid = $user->levelid;
+                $u->cellphone = $user->cellphone;
+                $u->memberid = $user->memberid;
+                $u->migrated_user_id = $user->memberid;
+                $u->sponmemberid = $user->sponmemberid;
+                $u->migrated_sponsor_id = $user->sponmemberid;
+                $u->referurl = $user->referurl;
+                $u->enrolled_date = $user->enrolled_date;
+                $u->created = $user->created;
+                $u->save();
+            }
+            $this->info("DONE BATCH $counter " . Carbon::now());
+            //return false;
+        }, "customer_id");
+
+
+        // updated user's sponsor ID
+        DB::statement("
+            UPDATE users u
+            LEFT JOIN users s ON s.migrated_user_id = u.migrated_sponsor_id
+                SET u.sponsorid = s.id
+            WHERE u.migrated_user_id IS NOT NULL AND IFNULL(u.sponsorid, 0) = 0;
+        ");
+
+        // set the root ID 3
+        DB::statement("
+            UPDATE users u
+                SET u.sponsorid = 3
+            WHERE EXISTS(SELECT 1 FROM mba_ft_individual WHERE user_level = 0 AND sponsor_level = 0 AND id = u.`migrated_user_id`);
+        ");
+
+    $this->info('Time ended - ' . Carbon::now());
+});
+
+Artisan::command("mba:migrate-category-ids", function () {
+    $this->info('Time started - ' . Carbon::now());
+
+    DB::statement("
+        INSERT INTO categorymap (userid, catid)
+        SELECT 
+            u.id,
+            14
+        FROM users u
+        LEFT JOIN categorymap cm ON cm.userid = u.id
+        WHERE u.migrated_user_id IS NOT NULL AND cm.catid IS NULL AND u.`referurl` = 'migrated';
+    ");
+
+    $affiliated_date = '2021-05-31';
+
+    DB::statement("
+        UPDATE cm_affiliates a 
+            SET affiliated_at = '$affiliated_date', created_at = '$affiliated_date', updated_at = '$affiliated_date'
+        WHERE EXISTS (SELECT 1 FROM users WHERE referurl = 'migrated' AND migrated_user_id IS NOT NULL AND id = a.`user_id`);
+    ");
+
+    $this->info('Time ended - ' . Carbon::now());
+});
+
+Artisan::command("mba:migrate-minimum-ranks", function () {
+    $this->info('Time started - ' . Carbon::now());
+    
+    $start_date = '2021-05-01';
+    $end_date = '2021-05-31';
+
+    DB::statement("
+        INSERT INTO cm_minimum_ranks (user_id, rank_id, start_date, end_date)
+        SELECT 
+            u.id, 
+            r.id,
+            '$start_date' AS start_date,
+            '$end_date' AS end_date
+        FROM mba_ft_individual a
+        JOIN users u ON u.migrated_user_id = a.id
+        JOIN cm_ranks r ON r.id = a.`user_rank_id` + 2
+        WHERE a.user_rank_id IS NOT NULL;
+    ");
+
+    $this->info('Time ended - ' . Carbon::now());
+});
+
+Artisan::command("mba:encrypt-password", function () {
+    $this->info('Time started - ' . Carbon::now());
+    $counter = 0;
+    require '/nxm/rep/code/office/php/sys/Encryption.php';
+
+    DB::table("users AS u")
+        ->where('referurl', 'migrated')
+        ->where('password', 'password123')
+        ->orderBy("u.id")
+        ->selectRaw("
+            u.id,
+            u.password
+        ")
+        ->chunkById(10000, function ($users) use (&$counter) {
+            $counter++;
+            foreach ($users as $user) {
+                //$this->info(print_r($user, true));
+                $password = $user->password !== "" ? \Encryption::encryptText($user->password, "encrypt") : null;
+                DB::table('users')
+                    ->where('id', $user->id)
+                    ->update(['password' => $password]);
+
+            }
+            $this->info("DONE BATCH $counter " . Carbon::now());
+            //return false;
+        }, "id");
+
+    $this->info('Time ended - ' . Carbon::now());
+});
+
+
+Artisan::command("mba:initialize-volumes-and-ranks", function () {
+    $this->info('Time started - ' . Carbon::now());
+
+    $affiliates = config('commission.member-types.affiliates');
+    $root_id = 3;
+    $end_date = '2021-05-31';
+
+    // initialize volumes
+    // DB::statement("
+    //     INSERT INTO cm_daily_volumes (
+    //         user_id, 
+    //         volume_date, 
+    //         pv,
+    //         gv, 
+    //         pv_current_date,
+    //         group_volume_left_leg,
+    //         group_volume_right_leg,
+    //         active_personal_enrollment_count,
+    //         active_personal_enrollment_users,
+    //         level
+    //     )
+    //     WITH RECURSIVE downline (user_id, parent_id, `level`) AS (
+    //         SELECT 
+    //             id AS user_id,
+    //             sponsorid AS parent_id,
+    //             0 AS `level`
+    //         FROM users
+    //         WHERE id = $root_id AND levelid = 3
+            
+    //         UNION ALL
+            
+    //         SELECT
+    //             p.id AS user_id,
+    //             p.sponsorid AS parent_id,
+    //             downline.`level` + 1 `level`
+    //         FROM users p
+    //         INNER JOIN downline ON p.sponsorid = downline.user_id
+    //         WHERE p.levelid = 3
+    //     )
+    //     SELECT
+    //         d.user_id, 
+    //         '$end_date' volume_date, 
+    //         0 pv,
+    //         0 gv,
+    //         0 pv_current_date,
+    //         0 group_volume_left_leg,
+    //         0 group_volume_right_leg,
+    //         0 active_personal_enrollment_count,
+    //         NULL active_personal_enrollment_users,
+    //         d.level
+    //     FROM downline d
+    //     JOIN cm_affiliates a ON a.user_id = d.user_id
+    //     WHERE EXISTS(SELECT 1 FROM categorymap c WHERE c.userid = d.user_id AND FIND_IN_SET(c.catid, '$affiliates'))
+    //         AND EXISTS(SELECT 1 FROM users WHERE referurl = 'migrated' AND id = a.user_id)
+    //         AND a.affiliated_date <= '$end_date'
+    //     ON DUPLICATE KEY UPDATE
+    //         pv = 0,
+    //         gv = 0,
+    //         pv_current_date = 0,
+    //         group_volume_left_leg = 0,
+    //         group_volume_right_leg = 0,
+    //         active_personal_enrollment_count = 0,
+    //         active_personal_enrollment_users = NULL,
+    //         level = d.level,
+    //         updated_at = CURRENT_TIMESTAMP()
+    // ");
+
+    // initialize ranks
+    DB::statement("
+        INSERT INTO cm_daily_ranks (
+            user_id, 
+            volume_id, 
+            rank_date, 
+            rank_id, 
+            min_rank_id, 
+            paid_as_rank_id,
+            is_active,
+            is_system_active,
+            is_qualified_trader_or_higher,
+            rank_last_90_days
+        )
+        SELECT 
+            dv.user_id, 
+            dv.id AS volume_id, 
+            dv.volume_date AS rank_date, 
+            1 AS rank_id, 
+            1 AS min_rank_id, 
+            1 AS paid_as_rank, 
+            0 AS is_active,
+            0 AS is_system_active,
+            0 AS is_qualified_trader_or_higher,
+            1 AS rank_last_90_days
+        FROM cm_daily_volumes dv
+        WHERE volume_date = '$end_date'
+        ON DUPLICATE KEY UPDATE 
+            min_rank_id = 1,
+            rank_id = 1,
+            paid_as_rank_id = 1,
+            is_active = 0,
+            is_system_active = 0,
+            is_qualified_trader_or_higher = 0,
+            rank_last_90_days = 1,
+            volume_id = VALUES(volume_id),
+            updated_at = CURRENT_TIMESTAMP();
+    ");
+
+    // set minimum ranks
+    DB::statement("
+        UPDATE cm_daily_ranks dr
+        JOIN cm_minimum_ranks mr ON mr.user_id = dr.user_id
+            SET dr.min_rank_id = mr.rank_id, dr.paid_as_rank_id = mr.rank_id, dr.rank_id = mr.rank_id
+        WHERE mr.is_deleted = 0 AND dr.rank_date = '$end_date' AND '$end_date' BETWEEN mr.start_date AND mr.end_date;
+    ");
+
+    $this->info('Time ended - ' . Carbon::now());
+});
+
+Artisan::command("mba:migrate-volumes", function () {
+    $this->info('Time started - ' . Carbon::now());
+    
+    $end_date = '2021-05-31';
+
+    DB::statement("
+        UPDATE cm_daily_volumes dv
+        JOIN users u ON u.`id` = dv.`user_id`
+        JOIN mba_ft_individual m ON m.id = u.`migrated_user_id`
+            SET dv.pv = m.`personal_pv`, dv.`gv` = m.`gpv`, dv.`rollover_volume_left` = m.`total_left_carry`, dv.`rollover_volume_right` = m.`total_right_carry`
+        WHERE dv.`volume_date` = '$end_date';
+    ");
+
+    $this->info('Time ended - ' . Carbon::now());
+});
+
+Artisan::command('mba:customer', function () {
+
+    v__ProcessDirectory("/var/rep/cb/mba/storage/csv_migrate/customers", function ($file, $filename, $extension) {
+        $pdo = DB::connection()->getPdo();
+
+        $sql = "
+            LOAD DATA LOW_PRIORITY LOCAL INFILE '$file'
+            INTO TABLE `mba`.`mba_oc_customer`
+            CHARACTER SET latin1 FIELDS TERMINATED BY ',' OPTIONALLY ENCLOSED BY '\"' ESCAPED BY '\"' LINES TERMINATED BY '\r\n' IGNORE 1 LINES
+            (customer_id, customer_group_id, store_id, language_id, firstname, lastname, email, telephone, fax, password, salt, cart, wishlist, newsletter, address_id, custom_field, ip, status, approved, safe, token, code, date_added);
+        ";
+
+        $pdo->exec($sql);
+    });
+
+})->describe('MBA Customer');
+
+function v__ProcessDirectory($directory, $logic, $add_prefix = true, $log = true)
+{
+
+    $success = [];
+    $error = [];
+    if ($handle = opendir($directory)) {
+
+        while (false !== ($filename = readdir($handle))) {
+
+            if ($filename === "." || $filename === "..") continue;
+
+            $p = pathinfo($filename);
+            $extension = $p['extension'];
+            $_file = $p['filename'];
+
+            if ($extension !== "csv") continue;
+
+            if (strpos($filename, "DONE_") === 0) {
+                if ($log) echo "ALREADY DONE: $filename" . PHP_EOL;
+                continue;
+            }
+
+            $file = "$directory/$filename";
+
+            try {
+
+                $logic($file, $_file, $extension);
+
+            } catch (\Exception $ex) {
+                if ($log) echo "ERROR: " . $ex->getMessage() . PHP_EOL;
+                $error[] = $filename;
+                logger()->error("v__ProcessDirectory: " . $ex->getMessage());
+                continue;
+            }
+
+            $success[] = $filename;
+            if ($log) echo "DONE: $file" . PHP_EOL;
+        }
+
+        closedir($handle);
+    }
+
+    if ($add_prefix) {
+        foreach ($success as $s) {
+            rename("$directory/$s", "$directory/DONE_$s");
+        }
+
+        foreach ($error as $s) {
+            rename("$directory/$s", "$directory/ERROR_$s");
+        }
+    }
+
+}

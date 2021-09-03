@@ -1,0 +1,52 @@
+<?php
+
+
+namespace Commissions\Payments;
+
+
+use App\Payment;
+use Commissions\Clients\Payeer as PayeerClient;
+use Commissions\Contracts\PaymentInterface;
+
+class Payeer extends Payment
+{
+    const DEBUG = true;
+
+    protected $table = "users";
+    protected $username = "account_number";
+    protected $payeer;
+
+    // field use for payout
+    protected $fields = [
+        "account_number",
+        "email AS email",
+    ];
+
+    public function __construct(PayeerClient $payeer)
+    {
+        $this->$payeer = $payeer;
+    }
+
+    public function sentPayment(Payment $payment, $payout)
+    {
+        try
+        {
+            if(static::DEBUG) {
+                $payout->account_number = 20
+            }
+
+            // $this->logger($history->id, "Sending \${$payout->amount} payment to {$payout->company_assigned_key}|{$payout->email}");
+            $response = $this->payeer->sendPayment($payment->id, $payout->account_number, $payout->amount);
+        }
+        catch(\Exception $ex)
+        {
+            $response = [
+                'severity' => 'Critical',
+                'system' => true,
+                'message' => $ex->getMessage(),
+                'trace' => $ex->getTraceAsString(),
+                'payout' => $payout
+            ];
+        }
+    }
+}
