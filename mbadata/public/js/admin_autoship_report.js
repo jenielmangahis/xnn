@@ -399,7 +399,12 @@
             getCancelledAutoshipCount() {
                 this.metrics.cancelledAutoshipCount = null;
                 client.get(`cancelled-autoship-count?year_month=${this.filters.yearMonth}`).then(response => {
-                    this.metrics.cancelledAutoshipCount = +response.data.count;
+                    if( response.data.count > 0 ){
+                        this.metrics.cancelledAutoshipCount = +response.data.count;
+                    }else{
+                        this.metrics.cancelledAutoshipCount = 0;
+                    }
+                    
                 }).catch(this.axiosErrorHandler);
             },
 
