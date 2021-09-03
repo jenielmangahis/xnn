@@ -735,7 +735,12 @@ class AutoshipReport
         $data = [];
         $recordsTotal = $recordsFiltered = 0;
 
-        $draw = intval($filters['draw']);
+        if( isset($filters['draw']) ){
+            $draw = intval($filters['draw']);
+        }else{
+            $draw = 0;
+        }
+        
 
         $skip = $filters['start'];
         $take = $filters['length'];
