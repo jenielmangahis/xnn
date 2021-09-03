@@ -316,7 +316,7 @@
                         this.csvUrl = '';
                         break;
                     case 'failed_autoship':
-                        this.csvUrl = '';
+                        this.csvUrl = 'csv-failed-autoship';
                         break;
                     case 'cancelled_autoship':
                         this.csvUrl = '';

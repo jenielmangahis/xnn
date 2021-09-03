@@ -817,8 +817,21 @@ class AutoshipReport
 
         $year_month = isset($filters['year_month']) ? $filters['year_month'] : null;
         $data       = $this->getPendingAutoshipQuery($year_month, $member_id)->get();
-        
+
         $filename = "pending-autoship-$member_id-";
+        $filename .= time();
+
+        return $csv->generateLink($filename, $data);
+    }
+
+    public function getLinkCsvFailedAutoship($filters, $member_id = null)
+    {
+        $csv = new CsvReport(static::REPORT_PATH);
+
+        $year_month = isset($filters['year_month']) ? $filters['year_month'] : null;
+        $data       = $this->getFailedAutoshipQuery($year_month, $member_id)->get();
+        
+        $filename = "failed-autoship-$member_id-";
         $filename .= time();
 
         return $csv->generateLink($filename, $data);
