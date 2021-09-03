@@ -842,7 +842,7 @@ class AutoshipReport
         $csv = new CsvReport(static::REPORT_PATH);
 
         $year_month = isset($filters['year_month']) ? $filters['year_month'] : null;
-        $data       = $this->getCancelledAutoshipQuery($year_month, $member_id);
+        $data       = $this->getCancelledAutoshipQuery($year_month, $member_id)->get();
         
         $filename = "cancelled-autoship-$member_id-";
         $filename .= time();
