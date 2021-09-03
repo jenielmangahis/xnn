@@ -8,10 +8,14 @@ use Commissions\QueryHelper;
 use Illuminate\Support\Facades\DB;
 use \Illuminate\Database\Capsule\Manager;
 use \Illuminate\Support\Facades\Config;
+use Commissions\CsvReport;
 use PDO;
 
 class AutoshipReport
 {
+
+    const REPORT_PATH = "csv/member/autoship";
+
     protected $db;
 
     public function __construct()
@@ -735,13 +739,7 @@ class AutoshipReport
         $data = [];
         $recordsTotal = $recordsFiltered = 0;
 
-        if( isset($filters['draw']) ){
-            $draw = intval($filters['draw']);
-        }else{
-            $draw = 0;
-        }
-        
-
+        $draw = intval($filters['draw']);
         $skip = $filters['start'];
         $take = $filters['length'];
 
