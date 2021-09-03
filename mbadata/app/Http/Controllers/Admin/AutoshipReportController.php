@@ -139,4 +139,12 @@ class AutoshipReportController extends Controller
         ]);
     }
 
+    public function csvCancelledAutoship(Request $request)
+    {   
+        sleep(2);
+        return response()->json([
+            'link' => $this->auto_ship->getLinkCsvCancelledAutoship($request->all())
+        ]);
+    }
+
 }

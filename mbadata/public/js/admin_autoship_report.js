@@ -319,7 +319,7 @@
                         this.csvUrl = 'csv-failed-autoship';
                         break;
                     case 'cancelled_autoship':
-                        this.csvUrl = '';
+                        this.csvUrl = 'csv-cancelled-autoship';
                         break;
                     case 'active_members_on_autoship':
                         this.csvUrl = 'csv-active-members-on-autoship';

@@ -836,6 +836,19 @@ class AutoshipReport
 
         return $csv->generateLink($filename, $data);
     }
+
+    public function getLinkCsvCancelledAutoship($filters, $member_id = null)
+    {
+        $csv = new CsvReport(static::REPORT_PATH);
+
+        $year_month = isset($filters['year_month']) ? $filters['year_month'] : null;
+        $data       = $this->getCancelledAutoshipQuery($year_month, $member_id);
+        
+        $filename = "cancelled-autoship-$member_id-";
+        $filename .= time();
+
+        return $csv->generateLink($filename, $data);
+    }
 }
 
 

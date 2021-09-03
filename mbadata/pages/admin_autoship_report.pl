@@ -194,7 +194,13 @@ print <<EOS;
     </div>
     <div class="row" v-show="activeTable === 'cancelled_autoship'">
         <div class="col-md-12">
-            <h4>Canceled $autoship</h4>
+            <h4 class="pull-left">Canceled $autoship</h4>
+            <button
+                v-on:click.prevent="generateCSV('cancelled_autoship')"
+                class="btn btn-primary pull-right"
+                style="margin-bottom: 10px;">
+                Generate CSV
+            </button>
             <div class="table-responsive">
                 <table id="table-cancelled-autoship" class="table table-striped table-bordered table--align-middle table--small" style="width:100%">
                     <thead class="table__header table__header--bg-primary">
