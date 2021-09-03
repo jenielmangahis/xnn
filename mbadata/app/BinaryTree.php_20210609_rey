@@ -1,0 +1,32 @@
+<?php
+
+namespace App;
+
+use Illuminate\Database\Eloquent\Model;
+
+class BinaryTree extends Model
+{
+    //
+    protected $table = 'cm_genealogy_binary';
+
+    public function hasLeftLeg()
+    {
+
+    }
+
+    public function hasRightLeg()
+    {
+
+    }
+
+    public function hasBothLegs()
+    {
+
+    }
+
+    public function affiliate()
+    {
+        return $this->belongsToMany(Afffiliate::class);
+    }
+
+}
