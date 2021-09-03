@@ -145,7 +145,13 @@ print <<EOS;
 
     <div class="row" v-show="activeTable === 'successful_autoship'">
         <div class="col-md-12">
-            <h4>Successful $autoship</h4>
+            <h4 class="pull-left">Successful $autoship</h4>
+            <button
+                v-on:click.prevent="generateCSV('successful_autoship')"
+                class="btn btn-primary pull-right"
+                style="margin-bottom: 10px;">
+                Generate CSV
+            </button>
             <div class="table-responsive">
                 <table id="table-successful-autoship" class="table table-striped table-bordered table--align-middle table--small" style="width:100%">
                     <thead class="table__header table__header--bg-primary">

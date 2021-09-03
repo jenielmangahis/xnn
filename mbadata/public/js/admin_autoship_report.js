@@ -313,7 +313,7 @@
                         this.csvUrl = 'csv-pending-autoship';
                         break;
                     case 'successful_autoship':
-                        this.csvUrl = '';
+                        this.csvUrl = 'csv-successful-autoship';
                         break;
                     case 'failed_autoship':
                         this.csvUrl = 'csv-failed-autoship';
