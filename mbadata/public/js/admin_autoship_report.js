@@ -310,7 +310,7 @@
 
                 switch (this.activeTable) {
                     case 'pending_autoship':
-                        this.csvUrl = '';
+                        this.csvUrl = 'csv-pending-autoship';
                         break;
                     case 'successful_autoship':
                         this.csvUrl = '';

@@ -119,7 +119,15 @@ class AutoshipReportController extends Controller
     {   
         sleep(2);
         return response()->json([
-            'link' => $this->auto_ship->csvActiveMembersOnAutoship($request->all())
+            'link' => $this->auto_ship->getLinkCsvActiveMembersOnAutoship($request->all())
+        ]);
+    }
+
+    public function csvPendingAutoship(Request $request)
+    {   
+        sleep(2);
+        return response()->json([
+            'link' => $this->auto_ship->getLinkCsvPendingAutoship($request->all())
         ]);
     }
 
