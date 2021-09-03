@@ -333,7 +333,7 @@
                 this.generateCsv.downloadLinkState = "fetching";
                 this.generateCsv.downloadLink = "";
 
-                client.get(`admin/autoship/${this.csvUrl}`, {})
+                client.get(`${this.csvUrl}`, {})
                 .then(response => {
                     this.generateCsv.downloadLinkState = "loaded";
                     this.generateCsv.downloadLink = response.data.link;
