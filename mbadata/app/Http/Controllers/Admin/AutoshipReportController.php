@@ -119,7 +119,7 @@ class AutoshipReportController extends Controller
     {   
         sleep(2);
         return response()->json(
-            $this->auto_ship->getActiveMembersOnAutoship($request->all())
+            $this->auto_ship->csvActiveMembersOnAutoship($request->all())
         );
     }
 
