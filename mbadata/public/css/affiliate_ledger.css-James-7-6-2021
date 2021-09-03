@@ -1,0 +1,206 @@
+/* New Style */
+
+.tool-container--default {
+  padding: 0px !important;
+}
+
+body {
+  color: #000;
+}
+
+h4.tool-container__header {
+  text-transform: capitalize;
+}
+
+.mba-tabs > li > a {
+  color: #000 !important;
+  font-weight: 600;
+}
+
+.new-btn-mba {
+  border-radius: 0.25rem !important;
+  background-color: #a88d49 !important;
+  box-shadow: 0px 0px 12px 0px #ededed;
+  font-weight: 600 !important;
+  border: 2px solid #ffff !important;
+  color: #fff !important;
+}
+
+.new-btn-mba:hover {
+  background-color: #a88d49 !important;
+  border-color: #fff !important;
+}
+
+.generate-width {
+  width: 50%;
+}
+
+.custom-margin-mba {
+  margin-top: 23px;
+}
+.checkbox-margin {
+  margin-top: 18px;
+}
+.mba-pay-comm-btn {
+  font-weight: 600 !important;
+  border-color: #fff !important;
+  border: 1px solid !important;
+  box-shadow: 0px 0px 12px 0px #f1f1f1 !important;
+  background-color: #40b72f !important;
+  padding: 0px 16px !important;
+  letter-spacing: 1px;
+}
+
+.tool-container .dataTables_paginate > .pagination > li > a {
+  font-weight: 600;
+  background-color: #fff;
+  color: #000000;
+  border: none;
+}
+
+.tool-container .table__header--bg-primary {
+  background-color: #000;
+}
+.tool-container .dataTables_paginate > .pagination > li > a:focus,
+.tool-container .dataTables_paginate > .pagination > li > a:hover,
+.tool-container .dataTables_paginate > .pagination > li > span:focus,
+.tool-container .dataTables_paginate > .pagination > li > span:hover {
+  color: #000;
+  background-color: #d0b775;
+  border-color: #cdb271;
+}
+
+.checkbox label {
+  font-weight: 600;
+}
+
+input.form-control.input-sm,
+input.form-control.input-sm:focus,
+select.form-control.input-sm,
+.form-control {
+  border: 1px solid #bf9b31;
+}
+.form-control {
+  height: calc(2.4em + 0.2rem + 2px);
+}
+
+input#example-search-input {
+  border: 1px solid #bf9b31 !important;
+  border-right: none !important;
+}
+.mba-border div {
+  border: 1px solid #c19e37 !important;
+  border-left: none !important;
+}
+
+input#example-search-input {
+  -webkit-box-shadow: none !important;
+  box-shadow: none !important;
+}
+
+.btn-info:focus,
+.btn-info.focus,
+.btn-primary:focus,
+.btn-primary.focus,
+.btn-primary:not(:disabled):not(.disabled):active:focus,
+.btn-primary:not(:disabled):not(.disabled).active:focus,
+.show > .btn-primary.dropdown-toggle:focus {
+  -webkit-box-shadow: 0 0 0 0.2rem rgb(191 155 49 / 25%);
+  box-shadow: 0 0 0 0.2rem rgb(191 155 49 / 25%);
+}
+
+.form-control:focus,
+.custom-select:focus {
+  color: #495057;
+  background-color: #fff;
+  border-color: #bf9b31;
+  outline: 0;
+  -webkit-box-shadow: 0 0 0 0.2rem rgb(191 155 49 / 25%);
+  box-shadow: 0 0 0 0.2rem rgb(191 155 49 / 25%);
+}
+.table > caption + thead > tr:first-child > td,
+.table > caption + thead > tr:first-child > th,
+.table > colgroup + thead > tr:first-child > td,
+.table > colgroup + thead > tr:first-child > th,
+.table > thead:first-child > tr:first-child > td,
+.table > thead:first-child > tr:first-child > th {
+  border: 1px solid #aea8a5;
+  border-bottom-color: #000000 !important;
+  background: #000000;
+  color: #fff;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 700;
+}
+
+ul#nav-tab-report {
+  margin-left: 0px;
+}
+.dash-lines {
+  border: 2px dashed #aea8a5;
+  border-left: none;
+  padding: 10px 0px 4px;
+  border-right: none;
+  margin: 0 5px;
+}
+i.bi.bi-arrow-down-up {
+  color: #6a6765;
+  font-size: 1rem;
+  margin-left: 20px;
+}
+i.bi.bi-arrow-down-up:hover {
+  color: #fff;
+}
+
+div#nav-tabContent {
+  padding: 15px;
+  border-top: none;
+  border-right: 1px solid #dee2e6;
+  border-bottom: 1px solid #dee2e6;
+  border-left: 1px solid #dee2e6;
+  border-image: initial;
+}
+.table-custom-border {
+  border-top: 0.2em solid #fff;
+}
+div#nav-tab a {
+  color: #000;
+  font-weight: bold;
+}
+
+@media screen and (max-width: 991px) {
+  .custom-margin-mba button {
+    font-size: 12px !important;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .generate-width {
+    width: 100%;
+  }
+  .mba-mobile-view-center {
+    text-align: center;
+  }
+  .col-md-12.mba-mobile-view-center .pull-right {
+    float: none !important;
+    width: 100% !important;
+  }
+  button.mba-pay-comm-btn.btn.btn-success {
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: 425px) {
+  .new-btn-mba {
+    width: 100%;
+  }
+  .pull-left,
+  .pull-right {
+    float: none;
+  }
+}
+@media screen and (max-width: 425px) {
+  div#nav-tabContent {
+    border: none;
+    padding: 0;
+  }
+}

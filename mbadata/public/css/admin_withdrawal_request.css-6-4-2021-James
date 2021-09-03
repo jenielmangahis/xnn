@@ -1,0 +1,191 @@
+.withdrawal-request__log {
+  z-index: auto;
+  position: relative;
+  line-height: 20px;
+  -webkit-transition: none;
+  transition: none;
+  background: #000;
+  overflow-y: scroll;
+  overflow-x: auto;
+  white-space: nowrap;
+  font-family: monospace;
+  font-size: 0.85em !important;
+  height: 300px;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+.withdrawal-request__log--success {
+  color: #3cb64b;
+}
+.withdrawal-request__log--error {
+  color: #e14439;
+}
+.withdrawal-request__log-message {
+  margin: 0 !important;
+}
+
+/* New Style */
+body {
+  color: #000;
+}
+
+h4.tool-container__header {
+  text-transform: capitalize;
+}
+
+.mba-tabs > li > a {
+  color: #000 !important;
+  font-weight: 600;
+}
+
+.new-btn-mba {
+  border-radius: 8px !important;
+  background-image: linear-gradient(
+    to right,
+    #ae841f,
+    #e5d064,
+    #e5d064,
+    #ae841f
+  ) !important;
+  box-shadow: 0px 0px 12px 0px #ededed;
+  font-weight: 600 !important;
+  border: 2px solid #ffff !important;
+}
+
+.generate-width {
+  width: 50%;
+}
+
+.mba-pay-comm-btn {
+  border-radius: 12px !important;
+  font-weight: 600 !important;
+  border-color: #fff !important;
+  border: 1px solid !important;
+  box-shadow: 0px 0px 12px 0px #f1f1f1 !important;
+  background-color: #40b72f !important;
+  padding: 0px 16px !important;
+  letter-spacing: 1px;
+}
+
+.tool-container .dataTables_paginate > .pagination > li > a {
+  font-weight: 600;
+  background-color: #fff;
+  color: #000000;
+  border: none;
+}
+
+.tool-container .dataTables_paginate > .pagination > li > a:focus,
+.tool-container .dataTables_paginate > .pagination > li > a:hover,
+.tool-container .dataTables_paginate > .pagination > li > span:focus,
+.tool-container .dataTables_paginate > .pagination > li > span:hover {
+  color: #000;
+  background-color: #d0b775;
+  border-color: #cdb271;
+}
+
+.btn-info:focus,
+.btn-info.focus,
+.btn-primary:focus,
+.btn-primary.focus,
+.btn-primary:not(:disabled):not(.disabled):active:focus,
+.btn-primary:not(:disabled):not(.disabled).active:focus,
+.show > .btn-primary.dropdown-toggle:focus {
+  -webkit-box-shadow: 0 0 0 0.2rem rgb(191 155 49 / 25%);
+  box-shadow: 0 0 0 0.2rem rgb(191 155 49 / 25%);
+}
+
+input#start-date,
+input#end-date {
+  border: 2px solid #bf9b31;
+}
+
+.input-group.date input {
+  border-radius: 12px !important;
+}
+
+input.form-control.input-sm,
+input.form-control.input-sm:focus,
+select.form-control.input-sm,
+.form-control {
+  border: 1px solid #bf9b31;
+  border-radius: 12px;
+}
+
+.form-control {
+  height: calc(2.4em + 0.5rem + 2px);
+}
+
+input#example-search-input {
+  border: 1px solid #bf9b31 !important;
+  border-right: none !important;
+}
+
+.mba-border div {
+  border: 1px solid #c19e37 !important;
+  border-left: none !important;
+  border-radius: 12px;
+}
+
+input#example-search-input {
+  -webkit-box-shadow: none !important;
+  box-shadow: none !important;
+}
+
+.form-control:focus,
+.custom-select:focus {
+  color: #495057;
+  background-color: #fff;
+  border-color: #bf9b31;
+  outline: 0;
+  -webkit-box-shadow: 0 0 0 0.2rem rgb(191 155 49 / 25%);
+  box-shadow: 0 0 0 0.2rem rgb(191 155 49 / 25%);
+}
+.table > caption + thead > tr:first-child > td,
+.table > caption + thead > tr:first-child > th,
+.table > colgroup + thead > tr:first-child > td,
+.table > colgroup + thead > tr:first-child > th,
+.table > thead:first-child > tr:first-child > td,
+.table > thead:first-child > tr:first-child > th {
+  border: 1px solid #aea8a5;
+  border-bottom-color: #000000 !important;
+  background: #000000;
+  color: #fff;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 700;
+}
+
+ul#nav-tab-report {
+  margin-left: 0px;
+}
+
+i.bi.bi-arrow-down-up {
+  color: #6a6765;
+  font-size: 1rem;
+  margin-left: 20px;
+}
+i.bi.bi-arrow-down-up:hover {
+  color: #fff;
+}
+
+.table-custom-border {
+  border-top: 0.2em solid #fff;
+}
+div#nav-tab a {
+  color: #000;
+  font-weight: bold;
+}
+@media screen and (max-width: 768px) {
+  .generate-width {
+    width: 100%;
+  }
+  .mba-mobile-view-center {
+    text-align: center;
+  }
+  .col-md-12.mba-mobile-view-center .pull-right {
+    float: none !important;
+    width: 100% !important;
+  }
+  button.mba-pay-comm-btn.btn.btn-success {
+    width: 100%;
+  }
+}

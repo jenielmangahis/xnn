@@ -1,0 +1,24 @@
+@media (min-width: 768px) {
+    .modal-xl {
+        width: 90%;
+        max-width:1200px;
+    }
+}
+#app-clawback .bootstrap-datetimepicker-widget.dropdown-menu.usetwentyfour.bottom {
+    width: 100% !important;
+    display: inline-block !important;
+    max-width: 100%;
+}
+#app-clawback li.picker-switch.accordion-toggle {
+    display: none;
+}
+#app-clawback li.collapse {
+    display: block !important;
+    flex: 1 1 100%;
+}
+#app-clawback ul.list-unstyled {
+    display: flex;
+}
+.hidden {
+    display: none !important;
+}

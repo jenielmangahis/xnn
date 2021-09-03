@@ -1,0 +1,229 @@
+.run-commission .table-sm td,
+.run-commission .table-sm th {
+  padding: 0.3rem !important;
+  text-align: center;
+}
+.run-commission__step {
+  font-weight: 700 !important;
+}
+.run-commission__download-link,
+.run-commission__step {
+  margin-bottom: 5px !important;
+}
+.run-commission__log {
+  z-index: auto;
+  position: relative;
+  line-height: 20px;
+  -webkit-transition: none;
+  transition: none;
+  background: #000;
+  overflow-y: scroll;
+  overflow-x: auto;
+  white-space: nowrap;
+  font-family: monospace;
+  font-size: 0.85em !important;
+  height: 300px;
+  padding: 10px;
+}
+.run-commission__log--success {
+  color: #3cb64b;
+}
+.run-commission__log--error {
+  color: #e14439;
+}
+.run-commission__log-message {
+  margin: 0 !important;
+}
+
+/* New Style */
+body {
+  color: #000;
+}
+
+.tool-container--default {
+  padding: 0px !important;
+}
+
+h4#tool-container__header {
+  text-transform: capitalize;
+}
+
+.new-btn-mba {
+  border-radius: 0.25rem !important;
+  background-color: #a88d49 !important;
+  box-shadow: 0px 0px 12px 0px #ededed;
+  font-weight: 600 !important;
+  border: 2px solid #ffff !important;
+  color: #fff !important;
+}
+
+button.btn.btn-danger {
+  width: 61%;
+  margin-top: 2px;
+}
+.mba-money-border {
+  padding: 15px;
+  border: 1px solid #dee2e6;
+  border-image: initial;
+}
+
+.new-btn-mba:hover {
+  background-color: #a88d49 !important;
+  border-color: #fff !important;
+}
+.generate-width {
+  width: 50%;
+}
+
+.new-mba-border-color {
+  border: 2px solid #bf9b31;
+}
+
+.new-mba-border-color:focus {
+  border: 2px solid #e0bb44;
+}
+.progress-bar {
+  box-shadow: none;
+}
+.progress {
+  background-color: #e9e7e6;
+  border-radius: 8px;
+}
+.progress-bar-success {
+  background-image: linear-gradient(
+    to right,
+    #ae841f,
+    #e5d064,
+    #e5d064,
+    #ae841f
+  ) !important;
+  border-radius: 8px;
+}
+
+.col-md-12.mba-color dd {
+  color: #d1b900;
+  font-weight: 600;
+}
+
+.btn:focus,
+.btn.focus,
+.btn-info:focus,
+.btn-info.focus,
+.btn-primary:focus,
+.btn-primary.focus,
+.btn-primary:not(:disabled):not(.disabled):active:focus,
+.btn-primary:not(:disabled):not(.disabled).active:focus,
+.show > .btn-primary.dropdown-toggle:focus {
+  -webkit-box-shadow: 0 0 0 0.2rem rgb(191 155 49 / 25%);
+  box-shadow: 0 0 0 0.2rem rgb(191 155 49 / 25%);
+}
+
+.form-control,
+.form-control:focus,
+input#start-date,
+input#end-date {
+  border: 1px solid #bf9b31;
+}
+
+.table > caption + thead > tr:first-child > td,
+.table > caption + thead > tr:first-child > th,
+.table > colgroup + thead > tr:first-child > td,
+.table > colgroup + thead > tr:first-child > th,
+.table > thead:first-child > tr:first-child > td,
+.table > thead:first-child > tr:first-child > th {
+  border: 1px solid #aea8a5;
+  border-bottom-color: #000000 !important;
+  background: #000000;
+  color: #fff;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 700;
+}
+
+.run-commission .table-sm td,
+.run-commission .table-sm th {
+  border: 1px solid #aea8a5;
+}
+
+.commission-dl-btn {
+  display: flex;
+}
+
+.commission-dl-btn a:first-child {
+  margin-right: 5px;
+}
+
+.form-control {
+  height: calc(2.4em + 0.5rem + 2px);
+}
+
+input#example-search-input {
+  border: 1px solid #bf9b31 !important;
+  border-right: none !important;
+}
+.mba-border div {
+  border: 1px solid #c19e37 !important;
+  border-left: none !important;
+  border-radius: 12px;
+}
+
+input#example-search-input {
+  -webkit-box-shadow: none !important;
+  box-shadow: none !important;
+}
+
+.form-control:focus,
+.custom-select:focus {
+  color: #495057;
+  background-color: #fff;
+  border-color: #bf9b31;
+  outline: 0;
+  -webkit-box-shadow: 0 0 0 0.2rem rgb(191 155 49 / 25%);
+  box-shadow: 0 0 0 0.2rem rgb(191 155 49 / 25%);
+}
+
+i.bi.bi-arrow-down-up {
+  color: #6a6765;
+  font-size: 1rem;
+  margin-left: 20px;
+}
+i.bi.bi-arrow-down-up:hover {
+  color: #fff;
+}
+div#nav-tabContent {
+  padding: 15px;
+  border-top: none;
+  border-right: 1px solid #dee2e6;
+  border-bottom: 1px solid #dee2e6;
+  border-left: 1px solid #dee2e6;
+  border-image: initial;
+}
+
+@media screen and (max-width: 768px) {
+  .mba-mobile-view-center {
+    text-align: center;
+  }
+
+  button#c-upline-report__btn-generate-report {
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: 618px) {
+  .commission-dl-btn {
+    display: block;
+  }
+
+  .commission-dl-btn a:first-child {
+    margin-right: 0px;
+  }
+
+  .mba-mobile-view-center {
+    text-align: center;
+  }
+}
+
+@media screen and (max-width: 320px) {
+  .new-btn-mba {
+    font-size: 13px !important;
+  }
+}

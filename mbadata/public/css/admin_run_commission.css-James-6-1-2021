@@ -1,0 +1,151 @@
+.run-commission .table-sm td,
+.run-commission .table-sm th {
+  padding: 0.3rem !important;
+  text-align: center;
+}
+.run-commission__step {
+  font-weight: 700 !important;
+}
+.run-commission__download-link,
+.run-commission__step {
+  margin-bottom: 5px !important;
+}
+.run-commission__log {
+  z-index: auto;
+  position: relative;
+  line-height: 20px;
+  -webkit-transition: none;
+  transition: none;
+  background: #000;
+  overflow-y: scroll;
+  overflow-x: auto;
+  white-space: nowrap;
+  font-family: monospace;
+  font-size: 0.85em !important;
+  height: 300px;
+  padding: 10px;
+}
+.run-commission__log--success {
+  color: #3cb64b;
+}
+.run-commission__log--error {
+  color: #e14439;
+}
+.run-commission__log-message {
+  margin: 0 !important;
+}
+
+/* New Style */
+body {
+  color: #000;
+}
+
+h4#tool-container__header {
+  text-transform: capitalize;
+}
+
+.generate-width {
+  width: 40%;
+}
+
+.new-btn-mba {
+  border-radius: 8px !important;
+  background-image: linear-gradient(
+    to right,
+    #ae841f,
+    #e5d064,
+    #e5d064,
+    #ae841f
+  ) !important;
+  border-color: #fff !important;
+  box-shadow: 0px 0px 12px 0px #f1f1f1;
+}
+
+.new-btn-mba:hover {
+  background-image: linear-gradient(
+    to right,
+    #e0bb44,
+    #b77a00,
+    #b77a00,
+    #e0bb44
+  ) !important;
+  border-color: #fff !important;
+}
+
+.new-mba-border-color {
+  border: 2px solid #bf9b31;
+}
+
+.new-mba-border-color:focus {
+  border: 2px solid #e0bb44;
+}
+.progress-bar {
+  box-shadow: none;
+}
+.progress {
+  background-color: #e9e7e6;
+  border-radius: 8px;
+}
+.progress-bar-success {
+  background-image: linear-gradient(
+    to right,
+    #ae841f,
+    #e5d064,
+    #e5d064,
+    #ae841f
+  ) !important;
+  border-radius: 8px;
+}
+
+.col-md-12.mba-color dd {
+  color: #d1b900;
+  font-weight: 600;
+}
+
+.table > caption + thead > tr:first-child > td,
+.table > caption + thead > tr:first-child > th,
+.table > colgroup + thead > tr:first-child > td,
+.table > colgroup + thead > tr:first-child > th,
+.table > thead:first-child > tr:first-child > td,
+.table > thead:first-child > tr:first-child > th {
+  border-left: 0 !important;
+  border-right: 0 !important;
+  border-bottom-color: #000000 !important;
+  background: #000000;
+  color: #fff;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 700;
+}
+
+.run-commission .table-sm td,
+.run-commission .table-sm th {
+  border: 1px solid #aea8a5;
+}
+
+.commission-dl-btn {
+  display: flex;
+}
+
+.commission-dl-btn a:first-child {
+  margin-right: 5px;
+}
+
+@media screen and (max-width: 618px) {
+  .commission-dl-btn {
+    display: block;
+  }
+
+  .commission-dl-btn a:first-child {
+    margin-right: 0px;
+  }
+
+  .mba-mobile-view-center {
+    text-align: center;
+  }
+}
+
+@media screen and (max-width: 320px) {
+  .new-btn-mba {
+    font-size: 13px !important;
+  }
+}
