@@ -10,7 +10,7 @@ use Commissions\Member\AutoshipReport as MemberAutoshipReport;
 
 class AutoshipReport extends MemberAutoshipReport
 {
-
+	const REPORT_PATH = "csv/admin/autoship";
 }
 
 

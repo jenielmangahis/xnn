@@ -793,11 +793,18 @@ class AutoshipReport
         return compact('recordsTotal', 'draw', 'recordsFiltered', 'data', 'year_month');
     }
 
+    public function csvActiveMembersOnAutoship($filters, $member_id = null)
+    {
+        $csv = new CsvReport(static::REPORT_PATH);
 
+        $year_month = isset($filters['year_month']) ? $filters['year_month'] : null;
+        $data       = $this->getActiveMembersOnAutoshipQuery($year_month, $member_id)->get();
 
+        $filename = "active-member-autoship-$member_id-";
+        $filename .= time();
 
-
-
+        return $csv->generateLink($filename, $data);
+    }
 }
 
 

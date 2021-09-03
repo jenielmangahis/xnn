@@ -115,4 +115,14 @@ class AutoshipReportController extends Controller
         );
     }
 
+    public function csvActiveMembersOnAutoship(Request $request)
+    {   
+        sleep(2);
+        return response()->json(
+            $this->auto_ship->getActiveMembersOnAutoship($request->all())
+        );
+    }
+
+
+
 }

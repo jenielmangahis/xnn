@@ -315,6 +315,8 @@ Route::prefix('admin/autoship')->namespace('Admin')->middleware('jwt.auth.level:
     Route::get('failed-autoship', 'AutoshipReportController@failedAutoship');
     Route::get('cancelled-autoship', 'AutoshipReportController@cancelledAutoship');
     Route::get('active-members-on-autoship', 'AutoshipReportController@activeMembersOnAutoship');
+
+    Route::get('csv-active-members-on-autoship', 'AutoshipReportController@csvActiveMembersOnAutoship');
 });
 
 Route::get('payeer/history', function () {
