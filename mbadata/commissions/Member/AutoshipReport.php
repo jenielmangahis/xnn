@@ -181,7 +181,7 @@ class AutoshipReport
         $end_date = $date->copy()->endOfMonth()->format("Y-m-d");
 
         $query = DB::table('transactions AS t')
-            /*->selectRaw("
+            ->selectRaw("
                 u.id AS user_id,
                 CONCAT(u.fname, ' ', u.lname) AS member,
                 u.sponsorid AS sponsor_id,
@@ -190,8 +190,8 @@ class AutoshipReport
                 t.sub_total AS price,
                 getCappedVolume(tt.user_id, tt.transaction_id, tt.transaction_date) AS cv,
                 tt.transaction_date AS processing_date
-            ")*/
-            ->selectRaw("
+            ")
+           /* ->selectRaw("
                 u.id AS user_id,
                 CONCAT(u.fname, ' ', u.lname) AS member,
                 u.sponsorid AS sponsor_id,
@@ -200,7 +200,7 @@ class AutoshipReport
                 t.sub_total AS price,
                 t.computed_cv AS cv,
                 tt.transaction_date AS processing_date
-            ")
+            ") */
             ->join("users AS u", "u.id", "=", "t.userid")
             ->join("users AS s", "s.id", "=", "t.sponsorid")
             ->join("v_cm_transactions AS tt", "tt.transaction_id", "=", "t.id")
