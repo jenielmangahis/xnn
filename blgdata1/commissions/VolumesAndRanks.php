@@ -362,11 +362,6 @@ final class VolumesAndRanks extends Console
     private function setBgCount($bgLevel)
     {
         $sql = "
-            UPDATE cm_daily_volumes dv 
-                SET bg".$bgLevel."_count
-            WHERE
-        ";
-        $sql = "
             UPDATE cm_daily_volumes dv
                 LEFT JOIN (
                 WITH RECURSIVE downline (user_id, parent_id, root_id, `level`, pv) AS (
@@ -403,7 +398,9 @@ final class VolumesAndRanks extends Console
             WHERE volume_date = @end_date
         ";
 
-
+        $smt = $this->db->prepare($sql);
+        $smt->execute();
+        
     }
 
     private function setMainParameters()
