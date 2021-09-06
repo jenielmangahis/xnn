@@ -363,9 +363,47 @@ final class VolumesAndRanks extends Console
     {
         $sql = "
             UPDATE cm_daily_volumes dv 
-                SET bg".$bgLevel."
-            WHERE 
+                SET bg".$bgLevel."_count
+            WHERE
         ";
+        $sql = "
+            UPDATE cm_daily_volumes dv
+                LEFT JOIN (
+                WITH RECURSIVE downline (user_id, parent_id, root_id, `level`, pv) AS (
+                    SELECT 
+                        p.user_id,
+                        p.sponsor_id AS parent_id,
+                        p.user_id AS root_id,
+                        0 AS `level`,
+                        dv.pv AS pv
+                    FROM cm_genealogy_placement p
+                    JOIN cm_daily_volumes dv ON dv.user_id = p.user_id AND dv.volume_date = @end_date
+                    
+                    UNION ALL
+                    
+                    SELECT
+                        p.user_id AS user_id,
+                        p.sponsor_id AS parent_id,
+                        downline.root_id,
+                        downline.`level` + 1 `level`,
+                        dv.pv AS pv
+                    FROM cm_genealogy_placement p
+                    JOIN downline ON downline.user_id = p.sponsor_id
+                    JOIN cm_daily_volumes dv ON dv.user_id = p.user_id AND dv.volume_date = @end_date
+                )
+                SELECT 
+                    d.root_id AS user_id,
+                    COUNT(d.user_id) AS bg_count
+                FROM downline d
+                JOIN cm_daily_ranks cdr ON d.user_id = cdr.user_id
+                WHERE d.root_id <> d.user_id AND cdr.rank_date = @end_date AND cdr.paid_as_rank >= $bgLevel
+                GROUP BY d.root_id
+            ) AS a ON a.user_id = dv.user_id  
+            SET bg".$bgLevel."_count = a.bg_count
+            WHERE volume_date = @end_date
+        ";
+
+
     }
 
     private function setMainParameters()
