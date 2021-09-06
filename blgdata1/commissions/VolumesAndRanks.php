@@ -180,19 +180,53 @@ final class VolumesAndRanks extends Console
     {
         foreach ($this->rank_requirements as $rank) {
 
+            $svp_leg_count = +$volume->svp_leg_count;
+            $vp_leg_count = $svp_leg_count + +$volume->vp_leg_count;
+            $sed_leg_count = $vp_leg_count + +$volume->sed_leg_count;
+            $led_leg_count = $sed_leg_count + +$volume->led_leg_count;
+            $ed_leg_count = $led_leg_count + +$volume->ed_leg_count;
+            $sd_leg_count = $ed_leg_count + +$volume->sd_leg_count;
+            $ld_leg_count = $sd_leg_count + +$volume->ld_leg_count;
+            $dir_leg_count = $ld_leg_count + +$volume->dir_leg_count;
+            $sm_leg_count = $dir_leg_count + +$volume->sm_leg_count;
+            $lm_leg_count = $sm_leg_count + +$volume->lm_leg_count;
+            $mgr_leg_count = $lm_leg_count + +$volume->mgr_leg_count;
+
+            $svp_leg_count_requirement = +$volume->svp_leg_count_requirement;
+            $vp_leg_count_requirement = $svp_leg_count_requirement - +$volume->vp_leg_count_requirement;
+            $sed_leg_count_requirement = $vp_leg_count_requirement - +$volume->sed_leg_count_requirement;
+            $led_leg_count_requirement = $sed_leg_count_requirement - +$volume->led_leg_count_requirement;
+            $ed_leg_count_requirement = $led_leg_count_requirement - +$volume->ed_leg_count_requirement;
+            $sd_leg_count_requirement = $ed_leg_count_requirement - +$volume->sd_leg_count_requirement;
+            $ld_leg_count_requirement = $sd_leg_count_requirement - +$volume->ld_leg_count_requirement;
+            $dir_leg_count_requirement = $ld_leg_count_requirement - +$volume->dir_leg_count_requirement;
+            $sm_leg_count_requirement = $dir_leg_count_requirement - +$volume->sm_leg_count_requirement;
+            $lm_leg_count_requirement = $sm_leg_count_requirement - +$volume->lm_leg_count_requirement;
+            $mgr_leg_count_requirement = $lm_leg_count_requirement - +$volume->mgr_leg_count_requirement;
+
             if (
-                +$volume->rank->is_active
-                && +$volume->pv >= +$rank->pv
-                && +$volume->gv >= +$rank->gv
-                && (+$volume->total_group_volume_left_leg * static::MAX_LEG_RULE) >= +$rank->binary_volume_requirement
-                && (+$volume->total_group_volume_right_leg * static::MAX_LEG_RULE) >= +$rank->binary_volume_requirement
-                && +$volume->bg5 >= +$rank->bg5
-                && +$volume->bg6 >= +$rank->bg6
+                +$volume->cs >= +$rank->cs_requirement
+                && +$volume->ds >= +$rank->ds_requirement
+                && +$volume->builder_leg_count >= +$rank->builder_leg_count_requirement
+                && +$volume->new_gen_q_count >= +$rank->new_gen_q_count_requirement
+
+                && $svp_leg_count >= +$rank->svp_leg_count_requirement
+                && ($vp_leg_count - $svp_leg_count_requirement) >= +$rank->vp_leg_count_requirement
+                && ($sed_leg_count - $vp_leg_count_requirement) >= +$rank->sed_leg_count_requirement
+                && ($led_leg_count - $sed_leg_count_requirement) >= +$rank->led_leg_count_requirement
+                && ($ed_leg_count - $led_leg_count_requirement) >= +$rank->ed_leg_count_requirement
+                && ($sd_leg_count - $ed_leg_count_requirement) >= +$rank->sd_leg_count_requirement
+                && ($ld_leg_count - $sd_leg_count_requirement) >= +$rank->ld_leg_count_requirement
+                && ($dir_leg_count - $ld_leg_count_requirement) >= +$rank->dir_leg_count_requirement
+                && ($sm_leg_count - $dir_leg_count_requirement) >= +$rank->sm_leg_count_requirement
+                && ($lm_leg_count - $sm_leg_count_requirement) >= +$rank->lm_leg_count_requirement
+                && ($mgr_leg_count - $lm_leg_count_requirement) >= +$rank->mgr_leg_count_requirement
+
             ) return +$rank->id;
 
         }
 
-        return config('commission.ranks.customer');
+        return config('commission.ranks.team-member');
     }
 
     private function setBgRanks()
@@ -330,6 +364,7 @@ final class VolumesAndRanks extends Console
         $sql = "
             UPDATE cm_daily_volumes dv 
                 SET bg".$bgLevel."
+            WHERE 
         ";
     }
 
