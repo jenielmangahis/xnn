@@ -1,0 +1,25 @@
+
+.view-orders {
+	background: none!important;
+	border: none;
+	padding: 0!important;
+	/*optional*/
+	font-family: arial, sans-serif;
+	/*input has OS specific font-family*/
+	color: #4ba0d6;
+	text-decoration: underline;
+	cursor: pointer;
+}
+
+.pending-autoship,.success-autoship,.failed-autoship, .added-autoship {
+	background: none!important;
+	border: none;
+	padding: 0!important;
+	/*optional*/
+	font-family: arial, sans-serif;
+	/*input has OS specific font-family*/
+	color: #4ba0d6;
+	text-decoration: underline;
+	cursor: pointer;
+	padding-left: 15px !important;
+}

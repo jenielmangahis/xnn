@@ -1,0 +1,72 @@
+.pay-commission__log {
+    z-index: auto;
+    position: relative;
+    line-height: 20px;
+    -webkit-transition: none;
+    transition: none;
+    background: #000;
+    overflow-y: scroll;
+    overflow-x: auto;
+    white-space: nowrap;
+    font-family: monospace;
+    font-size: .85em !important;
+    height: 300px;
+    padding: 10px;
+    margin-bottom: 10px
+}
+
+.pay-commission__log--success {
+    color: #3cb64b
+}
+
+.pay-commission__log--error {
+    color: #e14439
+}
+
+.pay-commission__log-message {
+    margin: 0 !important
+}
+
+#btn-view {
+	background: #008BB4;
+}
+
+.margin-top-bottom {
+    margin-bottom: 30px;
+    margin-top: 30px;
+}
+
+.margin-top {
+    margin-top: 30px;
+}
+
+.tool-container .table__header--bg-primary {
+    background-color: #007398;
+    color: #fff;
+    font-weight: 300;
+    font-family: Arial;
+}
+
+table.dataTable thead .sorting:after, table.dataTable thead .sorting_asc:after, table.dataTable thead .sorting_desc:after, table.dataTable thead .sorting_asc_disabled:after, table.dataTable thead .sorting_desc_disabled:after {
+    position: absolute;
+    bottom: 8px;
+    right: 8px;
+    display: block;
+    font-family: none;
+    opacity: 0;
+}
+
+select {
+    border: 1px solid #0096b4!important;
+}
+
+input {
+    border: 1px solid #0096b4!important;
+}
+
+.nav-tabs > li > a {
+    margin-right: 2px;
+    line-height: 1.42857143;
+    border: 1px solid transparent;
+    border-radius: 0px 0px!important;
+}

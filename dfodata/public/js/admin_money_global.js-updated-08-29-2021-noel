@@ -1,0 +1,12 @@
+$(document).ready(function(){
+    
+    $('*[type="search"]').addClass("input-md");
+    $('*[type="search"]').removeClass("input-sm");
+    $('*[type="search"]').css("width", "266px");
+    $('*[type="search"]').css("margin-bottom", "5px");
+
+    $('select').addClass("input-md");
+    $('select').removeClass("input-sm");
+
+});
+

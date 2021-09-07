@@ -1,0 +1,180 @@
+/*TODO: arrange the css*/
+.card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+    background-color: #fff;
+    background-clip: border-box;
+    border: 1px solid #e3e6f0;
+    border-radius: .35rem;
+    min-height: 315px;
+}
+
+.tool-container {
+    color: #000 !important;
+}
+
+.card-body {
+    flex: 1 1 auto;
+    padding: 2.25rem;
+}
+
+.card-body .row {
+    display: flex;
+    flex-wrap: wrap;
+    margin-right: -.75rem;
+    margin-left: -.75rem;
+}
+
+
+/*FOR TABLE*/
+
+.card-tbl {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+    background-color: #fff;
+    background-clip: border-box;
+    border: 1px solid #e3e6f0;
+    border-radius: .35rem;
+}
+
+.tool-container {
+    color: #000 !important;
+}
+
+.card-body {
+    flex: 1 1 auto;
+    padding: 2.25rem;
+}
+
+.card-body .row {
+    display: flex;
+    flex-wrap: wrap;
+    margin-right: -.75rem;
+    margin-left: -.75rem;
+}
+
+
+.no-gutters {
+    margin-right: 0;
+    margin-left: 0;
+}
+
+.align-items-center {
+    align-items: center!important;
+}
+
+.justify-content-between {
+    justify-content: space-between!important;
+}
+
+.card-header:first-child {
+    border-radius: calc(.35rem - 1px) calc(.35rem - 1px) 0 0;
+}
+.card-header {
+    padding: .75rem 1.25rem;
+    margin-bottom: 0;
+    background-color: #f8f9fc;
+    border-bottom: 1px solid #e3e6f0;
+}
+
+.font-weight-bold {
+    font-weight: 700!important;
+}
+
+.mb-4, .my-4 {
+    margin-bottom: 1.5rem!important;
+}
+
+.text-gray-800, .card-details span {
+    color: #5a5c69!important;
+}
+
+.text-gray-300 {
+    color: #dddfeb!important;
+}
+
+.no-gutters>.col, .no-gutters>[class*=col-] {
+    padding-right: 0;
+    padding-left: 0;
+}
+
+.col-auto {
+    flex: 0 0 auto;
+    width: auto;
+    max-width: 100%;
+}
+
+.text-xs {
+    font-size: 1rem;
+}
+
+.d-flex {
+    display: flex!important;
+}
+
+.flex-row {
+    flex-direction: row!important;
+}
+
+.bg-pending-bonus {
+    background-color: #f5f5f5 !important;
+    color: #000 !important;
+}
+
+.bg-achieved-bonus {
+    background-color: #6c757d !important;
+    color: #fff !important;
+}
+
+.referral-points {
+    color: #17a2b8!important;
+    font-weight: bolder !important;
+}
+button.btn.btn-primary.btn-block 
+{
+    /* margin-left: 20px; */
+    margin-right: 10px;
+}
+.list-unstyled-custom
+{
+    list-style: none !important;
+}
+th.table__cell
+{
+   color: #fff !important;
+   background-color: #337ab7 !important;
+}
+@media only screen and (max-width: 1024px) {
+    .card.border-left-info.shadow.h-100.py-2 {
+        margin-bottom: 20px;
+    }
+    button.btn.btn-primary.btn-block 
+    {
+        margin-left: 0 !important;
+    }
+}
+@media only screen and (max-width: 768px) 
+{
+    thead#table-enroller.table__header.table__header--bg-primary
+    {
+        font-size:9px;
+    }
+}
+@media only screen and (max-width: 600px) 
+{
+    .card.border-left-info.shadow.h-100.py-2 {
+        margin-bottom: 20px;
+    }
+    button.btn.btn-primary.btn-block 
+    {
+        margin-left: 0;
+    }
+}
+
+
