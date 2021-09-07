@@ -62,11 +62,25 @@ final class VolumesAndRanks extends Console
             $this->log("Getting rank requirements");
             $this->getRankRequirements();
 
-            $this->log('Initializing Volumes');
+            /*$this->log('Initializing Volumes');
             $this->initializeVolumes();
 
             $this->log('Initializing Ranks');
-            $this->initializeRanks();
+            $this->initializeRanks();*/
+
+            //Start custom volume ranks
+            $this->log('Initializing Volumes');
+            $this->initializeCustomVolumes();
+
+            $this->log('Initializing Ranks');
+            $this->initializeCustomRanks();
+
+            $this->log('Setting PV');
+            $this->setPv();
+
+            $this->log('Setting GV');
+            $this->setGv();   
+            //End custom volume ranks
 
             $this->log("Setting Coach Points");
             $this->setCoachPoints();
@@ -1078,6 +1092,262 @@ final class VolumesAndRanks extends Console
         }
 
         return $needs;
+    }
+
+    private function initializeCustomVolumes()
+    {
+        $sql = "
+                INSERT INTO cm_daily_volumes (
+                user_id, 
+                volume_date, 
+                ppv,
+                ppv_capped,
+                pcv,
+                pcv_capped,
+                pv,
+                gv,
+                pcv_users,
+                coach_points,
+                organization_points,
+                team_group_points,
+                referral_preferred_customer_points,
+                referral_preferred_customer_users,
+                referral_enrolled_coach_points,
+                referral_enrolled_coach_users,
+                referral_rank_advancement_points,
+                referral_rank_advancement_users,
+                referral_points,
+                personally_enrolled_retention_rate,
+                customer_retention_rate,
+                organization_retention_rate,
+                preferred_customer_count,
+                preferred_customer_users,
+                influencer_count,
+                silver_influencer_count,
+                gold_influencer_count,
+                platinum_influencer_count,
+                emerald_influencer_count,
+                ruby_influencer_count,
+                diamond_influencer_count,
+                double_diamond_influencer_count,
+                triple_diamond_influencer_count,
+                crown_diamond_influencer_count,
+                grace_diamond_influencer_count,
+                level
+             
+            )
+
+            WITH RECURSIVE downline (user_id, parent_id, `level`,`active`, `compress_level`) AS (
+                SELECT 
+                    id AS user_id,
+                    sponsorid AS parent_id,
+                    0 AS `level`,
+                    active,
+                    0 AS `compress_level`
+                FROM users u
+                WHERE u.id = @root_user_id AND u.levelid = 3
+                
+                UNION ALL
+                
+                SELECT
+                    p.id AS user_id,
+                    p.sponsorid AS parent_id,
+                    downline.`level` + 1 `level`,
+                    p.active,
+                    downline.compress_level + IF(p.active = 'Yes', 1, 0)
+                FROM users p
+                INNER JOIN downline ON p.sponsorid = downline.user_id
+                WHERE p.levelid = 3
+                AND downline.`level` >= 1
+            )
+            SELECT
+                d.user_id, 
+                @end_date volume_date, 
+                0 ppv,
+                0 ppv_capped,
+                0 pcv,
+                0 pcv_capped,
+                0 pv,
+                0 gv,
+                NULL pcv_users,
+                0 coach_points,
+                0 organization_points,
+                0 team_group_points,
+                0 referral_preferred_customer_points,
+                NULL referral_preferred_customer_users,
+                0 referral_enrolled_coach_points,
+                NULL referral_enrolled_coach_users,
+                0 referral_rank_advancement_points,
+                NULL referral_rank_advancement_users,
+                0 referral_points,
+                0 personally_enrolled_retention_rate,
+                0 customer_retention_rate,
+                0 organization_retention_rate,
+                0 preferred_customer_count,
+                NULL preferred_customer_users,
+                0 influencer_count,
+                0 silver_influencer_count,
+                0 gold_influencer_count,
+                0 platinum_influencer_count,
+                0 emerald_influencer_count,
+                0 ruby_influencer_count,
+                0 diamond_influencer_count,
+                0 double_diamond_influencer_count,
+                0 triple_diamond_influencer_count,
+                0 crown_diamond_influencer_count,
+                0 grace_diamond_influencer_count,
+                d.level
+            FROM downline d
+            ON DUPLICATE KEY UPDATE
+                ppv = 0,
+                ppv_capped = 0,
+                pcv = 0,
+                pcv_capped = 0,
+                pv = 0,
+                gv = 0,
+                pcv_users = NULL,
+                coach_points = 0,
+                organization_points = 0,
+                team_group_points = 0,
+                referral_preferred_customer_points = 0,
+                referral_preferred_customer_users = NULL,
+                referral_enrolled_coach_points = 0,
+                referral_enrolled_coach_users = NULL,
+                referral_rank_advancement_points = 0,
+                referral_rank_advancement_users = NULL,
+                referral_points = 0,
+                personally_enrolled_retention_rate = 0,
+                customer_retention_rate = 0,
+                organization_retention_rate = 0,
+                preferred_customer_count = 0,
+                preferred_customer_users = NULL,
+                influencer_count = 0,
+                silver_influencer_count = 0,
+                gold_influencer_count = 0,
+                platinum_influencer_count = 0,
+                emerald_influencer_count = 0,
+                ruby_influencer_count = 0,
+                diamond_influencer_count = 0,
+                double_diamond_influencer_count = 0,
+                triple_diamond_influencer_count = 0,
+                crown_diamond_influencer_count = 0,
+                grace_diamond_influencer_count = 0,
+                level = d.level,
+                created_at = CURRENT_TIMESTAMP(),
+                updated_at = CURRENT_TIMESTAMP()
+        ";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute();
+    }
+
+    private function initializeCustomRanks()
+    {
+        $sql = "
+            INSERT INTO cm_daily_ranks (
+                user_id, 
+                volume_id, 
+                rank_date, 
+                rank_id, 
+                min_rank_id, 
+                paid_as_rank_id,
+                influencer_level,
+                is_active,
+                is_system_active
+            )
+            SELECT 
+                dv.user_id, 
+                dv.id AS volume_id, 
+                dv.volume_date AS rank_date, 
+                1 AS rank_id, 
+                1 AS min_rank_id, 
+                1 AS paid_as_rank, 
+                1 influencer_level,
+                0 AS is_active,
+                0 AS is_system_active
+            FROM cm_daily_volumes dv
+            WHERE volume_date = @end_date
+            ON DUPLICATE KEY UPDATE 
+                min_rank_id = 1,
+                rank_id = 1,
+                paid_as_rank_id = 1,
+                is_active = 0,
+                is_system_active = 0,
+                influencer_level = 1,
+                volume_id = VALUES(volume_id),
+                updated_at = CURRENT_TIMESTAMP();
+        ";
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute();
+    }
+
+    private function setPv()
+    {
+        $sql = "
+            UPDATE cm_daily_volumes dv
+            LEFT JOIN (
+                SELECT
+                    t.user_id,
+                    SUM(COALESCE(t.computed_cv, 0)) As ps
+                FROM v_cm_transactions t
+                WHERE transaction_date BETWEEN @start_date AND @end_date
+                    AND t.`type` = 'product'                    
+                GROUP BY t.user_id
+            ) AS a ON a.user_id = dv.user_id             
+            SET
+                dv.ppv = COALESCE(a.ps, 0)
+            WHERE dv.volume_date = @end_date
+        ";
+
+        $smt = $this->db->prepare($sql);
+        $smt->execute();
+
+        return $smt->fetchColumn();
+    }
+
+    private function setGv()
+    {
+        $sql = "
+            UPDATE cm_daily_volumes dv
+            LEFT JOIN (
+                WITH RECURSIVE downline (user_id, parent_id, root_id, `level`, pv) AS (
+                    SELECT 
+                        p.user_id,
+                        p.sponsor_id AS parent_id,
+                        p.user_id AS root_id,
+                        0 AS `level`,
+                        dv.pv AS pv
+                    FROM cm_genealogy_placement p
+                    JOIN cm_daily_volumes dv ON dv.user_id = p.user_id AND dv.volume_date = @end_date
+                    
+                    UNION ALL
+                    
+                    SELECT
+                        p.user_id AS user_id,
+                        p.sponsor_id AS parent_id,
+                        downline.root_id,
+                        downline.`level` + 1 `level`,
+                        dv.pv AS pv
+                    FROM cm_genealogy_placement p
+                    JOIN downline ON downline.user_id = p.sponsor_id
+                    JOIN cm_daily_volumes dv ON dv.user_id = p.user_id AND dv.volume_date = @end_date
+                )
+                SELECT 
+                    d.root_id AS user_id,
+                    SUM(d.pv) AS gv
+                FROM downline d
+                WHERE d.root_id <> d.user_id
+                GROUP BY d.root_id
+            ) AS a ON a.user_id = dv.user_id             
+            SET
+                dv.gv = COALESCE(a.gv, 0)
+            WHERE dv.volume_date = @end_date
+        ";
+
+        $smt = $this->db->prepare($sql);
+        $smt->execute();
+
+        //return $smt->fetchColumn();
     }
 
 }
