@@ -82,8 +82,8 @@ final class VolumesAndRanks extends Console
             $this->log('Setting GV');
             $this->setGv();
 
-            //$this->log('Setting BG Level');
-            //$this->setBg();
+            $this->log('Setting BG Level');
+            $this->setBg();
 
             $this->log("Setting Bg Minimum Rank");
             $this->setBgMinimumRank();
@@ -180,48 +180,32 @@ final class VolumesAndRanks extends Console
     {
         foreach ($this->rank_requirements as $rank) {
 
-            $svp_leg_count = +$volume->svp_leg_count;
-            $vp_leg_count = $svp_leg_count + +$volume->vp_leg_count;
-            $sed_leg_count = $vp_leg_count + +$volume->sed_leg_count;
-            $led_leg_count = $sed_leg_count + +$volume->led_leg_count;
-            $ed_leg_count = $led_leg_count + +$volume->ed_leg_count;
-            $sd_leg_count = $ed_leg_count + +$volume->sd_leg_count;
-            $ld_leg_count = $sd_leg_count + +$volume->ld_leg_count;
-            $dir_leg_count = $ld_leg_count + +$volume->dir_leg_count;
-            $sm_leg_count = $dir_leg_count + +$volume->sm_leg_count;
-            $lm_leg_count = $sm_leg_count + +$volume->lm_leg_count;
-            $mgr_leg_count = $lm_leg_count + +$volume->mgr_leg_count;
 
-            $svp_leg_count_requirement = +$volume->svp_leg_count_requirement;
-            $vp_leg_count_requirement = $svp_leg_count_requirement - +$volume->vp_leg_count_requirement;
-            $sed_leg_count_requirement = $vp_leg_count_requirement - +$volume->sed_leg_count_requirement;
-            $led_leg_count_requirement = $sed_leg_count_requirement - +$volume->led_leg_count_requirement;
-            $ed_leg_count_requirement = $led_leg_count_requirement - +$volume->ed_leg_count_requirement;
-            $sd_leg_count_requirement = $ed_leg_count_requirement - +$volume->sd_leg_count_requirement;
-            $ld_leg_count_requirement = $sd_leg_count_requirement - +$volume->ld_leg_count_requirement;
-            $dir_leg_count_requirement = $ld_leg_count_requirement - +$volume->dir_leg_count_requirement;
-            $sm_leg_count_requirement = $dir_leg_count_requirement - +$volume->sm_leg_count_requirement;
-            $lm_leg_count_requirement = $sm_leg_count_requirement - +$volume->lm_leg_count_requirement;
-            $mgr_leg_count_requirement = $lm_leg_count_requirement - +$volume->mgr_leg_count_requirement;
+            $bg5_count = +$volume->bg5_count;
+            $bg6_count = $bg5_count + +$volume->bg6_count;
+            $bg7_count = $bg6_count + +$volume->bg7_count;
+            $bg8_count = $bg7_count + +$volume->bg8_count;
+            $bg9_count = $bg8_count + +$volume->bg9_count;
+            $bg10_count = $bg9_count + +$volume->bg10_count;
+          
 
+            $bg5_count_requirement = +$volume->bg5_count_requirement;
+            $bg6_count_requirement = $bg5_count_requirement - +$volume->bg6_count_requirement;
+            $bg7_count_requirement = $bg6_count_requirement - +$volume->bg7_count_requirement;
+            $bg8_count_requirement = $bg7_count_requirement - +$volume->bg8_count_requirement;
+            $bg9_count_requirement = $bg8_count_requirement - +$volume->bg9_count_requirement;
+            $bg10_count_requirement = $bg9_count_requirement - +$volume->bg10_count_requirement;
+           
+                    
             if (
-                +$volume->cs >= +$rank->cs_requirement
-                && +$volume->ds >= +$rank->ds_requirement
-                && +$volume->builder_leg_count >= +$rank->builder_leg_count_requirement
-                && +$volume->new_gen_q_count >= +$rank->new_gen_q_count_requirement
-
-                && $svp_leg_count >= +$rank->svp_leg_count_requirement
-                && ($vp_leg_count - $svp_leg_count_requirement) >= +$rank->vp_leg_count_requirement
-                && ($sed_leg_count - $vp_leg_count_requirement) >= +$rank->sed_leg_count_requirement
-                && ($led_leg_count - $sed_leg_count_requirement) >= +$rank->led_leg_count_requirement
-                && ($ed_leg_count - $led_leg_count_requirement) >= +$rank->ed_leg_count_requirement
-                && ($sd_leg_count - $ed_leg_count_requirement) >= +$rank->sd_leg_count_requirement
-                && ($ld_leg_count - $sd_leg_count_requirement) >= +$rank->ld_leg_count_requirement
-                && ($dir_leg_count - $ld_leg_count_requirement) >= +$rank->dir_leg_count_requirement
-                && ($sm_leg_count - $dir_leg_count_requirement) >= +$rank->sm_leg_count_requirement
-                && ($lm_leg_count - $sm_leg_count_requirement) >= +$rank->lm_leg_count_requirement
-                && ($mgr_leg_count - $lm_leg_count_requirement) >= +$rank->mgr_leg_count_requirement
-
+                +$volume->pv >= +$rank->pv_requirement
+                && +$volume->gv >= +$rank->gv_requirement
+                && +$volume->bg5_count >= +$rank->bg5_requirement
+                && +$volume->bg6_count >= +$rank->bg6_requirement
+                && +$volume->bg7_count >= +$rank->bg7_requirement
+                && +$volume->bg8_count >= +$rank->bg8_requirement
+                && +$volume->bg9_count >= +$rank->bg9_requirement
+                && +$volume->bg10_count >= +$rank->bg10_requirement
             ) return +$rank->id;
 
         }
@@ -391,11 +375,11 @@ final class VolumesAndRanks extends Console
                     COUNT(d.user_id) AS bg_count
                 FROM downline d
                 JOIN cm_daily_ranks cdr ON d.user_id = cdr.user_id
-                WHERE d.root_id <> d.user_id AND cdr.rank_date = @end_date AND cdr.paid_as_rank >= $bgLevel
+                WHERE d.root_id <> d.user_id AND cdr.rank_date = @end_date AND cdr.paid_as_rank_id >= $bgLevel
                 GROUP BY d.root_id
             ) AS a ON a.user_id = dv.user_id  
-            SET bg".$bgLevel."_count = a.bg_count
-            WHERE volume_date = @end_date
+            SET  dv.bg".$bgLevel."_count = a.bg_count
+            WHERE dv.volume_date = @end_date
         ";
 
         $smt = $this->db->prepare($sql);
