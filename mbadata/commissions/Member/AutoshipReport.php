@@ -256,15 +256,15 @@ class AutoshipReport
             ->whereRaw("NOT EXISTS(
                 SELECT 1 
                 FROM v_cm_transactions tt 
-                WHERE tt.user_id = t.userid
+                WHERE tt.user_id = t.user_id
                     AND tt.type = 'product'
                     AND tt.is_autoship = 1
                     AND YEAR(tt.transaction_date) = $date->year AND MONTH(tt.transaction_date) = $date->month 
             )")
-            ->whereRaw(QueryHelper::NotExistsUnderBen('t.userid'));
+            ->whereRaw(QueryHelper::NotExistsUnderBen('t.user_id'));
 
         if($member_id !== null) {
-            $query->whereRaw($this->isUnderMember($member_id, "t.userid"));
+            $query->whereRaw($this->isUnderMember($member_id, "t.user_id"));
         }
 
         return $query;
@@ -609,7 +609,7 @@ class AutoshipReport
             $query = $query->orderBy($columns[+$column['column']]['data'], $column['dir']);
         }
 
-        $query->orderBy("t.id", "ASC");
+        $query->orderBy("t.transaction_id", "ASC");
 
         $query = $query->take($take);
 
@@ -674,7 +674,7 @@ class AutoshipReport
             $query = $query->orderBy($columns[+$column['column']]['data'], $column['dir']);
         }
 
-        $query->orderBy("t.id", "ASC");
+        $query->orderBy("t.transaction_id", "ASC");
 
         $query = $query->take($take);
 
