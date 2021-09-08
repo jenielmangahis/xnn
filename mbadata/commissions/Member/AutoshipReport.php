@@ -246,7 +246,7 @@ class AutoshipReport
                 t.transaction_date AS processing_date
             ") 
             ->join('users AS u' , 't.user_id', '=' , 'u.id')
-            ->join("users AS s", "s.id", "=", "t.sponsorid")
+            ->join("users AS s", "s.id", "=", "t.sponsor_id")
             ->where('t.is_autoship', 1)
             //->whereRaw("t.status != 'Approved'")
             ->where('t.status', "Failed")
