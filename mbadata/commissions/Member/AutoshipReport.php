@@ -245,7 +245,7 @@ class AutoshipReport
                 t.computed_cv AS cv,
                 t.transaction_date AS processing_date
             ") 
-            ->join('users AS u' , 't.userid', '=' , 'u.id')
+            ->join('users AS u' , 't.user_id', '=' , 'u.id')
             ->join("users AS s", "s.id", "=", "t.sponsorid")
             ->where('t.is_autoship', 1)
             //->whereRaw("t.status != 'Approved'")
