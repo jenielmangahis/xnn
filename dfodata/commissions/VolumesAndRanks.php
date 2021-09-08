@@ -63,14 +63,14 @@ final class VolumesAndRanks extends Console
             $this->log('Initializing Volumes');
             $this->initializeVolumes();
 
-            $this->log('Initializing Ranks');
-            $this->initializeCustomRanks();
+            /*$this->log('Initializing Ranks');
+            $this->initializeRanks();
 
             $this->log('Setting PV');
             $this->setPv();
 
             $this->log('Setting GV');
-            $this->setGv();   
+            $this->setGv();*/   
 
             // $this->log("Setting Coach Points");
             // $this->setCoachPoints();
@@ -90,7 +90,7 @@ final class VolumesAndRanks extends Console
             // $this->log("Setting Referral Points from New Active Coaches (3 months)");
             // $this->setReferralPointsFromNewActiveEnrolledCoaches();
 
-            $this->log("Setting Minimum Rank");
+            /*$this->log("Setting Minimum Rank");
             $this->setMinimumRank();
 
             $this->log("Setting Paid-as Rank");
@@ -100,7 +100,7 @@ final class VolumesAndRanks extends Console
             $this->setIfMemberIsActive();
 
             $this->log("Deleting Previous Highest Achieved Rank This Month");
-            $this->deletePreviousHighestAchievedRanksThisMonth();
+            $this->deletePreviousHighestAchievedRanksThisMonth();*/
 
         }, 3);
     }
@@ -939,7 +939,6 @@ final class VolumesAndRanks extends Console
                 pv,
                 l1v
             )
-
             WITH RECURSIVE downline (user_id, parent_id,`active`) AS (
                 SELECT 
                     id AS user_id,
@@ -971,13 +970,12 @@ final class VolumesAndRanks extends Console
                 dt_created = CURRENT_TIMESTAMP(),
                 dt_updated = CURRENT_TIMESTAMP()
         ";
+
         $stmt = $this->db->prepare($sql);
         $stmt->execute();
-
-
     }
 
-    private function initializeCustomRanks()
+    private function initializeRanks()
     {
         $sql = "
             INSERT INTO cm_daily_ranks (
