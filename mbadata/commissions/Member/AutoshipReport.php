@@ -201,16 +201,16 @@ class AutoshipReport
                 t.computed_cv AS cv,
                 t.transaction_date AS processing_date
             ") 
-            ->join("users AS u", "u.id", "=", "t.userid")
+            ->join("users AS u", "u.id", "=", "t.user_id")
             ->join("users AS s", "s.id", "=", "t.sponsorid")
             ->where('t.is_autoship', 1)
             ->where('t.type', 'product')
             ->where("u.levelid", 3)
             ->whereBetween("t.transaction_date", [$start_date, $end_date])
-            ->whereRaw(QueryHelper::NotExistsUnderBen('t.userid'));
+            ->whereRaw(QueryHelper::NotExistsUnderBen('t.user_id'));
 
         if($member_id !== null) {
-            $query->whereRaw($this->isUnderMember($member_id, "t.userid"));
+            $query->whereRaw($this->isUnderMember($member_id, "t.user_id"));
         }
 
         return $query;
