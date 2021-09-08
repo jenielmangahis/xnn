@@ -244,7 +244,7 @@ final class VolumesAndRanks extends Console
                 GROUP BY t.user_id
             ) AS a ON a.user_id = dv.user_id             
             SET
-                dv.ppv = COALESCE(a.ps, 0)
+                dv.pv = COALESCE(a.ps, 0)
             WHERE dv.volume_date = @end_date
         ";
 
@@ -436,8 +436,8 @@ final class VolumesAndRanks extends Console
                 INSERT INTO cm_daily_volumes (
                 user_id, 
                 volume_date, 
-                ppv,
-                ppv_capped,
+                pv,
+                pv_capped,
                 pcv,
                 pcv_capped,
                 pv,
@@ -499,8 +499,8 @@ final class VolumesAndRanks extends Console
             SELECT
                 d.user_id, 
                 @end_date volume_date, 
-                0 ppv,
-                0 ppv_capped,
+                0 pv,
+                0 pv_capped,
                 0 pcv,
                 0 pcv_capped,
                 0 pv,
@@ -535,8 +535,8 @@ final class VolumesAndRanks extends Console
                 d.level
             FROM downline d
             ON DUPLICATE KEY UPDATE
-                ppv = 0,
-                ppv_capped = 0,
+                pv = 0,
+                pv_capped = 0,
                 pcv = 0,
                 pcv_capped = 0,
                 pv = 0,
