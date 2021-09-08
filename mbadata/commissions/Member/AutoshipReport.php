@@ -180,7 +180,7 @@ class AutoshipReport
         $start_date = $date->copy()->startOfMonth()->format("Y-m-d");
         $end_date = $date->copy()->endOfMonth()->format("Y-m-d");
 
-        $query = DB::table('transactions AS t')
+        $query = DB::table('v_cm_transactions AS t')
            /* ->selectRaw("
                 u.id AS user_id,
                 CONCAT(u.fname, ' ', u.lname) AS member,
@@ -226,7 +226,7 @@ class AutoshipReport
 
         $date = $this->getCarbonDate($year_month);
 
-        $query =  DB::table('transactions AS t')
+        $query =  DB::table('v_cm_transactions AS t')
             /*->selectRaw("
                 u.id AS user_id,
                 CONCAT(u.fname, ' ', u.lname) AS member,
