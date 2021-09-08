@@ -51,8 +51,6 @@ final class VolumesAndRanks extends Console
             $influencer_1 = config('commission.ranks.influencer-1');
             $silver_influencer_1 = config('commission.ranks.silver-influencer-1');
 
-            // $this->log("Influencer 1: ($influencer_1) Silver Influencer 1: ($silver_influencer_1)");
-
             $this->log("Deleting ranks and volumes records of customers");
             $this->deleteCustomerRecords();
 
@@ -61,14 +59,7 @@ final class VolumesAndRanks extends Console
 
             $this->log("Getting rank requirements");
             $this->getRankRequirements();
-
-            /*$this->log('Initializing Volumes');
-            $this->initializeVolumes();
-
-            $this->log('Initializing Ranks');
-            $this->initializeRanks();*/
-
-            //Start custom volume ranks
+            
             $this->log('Initializing Volumes');
             $this->initializeCustomVolumes();
 
@@ -80,7 +71,6 @@ final class VolumesAndRanks extends Console
 
             $this->log('Setting GV');
             $this->setGv();   
-            //End custom volume ranks
 
             $this->log("Setting Coach Points");
             $this->setCoachPoints();
