@@ -63,14 +63,14 @@ final class VolumesAndRanks extends Console
             $this->log('Initializing Volumes');
             $this->initializeVolumes();
 
-            /*$this->log('Initializing Ranks');
+            $this->log('Initializing Ranks');
             $this->initializeRanks();
 
             $this->log('Setting PV');
             $this->setPv();
 
             $this->log('Setting GV');
-            $this->setGv();*/   
+            $this->setGv();   
 
             // $this->log("Setting Coach Points");
             // $this->setCoachPoints();
