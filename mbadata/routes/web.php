@@ -163,6 +163,12 @@ Route::prefix('member/autoship')->namespace('Member')->middleware('jwt.auth')->g
     Route::get('failed-autoship', 'AutoshipReportController@failedAutoship');
     Route::get('cancelled-autoship', 'AutoshipReportController@cancelledAutoship');
     Route::get('active-members-on-autoship', 'AutoshipReportController@activeMembersOnAutoship');
+
+    Route::get('csv-active-members-on-autoship', 'AutoshipReportController@csvActiveMembersOnAutoship');
+    Route::get('csv-pending-autoship', 'AutoshipReportController@csvPendingAutoship');
+    Route::get('csv-failed-autoship', 'AutoshipReportController@csvFailedAutoship');
+    Route::get('csv-cancelled-autoship', 'AutoshipReportController@csvCancelledAutoship');
+    Route::get('csv-successful-autoship', 'AutoshipReportController@csvSuccessfulAutoship');
 });
 
 

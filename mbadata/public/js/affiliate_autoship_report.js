@@ -7,6 +7,10 @@
     const vm = new Vue({
         el: "#autoship",
         data: {
+            generateCsv:{
+                downloadLinkState: "loaded",
+                downloadLink: "",
+            },
             yearMonth: moment().format("YYYY-MM"),
 
             filters: {
@@ -27,7 +31,7 @@
                 personallyEnrolledRetentionRate: 0,
                 organizationalRetentionRate: 0,
             },
-
+            csvUrl: null,
             activeTable: null,
             dtPendingAutoship: null,
             dtSuccessfulAutoship: null,
@@ -302,6 +306,47 @@
                     default:
                         this.activeTable = null;
                 }
+            },
+            generateCSV(table) {
+                this.activeTable = table;
+
+                switch (this.activeTable) {
+                    case 'pending_autoship':
+                        this.csvUrl = 'csv-pending-autoship';
+                        break;
+                    case 'successful_autoship':
+                        this.csvUrl = 'csv-successful-autoship';
+                        break;
+                    case 'failed_autoship':
+                        this.csvUrl = 'csv-failed-autoship';
+                        break;
+                    case 'cancelled_autoship':
+                        this.csvUrl = 'csv-cancelled-autoship';
+                        break;
+                    case 'active_members_on_autoship':
+                        this.csvUrl = 'csv-active-members-on-autoship';
+                        break;
+                    default:
+                        this.csvUrl = 'csv-active-members-on-autoship';
+                }
+
+                if (this.generateCsv.downloadLinkState === "fetching") return;
+
+                this.generateCsv.downloadLinkState = "fetching";
+                this.generateCsv.downloadLink = "";
+
+                client.get(`${this.csvUrl}?year_month=${this.filters.yearMonth}`)
+                .then(response => {
+                    this.generateCsv.downloadLinkState = "loaded";
+                    this.generateCsv.downloadLink = response.data.link;
+
+                    if (!!this.generateCsv.downloadLink) {
+                        window.location = this.generateCsv.downloadLink;
+                    }
+                })
+                .catch(error => {
+                    this.generateCsv.downloadLinkState = "error";
+                })
             },
             view() {
 

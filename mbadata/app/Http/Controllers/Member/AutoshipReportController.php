@@ -141,4 +141,44 @@ class AutoshipReportController extends Controller
             $this->auto_ship->getActiveMembersOnAutoship($request->all(), Auth::user()->id)
         );
     }
+
+    public function csvActiveMembersOnAutoship(Request $request)
+    {   
+        sleep(2);
+        return response()->json([
+            'link' => $this->auto_ship->getLinkCsvActiveMembersOnAutoship($request->all(), Auth::user()->id)
+        ]);
+    }
+
+    public function csvPendingAutoship(Request $request)
+    {   
+        sleep(2);
+        return response()->json([
+            'link' => $this->auto_ship->getLinkCsvPendingAutoship($request->all(), Auth::user()->id)
+        ]);
+    }
+
+    public function csvFailedAutoship(Request $request)
+    {   
+        sleep(2);
+        return response()->json([
+            'link' => $this->auto_ship->getLinkCsvFailedAutoship($request->all(), Auth::user()->id)
+        ]);
+    }
+
+    public function csvCancelledAutoship(Request $request)
+    {   
+        sleep(2);
+        return response()->json([
+            'link' => $this->auto_ship->getLinkCsvCancelledAutoship($request->all(), Auth::user()->id)
+        ]);
+    }
+
+    public function csvSuccessfulAutoship(Request $request)
+    {   
+        sleep(2);
+        return response()->json([
+            'link' => $this->auto_ship->getLinkCsvSuccessfulAutoship($request->all(), Auth::user()->id)
+        ]);
+    }
 }
