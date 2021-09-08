@@ -199,20 +199,20 @@ final class VolumesAndRanks extends Console
             $rank = $volume->rank;
 
             //check if customer
-            if (+$rank->cat_id === 13) {
+           /* if (+$rank->cat_id === 13) {
                 $rank->rank_id = 1;
                 $rank->paid_as_rank_id = 1;
-            } else {
+            } else { */
 
                 $rank->rank_id = $this->getBgRank($volume);
                 $rank->paid_as_rank_id = $rank->rank_id > +$rank->min_rank_id ? $rank->rank_id : $rank->min_rank_id;
 
-            }
+           // }
 
-            $rank->rank_id = $rank->paid_as_rank_id; // added by jen
-            if($rank->paid_as_rank_id > 2) {
-                $rank->is_active = 1;
-            }
+            //$rank->rank_id = $rank->paid_as_rank_id; // added by jen
+            // if($rank->paid_as_rank_id > 2) {
+            //     $rank->is_active = 1;
+            // }
 
             
             /*
@@ -437,38 +437,15 @@ final class VolumesAndRanks extends Console
                 user_id, 
                 volume_date, 
                 pv,
-                pv_capped,
-                pcv,
-                pcv_capped,
-                pv,
                 gv,
-                pcv_users,
-                coach_points,
-                organization_points,
-                team_group_points,
-                referral_preferred_customer_points,
-                referral_preferred_customer_users,
-                referral_enrolled_coach_points,
-                referral_enrolled_coach_users,
-                referral_rank_advancement_points,
-                referral_rank_advancement_users,
-                referral_points,
-                personally_enrolled_retention_rate,
-                customer_retention_rate,
-                organization_retention_rate,
-                preferred_customer_count,
-                preferred_customer_users,
-                influencer_count,
-                silver_influencer_count,
-                gold_influencer_count,
-                platinum_influencer_count,
-                emerald_influencer_count,
-                ruby_influencer_count,
-                diamond_influencer_count,
-                double_diamond_influencer_count,
-                triple_diamond_influencer_count,
-                crown_diamond_influencer_count,
-                grace_diamond_influencer_count,
+                bg5_count,
+                bg6_count,
+                bg7_count,
+                bg8_count,
+                bg9_count,
+                bg10_count,
+                bg11_count,
+                bg12_count,
                 level
              
             )
@@ -500,74 +477,28 @@ final class VolumesAndRanks extends Console
                 d.user_id, 
                 @end_date volume_date, 
                 0 pv,
-                0 pv_capped,
-                0 pcv,
-                0 pcv_capped,
-                0 pv,
                 0 gv,
-                NULL pcv_users,
-                0 coach_points,
-                0 organization_points,
-                0 team_group_points,
-                0 referral_preferred_customer_points,
-                NULL referral_preferred_customer_users,
-                0 referral_enrolled_coach_points,
-                NULL referral_enrolled_coach_users,
-                0 referral_rank_advancement_points,
-                NULL referral_rank_advancement_users,
-                0 referral_points,
-                0 personally_enrolled_retention_rate,
-                0 customer_retention_rate,
-                0 organization_retention_rate,
-                0 preferred_customer_count,
-                NULL preferred_customer_users,
-                0 influencer_count,
-                0 silver_influencer_count,
-                0 gold_influencer_count,
-                0 platinum_influencer_count,
-                0 emerald_influencer_count,
-                0 ruby_influencer_count,
-                0 diamond_influencer_count,
-                0 double_diamond_influencer_count,
-                0 triple_diamond_influencer_count,
-                0 crown_diamond_influencer_count,
-                0 grace_diamond_influencer_count,
+                0 bg5_count,
+                0 bg6_count,
+                0 bg7_count,
+                0 bg8_count,
+                0 bg9_count,
+                0 bg10_count,
+                0 bg11_count,
+                0 bg12_count,
                 d.level
             FROM downline d
             ON DUPLICATE KEY UPDATE
                 pv = 0,
-                pv_capped = 0,
-                pcv = 0,
-                pcv_capped = 0,
-                pv = 0,
                 gv = 0,
-                pcv_users = NULL,
-                coach_points = 0,
-                organization_points = 0,
-                team_group_points = 0,
-                referral_preferred_customer_points = 0,
-                referral_preferred_customer_users = NULL,
-                referral_enrolled_coach_points = 0,
-                referral_enrolled_coach_users = NULL,
-                referral_rank_advancement_points = 0,
-                referral_rank_advancement_users = NULL,
-                referral_points = 0,
-                personally_enrolled_retention_rate = 0,
-                customer_retention_rate = 0,
-                organization_retention_rate = 0,
-                preferred_customer_count = 0,
-                preferred_customer_users = NULL,
-                influencer_count = 0,
-                silver_influencer_count = 0,
-                gold_influencer_count = 0,
-                platinum_influencer_count = 0,
-                emerald_influencer_count = 0,
-                ruby_influencer_count = 0,
-                diamond_influencer_count = 0,
-                double_diamond_influencer_count = 0,
-                triple_diamond_influencer_count = 0,
-                crown_diamond_influencer_count = 0,
-                grace_diamond_influencer_count = 0,
+                bg5_count = 0,
+                bg6_count = 0,
+                bg7_count = 0,
+                bg8_count = 0,
+                bg9_count = 0,
+                bg10_count = 0,
+                bg11_count = 0,
+                bg12_count = 0,
                 level = d.level,
                 created_at = CURRENT_TIMESTAMP(),
                 updated_at = CURRENT_TIMESTAMP()

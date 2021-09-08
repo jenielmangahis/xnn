@@ -9,8 +9,8 @@ our $commission_engine_api_url = "https://office.stg-mymbatrading.xyz:81";
 our $rank_title = "Rank";
 our $rank_title_plural = "Ranks";
 
-our $affiliate = "Affiliate";
-our $affiliate_plural = "Affiliates";
+our $affiliate = "IBO";
+our $affiliate_plural = "IBOs";
 
 our $autoship = "Autoship";
 our $autoship_plural = "Autoships";
