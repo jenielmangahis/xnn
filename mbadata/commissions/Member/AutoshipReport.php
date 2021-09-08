@@ -180,7 +180,7 @@ class AutoshipReport
         $start_date = $date->copy()->startOfMonth()->format("Y-m-d");
         $end_date = $date->copy()->endOfMonth()->format("Y-m-d");
 
-        $query = DB::table('transactions AS t')
+        $query = DB::table('v_cm_transactions AS t')
            /* ->selectRaw("
                 u.id AS user_id,
                 CONCAT(u.fname, ' ', u.lname) AS member,
@@ -199,16 +199,14 @@ class AutoshipReport
                 IF(EXISTS(SELECT 1 FROM categorymap cm WHERE cm.userid = u.id AND FIND_IN_SET(cm.catid, '$affiliates')), '$default_affiliate', 'Customer') account_type,
                 t.sub_total AS price,
                 t.computed_cv AS cv,
-                tt.transaction_date AS processing_date
+                t.transaction_date AS processing_date
             ") 
             ->join("users AS u", "u.id", "=", "t.userid")
             ->join("users AS s", "s.id", "=", "t.sponsorid")
-            ->join("v_cm_transactions AS tt", "tt.transaction_id", "=", "t.id")
-            ->where('t.status', 'Approved')
             ->where('t.is_autoship', 1)
             ->where('t.type', 'product')
             ->where("u.levelid", 3)
-            ->whereBetween("tt.transaction_date", [$start_date, $end_date])
+            ->whereBetween("t.transaction_date", [$start_date, $end_date])
             ->whereRaw(QueryHelper::NotExistsUnderBen('t.userid'));
 
         if($member_id !== null) {
