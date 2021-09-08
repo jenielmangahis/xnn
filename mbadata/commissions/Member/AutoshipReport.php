@@ -202,7 +202,7 @@ class AutoshipReport
                 t.transaction_date AS processing_date
             ") 
             ->join("users AS u", "u.id", "=", "t.user_id")
-            ->join("users AS s", "s.id", "=", "t.sponsorid")
+            ->join("users AS s", "s.id", "=", "t.sponsor_id")
             ->where('t.is_autoship', 1)
             ->where('t.type', 'product')
             ->where("u.levelid", 3)
@@ -252,7 +252,7 @@ class AutoshipReport
             ->where('t.status', "Failed")
             ->where('t.type', 'product')
             ->where('u.levelid' , 3)
-            ->whereRaw("YEAR(t.transactiondate) = $date->year AND MONTH(t.transactiondate) = $date->month")
+            ->whereRaw("YEAR(t.transaction_date) = $date->year AND MONTH(t.transaction_date) = $date->month")
             ->whereRaw("NOT EXISTS(
                 SELECT 1 
                 FROM v_cm_transactions tt 
