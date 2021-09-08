@@ -224,7 +224,7 @@ class AutoshipReport
 
         $date = $this->getCarbonDate($year_month);
 
-        $query =  DB::table('transactions AS t')
+        $query =  DB::table('v_cm_transactions AS t')
             /*->selectRaw("
                 u.id AS user_id,
                 CONCAT(u.fname, ' ', u.lname) AS member,
@@ -243,7 +243,7 @@ class AutoshipReport
                 IF(EXISTS(SELECT 1 FROM categorymap cm WHERE cm.userid = u.id AND FIND_IN_SET(cm.catid, '$affiliates')), '$default_affiliate', 'Customer') account_type,
                 t.sub_total AS price,
                 t.computed_cv AS cv,
-                tt.transaction_date AS processing_date
+                t.transaction_date AS processing_date
             ") 
             ->join('users AS u' , 't.userid', '=' , 'u.id')
             ->join("users AS s", "s.id", "=", "t.sponsorid")
