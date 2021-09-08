@@ -1028,7 +1028,7 @@ final class VolumesAndRanks extends Console
                 GROUP BY t.user_id
             ) AS a ON a.user_id = dv.user_id             
             SET
-                dv.ppv = COALESCE(a.ps, 0)
+                dv.pv = COALESCE(a.ps, 0)
             WHERE dv.volume_date = @end_date
         ";
 
