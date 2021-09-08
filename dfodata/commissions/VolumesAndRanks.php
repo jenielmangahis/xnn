@@ -14,7 +14,7 @@ use DateTime;
 final class VolumesAndRanks extends Console
 {
     const MAX_POINTS = 200;
-    const MIN_ACTIVE_POINTS = 40;
+    const MIN_ACTIVE_POINTS = 100;
 
     protected $db;
     protected $end_date;
@@ -61,7 +61,7 @@ final class VolumesAndRanks extends Console
             $this->getRankRequirements();
             
             $this->log('Initializing Volumes');
-            $this->initializeCustomVolumes();
+            $this->initializeVolumes();
 
             $this->log('Initializing Ranks');
             $this->initializeCustomRanks();
@@ -72,23 +72,23 @@ final class VolumesAndRanks extends Console
             $this->log('Setting GV');
             $this->setGv();   
 
-            $this->log("Setting Coach Points");
-            $this->setCoachPoints();
+            // $this->log("Setting Coach Points");
+            // $this->setCoachPoints();
 
-            $this->log("Setting Organization Points");
-            $this->setOrganizationPoints();
+            // $this->log("Setting Organization Points");
+            // $this->setOrganizationPoints();
 
-            $this->log("Setting Team Group Points");
-            $this->setTeamGroupPoints();
+            // $this->log("Setting Team Group Points");
+            // $this->setTeamGroupPoints();
 
-            $this->log("Setting Preferred Customer Count");
-            $this->setPreferredCustomerCount();
+            // $this->log("Setting Preferred Customer Count");
+            // $this->setPreferredCustomerCount();
 
-            $this->log("Setting Referral Points from New Preferred Customers (3 months)");
-            $this->setReferralPointsFromNewPreferredCustomers();
+            // $this->log("Setting Referral Points from New Preferred Customers (3 months)");
+            // $this->setReferralPointsFromNewPreferredCustomers();
 
-            $this->log("Setting Referral Points from New Active Coaches (3 months)");
-            $this->setReferralPointsFromNewActiveEnrolledCoaches();
+            // $this->log("Setting Referral Points from New Active Coaches (3 months)");
+            // $this->setReferralPointsFromNewActiveEnrolledCoaches();
 
             $this->log("Setting Minimum Rank");
             $this->setMinimumRank();
@@ -734,160 +734,6 @@ final class VolumesAndRanks extends Console
         $stmt->execute();
     }
 
-    private function initializeVolumes()
-    {
-        $sql = "
-            INSERT INTO cm_daily_volumes (
-                user_id, 
-                volume_date, 
-                ppv,
-                ppv_capped,
-                pcv,
-                pcv_capped,
-                pcv_users,
-                coach_points,
-                organization_points,
-                team_group_points,
-                referral_preferred_customer_points,
-                referral_preferred_customer_users,
-                referral_enrolled_coach_points,
-                referral_enrolled_coach_users,
-                referral_rank_advancement_points,
-                referral_rank_advancement_users,
-                referral_points,
-                personally_enrolled_retention_rate,
-                customer_retention_rate,
-                organization_retention_rate,
-                preferred_customer_count,
-                preferred_customer_users,
-                influencer_count,
-                silver_influencer_count,
-                gold_influencer_count,
-                platinum_influencer_count,
-                diamond_influencer_count,
-                level
-            )
-
-            WITH RECURSIVE downline (user_id, parent_id, `level`) AS (
-                SELECT 
-                    id AS user_id,
-                    sponsorid AS parent_id,
-                    0 AS `level`
-                FROM users
-                WHERE id = @root_user_id AND levelid = 3
-                
-                UNION ALL
-                
-                SELECT
-                    p.id AS user_id,
-                    p.sponsorid AS parent_id,
-                    downline.`level` + 1 `level`
-                FROM users p
-                INNER JOIN downline ON p.sponsorid = downline.user_id
-                WHERE p.levelid = 3
-            )
-            SELECT
-                d.user_id, 
-                @end_date volume_date, 
-                0 ppv,
-                0 ppv_capped,
-                0 pcv,
-                0 pcv_capped,
-                NULL pcv_users,
-                0 coach_points,
-                0 organization_points,
-                0 team_group_points,
-                0 referral_preferred_customer_points,
-                NULL referral_preferred_customer_users,
-                0 referral_enrolled_coach_points,
-                NULL referral_enrolled_coach_users,
-                0 referral_rank_advancement_points,
-                NULL referral_rank_advancement_users,
-                0 referral_points,
-                0 personally_enrolled_retention_rate,
-                0 customer_retention_rate,
-                0 organization_retention_rate,
-                0 preferred_customer_count,
-                NULL preferred_customer_users,
-                0 influencer_count,
-                0 silver_influencer_count,
-                0 gold_influencer_count,
-                0 platinum_influencer_count,
-                0 diamond_influencer_count,
-                d.level
-            FROM downline d
-            WHERE EXISTS(SELECT 1 FROM categorymap c WHERE c.userid = d.user_id AND FIND_IN_SET(c.catid, @affiliates))            
-            ON DUPLICATE KEY UPDATE
-                ppv = 0,
-                ppv_capped = 0,
-                pcv = 0,
-                pcv_capped = 0,
-                pcv_users = NULL,
-                coach_points = 0,
-                organization_points = 0,
-                team_group_points = 0,
-                referral_preferred_customer_points = 0,
-                referral_preferred_customer_users = NULL,
-                referral_enrolled_coach_points = 0,
-                referral_enrolled_coach_users = NULL,
-                referral_rank_advancement_points = 0,
-                referral_rank_advancement_users = NULL,
-                referral_points = 0,
-                personally_enrolled_retention_rate = 0,
-                customer_retention_rate = 0,
-                organization_retention_rate = 0,
-                preferred_customer_count = 0,
-                preferred_customer_users = NULL,
-                influencer_count = 0,
-                silver_influencer_count = 0,
-                gold_influencer_count = 0,
-                platinum_influencer_count = 0,
-                diamond_influencer_count = 0,
-                level = d.level,
-                updated_at = CURRENT_TIMESTAMP()
-        ";
-        $stmt = $this->db->prepare($sql);
-        $stmt->execute();
-    }
-
-    private function initializeRanks()
-    {
-        $sql = "
-            INSERT INTO cm_daily_ranks (
-                user_id, 
-                volume_id, 
-                rank_date, 
-                rank_id, 
-                min_rank_id, 
-                paid_as_rank_id, 
-                is_active,
-                is_system_active
-            )
-            SELECT 
-                user_id, 
-                id AS volume_id, 
-                volume_date AS rank_date, 
-                1 AS rank_id, 
-                1 AS min_rank_id, 
-                1 AS paid_as_rank, 
-                0 AS is_active,
-                0 AS is_system_active
-            FROM cm_daily_volumes
-            WHERE volume_date = @end_date
-            ON DUPLICATE KEY UPDATE 
-                min_rank_id = 1,
-                rank_id = 1,
-                paid_as_rank_id = 1,
-                is_active = 0,
-                is_system_active = 0,
-                volume_id = VALUES(volume_id),
-                updated_at = CURRENT_TIMESTAMP();
-        ";
-
-        $stmt = $this->db->prepare($sql);
-        $stmt->execute();
-    }
-
     private function deleteCustomerRecords()
     {
         $sql = "
@@ -917,7 +763,7 @@ final class VolumesAndRanks extends Console
     {
         $sql = "
             DELETE a FROM cm_achieved_ranks a
-            WHERE a.date_achieved = @end_date AND a.is_migrated = 0
+            WHERE a.date_achieved = @end_date 
         ";
 
         $stmt = $this->db->prepare($sql);
@@ -1084,56 +930,21 @@ final class VolumesAndRanks extends Console
         return $needs;
     }
 
-    private function initializeCustomVolumes()
+    private function initializeVolumes()
     {
         $sql = "
-                INSERT INTO cm_daily_volumes (
+            INSERT INTO cm_daily_volumes (
                 user_id, 
                 volume_date, 
-                ppv,
-                ppv_capped,
-                pcv,
-                pcv_capped,
                 pv,
-                gv,
-                pcv_users,
-                coach_points,
-                organization_points,
-                team_group_points,
-                referral_preferred_customer_points,
-                referral_preferred_customer_users,
-                referral_enrolled_coach_points,
-                referral_enrolled_coach_users,
-                referral_rank_advancement_points,
-                referral_rank_advancement_users,
-                referral_points,
-                personally_enrolled_retention_rate,
-                customer_retention_rate,
-                organization_retention_rate,
-                preferred_customer_count,
-                preferred_customer_users,
-                influencer_count,
-                silver_influencer_count,
-                gold_influencer_count,
-                platinum_influencer_count,
-                emerald_influencer_count,
-                ruby_influencer_count,
-                diamond_influencer_count,
-                double_diamond_influencer_count,
-                triple_diamond_influencer_count,
-                crown_diamond_influencer_count,
-                grace_diamond_influencer_count,
-                level
-             
+                l1v
             )
 
-            WITH RECURSIVE downline (user_id, parent_id, `level`,`active`, `compress_level`) AS (
+            WITH RECURSIVE downline (user_id, parent_id,`active`) AS (
                 SELECT 
                     id AS user_id,
                     sponsorid AS parent_id,
-                    0 AS `level`,
-                    active,
-                    0 AS `compress_level`
+                    active
                 FROM users u
                 WHERE u.id = @root_user_id AND u.levelid = 3
                 
@@ -1142,92 +953,28 @@ final class VolumesAndRanks extends Console
                 SELECT
                     p.id AS user_id,
                     p.sponsorid AS parent_id,
-                    downline.`level` + 1 `level`,
-                    p.active,
-                    downline.compress_level + IF(p.active = 'Yes', 1, 0)
+                    p.active
                 FROM users p
                 INNER JOIN downline ON p.sponsorid = downline.user_id
                 WHERE p.levelid = 3
-                AND downline.`level` >= 1
+                
             )
             SELECT
                 d.user_id, 
                 @end_date volume_date, 
-                0 ppv,
-                0 ppv_capped,
-                0 pcv,
-                0 pcv_capped,
                 0 pv,
-                0 gv,
-                NULL pcv_users,
-                0 coach_points,
-                0 organization_points,
-                0 team_group_points,
-                0 referral_preferred_customer_points,
-                NULL referral_preferred_customer_users,
-                0 referral_enrolled_coach_points,
-                NULL referral_enrolled_coach_users,
-                0 referral_rank_advancement_points,
-                NULL referral_rank_advancement_users,
-                0 referral_points,
-                0 personally_enrolled_retention_rate,
-                0 customer_retention_rate,
-                0 organization_retention_rate,
-                0 preferred_customer_count,
-                NULL preferred_customer_users,
-                0 influencer_count,
-                0 silver_influencer_count,
-                0 gold_influencer_count,
-                0 platinum_influencer_count,
-                0 emerald_influencer_count,
-                0 ruby_influencer_count,
-                0 diamond_influencer_count,
-                0 double_diamond_influencer_count,
-                0 triple_diamond_influencer_count,
-                0 crown_diamond_influencer_count,
-                0 grace_diamond_influencer_count,
-                d.level
+                0 l1v
             FROM downline d
             ON DUPLICATE KEY UPDATE
-                ppv = 0,
-                ppv_capped = 0,
-                pcv = 0,
-                pcv_capped = 0,
                 pv = 0,
-                gv = 0,
-                pcv_users = NULL,
-                coach_points = 0,
-                organization_points = 0,
-                team_group_points = 0,
-                referral_preferred_customer_points = 0,
-                referral_preferred_customer_users = NULL,
-                referral_enrolled_coach_points = 0,
-                referral_enrolled_coach_users = NULL,
-                referral_rank_advancement_points = 0,
-                referral_rank_advancement_users = NULL,
-                referral_points = 0,
-                personally_enrolled_retention_rate = 0,
-                customer_retention_rate = 0,
-                organization_retention_rate = 0,
-                preferred_customer_count = 0,
-                preferred_customer_users = NULL,
-                influencer_count = 0,
-                silver_influencer_count = 0,
-                gold_influencer_count = 0,
-                platinum_influencer_count = 0,
-                emerald_influencer_count = 0,
-                ruby_influencer_count = 0,
-                diamond_influencer_count = 0,
-                double_diamond_influencer_count = 0,
-                triple_diamond_influencer_count = 0,
-                crown_diamond_influencer_count = 0,
-                grace_diamond_influencer_count = 0,
-                level = d.level,
-                created_at = CURRENT_TIMESTAMP(),
-                updated_at = CURRENT_TIMESTAMP()
+                l1v = 0,
+                dt_created = CURRENT_TIMESTAMP(),
+                dt_updated = CURRENT_TIMESTAMP()
         ";
         $stmt = $this->db->prepare($sql);
         $stmt->execute();
+
+
     }
 
     private function initializeCustomRanks()
@@ -1240,7 +987,6 @@ final class VolumesAndRanks extends Console
                 rank_id, 
                 min_rank_id, 
                 paid_as_rank_id,
-                influencer_level,
                 is_active,
                 is_system_active
             )
@@ -1251,7 +997,6 @@ final class VolumesAndRanks extends Console
                 1 AS rank_id, 
                 1 AS min_rank_id, 
                 1 AS paid_as_rank, 
-                1 influencer_level,
                 0 AS is_active,
                 0 AS is_system_active
             FROM cm_daily_volumes dv
@@ -1262,9 +1007,9 @@ final class VolumesAndRanks extends Console
                 paid_as_rank_id = 1,
                 is_active = 0,
                 is_system_active = 0,
-                influencer_level = 1,
                 volume_id = VALUES(volume_id),
-                updated_at = CURRENT_TIMESTAMP();
+                dt_created = CURRENT_TIMESTAMP(),
+                dt_updated = CURRENT_TIMESTAMP();
         ";
 
         $stmt = $this->db->prepare($sql);
