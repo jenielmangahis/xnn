@@ -102,8 +102,8 @@ final class VolumesAndRanks extends Console
                     t.user_id,
                     SUM(COALESCE(t.computed_cv, 0)) As pv
                 FROM v_cm_transactions t
-                WHERE DATE(transaction_date) BETWEEN @start_date AND @end_date
-                 --   AND t.`type` = 'product'
+                WHERE t.`type` = 'product'  -- DATE(transaction_date) BETWEEN @start_date AND @end_date
+                                            -- AND t.`type` = 'product'
                 GROUP BY t.user_id
             ) AS a ON a.user_id = dv.user_id    -- GET LIFETIME SALES
             LEFT JOIN (
@@ -121,7 +121,7 @@ final class VolumesAndRanks extends Console
                         ), 1)
                     )
                 )
-            WHERE dv.rank_date = @end_date
+            WHERE  dv.rank_date = @end_date
         ";
 
         $smt = $this->db->prepare($sql);
