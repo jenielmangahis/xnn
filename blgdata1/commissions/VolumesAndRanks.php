@@ -239,8 +239,12 @@ final class VolumesAndRanks extends Console
                     t.user_id,
                     SUM(COALESCE(t.computed_cv, 0)) As ps
                 FROM v_cm_transactions t
-                WHERE transaction_date BETWEEN @start_date AND @end_date
-                    AND t.`type` = 'product'                    
+                WHERE (transaction_date BETWEEN @start_date AND @end_date
+                    AND t.`type` = 'product')
+                    OR (
+                    transaction_date BETWEEN @start_date AND @end_date
+                    AND t.sponsor_id = dv.user_id
+                )
                 GROUP BY t.user_id
             ) AS a ON a.user_id = dv.user_id             
             SET
@@ -289,7 +293,7 @@ final class VolumesAndRanks extends Console
                 GROUP BY d.root_id
             ) AS a ON a.user_id = dv.user_id             
             SET
-                dv.gv = COALESCE(a.gv, 0)
+                dv.gv = COALESCE(a.gv, 0) + dv.pv
             WHERE dv.volume_date = @end_date
         ";
 
