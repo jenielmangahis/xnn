@@ -198,31 +198,8 @@ final class VolumesAndRanks extends Console
             $user_id = +$volume->user_id;
             $rank = $volume->rank;
 
-            //check if customer
-           /* if (+$rank->cat_id === 13) {
-                $rank->rank_id = 1;
-                $rank->paid_as_rank_id = 1;
-            } else { */
-
-                $rank->rank_id = $this->getBgRank($volume);
-                $rank->paid_as_rank_id = $rank->rank_id > +$rank->min_rank_id ? $rank->rank_id : $rank->min_rank_id;
-
-           // }
-
-            //$rank->rank_id = $rank->paid_as_rank_id; // added by jen
-            // if($rank->paid_as_rank_id > 2) {
-            //     $rank->is_active = 1;
-            // }
-
-            
-            /*
-            if(+$volume->pv >= static::MIN_ACTIVE_PV) {
-                $rank->is_active = 1;
-            }
-            elseif(+$rank->is_active === 0) {
-                $rank->is_active = $this->getNextDelivery($user_id);
-            }
-            */
+            $rank->rank_id = $this->getBgRank($volume);
+            $rank->paid_as_rank_id = $rank->rank_id > +$rank->min_rank_id ? $rank->rank_id : $rank->min_rank_id;
             
             $this->saveAchievedRank($user_id, $rank->paid_as_rank_id);
 
@@ -235,20 +212,40 @@ final class VolumesAndRanks extends Console
         $sql = "
             UPDATE cm_daily_volumes dv
             LEFT JOIN (
+                WITH RECURSIVE downline (user_id, parent_id, root_id, `level`, `active`, `compress_level`) AS (
+                    SELECT 
+                        p.id AS user_id,
+                        p.sponsorid AS parent_id,
+                        0 AS `level`,
+                        active,
+                        0 AS `compress_level`
+                    FROM users p
+                    WHERE u.id = @root_user_id
+
+                    UNION ALL 
+
+                    SELECT
+                        p.id AS user_id,
+                        p.sponsorid AS parent_id,
+                        downline.root_id,
+                        downline.`level` + 1 `level`,
+                        p.active,
+                        downline.compress_level + IF(p.active = 'Yes', 1, 0)
+                    FROM users p
+                    JOIN downline ON downline.user_id = p.sponsor_id
+                )
                 SELECT
                     t.user_id,
-                    SUM(COALESCE(t.computed_cv, 0)) As ps
-                FROM v_cm_transactions t
-                WHERE (transaction_date BETWEEN @start_date AND @end_date
-                    AND t.`type` = 'product')
-                    OR (
-                    transaction_date BETWEEN @start_date AND @end_date
-                    AND t.sponsor_id = dv.user_id
-                )
-                GROUP BY t.user_id
+                    SUM(COALESCE(t.computed_cv, 0)) As pv
+                FROM downline d
+                JOIN v_cm_transactions t ON t.user_id = d.user_id
+                WHERE transaction_date BETWEEN @start_date AND @end_date
+                    AND t.`type` = 'product'
+                    AND FIND_IN_SET(t.purchaser_catid, @customers)
+                    AND d.level <= 2
             ) AS a ON a.user_id = dv.user_id             
             SET
-                dv.pv = COALESCE(a.ps, 0)
+                dv.pv = COALESCE(a.pv, 0)
             WHERE dv.volume_date = @end_date
         ";
 
@@ -263,13 +260,15 @@ final class VolumesAndRanks extends Console
         $sql = "
             UPDATE cm_daily_volumes dv
             LEFT JOIN (
-                WITH RECURSIVE downline (user_id, parent_id, root_id, `level`, pv) AS (
+                WITH RECURSIVE downline (user_id, parent_id, root_id, `level`, pv, active, `compress_level`) AS (
                     SELECT 
                         p.user_id,
                         p.sponsor_id AS parent_id,
                         p.user_id AS root_id,
                         0 AS `level`,
-                        dv.pv AS pv
+                        active,
+                        dv.pv AS pv,
+                        0 AS `compress_level`
                     FROM cm_genealogy_placement p
                     JOIN cm_daily_volumes dv ON dv.user_id = p.user_id AND dv.volume_date = @end_date
                     
@@ -278,9 +277,11 @@ final class VolumesAndRanks extends Console
                     SELECT
                         p.user_id AS user_id,
                         p.sponsor_id AS parent_id,
+                        p.active,
                         downline.root_id,
                         downline.`level` + 1 `level`,
-                        dv.pv AS pv
+                        dv.pv AS pv,
+                        downline.compress_level + IF(p.active = 'Yes', 1, 0)
                     FROM cm_genealogy_placement p
                     JOIN downline ON downline.user_id = p.sponsor_id
                     JOIN cm_daily_volumes dv ON dv.user_id = p.user_id AND dv.volume_date = @end_date
