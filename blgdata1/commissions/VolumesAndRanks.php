@@ -49,9 +49,6 @@ final class VolumesAndRanks extends Console
 
             $this->log("Max Points per user: " . static::MAX_POINTS);
 
-            $influencer_1 = config('commission.ranks.influencer-1');
-            $silver_influencer_1 = config('commission.ranks.silver-influencer-1');
-
             $this->log("Deleting ranks and volumes records of customers");
             $this->deleteCustomerRecords();
 
@@ -148,31 +145,22 @@ final class VolumesAndRanks extends Console
         foreach ($this->rank_requirements as $rank) {
 
 
-            $bg5_count = +$volume->bg5_count;
-            $bg6_count = $bg5_count + +$volume->bg6_count;
-            $bg7_count = $bg6_count + +$volume->bg7_count;
-            $bg8_count = $bg7_count + +$volume->bg8_count;
-            $bg9_count = $bg8_count + +$volume->bg9_count;
-            $bg10_count = $bg9_count + +$volume->bg10_count;
-          
-
-            $bg5_count_requirement = +$volume->bg5_count_requirement;
-            $bg6_count_requirement = $bg5_count_requirement - +$volume->bg6_count_requirement;
-            $bg7_count_requirement = $bg6_count_requirement - +$volume->bg7_count_requirement;
-            $bg8_count_requirement = $bg7_count_requirement - +$volume->bg8_count_requirement;
-            $bg9_count_requirement = $bg8_count_requirement - +$volume->bg9_count_requirement;
-            $bg10_count_requirement = $bg9_count_requirement - +$volume->bg10_count_requirement;
-           
+            $bg10_count = +$volume->bg10_count;    
+            $bg9_count = $bg10_count + +$volume->bg9_count;
+            $bg8_count = $bg9_count + +$volume->bg8_count;    
+            $bg7_count = $bg8_count + +$volume->bg7_count;    
+            $bg6_count = $bg7_count + +$volume->bg6_count;    
+            $bg5_count = $bg6_count + +$volume->bg5_count;    
                     
             if (
                 +$volume->pv >= +$rank->pv_requirement
                 && +$volume->gv >= +$rank->gv_requirement
-                && +$volume->bg5_count >= +$rank->bg5_requirement
-                && +$volume->bg6_count >= +$rank->bg6_requirement
-                && +$volume->bg7_count >= +$rank->bg7_requirement
-                && +$volume->bg8_count >= +$rank->bg8_requirement
-                && +$volume->bg9_count >= +$rank->bg9_requirement
-                && +$volume->bg10_count >= +$rank->bg10_requirement
+                && +$bg5_count >= +$rank->bg5_requirement
+                && +$bg6_count >= +$rank->bg6_requirement
+                && +$bg7_count >= +$rank->bg7_requirement
+                && +$bg8_count >= +$rank->bg8_requirement
+                && +$bg9_count >= +$rank->bg9_requirement
+                && +$bg10_count >= +$rank->bg10_requirement
             ) return +$rank->id;
 
         }
@@ -667,78 +655,80 @@ final class VolumesAndRanks extends Console
 
         $needs = [];
 
-        $diamond_influencer_count = +$volume->diamond_influencer_count;
-        $platinum_influencer_count = $diamond_influencer_count + +$volume->platinum_influencer_count;
-        $gold_influencer_count = $platinum_influencer_count + +$volume->gold_influencer_count;
-        $silver_influencer_count = $gold_influencer_count + +$volume->silver_influencer_count;
-        $influencer_count = $silver_influencer_count + +$volume->influencer_count;
+        $bg10_count = +$volume->bg10_count;    
+        $bg9_count = $bg10_count + +$volume->bg9_count;
+        $bg8_count = $bg9_count + +$volume->bg8_count;    
+        $bg7_count = $bg8_count + +$volume->bg7_count;    
+        $bg6_count = $bg7_count + +$volume->bg6_count;    
+        $bg5_count = $bg6_count + +$volume->bg5_count;  
 
-        $preferred_customer_count_requirement = $next_rank->preferred_customer_count_requirement - $volume->preferred_customer_count;
-        $referral_points_requirement = $next_rank->referral_points_requirement - $volume->referral_points;
-        $organization_points_requirement = $next_rank->organization_points_requirement - $volume->organization_points;
-        $team_group_points_requirement = $next_rank->team_group_points_requirement - $volume->team_group_points;
-        $gold_influencer_count_requirement = $next_rank->gold_influencer_count_requirement - $gold_influencer_count;
+        $pv_needs = $next_rank->pv_requirement - $volume->pv;
+        $gv_needs = $next_rank->gv_requirement - $volume->gv;
+        
+         
+        if($next_rank->bg10_requirement == 0){ $bg10_needs_count = 0; }else{ $bg10_needs_count = $next_rank->bg10_requirement - $bg10_count; } 
+        if($next_rank->bg9_requirement == 0){ $bg9_needs_count = 0; }else{ $bg9_needs_count = $next_rank->bg9_requirement - $bg9_count; }
+        if($next_rank->bg8_requirement == 0){ $bg8_needs_count = 0; }else{ $bg8_needs_count = $next_rank->bg8_requirement - $bg8_count; }
+        if($next_rank->bg7_requirement == 0){ $bg7_needs_count = 0; }else{ $bg7_needs_count = $next_rank->bg7_requirement - $bg7_count; }
+        if($next_rank->bg6_requirement == 0){ $bg6_needs_count = 0; }else{ $bg6_needs_count = $next_rank->bg6_requirement - $bg6_count; }
+        if($next_rank->bg5_requirement == 0){ $bg5_needs_count = 0 }else{ $bg5_needs_count = $next_rank->bg5_requirement - $bg5_count; }
 
-        if ($silver_influencer_count - $next_rank->gold_influencer_count_requirement < 0) {
-            $silver_influencer_count_requirement = $next_rank->silver_influencer_count_requirement;
-        } else {
-            $silver_influencer_count_requirement = $next_rank->silver_influencer_count_requirement - ($silver_influencer_count - $next_rank->gold_influencer_count_requirement);
-        }
-
-        if ($influencer_count - $next_rank->gold_influencer_count_requirement - $next_rank->silver_influencer_count_requirement < 0) {
-            $influencer_count_requirement = $next_rank->influencer_count_requirement;
-        } else {
-            $influencer_count_requirement = $next_rank->influencer_count_requirement - ($influencer_count - $next_rank->gold_influencer_count_requirement - $next_rank->silver_influencer_count_requirement);
-        }
-
-        if ($preferred_customer_count_requirement > 0) {
+            
+        if($pv_needs > 0) {
             $needs[] = [
-                'value' => $preferred_customer_count_requirement,
-                'description' => 'Preferred Customer(s)',
+                'value' => $gv_needs,
+                'description' => 'PV',
             ];
         }
 
-        if ($referral_points_requirement > 0) {
+        if($gv_needs > 0) {
             $needs[] = [
-                'value' => $referral_points_requirement,
-                'description' => 'Referral Points'
+                'value' => $gv_needs,
+                'description' => 'GV',
             ];
         }
 
-        if ($organization_points_requirement > 0) {
+        if($bg5_needs_count > 0) {
             $needs[] = [
-                'value' => $organization_points_requirement,
-                'description' => 'Organization Points'
+                'value' => $$bg5_needs_count,
+                'description' => 'Pearl Influencer',
             ];
         }
 
-        if ($team_group_points_requirement > 0) {
+        if($bg6_needs_count > 0) {
             $needs[] = [
-                'value' => $team_group_points_requirement,
-                'description' => 'Team Group Points'
+                'value' => $bg6_needs_count,
+                'description' => 'Emerald Influencer',
             ];
         }
 
-        if ($gold_influencer_count_requirement > 0) {
+        if($bg7_needs_count > 0) {
             $needs[] = [
-                'value' => $gold_influencer_count_requirement,
-                'description' => 'Gold Influencer(s)'
+                'value' => $bg7_needs_count,
+                'description' => 'Ruby Influencer',
             ];
         }
 
-        if ($silver_influencer_count_requirement > 0) {
+        if($bg8_needs_count > 0) {
             $needs[] = [
-                'value' => $silver_influencer_count_requirement,
-                'description' => 'Silver Influencer(s)'
+                'value' => $bg8_needs_count,
+                'description' => 'Diamond Influencer',
             ];
         }
 
-        if ($influencer_count_requirement > 0) {
+        if($bg9_needs_count > 0) {
             $needs[] = [
-                'value' => $influencer_count_requirement,
-                'description' => 'Influencer(s)'
+                'value' => $bg9_needs_count,
+                'description' => 'Double Diamond Influencer',
             ];
         }
+
+        if($bg10_needs_count > 0) {
+            $needs[] = [
+                'value' => $bg9_needs_count,
+                'description' => 'Triple Diamond Influencer',
+            ];
+        }     
 
         if (false && "test") {
             $needs[] = [

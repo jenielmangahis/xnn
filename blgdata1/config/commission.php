@@ -3,7 +3,19 @@
 return [
 
     'ranks' => [
-
+            'ambassador' => 1,
+            'silver-influencer ' => 2,
+            'gold-influencer' => 3,
+            'platinum-influencer' => 4,
+            'sapphire-influencer' => 5,
+            'pearl-influencer' => 6,
+            'emerald-influencer' => 7,
+            'ruby-influencer' => 8,
+            'diamond-influencer' => 9,
+            'double-diamond-influencer' => 10,
+            'triple-diamond-influencer' => 11,
+            'crown-diamond-influencer' => 12,
+            'grace-diamond-influencer' => 13
     ],
 
     'commission-types' => [
