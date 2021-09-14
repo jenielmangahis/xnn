@@ -4,6 +4,7 @@ print <<EOS;
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/css/select2.min.css" />
 <link rel="stylesheet" href="$commission_engine_api_url/css/select2-bootstrap.css"/>
 <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.3/css/responsive.bootstrap.min.css">
+<link rel="stylesheet" href="$commission_engine_api_url/css/admin_ledger_adjustment.css?v=1" />
 
 <div id="ledger-adjustment" class="ledger-adjustment tool-container tool-container--default" v-cloak>
     <div class="row">
@@ -16,7 +17,7 @@ print <<EOS;
     <div class="row">
         <div class="col-md-12 ">
             <div class="tool-container__actions pull-right">
-                <button type="button" class="btn btn-success" v-on:click.prevent="showAddModal">
+                <button type="button" class="btn btn-secondary btn-sm" v-on:click.prevent="showAddModal">
                     Add Adjustment
                 </button>
             </div>
@@ -47,8 +48,8 @@ print <<EOS;
         <div class="modal-dialog" role="document">
             <form class="modal-content" id="form-ledger-adjustment" >
                 <div class="modal-header">
-                    <button v-bind:disabled="isProcessing === 1" type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                     <h4 class="modal-title" id="modal-ledger-adjustment-label">Ledger Adjustment</h4>
+                    <button v-bind:disabled="isProcessing === 1" type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
@@ -67,11 +68,8 @@ print <<EOS;
 
                 </div>
                 <div class="modal-footer">
-                    <span class="pull-left">
-                        <a type="button" class="btn btn-default " data-dismiss="modal" v-show="isProcessing === 0">Close</a>
-                    </span>
-                    <button type="submit" class="btn btn-danger" v-bind:disabled="isProcessing === 1" v-on:click.prevent="saveAdjustment('remove')">Remove</button>
-                    <button type="submit" class="btn btn-success" v-bind:disabled="isProcessing === 1" v-on:click.prevent="saveAdjustment('add')">Add</button>
+                    <button type="submit" class="btn btn-secondary" v-bind:disabled="isProcessing === 1" v-on:click.prevent="saveAdjustment('remove')">Remove</button>
+                    <button type="submit" class="btn btn-primary" v-bind:disabled="isProcessing === 1" v-on:click.prevent="saveAdjustment('add')">Add</button>
                 </div>
             </form>
         </div>

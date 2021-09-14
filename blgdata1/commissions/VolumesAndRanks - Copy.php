@@ -49,6 +49,9 @@ final class VolumesAndRanks extends Console
 
             $this->log("Max Points per user: " . static::MAX_POINTS);
 
+            // $influencer_1 = config('commission.ranks.influencer-1');
+            // $silver_influencer_1 = config('commission.ranks.silver-influencer-1');
+
             $this->log("Deleting ranks and volumes records of customers");
             $this->deleteCustomerRecords();
 
@@ -96,19 +99,21 @@ final class VolumesAndRanks extends Console
             UPDATE cm_daily_ranks dv
             LEFT JOIN (
                 SELECT
-                    t.user_id,
+                    t.sponsor_id,
                     SUM(COALESCE(t.computed_cv, 0)) As pv
                 FROM v_cm_transactions t
                 WHERE t.`type` = 'product'  -- DATE(transaction_date) BETWEEN @start_date AND @end_date
-                   p.purchaser_catid =                          -- AND t.`type` = 'product'
-                GROUP BY t.user_id
-            ) AS a ON a.user_id = dv.user_id    -- GET LIFETIME SALES
+                AND t.purchaser_catid = 16
+                                            -- AND t.`type` = 'product'
+                GROUP BY t.sponsor_id
+            ) AS a ON a.sponsor_id = dv.user_id    -- GET LIFETIME SALES
             LEFT JOIN (
                 SELECT
                     user_id,
                     influencer_level
                 FROM cm_minimum_ranks
                 WHERE @end_date BETWEEN start_date AND end_date
+                AND influencer_level = 2
             ) AS ab ON a.user_id = dv.user_id   -- GET MINIMUM RANK TOOL SETTINGS
             SET
                 dv.influencer_level = IF(ab.influencer_level is not null, ab.influencer_level,
@@ -145,22 +150,36 @@ final class VolumesAndRanks extends Console
         foreach ($this->rank_requirements as $rank) {
 
 
-            $bg10_count = +$volume->bg10_count;    
-            $bg9_count = $bg10_count + +$volume->bg9_count;
-            $bg8_count = $bg9_count + +$volume->bg8_count;    
-            $bg7_count = $bg8_count + +$volume->bg7_count;    
-            $bg6_count = $bg7_count + +$volume->bg6_count;    
-            $bg5_count = $bg6_count + +$volume->bg5_count;    
+            $bg10_count = +$volume->bg10_count;
+            $bg9_count = $bg10_count + +$volume->bg10_count;
+
+
+
+            $bg5_count = +$volume->bg5_count;
+            $bg6_count = $bg5_count + +$volume->bg6_count;
+            $bg7_count = $bg6_count + +$volume->bg7_count;
+            $bg8_count = $bg7_count + +$volume->bg8_count;
+            $bg9_count = $bg8_count + +$volume->bg9_count; 1 
+            $bg10_count = $bg9_count + +$volume->bg10_count; 1
+          
+
+            $bg5_count_requirement = +$volume->bg5_count_requirement;
+            $bg6_count_requirement = $bg5_count_requirement - +$volume->bg6_count_requirement;
+            $bg7_count_requirement = $bg6_count_requirement - +$volume->bg7_count_requirement;
+            $bg8_count_requirement = $bg7_count_requirement - +$volume->bg8_count_requirement;
+            $bg9_count_requirement = $bg8_count_requirement - +$volume->bg9_count_requirement;
+            $bg10_count_requirement = $bg9_count_requirement - +$volume->bg10_count_requirement;
+           
                     
             if (
                 +$volume->pv >= +$rank->pv_requirement
                 && +$volume->gv >= +$rank->gv_requirement
-                && +$bg5_count >= +$rank->bg5_requirement
-                && +$bg6_count >= +$rank->bg6_requirement
-                && +$bg7_count >= +$rank->bg7_requirement
-                && +$bg8_count >= +$rank->bg8_requirement
-                && +$bg9_count >= +$rank->bg9_requirement
-                && +$bg10_count >= +$rank->bg10_requirement
+                && +$volume->bg5_count >= +$rank->bg5_requirement
+                && +$volume->bg6_count >= +$rank->bg6_requirement
+                && +$volume->bg7_count >= +$rank->bg7_requirement
+                && +$volume->bg8_count >= +$rank->bg8_requirement
+                && +$volume->bg9_count >= +$rank->bg9_requirement
+                && +$volume->bg10_count >= +$rank->bg10_requirement
             ) return +$rank->id;
 
         }
@@ -200,43 +219,26 @@ final class VolumesAndRanks extends Console
         $sql = "
             UPDATE cm_daily_volumes dv
             LEFT JOIN (
-                WITH RECURSIVE downline (user_id, parent_id, root_id, `level`, `active`, `compress_level`) AS (
-                    SELECT 
-                        p.id AS user_id,
-                        p.sponsorid AS parent_id,
-                        p.id AS root_id,
-                        0 AS `level`,
-                        active,
-                        0 AS `compress_level`
-                    FROM users p
-                    WHERE p.id = @root_user_id
-
-                    UNION ALL 
-
-                    SELECT
-                        p.id AS user_id,
-                        p.sponsorid AS parent_id,
-                        downline.root_id,
-                        downline.`level` + 1 `level`,
-                        p.active,
-                        downline.compress_level + IF(p.active = 'Yes', 1, 0)
-                    FROM users p
-                    JOIN downline ON downline.user_id = p.sponsorid
-                )
                 SELECT
                     t.user_id,
-                    SUM(COALESCE(t.computed_cv, 0)) As pv
-                FROM downline d
-                JOIN v_cm_transactions t ON t.user_id = d.user_id
-                WHERE transaction_date BETWEEN @start_date AND @end_date
-                    AND t.`type` = 'product'
-                    AND FIND_IN_SET(t.purchaser_catid, @customers)
-                    AND d.level <= 2
+                    SUM(COALESCE(t.computed_cv, 0)) As ps
+                FROM v_cm_transactions t
+                WHERE (transaction_date BETWEEN @start_date AND @end_date
+                    AND t.`type` = 'product')
+                    OR (
+                    transaction_date BETWEEN @start_date AND @end_date
+                    AND t.sponsor_id = dv.user_id
+                )
+                GROUP BY t.user_id
             ) AS a ON a.user_id = dv.user_id             
             SET
-                dv.pv = COALESCE(a.pv, 0)
+                dv.pv = COALESCE(a.ps, 0)
             WHERE dv.volume_date = @end_date
         ";
+        #1 Personal orders 
+        #2 Customer orders from Level 1 
+        #3 Customer orders from level 2
+
 
         $smt = $this->db->prepare($sql);
         $smt->execute();
@@ -249,17 +251,14 @@ final class VolumesAndRanks extends Console
         $sql = "
             UPDATE cm_daily_volumes dv
             LEFT JOIN (
-                WITH RECURSIVE downline (user_id, parent_id, root_id, `level`, pv, active, `compress_level`) AS (
+                WITH RECURSIVE downline (user_id, parent_id, root_id, `level`, pv) AS (
                     SELECT 
                         p.user_id,
                         p.sponsor_id AS parent_id,
                         p.user_id AS root_id,
                         0 AS `level`,
-                        u.active,
-                        dv.pv AS pv,
-                        0 AS `compress_level`
+                        dv.pv AS pv
                     FROM cm_genealogy_placement p
-                    JOIN users u ON u.id = p.user_id
                     JOIN cm_daily_volumes dv ON dv.user_id = p.user_id AND dv.volume_date = @end_date
                     
                     UNION ALL
@@ -267,13 +266,10 @@ final class VolumesAndRanks extends Console
                     SELECT
                         p.user_id AS user_id,
                         p.sponsor_id AS parent_id,
-                        u.active,
                         downline.root_id,
                         downline.`level` + 1 `level`,
-                        dv.pv AS pv,
-                        downline.compress_level + IF(u.active = 'Yes', 1, 0)
+                        dv.pv AS pv
                     FROM cm_genealogy_placement p
-                    JOIN users u ON u.id = p.user_id
                     JOIN downline ON downline.user_id = p.sponsor_id
                     JOIN cm_daily_volumes dv ON dv.user_id = p.user_id AND dv.volume_date = @end_date
                 )
@@ -288,6 +284,7 @@ final class VolumesAndRanks extends Console
                 dv.gv = COALESCE(a.gv, 0) + dv.pv
             WHERE dv.volume_date = @end_date
         ";
+        // Add compression logic here
 
         $smt = $this->db->prepare($sql);
         $smt->execute();
@@ -400,7 +397,7 @@ final class VolumesAndRanks extends Console
                 dr.is_system_active = (u.active = 'Yes')
             WHERE dv.volume_date = @end_date;
         ";
-      // 50pv in the past 30 days 
+
         $stmt = $this->db->prepare($sql);
         $stmt->execute();
     }
@@ -658,80 +655,78 @@ final class VolumesAndRanks extends Console
 
         $needs = [];
 
-        $bg10_count = +$volume->bg10_count;    
-        $bg9_count = $bg10_count + +$volume->bg9_count;
-        $bg8_count = $bg9_count + +$volume->bg8_count;    
-        $bg7_count = $bg8_count + +$volume->bg7_count;    
-        $bg6_count = $bg7_count + +$volume->bg6_count;    
-        $bg5_count = $bg6_count + +$volume->bg5_count;  
+        $diamond_influencer_count = +$volume->diamond_influencer_count;
+        $platinum_influencer_count = $diamond_influencer_count + +$volume->platinum_influencer_count;
+        $gold_influencer_count = $platinum_influencer_count + +$volume->gold_influencer_count;
+        $silver_influencer_count = $gold_influencer_count + +$volume->silver_influencer_count;
+        $influencer_count = $silver_influencer_count + +$volume->influencer_count;
 
-        $pv_needs = $next_rank->pv_requirement - $volume->pv;
-        $gv_needs = $next_rank->gv_requirement - $volume->gv;
-        
-         
-        if($next_rank->bg10_requirement == 0){ $bg10_needs_count = 0; }else{ $bg10_needs_count = $next_rank->bg10_requirement - $bg10_count; } 
-        if($next_rank->bg9_requirement == 0){ $bg9_needs_count = 0; }else{ $bg9_needs_count = $next_rank->bg9_requirement - $bg9_count; }
-        if($next_rank->bg8_requirement == 0){ $bg8_needs_count = 0; }else{ $bg8_needs_count = $next_rank->bg8_requirement - $bg8_count; }
-        if($next_rank->bg7_requirement == 0){ $bg7_needs_count = 0; }else{ $bg7_needs_count = $next_rank->bg7_requirement - $bg7_count; }
-        if($next_rank->bg6_requirement == 0){ $bg6_needs_count = 0; }else{ $bg6_needs_count = $next_rank->bg6_requirement - $bg6_count; }
-        if($next_rank->bg5_requirement == 0){ $bg5_needs_count = 0; }else{ $bg5_needs_count = $next_rank->bg5_requirement - $bg5_count; }
+        $preferred_customer_count_requirement = $next_rank->preferred_customer_count_requirement - $volume->preferred_customer_count;
+        $referral_points_requirement = $next_rank->referral_points_requirement - $volume->referral_points;
+        $organization_points_requirement = $next_rank->organization_points_requirement - $volume->organization_points;
+        $team_group_points_requirement = $next_rank->team_group_points_requirement - $volume->team_group_points;
+        $gold_influencer_count_requirement = $next_rank->gold_influencer_count_requirement - $gold_influencer_count;
 
-            
-        if($pv_needs > 0) {
+        if ($silver_influencer_count - $next_rank->gold_influencer_count_requirement < 0) {
+            $silver_influencer_count_requirement = $next_rank->silver_influencer_count_requirement;
+        } else {
+            $silver_influencer_count_requirement = $next_rank->silver_influencer_count_requirement - ($silver_influencer_count - $next_rank->gold_influencer_count_requirement);
+        }
+
+        if ($influencer_count - $next_rank->gold_influencer_count_requirement - $next_rank->silver_influencer_count_requirement < 0) {
+            $influencer_count_requirement = $next_rank->influencer_count_requirement;
+        } else {
+            $influencer_count_requirement = $next_rank->influencer_count_requirement - ($influencer_count - $next_rank->gold_influencer_count_requirement - $next_rank->silver_influencer_count_requirement);
+        }
+
+        if ($preferred_customer_count_requirement > 0) {
             $needs[] = [
-                'value' => $gv_needs,
-                'description' => 'PV',
+                'value' => $preferred_customer_count_requirement,
+                'description' => 'Preferred Customer(s)',
             ];
         }
 
-        if($gv_needs > 0) {
+        if ($referral_points_requirement > 0) {
             $needs[] = [
-                'value' => $gv_needs,
-                'description' => 'GV',
+                'value' => $referral_points_requirement,
+                'description' => 'Referral Points'
             ];
         }
 
-        if($bg5_needs_count > 0) {
+        if ($organization_points_requirement > 0) {
             $needs[] = [
-                'value' => $$bg5_needs_count,
-                'description' => 'Pearl Influencer',
+                'value' => $organization_points_requirement,
+                'description' => 'Organization Points'
             ];
         }
 
-        if($bg6_needs_count > 0) {
+        if ($team_group_points_requirement > 0) {
             $needs[] = [
-                'value' => $bg6_needs_count,
-                'description' => 'Emerald Influencer',
+                'value' => $team_group_points_requirement,
+                'description' => 'Team Group Points'
             ];
         }
 
-        if($bg7_needs_count > 0) {
+        if ($gold_influencer_count_requirement > 0) {
             $needs[] = [
-                'value' => $bg7_needs_count,
-                'description' => 'Ruby Influencer',
+                'value' => $gold_influencer_count_requirement,
+                'description' => 'Gold Influencer(s)'
             ];
         }
 
-        if($bg8_needs_count > 0) {
+        if ($silver_influencer_count_requirement > 0) {
             $needs[] = [
-                'value' => $bg8_needs_count,
-                'description' => 'Diamond Influencer',
+                'value' => $silver_influencer_count_requirement,
+                'description' => 'Silver Influencer(s)'
             ];
         }
 
-        if($bg9_needs_count > 0) {
+        if ($influencer_count_requirement > 0) {
             $needs[] = [
-                'value' => $bg9_needs_count,
-                'description' => 'Double Diamond Influencer',
+                'value' => $influencer_count_requirement,
+                'description' => 'Influencer(s)'
             ];
         }
-
-        if($bg10_needs_count > 0) {
-            $needs[] = [
-                'value' => $bg9_needs_count,
-                'description' => 'Triple Diamond Influencer',
-            ];
-        }     
 
         if (false && "test") {
             $needs[] = [
