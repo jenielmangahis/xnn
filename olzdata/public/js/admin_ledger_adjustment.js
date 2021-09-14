@@ -152,44 +152,6 @@
                     closeModal: false,
                 })
                 .then((result) => {
-                    if( result ){
-                        client.post(`admin/clawback/refund-order-products`, {
-                            products : _this.products,
-                            transaction_id: _this.transaction_id,
-                            set_user_id: $('#member').val(),
-                            type: type
-                        }).then(response => {
-
-                            $dt.clear().draw();
-                            $dt.responsive.recalc();
-
-                            _this.products = [];
-                            _this.transaction_id = null;
-
-                            $('#modal-order-items').modal('hide');
-                            swal("Successfully added for clawback/refund!", "", "success");
-                        }).catch(this.axiosErrorHandler).finally(()=> {
-
-                        });
-                    }else{
-                       swal.close(); 
-                    }
-                    
-                });
-
-
-                swal({
-                    title: title,
-                    text: text,
-                    type: "warning",
-                    confirmButtonClass: "btn-success",
-                    confirmButtonText: "Confirm",
-                    cancelButtonText: "Cancel",
-                    showCancelButton: true,
-                    closeOnConfirm: false,
-                    showLoaderOnConfirm: true,
-                }, () => {
-
                     this.isProcessing = 1;
 
                     client.post("admin/ledger-adjustment", this.adjustment).then(response => {
@@ -205,9 +167,8 @@
                     }).catch(this.axiosErrorHandler).finally(()=> {
                         this.isProcessing = 0;
                     });
-
+                    
                 });
-
             },
             deleteAdjustment(data) {
 
