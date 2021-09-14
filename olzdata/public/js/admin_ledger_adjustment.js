@@ -137,7 +137,7 @@
                         cancel: {
                             text: "Cancel",
                             value: null,
-                            visible: true,
+                            visible: false,
                             className: "",
                             closeModal: true,
                         },
@@ -152,22 +152,23 @@
                     closeModal: false,
                 })
                 .then((result) => {
-                    this.isProcessing = 1;
+                    if( result ){
+                        this.isProcessing = 1;
 
-                    client.post("admin/ledger-adjustment", this.adjustment).then(response => {
-                        this.error.message = null;
-                        this.error.type = null;
+                        client.post("admin/ledger-adjustment", this.adjustment).then(response => {
+                            this.error.message = null;
+                            this.error.type = null;
 
-                        console.log(response.data);
+                            console.log(response.data);
 
-                        this.dt.draw();
-                        $('#modal-ledger-adjustment').modal('hide');
-                        swal('Success','','success');
+                            this.dt.draw();
+                            $('#modal-ledger-adjustment').modal('hide');
+                            swal('Success','','success');
 
-                    }).catch(this.axiosErrorHandler).finally(()=> {
-                        this.isProcessing = 0;
-                    });
-                    
+                        }).catch(this.axiosErrorHandler).finally(()=> {
+                            this.isProcessing = 0;
+                        });
+                    }
                 });
             },
             deleteAdjustment(data) {
@@ -177,28 +178,40 @@
                 swal({
                     title: "Undo Adjustment",
                     text: `Are you sure you want to undo this ledger adjustment of User ID ${data.user_id} (${data.notes})?`,
-                    type: "warning",
-                    confirmButtonClass: "btn-success",
-                    confirmButtonText: "Confirm",
-                    cancelButtonText: "Cancel",
-                    showCancelButton: true,
-                    closeOnConfirm: false,
-                    showLoaderOnConfirm: true,
-                }, () => {
+                    icon: "warning",
+                    buttons: {
+                        cancel: {
+                            text: "Cancel",
+                            value: null,
+                            visible: false,
+                            className: "",
+                            closeModal: true,
+                        },
+                        confirm: {
+                            text: "Confirm",
+                            value: true,
+                            visible: true,
+                            className: "btn-success",
+                            closeModal: true
+                        }
+                    },
+                    closeModal: false,
+                })
+                .then((result) => {
+                    if( result ){
+                        this.isProcessing = 1;
 
-                    this.isProcessing = 1;
+                        client.post(`admin/ledger-adjustment/${data.id}/delete`).then(response => {
+                            this.error.message = null;
+                            this.error.type = null;
 
-                    client.post(`admin/ledger-adjustment/${data.id}/delete`).then(response => {
-                        this.error.message = null;
-                        this.error.type = null;
+                            this.dt.draw();
+                            swal('Success','','success');
 
-                        this.dt.draw();
-                        swal('Success','','success');
-
-                    }).catch(this.axiosErrorHandler).finally(()=> {
-                        this.isProcessing = 0;
-                    });
-
+                        }).catch(this.axiosErrorHandler).finally(()=> {
+                            this.isProcessing = 0;
+                        });
+                    }
                 });
             },
             axiosErrorHandler(error) {
