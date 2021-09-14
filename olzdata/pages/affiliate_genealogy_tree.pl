@@ -231,7 +231,7 @@ z-index: 0 !important;
                     <table id="table-order-history" class="table table table-striped" style="width:100%" cellspacing="0" width="100%">
                         <thead class="table__header table__header--bg-primary">
                         <tr class="table__row">
-                            <th class="table__cell">Order ID</th>
+                            <th class="table__cell">Invoice Number</th>
                             <th class="table__cell">Products</th>
                             <th class="table__cell">Date</th>
                             <th class="table__cell">Paid<br>Amount</th>

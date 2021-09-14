@@ -52,7 +52,7 @@
                     },
                     order: [[1, 'desc']],
                     columns: [
-                        {data: 'transaction_id'},
+                        {data: 'invoice'},
                         {
                             data: 'products',
                             orderable: false,
