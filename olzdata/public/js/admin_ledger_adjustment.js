@@ -132,13 +132,24 @@
                 swal({
                     title: title,
                     text: text,
-                    type: "warning",
-                    confirmButtonClass: "btn-success",
-                    confirmButtonText: "Confirm",
-                    cancelButtonText: "Cancel",
-                    showCancelButton: true,
-                    closeOnConfirm: false,
-                    showLoaderOnConfirm: true,
+                    icon: "warning",
+                    buttons: {
+                        cancel: {
+                            text: "Cancel",
+                            value: null,
+                            visible: true,
+                            className: "",
+                            closeModal: true,
+                        },
+                        confirm: {
+                            text: "Confirm",
+                            value: true,
+                            visible: true,
+                            className: "btn-success",
+                            closeModal: true
+                        }
+                    },
+                    closeModal: false,
                 })
                 .then((result) => {
                     if( result ){
