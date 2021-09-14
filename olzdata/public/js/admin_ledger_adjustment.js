@@ -137,7 +137,7 @@
                         cancel: {
                             text: "Cancel",
                             value: null,
-                            visible: false,
+                            visible: true,
                             className: "",
                             closeModal: true,
                         },
@@ -183,7 +183,7 @@
                         cancel: {
                             text: "Cancel",
                             value: null,
-                            visible: false,
+                            visible: true,
                             className: "",
                             closeModal: true,
                         },
