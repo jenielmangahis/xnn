@@ -21,12 +21,15 @@
             order_history: null,
             order_history_user_id: null,
             order_history_name: null,
+            wishlist_user_id: null,
+            wishlist_name: null,
             colspan: 12,
             today: moment().format("YYYY-MM-DD")
         },
         mounted() {
             this.owner_id = $('#member').val();
             this.order_history_user_id = $('#member').val();
+            this.wishlist_user_id = $('#member').val();
 
             this.enroller = $('.enroller-tree #table-enroller');
             this.enrollerBody = $('.enroller-tree #table-enroller tbody');
@@ -41,7 +44,6 @@
                 this.order_history = $("#table-order-history").DataTable({
                     processing: true,
                     serverSide: true,
-                    responsive: true,
                     ajax: {
                         url: `${api_url}member/enroller-tree/order-history`,
                         data: function (d) {
@@ -74,6 +76,22 @@
                         {data: 'amount'},
                     ]
                 });
+
+                this.wishlist = $("#table-wishlist").DataTable({
+                    processing: true,
+                    serverSide: true,
+                    ajax: {
+                        url: `${api_url}member/enroller-tree/wishlist`,
+                        data: function (d) {
+                            d.user_id = _this.wishlist_user_id;
+                        },
+                    },
+                    order: [[1, 'desc']],
+                    columns: [
+                        {data: 'product_name'},
+                        {data: 'quantity', className: 'text-center'},
+                    ]
+                });
             },
             initializeJQueryEvents() {
                 let _this = this;
@@ -104,7 +122,25 @@
 
                 $('#modal-order-history').on('shown.bs.modal', function (e) {
 
-                    _this.order_history.responsive.draw();
+                    _this.order_history.draw();
+                });
+
+                _this.enroller.on('click', '.btn-show-wishlist', function (e) {
+                    e.preventDefault();
+
+                    let user_id = $(this).closest('tr').data('tt-id');
+                    let name = $(this).closest('tr').data('tt-name');
+
+                    _this.wishlist_user_id = user_id;
+                    _this.wishlist_name = name;
+
+                    _this.wishlist.clear().draw();
+                    $('#modal-wishlist').modal({backdrop: 'static', keyboard: false});
+                });
+
+                $('#modal-wishlist').on('shown.bs.modal', function (e) {
+
+                    _this.wishlist.draw();
                 });
 
                 var members = new Bloodhound({
@@ -296,7 +332,9 @@
                         </td>
                         <td class="table__cell table__cell--text-center table__cell--align-middle">${has_order_last_30_days}</td>
                         <td class="table__cell table__cell--text-center table__cell--align-middle">${has_first_90_days}</td>
-                        
+                        <td class="table__cell table__cell--text-center table__cell--align-middle">
+                            <button class="btn btn-link btn-sm btn-show-wishlist">View</button>
+                        </td>
                         <td class="table__cell table__cell--text-center table__cell--align-middle">${data.enrolled_date}</td>
                         <td class="table__cell table__cell--text-center table__cell--align-middle" id="enroller-tree-level-${data.user_id}">${data.level}</td>
                         <td class="table__cell table__cell--text-center table__cell--align-middle">${data.sponsor}</td>

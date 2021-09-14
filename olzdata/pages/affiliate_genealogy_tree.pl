@@ -200,6 +200,7 @@ z-index: 0 !important;
                             <th class="table__cell ">Order History</th>
                             <th class="table__cell" style="max-width: 100px">Orders in Last 30 Days</th>
                             <th class="table__cell " style="max-width: 100px">First 90 Days</th>
+                            <th class="table__cell ">Wishlist</th>
                             <th class="table__cell ">Enrollment</th>
                             <th class="table__cell ">Level</th>
                             <th class="table__cell ">Sponsor</th>
@@ -271,6 +272,37 @@ z-index: 0 !important;
             </div>
         </div>
     </div>
+    
+    <div class="modal fade" id="modal-wishlist" role="dialog" aria-labelledby="modal-wishlist-label">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="modal-wishlist-label">
+                        Wishlist<br/>
+                        ID: {{ wishlist_user_id }}<br/>
+                        NAME: {{ wishlist_name }}
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <table id="table-wishlist" class="table table table-striped" style="width:100%" cellspacing="0" width="100%">
+                        <thead class="table__header table__header--bg-primary">
+                        <tr class="table__row">
+                            <th class="table__cell">Product Name</th>
+                            <th class="table__cell">Product Quantity</th>
+                        </tr>
+                        </thead>
+                        <tbody class="table__body">
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <a type="button" class="btn btn-default" data-dismiss="modal">Close</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>
 </div>
 
@@ -281,7 +313,7 @@ z-index: 0 !important;
 <script src="https://cdn.datatables.net/responsive/2.2.3/js/responsive.bootstrap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/js/bootstrap-datepicker.min.js"></script>
 <script src="$commission_engine_api_url/js/plugins/typeahead.bundle.js"></script>
-<script src="$commission_engine_api_url/js/affiliate_genealogy_tree.js?v=1.2"></script>
+<script src="$commission_engine_api_url/js/affiliate_genealogy_tree.js?v=1.8"></script>
 
 EOS
 1;
