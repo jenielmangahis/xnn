@@ -1,0 +1,312 @@
+
+var commissionCategory = {
+
+	"Immediate Earnings": {
+		"fields":[
+			{title: "Customer's Name"},
+			{title: "POD / PDR #"},
+			{title: "Account"},
+			{title: "Gross Amount Earned"},
+			{title: "Week Enrolled"},
+			{title: "Week Accepted"},
+			{title: "Week Receipt No."},
+		],
+		"categories":["Personal Accounts", "Immediate Earning True-Up", "Other Commissions"]
+	},
+
+	"Weekly Downline": {
+		"fields":[
+			{title: "Level"}, 
+			{title: "Associate's Name"},
+			{title: "Associate's ID"},
+			{title: "Customer's Name"},
+			{title: "POD / PDR #"},
+			{title: "Account"},
+			{title: "Gross Amount Earned"},
+			{title: "Week Enrolled"},
+			{title: "Week Accepted"},
+			{title: "Week Receipt No."},
+		],
+		"categories": ["Immediate Earnings"]
+	},
+
+	"Monthly Residuals": {
+		"fields":[
+			{title: "Level"}, 
+			{title: "Associate's Name"},
+			{title: "Associate's ID"},
+			{title: "Customer's Name"},
+			{title: "POD / PDR #"},
+			{title: "Account"},
+			{title: "Gross Amount Earned"},
+			{title: "Week Enrolled"},
+			{title: "Week Accepted"},
+			{title: "Week Receipt No."},
+		],
+		"categories": ["Personal Residuals", "Uni-Level Residuals", "Generational Residuals"]
+	},
+
+	"All": {
+		"fields":[
+			{title: "Level"}, 
+			{title: "Associate's Name"},
+			{title: "Associate's ID"},
+			{title: "Customer's Name"},
+			{title: "POD / PDR #"},
+			{title: "Account"},
+			{title: "Gross Amount Earned"},
+			{title: "Week Enrolled"},
+			{title: "Week Accepted"},
+			{title: "Week Receipt No."},
+		],
+		"categories": ["Personal Accounts", "Immediate Earning True-Up", "Other Commissions", "Immediate Earnings", "Personal Residuals", "Uni-Level Residuals", "Generational Residuals"]
+	}
+
+};
+
+var data = {
+	"Immediate Earnings": [
+		[
+			"Rey M.",
+			"****8744",
+			"Gas",
+			"20",
+			"2021-02-24 01:34:09",
+			"2021-02-24 01:34:09",
+			"0011/2/2021"
+		],
+		[
+			"Rey M.",
+			"****8744",
+			"Gas",
+			"20",
+			"2021-02-24 01:34:09",
+			"2021-02-24 01:34:09",
+			"0011/2/2021"
+		],
+		[
+			"Rey M.",
+			"****8744",
+			"Gas",
+			"20",
+			"2021-02-24 01:34:09",
+			"2021-02-24 01:34:09",
+			"0011/2/2021"
+		],
+		[
+			"Rey M.",
+			"****8744",
+			"Gas",
+			"20",
+			"2021-02-24 01:34:09",
+			"2021-02-24 01:34:09",
+			"0011/2/2021"
+		]
+		
+	],
+
+	"Weekly Downline": [
+		[
+			"First Level Commissions",
+			"John Dwaine",
+			"10002",
+			"Rey M.",
+			"****8744",
+			"Gas",
+			"20",
+			"2021-02-24 01:34:09",
+			"2021-02-24 01:34:09",
+			"0011/2/2021"
+		],
+		[
+			"Watt 60 Commissions",
+			"John Dwaine",
+			"10002",
+			"Rey M.",
+			"****8744",
+			"Gas",
+			"20",
+			"2021-02-24 01:34:09",
+			"2021-02-24 01:34:09",
+			"0011/2/2021"
+		],
+		[
+			"National Leaders Commissions",
+			"John Dwaine",
+			"10002",
+			"Rey M.",
+			"****8744",
+			"Gas",
+			"20",
+			"2021-02-24 01:34:09",
+			"2021-02-24 01:34:09",
+			"0011/2/2021"
+		],
+		[
+			"First Level Commissions",
+			"John Dwaine",
+			"10002",
+			"Rey M.",
+			"****8744",
+			"Gas",
+			"20",
+			"2021-02-24 01:34:09",
+			"2021-02-24 01:34:09",
+			"0011/2/2021"
+		]
+		
+	],
+
+	"Monthly Residuals": [
+		[
+			"First Level Commissions",
+			"John Dwaine",
+			"10002",
+			"Rey M.",
+			"****8744",
+			"Gas",
+			"20",
+			"2021-02-24 01:34:09",
+			"2021-02-24 01:34:09",
+			"0011/2/2021"
+		],
+		[
+			"Watt 60 Commissions",
+			"John Dwaine",
+			"10002",
+			"Rey M.",
+			"****8744",
+			"Gas",
+			"20",
+			"2021-02-24 01:34:09",
+			"2021-02-24 01:34:09",
+			"0011/2/2021"
+		],
+		[
+			"National Leaders Commissions",
+			"John Dwaine",
+			"10002",
+			"Rey M.",
+			"****8744",
+			"Gas",
+			"20",
+			"2021-02-24 01:34:09",
+			"2021-02-24 01:34:09",
+			"0011/2/2021"
+		],
+		[
+			"First Level Commissions",
+			"John Dwaine",
+			"10002",
+			"Rey M.",
+			"****8744",
+			"Gas",
+			"20",
+			"2021-02-24 01:34:09",
+			"2021-02-24 01:34:09",
+			"0011/2/2021"
+		]
+		
+	],
+
+	"All": [
+		[
+			"First Level Commissions",
+			"John Dwaine",
+			"10002",
+			"Rey M.",
+			"****8744",
+			"Gas",
+			"20",
+			"2021-02-24 01:34:09",
+			"2021-02-24 01:34:09",
+			"0011/2/2021"
+		],
+		[
+			"Watt 60 Commissions",
+			"John Dwaine",
+			"10002",
+			"Rey M.",
+			"****8744",
+			"Gas",
+			"20",
+			"2021-02-24 01:34:09",
+			"2021-02-24 01:34:09",
+			"0011/2/2021"
+		],
+		[
+			"National Leaders Commissions",
+			"John Dwaine",
+			"10002",
+			"Rey M.",
+			"****8744",
+			"Gas",
+			"20",
+			"2021-02-24 01:34:09",
+			"2021-02-24 01:34:09",
+			"0011/2/2021"
+		],
+		[
+			"First Level Commissions",
+			"John Dwaine",
+			"10002",
+			"Rey M.",
+			"****8744",
+			"Gas",
+			"20",
+			"2021-02-24 01:34:09",
+			"2021-02-24 01:34:09",
+			"0011/2/2021"
+		]
+		
+	]
+
+};
+
+// initializing dropdown
+let commissionType = `<option value="0">All</option>`
+$("#CommissionType").append(commissionType);
+
+$(document).on('change', '#commissionCategories', function(event){
+
+	$("#CommissionType").empty();
+	
+	commissionType = ``;
+
+	var selectedCategory = $("#commissionCategories option:selected").text();
+
+	var selectedCommissionCategory = commissionCategory[selectedCategory]['categories'];
+
+	for (var i = 0; i < selectedCommissionCategory.length; i++) {
+			
+		commissionType += `<option value="${i+1}">${selectedCommissionCategory[i]}</option>`;
+	}
+
+	$("#CommissionType").append(commissionType);
+
+	console.log(selectedCategory);
+
+	var dataObject = {
+		columns: commissionCategory[selectedCategory]['fields'],
+		data: data[selectedCategory]
+	};
+
+	console.log(commissionCategory[selectedCategory]['fields']);
+	console.log(data[selectedCategory]);
+
+	// found here: https://stackoverflow.com/questions/29150480/how-to-reinitialize-datatables-with-newly-fetched-data-from-server-using-ajax-in
+	if($.fn.DataTable.isDataTable("#detailed_commission")) {
+
+		$("#detailed_commission").DataTable().destroy()
+        // $("#detailed_commission").dataTable({});
+
+	}else{
+
+		$('#detailed_commission').dataTable({
+			"data": dataObject.data,
+			"columns": dataObject.columns,
+		});
+	}
+
+
+});

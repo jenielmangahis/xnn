@@ -1,0 +1,345 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: Admin
+ * Date: 11/23/2020
+ * Time: 7:25 PM
+ * Task Link: https://3.basecamp.com/3526928/buckets/10144002/todos/3210686149
+ */
+
+namespace Commissions\CommissionTypes;
+
+use App\DailyRank;
+use App\User;
+use Commissions\Contracts\CommissionTypeInterface;
+
+class ImmediateEarnings  extends CommissionType implements CommissionTypeInterface
+{
+    const FIRST_THREE_PEA_BONUS = 20;
+    const FORTH_PEA_BONUS = 5;
+    const WATT_60_ABOVE_BONUS = 3;
+
+    public function count()
+    {
+        return count($this->getAccounts());
+    }
+
+    public function generateCommission($start, $length)
+    {
+        $this->log('Getting accounts... ');
+
+        $accounts = $this->getAccounts($start, $length);
+        foreach($accounts as $account){
+            $this->log('Evaluating account '. $account['customer_id']);
+
+            /**
+             * Part 1
+            */
+            $this->associateBonus($account['sponsor_id'], $account['customer_id'], $account['account_type']);
+
+            /**
+             * Part 2
+             */
+            $level_1_sponsor = $this->getLevel1Sponsor($account['sponsor_id']);
+            $level_1_sponsor_bonus_count = $this->getLevel1SponsorBonusCount($level_1_sponsor);
+            $level_1_sponsor_rank = $this->getLevel1SponsorRankId($level_1_sponsor);
+
+            if($this->level1SponsorQualified($level_1_sponsor_bonus_count, $level_1_sponsor_rank['paid_as_rank_id']))
+                $this->level1UplineBonus($account['sponsor_id'], $account['customer_id']);
+
+
+            /**
+             * Part 3
+             */
+
+            $has_earn_forth_pea_bonus = $this->hasEarnedForthPEAOnwards($level_1_sponsor, $account['customer_id']);
+
+            if($this->isQualifiedForForthPEAOnwards($has_earn_forth_pea_bonus, $level_1_sponsor_rank['paid_as_rank_id']))
+                $this->forthPEAOnwardsBonus($level_1_sponsor, $account['sponsor_id'], $account['customer_id']);
+
+
+
+            /**
+             * Part 4
+             */
+            $uplines = $this->getUserUpline($account['customer_id']);
+            if(count($uplines) <= 0) $this->log('No uplines found');
+            foreach($uplines as $upline){
+                $this->watt60AboveBonus($upline['user_id'], $account['sponsor_id'], $account['customer_id'], $upline['rank_id']);
+            }
+        }
+    }
+
+    private function associateBonus($sponsor_id, $customer_id, $energy_account_type)
+    {
+        $residential_energy_type = config('commission.energy-account-types.residential');
+        $bonus_amount = 20;
+
+        if($residential_energy_type <> $energy_account_type) $bonus_amount = 25;
+
+        $this->insertPayout(
+            $sponsor_id,
+            $customer_id,
+            $bonus_amount,
+            100,
+            $bonus_amount,
+            ' Associate with id #'. $sponsor_id . ' has earned '. $bonus_amount,
+            1,
+            $sponsor_id
+        );
+    }
+
+    private function level1UplineBonus($sponsor_id, $customer_id)
+    {
+        $bonus_amount = self::FIRST_THREE_PEA_BONUS;
+
+        $this->insertPayout(
+            $sponsor_id,
+            $customer_id,
+            $bonus_amount,
+            100,
+            $bonus_amount,
+            'Level 1 Associate with id #'. $sponsor_id . ' has earned '. $bonus_amount,
+            1,
+            $sponsor_id
+        );
+    }
+
+    private function getLevel1Sponsor($user_id)
+    {
+        $user = User::findOrFail($user_id);
+        return $user->sponsorid;
+    }
+
+    public function getAccounts($start = null, $length = null)
+    {
+
+        $approved = config('commission.energy-account-status-types.approved-pending-flowing');
+
+        $query = "
+            select ea.*, cdr.paid_as_rank_id, c.catid from cm_energy_accounts ea
+            JOIN categorymap c 
+              ON ea.customer_id = c.userid 
+            JOIN cm_daily_ranks cdr 
+              ON ea.sponsor_id = cdr.user_id
+            WHERE exists(
+                select count(1) FROM 
+                cm_energy_account_logs as eal 
+                WHERE current_status = $approved
+                  AND created_at BETWEEN :start_date and :end_date
+                  AND eal.customer_id = ea.customer_id 
+            )
+            AND cdr.is_active = 1 
+            AND cdr.is_system_active = 1
+            AND cdr.rank_date = :end_date2
+            ";
+
+        if($start !== null)
+        {
+            $query .= " LIMIT $start, $length";
+        }
+
+        $start_date = $this->getPeriodStartDate();
+        $end_date = $this->getPeriodEndDate();
+
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam('start_date', $start_date);
+        $stmt->bindParam('end_date', $end_date);
+        $stmt->bindParam('end_date2', $end_date);
+        $stmt->execute();
+
+        $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+
+        return $result;
+
+    }
+
+    private function getLevel1SponsorBonusCount($sponsor_id)
+    {
+        $commission_type = config('commission.commission-types.weekly-immediate-earnings');
+
+        $query = "
+            SELECT count(1) AS numBonusEarned from cm_commission_payouts p  
+            JOIN cm_commission_periods cp ON p.commission_period_id = cp.id 
+            JOIN cm_commission_types ct on cp.commission_type_id = ct.id 
+            WHERE ct.id = :commission_type  
+            AND p.payee_id = :sponsor_id 
+            AND p.remarks LIKE '%Level 1%'
+            AND p.amount = :first_three_pea_bonus
+        ";
+
+        $bonus_amount = self::FIRST_THREE_PEA_BONUS;
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam('commission_type', $commission_type);
+        $stmt->bindParam('sponsor_id', $sponsor_id);
+        $stmt->bindParam('first_three_pea_bonus', $bonus_amount);
+        $stmt->execute();
+
+        return $stmt->fetchColumn();
+
+    }
+
+    private function getLevel1SponsorRankId($sponsor_id)
+    {
+
+        $end_date = $this->getPeriodEndDate();
+        $rank = DailyRank::ofMember($sponsor_id)
+            ->date($end_date)
+            ->first();
+
+        return $rank;
+    }
+
+    private function level1SponsorQualified($level_1_bonus_count, $rank_id)
+    {
+        $watt_rank = config('commission.ranks.watt');
+        if($level_1_bonus_count < 3  && $rank_id >= $watt_rank) return true;
+
+        return false;
+    }
+
+    private function forthPEAOnwardsBonus($payee_id, $sponsor_id, $customer_id)
+    {
+
+        $bonus_amount = self::FORTH_PEA_BONUS;
+
+        $this->insertPayout(
+            $payee_id,
+            $customer_id,
+            $bonus_amount,
+            100,
+            $bonus_amount,
+            'Level 1 Associate with id #'. $sponsor_id . ' has earned '. $bonus_amount,
+            1,
+            $sponsor_id
+        );
+    }
+
+    private function hasEarnedForthPEAOnwards($payee_id, $customer_id){
+        $commission_type = config('commission.commission-types.weekly-immediate-earnings');
+
+        $bonus_amount = self::FORTH_PEA_BONUS;
+
+        $query = "
+            SELECT count(1) AS numBonusEarned from cm_commission_payouts p  
+            JOIN cm_commission_periods cp ON p.commission_period_id = cp.id 
+            JOIN cm_commission_types ct on cp.commission_type_id = ct.id 
+            WHERE ct.id = :commission_type  
+            AND p.payee_id = :payee_id 
+            AND p.user_id = :customer_id 
+            AND p.remarks LIKE '%Level 1%'
+            AND p.amount = :forth_pea_bonus
+        ";
+
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam('commission_type', $commission_type);
+        $stmt->bindParam('payee_id', $payee_id);
+        $stmt->bindParam('customer_id', $customer_id);
+        $stmt->bindParam('forth_pea_bonus', $bonus_amount);
+        $stmt->execute();
+
+        return $stmt->fetchColumn();
+    }
+
+    private function isQualifiedForForthPEAOnwards($earned_from_customer, $rank_id)
+    {
+        $watt_rank = config('commission.ranks.watt');
+
+        if ($earned_from_customer <= 0 && $rank_id >= $watt_rank) {
+            return true;
+        }
+
+        return false;
+    }
+
+
+
+
+    private function getUserUpline($user_id){
+        $watt_60_rank = config('commission.ranks.watt-60');
+        $query = "
+            WITH RECURSIVE cte AS (
+                SELECT
+                    id AS user_id,
+                    sponsorid AS parent_id,
+                    fname,
+                    lname,
+                    country,
+                    created as dt_created,
+                    cm.catid as catid,
+                    levelid,
+                    active,
+                    1 AS `level`
+                FROM users
+                LEFT JOIN categorymap cm
+                  ON users.id = cm.userid
+                WHERE id = :user_id
+
+                UNION ALL
+
+                SELECT
+                    p.id AS user_id,
+                    p.sponsorid AS parent_id,
+                    p.fname,
+                    p.lname,
+                    p.country,
+                    p.created as dt_created,
+                    cm.catid as catid,
+                    p.levelid,
+                    p.active,
+                    cte.`level` + 1 `level`
+                FROM users p
+                LEFT JOIN categorymap cm
+                  ON p.id = cm.userid
+                INNER JOIN cte ON p.id  = cte.parent_id
+                WHERE p.id != p.sponsorid
+            )
+            SELECT cte.*,
+                ifnull(cdr.paid_as_rank_id, 0) as paid_as_rank_id,
+                c.name as rank_name
+             FROM cte JOIN 
+                cm_daily_ranks cdr on cte.user_id = cdr.user_id
+                JOIN (
+                    SELECT MAX(paid_as_rank_id) as rank_id, user_id, is_active 
+                    FROM cm_daily_ranks 
+                    GROUP BY user_id  
+                    ORDER BY paid_as_rank_id DESC, rank_date DESC
+                ) as career 
+                on cte.user_id = career.user_id
+            JOIN cm_ranks c on c.id = cdr.paid_as_rank_id              
+            WHERE career.rank_id >= :watt_60
+            AND cdr.rank_date = :rank_date
+            AND cdr.is_active = 1 
+            AND cdr.is_system_active = 1
+            LIMIT 1
+            ";
+        $rank_date = $this->getPeriodEndDate();
+        $stmt = $this->db->prepare($query);
+        $stmt->bindParam('user_id', $user_id);
+        $stmt->bindParam('watt_60', $watt_60_rank);
+        $stmt->bindParam('rank_date', $rank_date);
+        $stmt->execute();
+
+        $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+
+        return $result;
+    }
+
+
+    private function watt60AboveBonus($payee_id, $sponsor_id, $customer_id, $rank_id)
+    {
+
+        $bonus_amount = self::WATT_60_ABOVE_BONUS;
+
+        $this->insertPayout(
+            $payee_id,
+            $customer_id,
+            $bonus_amount,
+            100,
+            $bonus_amount,
+            'Associate with id #'. $sponsor_id . ' has rank of '. $rank_id,
+            1,
+            $sponsor_id
+        );
+    }
+}
