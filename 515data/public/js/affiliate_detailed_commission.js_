@@ -1,0 +1,47 @@
+
+var commissionCategory = {
+
+	"Immediate Earnings": {
+		"categories":["Personal Accounts", "Immediate Earning True-Up", "Other Commissions"]
+	},
+
+	"Weekly Downline": {
+		"categories": ["Immediate Earnings"]
+	},
+
+	"Monthly Residuals": {
+		"categories": ["Personal Residuals", "Uni-Level Residuals", "Generational Residuals"]
+	},
+
+	"All": {
+		"categories": ["Personal Accounts", "Immediate Earning True-Up", "Other Commissions", "Immediate Earnings", "Personal Residuals", "Uni-Level Residuals", "Generational Residuals"]
+	}
+
+};
+
+// initializing dropdown
+let commissionType = `<option value="0">All</option>`
+$("#CommissionType").append(commissionType);
+
+$(document).on('change', '#commissionCategories', function(event){
+
+	$("#CommissionType").empty();
+	
+	commissionType = ``;
+
+	var selectedCategory = $("#commissionCategories option:selected").text();
+
+	var selectedCommissionCategory = commissionCategory[selectedCategory]['categories'];
+
+	for (var i = 0; i < selectedCommissionCategory.length; i++) {
+			
+		commissionType += `<option value="${i+1}">${selectedCommissionCategory[i]}</option>`;
+	}
+
+	$("#CommissionType").append(commissionType);
+
+});
+
+$('#detailed_commission').dataTable({
+	"data": [],
+});

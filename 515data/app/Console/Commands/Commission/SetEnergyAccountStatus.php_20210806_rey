@@ -1,0 +1,120 @@
+<?php
+
+namespace App\Console\Commands\Commission;
+
+use Carbon\Carbon;
+use Illuminate\Console\Command;
+use Illuminate\Support\Facades\DB;
+use \PDO;
+
+class SetEnergyAccountStatus extends Command
+{
+    /**
+     * The name and signature of the console command.
+     *
+     * @var string
+     */
+    protected $signature = 'commission:set-energy-account-status {date? : The date to run (Y-m-d)}';
+
+    /**
+     * The console command description.
+     *
+     * @var string
+     */
+    protected $description = 'Set Energy Account Status';
+
+    protected $db;
+
+    /**
+     * Create a new command instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->db = DB::connection()->getPdo();
+        parent::__construct();
+    }
+
+    /**
+     * Execute the console command.
+     *
+     * @return mixed
+     */
+    public function handle()
+    {	
+        try {
+			
+			$this->info('Time started - ' . Carbon::now());
+			$executionDate = $this->argument('date');
+
+			if (!isset($executionDate) || empty($executionDate)) {
+				$executionDate = date('Y-m-d h:m:s');
+			}
+			$this->info('Date param: ' . $executionDate );
+
+            DB::transaction(function() use ($executionDate) {
+
+				//For flowing
+                DB::statement("
+					UPDATE cm_energy_accounts cea
+					JOIN cm_energy_account_flowing ceac ON cea.plank_energy_account_id = ceac.plank_energy_account_id
+					SET cea.status = 5
+					WHERE ceac.flowing_date = '$executionDate'
+                ");
+
+				DB::statement("
+					INSERT INTO cm_energy_account_logs (notes, energy_account_id, current_status, customer_id, reference_id, flowing_id, created_at)
+					SELECT
+						'CRON execution',
+						cea.id,
+						5,
+						cea.customer_id,
+						cea.reference_id,
+						ceac.id,
+						'$executionDate'
+					FROM cm_energy_account_flowing ceac
+					JOIN cm_energy_accounts cea ON cea.plank_energy_account_id = ceac.plank_energy_account_id
+					WHERE ceac.flowing_date = '$executionDate'
+					AND NOT EXISTS (SELECT 1 FROM cm_energy_account_logs WHERE ceac.id = flowing_id)
+					GROUP BY ceac.plank_energy_account_id
+                ");
+
+                //For cancellation
+                DB::statement("
+					UPDATE cm_energy_accounts cea
+					JOIN cm_energy_account_cancellation ceac ON cea.plank_energy_account_id = ceac.plank_energy_account_id
+					SET cea.status = 7
+					WHERE ceac.cancellation_date = DATE_SUB('$executionDate', INTERVAL 1 DAY)
+                ");
+
+				DB::statement("
+					INSERT INTO cm_energy_account_logs (notes, energy_account_id, current_status, customer_id, reference_id, cancellation_id, created_at)
+					SELECT
+						'CRON execution',
+						cea.id,
+						7,
+						cea.customer_id,
+						cea.reference_id,
+						ceac.id,
+						'$executionDate'
+					FROM cm_energy_account_cancellation ceac
+					JOIN cm_energy_accounts cea ON cea.plank_energy_account_id = ceac.plank_energy_account_id
+					WHERE ceac.cancellation_date = DATE_SUB('$executionDate', INTERVAL 1 DAY)
+					AND NOT EXISTS (SELECT 1 FROM cm_energy_account_logs WHERE ceac.id = cancellation_id)
+					GROUP BY ceac.plank_energy_account_id
+                ");
+
+            }, 2);
+        }
+        catch (\Illuminate\Database\QueryException $ex) {
+            if(strpos($ex->getMessage(), 'Lock wait timeout exceeded') === false && strpos($ex->getMessage(), 'Deadlock found') === false) {
+                throw $ex;
+            }
+        }
+		finally {
+			$this->info("Done setting energy account status");
+			$this->info('Time ended - ' . Carbon::now());
+		}
+    }
+}

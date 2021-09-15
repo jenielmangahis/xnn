@@ -1,0 +1,1 @@
+const API_URL = "https://office.515globalenergy.me:81/";

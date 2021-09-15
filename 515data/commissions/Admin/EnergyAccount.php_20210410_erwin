@@ -1,0 +1,265 @@
+<?php
+
+
+namespace Commissions\Admin;
+
+use Exception;
+use Illuminate\Support\Facades\DB;
+
+class EnergyAccount
+{
+    protected $db;
+
+    public function __construct()
+    {
+        $this->db = DB::connection()->getPdo();
+    }
+
+    public function getEnergyAccounts($filters, $userId = null)
+    {
+        // return [];
+        // DB::enableQueryLog();
+        $data = [];
+        $recordsTotal = $recordsFiltered = 0;
+
+        $draw = intval($filters['draw']);
+
+        $skip = $filters['start'];
+        $take = $filters['length'];
+
+        $search = $filters['search'];
+        $order = $filters['order'];
+        $columns = $filters['columns'];
+
+        //VARIABLES START
+        $startDate = isset($filters['start_date']) ? $filters['start_date'] : null;
+        $endDate = isset($filters['end_date']) ? $filters['end_date'] : null;
+        $statusId = (int) $filters['status_id'];
+        //VARIABLES END
+
+        $query = DB::table('cm_energy_accounts as cm_ea')
+            //customer
+            ->leftJoin('users as cust', function($join) {
+                $join->on('cm_ea.customer_id', '=', 'cust.id');
+            })
+
+            //associates
+            ->leftJoin('users as assoc', function($join) {
+                $join->on('cm_ea.sponsor_id', '=', 'assoc.id');
+            })
+
+             //associates
+             ->leftJoin('users as assoc_sponsor', function($join) {
+                $join->on('assoc.sponsorid', '=', 'assoc_sponsor.id');
+            })
+
+            //energy types
+            ->leftJoin('cm_energy_types as cm_eat', function($join) {
+                $join->on('cm_ea.energy_type', '=', 'cm_eat.id');
+            })
+
+            //energy account logs date accepted
+            ->leftJoin("cm_energy_account_logs AS cm_eal_accepted",
+                function($join) {
+                    $join->on('cm_ea.id', '=', 'cm_eal_accepted.energy_account_id');
+                    $join->whereRaw("cm_eal_accepted.id = (SELECT l1.id FROM cm_energy_account_logs l1 WHERE l1.energy_account_id = cm_ea.id AND l1.current_status = 4 ORDER BY l1.created_at ASC LIMIT 1)");
+                }
+            )
+
+            //energy account logs date flowing
+            ->leftJoin("cm_energy_account_logs AS cm_eal_flowing",
+                function($join) {
+                    $join->on('cm_ea.id', '=', 'cm_eal_flowing.energy_account_id');
+                    $join->whereRaw("cm_eal_flowing.id = (SELECT l1.id FROM cm_energy_account_logs l1 WHERE l1.energy_account_id = cm_ea.id AND l1.current_status = 4 ORDER BY l1.created_at ASC LIMIT 1)");
+                }
+            )
+
+            //energy account logs
+            ->join('cm_energy_account_logs as cm_eal', function($join) {
+                $join->on('cm_ea.id', '=', 'cm_eal.energy_account_id');
+                $join->whereRaw("cm_eal.id = (SELECT l1.id FROM cm_energy_account_logs l1 WHERE l1.energy_account_id = cm_ea.id AND l1.current_status = cm_eal.current_status ORDER BY l1.created_at ASC LIMIT 1)");
+            })
+
+            ->join('cm_energy_account_status_types as cm_east', function($join){
+                $join->on('cm_east.id', '=', 'cm_eal.current_status');
+            })
+            
+            ->selectRaw("cm_ea.reference_id,
+                cm_ea.customer_id,
+                CONCAT(cust.fname, ' ', cust.lname) as customer,
+                CONCAT(assoc.fname, ' ', assoc.lname) as associate,
+                assoc.id as associate_id,
+                CONCAT(assoc_sponsor.id, '. ', assoc_sponsor.fname, ' ', assoc_sponsor.lname) as associate_sponsor,
+                cm_eat.type as account,
+                cm_eal_accepted.created_at as date_accepted,
+                cm_eal_flowing.created_at as date_started_flowing,
+                cm_east.type as status")
+            ->whereBetween("cm_eal.created_at", [$startDate . ' 00:00:00', $endDate . ' 23:59:59']);
+
+            if($statusId) {
+                $query->where("cm_eal.current_status", $statusId);
+            }
+
+        $recordsTotal = $query->count(DB::raw("1"));
+
+        // apply search
+        $search = isset($search['value']) ? $search['value'] : "";
+
+        if (is_numeric($search) && is_int(+$search)) {
+
+            $query->where(function ($query) use ($search) {
+                $query->where('cm_ea.customer_id', $search);
+            });
+
+        } elseif (!!$search) {
+            $query->where(function ($query) use ($search) {
+                $query->where('customer', 'LIKE', "%{$search}%")
+                    ->orWhere('associate', 'LIKE', "%{$search}%")
+                    ->orWhere('account', 'LIKE', "%{$search}%")
+                    ->orWhere('date_accepted', 'LIKE', "%{$search}%")
+                    ->orWhere('date_started_flowing', 'LIKE', "%{$search}%")
+                    ->orWhere('status', 'LIKE', "%{$search}%");
+            });
+        }
+
+        $recordsFiltered = $query->count(DB::raw("1"));
+
+        if (isset($order) && count($order)) {
+            $column = $order[0];
+            $query = $query->orderBy($columns[+$column['column']]['data'], $column['dir']);
+        }
+
+        $query->orderBy("cm_ea.customer_id", "ASC");
+
+        $query = $query->take($take);
+
+        if ($skip) {
+            $query = $query->skip($skip);
+        }
+
+        $data = $query->get();
+
+        // return ['yawa' => $data, 'angel' => $queries = DB::getQueryLog()];
+
+        return compact('recordsTotal', 'draw', 'recordsFiltered', 'data');
+    }
+
+    public function getEnergyAccountStatus($filters, $userId = null) {
+        return DB::table('cm_energy_account_status_types')
+            ->select('id', 'type')
+            ->get();
+    }
+
+    public function getStatusCount($filters) {
+        $startDate = $filters['start_date'];
+        $endDate = $filters['end_date'];
+
+        $pendingConfirmationCount = DB::table('cm_energy_accounts as cm_ea')
+            //customer
+            ->leftJoin('users as cust', function($join) {
+                $join->on('cm_ea.customer_id', '=', 'cust.id');
+            })
+
+            //associates
+            ->leftJoin('users as assoc', function($join) {
+                $join->on('cm_ea.sponsor_id', '=', 'assoc.id');
+            })
+
+            //energy account types
+            ->leftJoin('cm_energy_account_types as cm_eat', function($join) {
+                $join->on('cm_ea.energy_type', '=', 'cm_eat.id');
+            })
+
+            //energy account logs date accepted
+            ->leftJoin("cm_energy_account_logs AS cm_eal_accepted",
+                function($join) {
+                    $join->on('cm_ea.id', '=', 'cm_eal_accepted.energy_account_id');
+                    $join->whereRaw("cm_eal_accepted.id = (SELECT l1.id FROM cm_energy_account_logs l1 WHERE l1.energy_account_id = cm_ea.id AND l1.current_status = 4 ORDER BY l1.created_at ASC LIMIT 1)");
+                }
+            )
+
+            //energy account logs date flowing
+            ->leftJoin("cm_energy_account_logs AS cm_eal_flowing",
+                function($join) {
+                    $join->on('cm_ea.id', '=', 'cm_eal_flowing.energy_account_id');
+                    $join->whereRaw("cm_eal_flowing.id = (SELECT l1.id FROM cm_energy_account_logs l1 WHERE l1.energy_account_id = cm_ea.id AND l1.current_status = 4 ORDER BY l1.created_at ASC LIMIT 1)");
+                }
+            )
+
+            //energy account logs
+            ->join('cm_energy_account_logs as cm_eal', function($join) {
+                $join->on('cm_ea.id', '=', 'cm_eal.energy_account_id');
+                $join->whereRaw("cm_eal.id = (SELECT l1.id FROM cm_energy_account_logs l1 WHERE l1.energy_account_id = cm_ea.id AND l1.current_status = cm_eal.current_status ORDER BY l1.created_at ASC LIMIT 1)");
+            })
+
+            ->join('cm_energy_account_status_types as cm_east', function($join){
+                $join->on('cm_east.id', '=', 'cm_eal.current_status');
+            })
+            ->whereBetween('cm_eal.created_at', [$startDate, $endDate])
+            ->where('cm_eal.current_status', 2)
+            // ->groupBy('reference_id')
+            ->count();
+
+        // $pendingConfirmationCount = DB::table('cm_energy_account_logs cm_eal')
+        //     ->where('current_status', 1)
+        //     ->whereBetween('created_at', [$startDate, $endDate])
+        //     ->groupBy('reference_id')
+        //     ->count();
+
+        $pendingApprovalCount = DB::table('cm_energy_account_logs')
+            ->where('current_status', 2)
+            ->whereBetween('created_at', [$startDate, $endDate])
+            ->groupBy('reference_id')
+            ->count();
+
+        $pendingRejectionCount = DB::table('cm_energy_account_logs')
+            ->where('current_status', 3)
+            ->whereBetween('created_at', [$startDate, $endDate])
+            ->groupBy('reference_id')
+            ->count();
+
+        $approvedPendingFlowingCount = DB::table('cm_energy_account_logs')
+            ->where('current_status', 4)
+            ->whereBetween('created_at', [$startDate, $endDate])
+            ->groupBy('reference_id')
+            ->count();
+
+        $flowingCount = DB::table('cm_energy_account_logs')
+            ->where('current_status', 5)
+            ->whereBetween('created_at', [$startDate, $endDate])
+            ->groupBy('reference_id')
+            ->count();
+
+        $flowingPendingCancellationCount = DB::table('cm_energy_account_logs')
+            ->where('current_status', 6)
+            ->whereBetween('created_at', [$startDate, $endDate])
+            ->groupBy('reference_id')
+            ->count();
+            
+        $cancelledCount = DB::table('cm_energy_account_logs')
+            ->where('current_status', 7)
+            ->whereBetween('created_at', [$startDate, $endDate])
+            ->groupBy('reference_id')
+            ->count();
+        
+        return [
+            'pending_confirmation_count' => $pendingConfirmationCount,
+            'pending_approval_count' => $pendingApprovalCount,
+            'pending_rejection_count' => $pendingRejectionCount,
+            'approved_pending_flowing_count' => $approvedPendingFlowingCount,
+            'flowing_count' => $flowingCount,
+            'flowing_pending_cancellation' => $flowingPendingCancellationCount,
+            'cancelled_count' => $cancelledCount,
+        ];
+    }
+
+    public function showStatus($referenceId) {
+        return DB::table('cm_energy_account_logs as cm_eal')
+            ->leftJoin('cm_energy_account_status_types as cm_east', function($join){
+                $join->on('cm_east.id', '=', 'cm_eal.current_status');
+            })
+            ->selectRaw('cm_east.type, cm_eal.updated_at')
+            ->where('cm_eal.reference_id', "$referenceId")
+            ->get();
+    }
+}

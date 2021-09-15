@@ -1,0 +1,186 @@
+<?php
+
+namespace Commissions\Admin;
+use App\Mail\TechFee;
+use App\User;
+use Commissions\Console;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
+use PDO;
+
+class TechFeeEmails extends Console
+{
+    protected $current_date;
+
+    public function __construct()
+    {
+        $this->current_date = date("Y-m-d");
+    }
+
+    public function first_email() {
+        $users = DB::table('billing AS b')
+            ->selectRaw('b.userid AS user_id,
+                u.fname AS first_name,
+                u.email,
+                b.billdate,
+                b.nochargeuntil,
+                DATE_SUB(b.nochargeuntil,INTERVAL 35 DAY) AS due_date_35days')
+            ->join('users AS u', 'u.id', '=', 'b.userid')
+            ->join('cm_affiliates AS a', 'a.user_id', '=', 'b.userid')
+            ->whereRaw('b.nochargeuntil IS NOT NULL AND b.userid = 3')
+            ->get();
+        foreach($users AS $user) {
+            if($this->current_date == $user->due_date_35days) {
+                $body = "<p>Hi $user->first_name,</p>
+                         <br>This is a friendly reminder to inform you that 5-15 Global Energy will start deducting your Technology Fee for a total of € 10 + VAT from your commissions earned starting from Monday <b>$user->due_date_35days.</b><br>
+                         <br>For any question, please reach us at:<br>5-15 Support Email<br>5-15 Support phone number<br>5-15 Global Energy Team<br>Email<br>Phone<br>Disclaimer</p>";
+
+                $this->log('sending email');
+                \Commissions\Mail::send(
+                    $user->email,
+                    "In one week we start prepaying for the Technology Fee",
+                    $body
+                );
+
+            }
+
+        }
+    }
+
+    public function second_email() {
+        $users = DB::table('billing AS b')
+            ->selectRaw('b.userid AS user_id,
+                u.fname AS first_name,
+                u.email,
+                b.billdate,
+                b.nochargeuntil,
+                DATE_SUB(b.nochargeuntil,INTERVAL 7 DAY) AS due_date_7days')
+            ->join('users AS u', 'u.id', '=', 'b.userid')
+            ->join('cm_affiliates AS a', 'a.user_id', '=', 'b.userid')
+            ->whereRaw('b.nochargeuntil IS NOT NULL')
+            ->get();
+
+        foreach($users as $user) {
+            if($this->current_date == $user->due_date_7days) {
+            $body = "<p>Hi $user->first_name,</p> 
+            <p>This is a reminder that your Technology fee is due on the <b>$user->nochargeuntil</b>. 5-15 Global Energy will be taking the €10 + VAT from your commissions on the following week.
+            If your commissions are not enough to cover the full expense, we will ask you to input your credit card information for a one-time payment.
+            Your due date is on the <b>$user->nochargeuntil</b>, after this date if 5-15 Global Energy is not able to charge the Technology fee, your account will become inactive and you will not have access to your Portal, Phone Application or websites. 
+            To reactive your account, you will have to login and enter your credit card information.</p>  
+             
+            <p>For any question, please reach us at:<br>5-15 Support Email<br>5-15 Support phone number<br>5-15 Global Energy Team<br>Email<br>Phone<br>Disclaimer</p>";
+
+                \Commissions\Mail::send(
+                    $user->email,
+                    "5-15 Technology fees due date",
+                    $body
+                );
+            }
+        }
+
+    }
+    public function third_email() {
+        $users = DB::table('billing AS b')
+            ->selectRaw('b.userid AS user_id,
+                u.fname AS first_name,
+                u.email,
+                b.billdate,
+                b.merchant_token,
+                b.nochargeuntil,
+                DATE_SUB(b.nochargeuntil,INTERVAL 1 DAY) AS due_date_1day')
+            ->join('users AS u', 'u.id', '=', 'b.userid')
+            ->join('cm_affiliates AS a', 'a.user_id', '=', 'b.userid')
+            ->whereRaw('b.nochargeuntil IS NOT NULL AND b.merchant_token IS NULL')
+            ->get();
+
+
+        foreach($users as $user) {
+            if($this->current_date == $user->due_date_1day && $user->merchant_token == null) {
+                $body = "<p>Hi $user->first_name,</p>
+            This is a friendly reminder that your Technology fees is due tomorrow on the <b>$user->nochargeuntil</b>. To keep your account active, you need to add your credit card information here: Example  www.inputyourcardinformationhere.it
+            5-15 Global Energy will continue applying the rule of firstly trying to collect the fee from your commissions and will treat your credit card details as a one-time payment, for the total of €10 + VAT.
+            In case 5-15 Global Energy is not able to process the payment for your Technology Fee, your account will become inactive, and you will no longer have access to your Portal, Phone Application and Websites.
+            However, you will still be able to login into your Portal and enter the information of a credit card to regain access to your Associate Portal. </p>
+            <p>Thank you.<br>For any question, please reach us at:<br>5-15 Support Email<br>5-15 Support phone number<br>5-15 Global Energy Team<br>Email<br>Phone<br>Disclaimer</p>";
+                \Commissions\Mail::send(
+                    $user->email,
+                    "5-15 Technology fees due date/payment is needed",
+                    $body
+                );
+            }
+        }
+    }
+
+    public function fourth_email() {
+        $users = DB::table('cm_payments AS p')
+            ->selectRaw("p.user_id,
+            u.fname AS first_name,
+            u.email,
+            p.techonology_fee_to_subtract AS tech_fee,
+            p.created_date,
+            DATE_FORMAT(p.created_date, '%M') AS month_name")
+            ->join('users AS u', 'u.id', '=', 'p.user_id')
+            ->join('cm_affiliates AS a', 'a.user_id', '=', 'p.user_id')
+            ->whereRaw('p.is_processed = 1 AND p.techonology_fee_to_subtract > 0')
+            ->get();
+
+        foreach($users as $user) {
+            if($this->current_date == $user->created_date) {
+                $body = "<p>Hi $user->first_name,</p>
+            We received your Technology Fee payment of € 10 + VAT.
+            The payment for the month of $user->month_name has been approved.<br>
+            If you wish to see and download your receipt, please follow these steps:<br>
+            1. Access your 5-15 Global Energy Portal;<br>
+            2. Click on the \"Profile” tab;<br>
+            3. Go to “Receipts”<br>
+            4.Find your receipt and click on “Download”.
+            <p>For any question, please reach us at:<br>5-15 Support Email<br>5-15 Support phone number<br>5-15 Global Energy Team<br>Email<br>Phone<br>Disclaimer</p>";
+
+                \Commissions\Mail::send(
+                    $user->email,
+                    "5-15 Payment Confirmation",
+                    $body
+                );
+            }
+        }
+    }
+
+    public function fifth_email() {
+        $users = DB::table('cm_payments AS p')
+            ->selectRaw('p.user_id,
+            u.fname AS first_name,
+            u.email,
+            p.techonology_fee_to_subtract AS tech_fee,
+            b.nochargeuntil,
+            DATE_ADD(b.nochargeuntil, INTERVAL 1 DAY) AS after_due_date,
+            DATE_FORMAT(b.nochargeuntil, "%M") AS month_name')
+            ->join('users AS u', 'u.id', '=', 'p.user_id')
+            ->join('cm_affiliates AS a', 'a.user_id', '=', 'p.user_id')
+            ->join('billing AS b', 'b.userid', '=', 'p.user_id')
+            ->whereRaw('b.nochargeuntil IS NOT NULL AND p.techonology_fee_to_subtract <= 0')
+            ->groupBy('p.user_id')
+            ->get();
+
+        foreach($users as $user) {
+            if($this->current_date == $user->after_due_date){
+                $body = "<p>Dear ".$user->first_name.", </p>
+            Unfortunately, we were not able to collect the total amount of € 10 + VAT to cover for your Technology Fee for the month of ".$user->month_name.". Due to this, your 5-15 Global Energy portal has been made inactive.
+            There are two ways for you to re-activate your portal: 
+            OPTION 1.
+            Enroll the necessary Energy Accounts to cover for the €10 + Vat Technology Fee. 
+            As a reminder below you will find the link for you to enroll Customers with Italia Gas e Luce under your Associate ID.
+            www.enrollwithIGL.it 
+            <br>OPTION 2. 
+            Access your 5-15 Global Energy Portal, you will be prompted to enter your credit card information in order to make the payment of €10 + VAT for the month of ".$user->month_name.".
+            <p>For any question, please reach us at:<br>5-15 Support Email<br>5-15 Support phone number<br>5-15 Global Energy Team<br>Email<br>Phone<br>Disclaimer</p>";
+
+                \Commissions\Mail::send(
+                    $user->email,
+                    "Your portal is Inactive",
+                    $body
+                );
+            }
+
+        }
+    }
+}
