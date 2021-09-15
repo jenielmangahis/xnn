@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 use App\User;
 use App\Payout;
+use \PDO;
 
 /*
 |--------------------------------------------------------------------------
@@ -414,3 +415,139 @@ Artisan::command('515:too-many-placeholder-solution', function(){
     }
     var_dump($result);
 })->describe('Test solution to too many placeholder error. ');
+
+Artisan::command('515:update-energy-account-status', function () {
+    $date_created_condition = date("Y-m-d");
+    $current_date           = date("Y-m-d");
+
+    $eneryCountStatus = DB::table("energy_account_status_sept13 AS ecs")
+        ->orderBy("ecs.id")
+        ->get();
+
+    foreach($eneryCountStatus as $ecs){
+        $plankEnergyAccount = DB::table('cm_energy_account_status_logs')
+            ->select('status_type')
+            ->where('plank_energy_account_id', $ecs->plankEnergyAccountId)
+            ->where('created_at',  $date_created_condition)
+            ->orderByDesc('created_at')
+            ->limit(1)
+            ->get();
+
+        $energyAccount = DB::table('cm_energy_accounts')
+            ->select('id', 'plank_energy_account_id')
+            ->where('plank_energy_account_id', $ecs->plankEnergyAccountId)
+            ->where('created_at',  $date_created_condition)
+            ->orderByDesc('created_at')
+            ->limit(1)
+            ->get();
+
+        //STATUS LIKE "%2"
+        if( substr_compare($ecs->status, 2, -strlen(2)) === 0 && is_null($plankEnergyAccount) ){
+            //Update cm_energy_accounts [status = 2]
+            DB::statement("
+                UPDATE cm_energy_accounts cea 
+                JOIN energy_account_status_sept13 eas a ON cea.plank_energy_account_id = eas.plankEnergyAccountId
+                SET cea.status = 2 
+                WHERE cea.plank_energy_account_id = eas.plankEnergyAccountId;
+            ");
+
+            //Delete from cm_energy_account_logs where status >= 3
+            DB::table('cm_energy_account_logs')
+                ->where('status >=', 3)
+                ->where('energy_account_id', $energyAccount->id)
+                ->delete()
+            ;
+        }
+
+        //STATUS LIKE "%4"
+        if( substr_compare($ecs->status, 4, -strlen(4)) === 0 ){
+           //no change
+        }
+
+        //STATUS LIKE "%5"
+        if( substr_compare($ecs->status, 5, -strlen(5)) === 0 ){
+            if( $ecs['date_starts_flowing '] <= $current_date && is_null($plankEnergyAccount) ){
+                //Update cm_energy_accounts [status = 5]
+                DB::statement("
+                    UPDATE cm_energy_accounts cea 
+                    JOIN energy_account_status_sept13 eas a ON cea.plank_energy_account_id = eas.plankEnergyAccountId
+                    SET cea.status = 5 
+                    WHERE cea.plank_energy_account_id = eas.plankEnergyAccountId;
+                ");
+                //Delete from cm_energy_account_logs where status >= 6
+                DB::table('cm_energy_account_logs')
+                    ->where('status >=', 6)
+                    ->where('energy_account_id', $energyAccount->id)
+                    ->delete()
+                ;
+            } 
+
+            if( $ecs['date_starts_flowing '] > $current_date ){
+                //Update cm_energy_accounts [status = 4]
+                DB::statement("
+                    UPDATE cm_energy_accounts cea 
+                    JOIN energy_account_status_sept13 eas a ON cea.plank_energy_account_id = eas.plankEnergyAccountId
+                    SET cea.status = 4 
+                    WHERE cea.plank_energy_account_id = eas.plankEnergyAccountId;
+                ");
+                //Delete from cm_energy_account_logs where status >= 5
+                DB::table('cm_energy_account_logs')
+                    ->where('status >=', 5)
+                    ->where('energy_account_id', $energyAccount->id)
+                    ->delete()
+                ;
+            }
+        }
+
+        //STATUS LIKE "%7"
+        if( substr_compare($ecs->status, 7, -strlen(7)) === 0 ){
+            if( $ecs->date_stops_flowing <= $current_date && is_null($plankEnergyAccount) ){
+                //Update cm_energy_accounts [status = 7]
+                 DB::statement("
+                    UPDATE cm_energy_accounts cea 
+                    JOIN energy_account_status_sept13 eas a ON cea.plank_energy_account_id = eas.plankEnergyAccountId
+                    SET cea.status = 7 
+                    WHERE cea.plank_energy_account_id = eas.plankEnergyAccountId;
+                ");
+                //Insert to cm_energy_account_logs [status = 7, created_at = :date_starts_flowing]
+                DB::table('cm_energy_account_logs')->insert([
+                    'status' => 7,
+                    'created_at' => $ecs->date_starts_flowing
+                ]);
+            }
+
+            if( is_null($ecs->date_stops_flowing) && is_null($plankEnergyAccount) ){
+                //Update cm_energy_accounts [status = 7]
+                DB::statement("
+                    UPDATE cm_energy_accounts cea 
+                    JOIN energy_account_status_sept13 eas a ON cea.plank_energy_account_id = eas.plankEnergyAccountId
+                    SET cea.status = 7 
+                    WHERE cea.plank_energy_account_id = eas.plankEnergyAccountId;
+                ");
+                //Insert to cm_energy_account_logs [status = 7, created_at = NOW()]
+                DB::table('cm_energy_account_logs')->insert([
+                    'status' => 7,
+                    'created_at' => date("Y-m-d H:i:s")
+                ]);
+            }
+
+            if( $ecs->date_stops_flowing > $current_date ){
+                //Update cm_energy_accounts [status = 6]
+                DB::statement("
+                    UPDATE cm_energy_accounts cea 
+                    JOIN energy_account_status_sept13 eas a ON cea.plank_energy_account_id = eas.plankEnergyAccountId
+                    SET cea.status = 6
+                    WHERE cea.plank_energy_account_id = eas.plankEnergyAccountId;
+                ");
+                //Delete from cm_energy_account_logs where status = 7
+                DB::table('cm_energy_account_logs')
+                    ->where('status', 7)
+                    ->where('energy_account_id', $energyAccount->id)
+                    ->delete()
+                ;
+            }
+        }
+    }
+
+    $this->info("Done!");
+})->describe('Updated energy account status using energy_account_statuses_as_of_sept12');
