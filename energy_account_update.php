@@ -8,7 +8,6 @@ public function updateEnergyCountStatus(){
     ";
 
     $smt = $this->db->prepare($sql);
-    $smt->bindParam(':id', $user_id);
     $smt->execute();
     $enery_count_status = $smt->fetch(PDO::FETCH_ASSOC);
 
