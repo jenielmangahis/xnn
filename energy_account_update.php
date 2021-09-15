@@ -32,7 +32,7 @@ public function updateEnergyCountStatus(){
         //STATUS LIKE "%2"
         if( substr_compare($ecs['status'], 2, -strlen(2)) === 0 && is_null($plank_energy_account) ){
             //Update cm_energy_accounts [status = 2]
-            $this->updateCmEnergyAccountByStatus(2);
+            $this->updateCmEnergyAccountByStatus(2, $ecs['plankEnergyAccountId']);
             //Delete from cm_energy_account_logs where status >= 3
             $sql = " 
                 DELETE FROM cm_energy_account_logs 
@@ -52,7 +52,7 @@ public function updateEnergyCountStatus(){
         if( substr_compare($ecs['status'], 5, -strlen(5)) === 0 ){
             if( $ecs['date_starts_flowing '] <= $current_date && is_null($plank_energy_account) ){
                 //Update cm_energy_accounts [status = 5]
-                $this->updateCmEnergyAccountByStatus(5);
+                $this->updateCmEnergyAccountByStatus(5, $ecs['plankEnergyAccountId']);
                 //Delete from cm_energy_account_logs where status >= 6
                 $sql = " 
                     DELETE FROM cm_energy_account_logs 
@@ -65,7 +65,7 @@ public function updateEnergyCountStatus(){
 
             if( $ecs['date_starts_flowing '] > $current_date ){
                 //Update cm_energy_accounts [status = 4]
-                $this->updateCmEnergyAccountByStatus(4);
+                $this->updateCmEnergyAccountByStatus(4, $ecs['plankEnergyAccountId']);
                 //Delete from cm_energy_account_logs where status >= 5
                 $sql = " 
                     DELETE FROM cm_energy_account_logs 
@@ -81,7 +81,7 @@ public function updateEnergyCountStatus(){
         if( substr_compare($ecs['status'], 7, -strlen(7)) === 0 ){
             if( $ecs['date_stops_flowing'] <= $current_date && is_null($plank_energy_account) ){
                 //Update cm_energy_accounts [status = 7]
-                $this->updateCmEnergyAccountByStatus(7);
+                $this->updateCmEnergyAccountByStatus(7, $ecs['plankEnergyAccountId']);
                 //Insert to cm_energy_account_logs [status = 7, created_at = :date_starts_flowing]
                 $sql = "
                     INSERT INTO cm_energy_account_logs (status, created_at)
@@ -97,7 +97,7 @@ public function updateEnergyCountStatus(){
 
             if( is_null($ecs['date_stops_flowing']) && is_null($plank_energy_account) ){
                 //Update cm_energy_accounts [status = 7]
-                $this->updateCmEnergyAccountByStatus(7);
+                $this->updateCmEnergyAccountByStatus(7, $ecs['plankEnergyAccountId']);
                 //Insert to cm_energy_account_logs [status = 7, created_at = NOW()]
                 $sql = "
                     INSERT INTO cm_energy_account_logs (status, created_at)
@@ -126,12 +126,14 @@ public function updateEnergyCountStatus(){
     }
 }
 
-public function updateCmEnergyAccountByStatus( $status ){
+public function updateCmEnergyAccountByStatus( $status, $plank_energy_account_id ){
     $sql = "
         UPDATE cm_energy_accounts 
-        SET cm_energy_accounts.status = :status
+        SET `status` = :status
+        WHERE `plank_energy_account_id` = :plank_energy_account_id 
     ";
     $smt = $this->db->prepare($sql);
     $smt->bindParam(':status', $status);
+    $smt->bindParam(':plank_energy_account_id', $plank_energy_account_id);
     $smt->execute();
 }
