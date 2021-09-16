@@ -437,7 +437,6 @@ Artisan::command('515:update-energy-account-status', function () {
             ->where('plank_energy_account_id', $ecs->plankEnergyAccountId)
             ->where('created_at >=',  $date_created_condition)
             ->orderByDesc('created_at')
-            ->limit(1)
             ->first();
 
         //STATUS LIKE "%2"
