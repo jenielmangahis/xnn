@@ -461,7 +461,7 @@ Artisan::command('515:update-energy-account-status', function () {
         }
 
         //STATUS LIKE "%4"
-        if( substr_compare($ecs->status, 4, -strlen(4)) === 0 ){
+        if( substr($ecs->status, -1) == '4' ){
            //no change
         }
 
