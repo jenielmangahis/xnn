@@ -427,7 +427,7 @@ Artisan::command('515:update-energy-account-status', function () {
         $plankEnergyAccount = DB::table('cm_energy_account_status_logs')
             ->select('status_type')
             ->where('plank_energy_account_id', $ecs->plankEnergyAccountId)
-            ->where('created_at',  $date_created_condition)
+            ->where('created_at >=',  $date_created_condition)
             ->orderByDesc('created_at')
             ->limit(1)
             ->get();
@@ -435,7 +435,7 @@ Artisan::command('515:update-energy-account-status', function () {
         $energyAccount = DB::table('cm_energy_accounts')
             ->select('id', 'plank_energy_account_id')
             ->where('plank_energy_account_id', $ecs->plankEnergyAccountId)
-            ->where('created_at',  $date_created_condition)
+            ->where('created_at >=',  $date_created_condition)
             ->orderByDesc('created_at')
             ->limit(1)
             ->first();
