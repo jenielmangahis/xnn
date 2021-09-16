@@ -416,7 +416,7 @@ Artisan::command('515:too-many-placeholder-solution', function(){
 })->describe('Test solution to too many placeholder error. ');
 
 Artisan::command('515:update-energy-account-status', function () {
-    $date_created_condition = date("Y-m-d");
+    $date_created_condition = date("Y-m-d H:i:s");
     $current_date           = date("Y-m-d");
 
     $eneryCountStatus = DB::table("energy_account_status_sept13 AS ecs")
