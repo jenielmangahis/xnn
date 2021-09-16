@@ -451,11 +451,13 @@ Artisan::command('515:update-energy-account-status', function () {
             ");
 
             //Delete from cm_energy_account_logs where status >= 3
-            DB::table('cm_energy_account_logs')
-                ->where('status >=', 3)
-                ->where('energy_account_id', $energyAccount->id)
-                ->delete()
-            ;
+            if( $energyAccount ){
+                DB::table('cm_energy_account_logs')
+                    ->where('status >=', 3)
+                    ->where('energy_account_id', $energyAccount->id)
+                    ->delete()
+                ;
+            }            
         }
 
         //STATUS LIKE "%4"
@@ -474,11 +476,13 @@ Artisan::command('515:update-energy-account-status', function () {
                     WHERE cea.plank_energy_account_id = eas.plankEnergyAccountId;
                 ");
                 //Delete from cm_energy_account_logs where status >= 6
-                DB::table('cm_energy_account_logs')
-                    ->where('status >=', 6)
-                    ->where('energy_account_id', $energyAccount->id)
-                    ->delete()
-                ;
+                if( $energyAccount ){
+                    DB::table('cm_energy_account_logs')
+                        ->where('status >=', 6)
+                        ->where('energy_account_id', $energyAccount->id)
+                        ->delete()
+                    ;
+                }
             } 
 
             if( $ecs->date_starts_flowing > $current_date ){
@@ -490,11 +494,13 @@ Artisan::command('515:update-energy-account-status', function () {
                     WHERE cea.plank_energy_account_id = eas.plankEnergyAccountId;
                 ");
                 //Delete from cm_energy_account_logs where status >= 5
-                DB::table('cm_energy_account_logs')
-                    ->where('status >=', 5)
-                    ->where('energy_account_id', $energyAccount->id)
-                    ->delete()
-                ;
+                if( $energyAccount ){
+                    DB::table('cm_energy_account_logs')
+                        ->where('status >=', 5)
+                        ->where('energy_account_id', $energyAccount->id)
+                        ->delete()
+                    ;
+                }
             }
         }
 
@@ -539,11 +545,13 @@ Artisan::command('515:update-energy-account-status', function () {
                     WHERE cea.plank_energy_account_id = eas.plankEnergyAccountId;
                 ");
                 //Delete from cm_energy_account_logs where status = 7
-                DB::table('cm_energy_account_logs')
-                    ->where('status', 7)
-                    ->where('energy_account_id', $energyAccount->id)
-                    ->delete()
-                ;
+                if( $energyAccount ){
+                    DB::table('cm_energy_account_logs')
+                        ->where('status', 7)
+                        ->where('energy_account_id', $energyAccount->id)
+                        ->delete()
+                    ;
+                }
             }
         }
     }
