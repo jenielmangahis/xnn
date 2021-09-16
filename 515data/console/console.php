@@ -445,7 +445,7 @@ Artisan::command('515:update-energy-account-status', function () {
             //Update cm_energy_accounts [status = 2]
             DB::statement("
                 UPDATE cm_energy_accounts cea 
-                JOIN energy_account_status_sept13 eas a ON cea.plank_energy_account_id = eas.plankEnergyAccountId
+                JOIN energy_account_status_sept13 eas ON cea.plank_energy_account_id = eas.plankEnergyAccountId
                 SET cea.status = 2 
                 WHERE cea.plank_energy_account_id = eas.plankEnergyAccountId;
             ");
@@ -469,7 +469,7 @@ Artisan::command('515:update-energy-account-status', function () {
                 //Update cm_energy_accounts [status = 5]
                 DB::statement("
                     UPDATE cm_energy_accounts cea 
-                    JOIN energy_account_status_sept13 eas a ON cea.plank_energy_account_id = eas.plankEnergyAccountId
+                    JOIN energy_account_status_sept13 eas ON cea.plank_energy_account_id = eas.plankEnergyAccountId
                     SET cea.status = 5 
                     WHERE cea.plank_energy_account_id = eas.plankEnergyAccountId;
                 ");
@@ -485,7 +485,7 @@ Artisan::command('515:update-energy-account-status', function () {
                 //Update cm_energy_accounts [status = 4]
                 DB::statement("
                     UPDATE cm_energy_accounts cea 
-                    JOIN energy_account_status_sept13 eas a ON cea.plank_energy_account_id = eas.plankEnergyAccountId
+                    JOIN energy_account_status_sept13 eas ON cea.plank_energy_account_id = eas.plankEnergyAccountId
                     SET cea.status = 4 
                     WHERE cea.plank_energy_account_id = eas.plankEnergyAccountId;
                 ");
@@ -504,7 +504,7 @@ Artisan::command('515:update-energy-account-status', function () {
                 //Update cm_energy_accounts [status = 7]
                  DB::statement("
                     UPDATE cm_energy_accounts cea 
-                    JOIN energy_account_status_sept13 eas a ON cea.plank_energy_account_id = eas.plankEnergyAccountId
+                    JOIN energy_account_status_sept13 eas ON cea.plank_energy_account_id = eas.plankEnergyAccountId
                     SET cea.status = 7 
                     WHERE cea.plank_energy_account_id = eas.plankEnergyAccountId;
                 ");
@@ -519,7 +519,7 @@ Artisan::command('515:update-energy-account-status', function () {
                 //Update cm_energy_accounts [status = 7]
                 DB::statement("
                     UPDATE cm_energy_accounts cea 
-                    JOIN energy_account_status_sept13 eas a ON cea.plank_energy_account_id = eas.plankEnergyAccountId
+                    JOIN energy_account_status_sept13 eas ON cea.plank_energy_account_id = eas.plankEnergyAccountId
                     SET cea.status = 7 
                     WHERE cea.plank_energy_account_id = eas.plankEnergyAccountId;
                 ");
@@ -534,7 +534,7 @@ Artisan::command('515:update-energy-account-status', function () {
                 //Update cm_energy_accounts [status = 6]
                 DB::statement("
                     UPDATE cm_energy_accounts cea 
-                    JOIN energy_account_status_sept13 eas a ON cea.plank_energy_account_id = eas.plankEnergyAccountId
+                    JOIN energy_account_status_sept13 eas ON cea.plank_energy_account_id = eas.plankEnergyAccountId
                     SET cea.status = 6
                     WHERE cea.plank_energy_account_id = eas.plankEnergyAccountId;
                 ");
