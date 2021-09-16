@@ -420,7 +420,7 @@ Artisan::command('515:update-energy-account-status', function () {
     $current_date           = date("Y-m-d");
 
     $eneryCountStatus = DB::table("energy_account_status_sept13 AS ecs")
-        ->orderBy("ecs.id")
+        ->orderBy("ecs.plankEnergyAccountId")
         ->get();
 
     foreach($eneryCountStatus as $ecs){
