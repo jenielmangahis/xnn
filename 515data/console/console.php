@@ -465,7 +465,7 @@ Artisan::command('515:update-energy-account-status', function () {
 
         //STATUS LIKE "%5"
         if( substr_compare($ecs->status, 5, -strlen(5)) === 0 ){
-            if( $ecs['date_starts_flowing '] <= $current_date && is_null($plankEnergyAccount) ){
+            if( $ecs->date_starts_flowing <= $current_date && is_null($plankEnergyAccount) ){
                 //Update cm_energy_accounts [status = 5]
                 DB::statement("
                     UPDATE cm_energy_accounts cea 
@@ -481,7 +481,7 @@ Artisan::command('515:update-energy-account-status', function () {
                 ;
             } 
 
-            if( $ecs['date_starts_flowing '] > $current_date ){
+            if( $ecs->date_starts_flowing > $current_date ){
                 //Update cm_energy_accounts [status = 4]
                 DB::statement("
                     UPDATE cm_energy_accounts cea 
