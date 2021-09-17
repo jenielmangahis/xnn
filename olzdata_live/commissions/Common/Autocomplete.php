@@ -189,7 +189,7 @@ class Autocomplete
                 CONCAT('#', u.id, ': ', u.fname, ' ', u.lname, ' (', u.site, ')') AS text
             ")
             ->where("u.levelid", 3)
-            ->whereNotNull('text')
+            ->whereNotNull("CONCAT('#', u.id, ': ', u.fname, ' ', u.lname, ' (', u.site, ')')")
             ->orderBy("u.id");
 
         if(is_numeric($search) && is_int(+$search)) {
