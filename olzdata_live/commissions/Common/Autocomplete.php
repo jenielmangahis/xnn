@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\DB;
 
 class Autocomplete
 {
-    const RESULT_LIMIT = 20;
+    const RESULT_LIMIT = 10;
 
     public function getEnrollerDownline($member_id, $search, $page = 0)
     {
@@ -194,6 +194,12 @@ class Autocomplete
         if(is_numeric($search) && is_int(+$search)) {
             $query->where('u.id', $search);
         } elseif(!!$search) {
+            $query->where(function ($query) use ($search) {
+                $query->where('u.fname', '<>', "")
+                    ->where('u.lname', '<>', "")
+                    ->where('u.site', '<>', "")
+                    ->where("CONCAT('#', u.id, ': ', u.fname, ' ', u.lname) LIKE ?", ["%{$search}%"]);
+            });
             $query->where(function ($query) use ($search) {
                 $query->where('u.fname', 'LIKE', "%{$search}%")
                     ->orWhere('u.lname', 'LIKE', "%{$search}%")
