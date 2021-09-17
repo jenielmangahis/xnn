@@ -194,25 +194,23 @@ class Autocomplete
         if(is_numeric($search) && is_int(+$search)) {
             $query->where('u.id', $search);
         } elseif(!!$search) {
+            $query->where('u.fname', '<>', '')
             $query->where(function ($query) use ($search) {
-                $query->orWhere('u.fname', 'LIKE', "%{$search}%")
+                $query->where('u.fname', 'LIKE', "%{$search}%")
                     ->orWhere('u.lname', 'LIKE', "%{$search}%")
-                    ->orWhere('u.site', 'LIKE', "%{$search}%")
+                    //->orWhere('u.site', 'LIKE', "%{$search}%")
                     ->orWhereRaw("CONCAT('#', u.id, ': ', u.fname, ' ', u.lname) LIKE ?", ["%{$search}%"]);
             });
         }
 
         $count_filtered = $query->count(DB::raw("1"));
-        $results = $query->skip($page)->take(static::RESULT_LIMIT)->get();
-
-        /*$count_filtered = $query->count(DB::raw("1"));
 
         if($page > 0) {
             $take = static::RESULT_LIMIT * ($page - 1);
             $results = $query->skip($take)->take(static::RESULT_LIMIT)->get();
         } else {
             $results = $query->skip($page)->take(static::RESULT_LIMIT)->get();
-        }*/
+        }
 
         return [
             'results' => $results,
