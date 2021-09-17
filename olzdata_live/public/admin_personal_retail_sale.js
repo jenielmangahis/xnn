@@ -9,6 +9,7 @@
             enrollment: {
                 start_date: moment().format("YYYY-MM-DD"),
                 end_date: moment().format("YYYY-MM-DD"),
+                prs_500_above : '',
                 filters: {
                     start_date: moment().format("YYYY-MM-DD"),
                     end_date: moment().format("YYYY-MM-DD"),
@@ -32,7 +33,8 @@
                         url: `${api_url}admin/personal-retail-sales/enrollment`,
                         data: function (d) {
                             d.start_date = _this.enrollment.filters.start_date;
-                            d.end_date   = _this.enrollment.filters.end_date;                            
+                            d.end_date   = _this.enrollment.filters.end_date;        
+                            d.prs_500_above = _this.enrollment.filters.prs_500_above;                    
                         },
                     },
                     order: [[0, 'asc']],
@@ -59,8 +61,8 @@
             viewPersonalRetail() {
 
                 this.enrollment.filters.start_date = this.enrollment.start_date;
-                this.enrollment.filters.end_date = this.enrollment.end_date
-                //this.highest.filters.is_all = this.highest.is_all;
+                this.enrollment.filters.end_date = this.enrollment.end_date                
+                this.enrollment.filters.prs_500_above = this.enrollment.prs_500_above;
 
                 this.dtEnrollment.clear().draw();
                 this.dtEnrollment.responsive.recalc();

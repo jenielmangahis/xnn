@@ -33,6 +33,7 @@ class PersonalRetailSale
 
         $start_date = isset($filters['start_date']) ? $filters['start_date'] : null;
         $end_date = isset($filters['end_date']) ? $filters['end_date'] : null;
+        $prs_500_above = isset($filters['prs_500_above']) ? $filters['prs_500_above'] : null;
 
         if (!$start_date || !$end_date) {
             return compact('recordsTotal', 'draw', 'recordsFiltered', 'data', 'start_date');
@@ -40,7 +41,7 @@ class PersonalRetailSale
 
         $level = 0;
 
-        $query = $this->getEnrollmentQuery($user_id, $start_date, $end_date, $level);
+        $query = $this->getEnrollmentQuery($user_id, $start_date, $end_date, $prs_500_above, $level);
 
         $recordsTotal = $query->count(DB::raw("1"));
 
@@ -86,7 +87,7 @@ class PersonalRetailSale
         return compact('recordsTotal', 'draw', 'recordsFiltered', 'data', 'member_id', 'start_date');
     }
 
-    protected function getEnrollmentQuery($user_id, $start_date, $end_date, &$level = 0)
+    protected function getEnrollmentQuery($user_id, $start_date, $end_date, $prs_500_above, &$level = 0)
     {
         $level = 0;
 
@@ -136,6 +137,10 @@ class PersonalRetailSale
                 dr.rank_date
             ")
             ->whereBetween('dv.volume_date', [$start_date, $end_date]);
+
+        if( $prs_500_above ){
+            $query->where('dv.prs', '>=', 500);
+        } 
 
         if (!!$user_id) {
             $query->whereRaw("EXISTS(
