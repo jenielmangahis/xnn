@@ -1,0 +1,286 @@
+print <<EOS;
+
+<link rel="stylesheet" href="https://cdn.datatables.net/rowreorder/1.2.5/css/rowReorder.dataTables.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.3/css/responsive.dataTables.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tooltipster/3.3.0/css/themes/tooltipster-shadow.min.css" integrity="sha256-OIlyDunILjraKXlyZTIBuWVxBPzw3DvDhjbUUYgoxEo=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.4/jquery-confirm.min.css" integrity="sha256-VxlXnpkS8UAw3dJnlJj8IjIflIWmDUVQbXD9grYXr98=" crossorigin="anonymous" />
+<link rel="stylesheet" href="$commission_engine_api_url/css/datepicker.css?v=1.0&app=$app_css_version" />
+<link rel="stylesheet" href="$commission_engine_api_url/css/affiliate_party_manager.css?v=$app_css_version">
+
+<div class="tool-container tool-container--default">
+	<input type="hidden" id="member_id" value="$uid">   
+
+
+    <div class="col-md-12">
+        <div class="party-actions" style="display: flow-root;">
+            <div class=" pull-right">
+                <button class="new-btn-olz btn btn-primary mt-3" v-on:click.stop="createEvent">CREATE AN EVENT</button>
+            </div>
+        </div>
+    </div>
+
+    
+    <div class="affiliate-rewards-dashboard__pending-orders-table--wrap mt-4">
+        <h3 class="rewards-dashboard__h2 text-uppercase">
+            Open Events
+        </h3>   
+        <div class="table-responsive">     
+            <table class="table table-bordered rewards-dashboard__table affiliate-rewards-dashboard__pending-orders-table display nowrap" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>Hostess ID</th>
+                        <th>Hostess Name</th>
+                        <th>Sharing Link</th>
+                        <th>Start Date</th>
+                        <th>End Date</th>
+                        <th>Time Left</th>
+                        <th>Total Sales</th>
+                        <th>Orders</th>      
+                        <th></th>  
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>10005</td>
+                        <td>Bernard Stanley</td>
+                        <td>https://shop.oplunzadesigns.com/bernard</td>
+                        <td>2021-05-01</td>
+                        <td>2021-05-14</td>
+                        <td>8 days</td>
+                        <td>\$1,500</td>
+                        <td><u><a href="#" v-on:click.stop="viewEvent">View</a></u></td>
+                        <td><button class=" new-btn-olz btn btn-danger py-1 fw-normal" v-on:click.stop="deleteEvent">Delete</button></td>
+                    </tr>
+                    <tr>
+                        <td>52555</td>
+                        <td>Elsie Simmons</td>
+                        <td>https://shop.oplunzadesigns.com/elsie</td>
+                        <td>2021-05-01</td>
+                        <td>2021-05-14</td>
+                        <td>8 days</td>
+                        <td>\$500</td>
+                        <td><u><a href="#" v-on:click.stop="viewEvent">View</a></u></td>
+                        <td><button class=" new-btn-olz btn btn-danger py-1 fw-normal" v-on:click.stop="deleteEvent">Delete</button></td>
+                    </tr>                 
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="affiliate-rewards-dashboard__pending-orders-table--wrap mt-5">
+        <h3 class="rewards-dashboard__h2 text-uppercase">
+            Past Events
+        </h3>        
+        <div class="table-responsive"> 
+            <table class="table table-bordered rewards-dashboard__table affiliate-rewards-dashboard__pending-orders-table display nowrap" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>Hostess ID</th>
+                        <th>Hostess Name</th>
+                        <th>Sharing Link</th>
+                        <th>Start Date</th>
+                        <th>End Date</th>
+                        <th>Time Left</th>
+                        <th>Total Sales</th>
+                        <th>Orders</th>                                          
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>10005</td>
+                        <td>Bernard Stanley</td>
+                        <td>https://shop.oplunzadesigns.com/bernard</td>
+                        <td>2021-05-01</td>
+                        <td>2021-05-14</td>
+                        <td>8 days</td>
+                        <td>\$1,500</td>
+                        <td><u><a href="#" v-on:click.stop="viewEvent">View</a></u></td>
+                    </tr>
+                    <tr>
+                        <td>52555</td>
+                        <td>Elsie Simmons</td>
+                        <td>https://shop.oplunzadesigns.com/elsie</td>
+                        <td>2021-05-01</td>
+                        <td>2021-05-14</td>
+                        <td>8 days</td>
+                        <td>\$500</td>
+                        <td><u><a href="#" v-on:click.stop="viewEvent">View</a></u></td>
+                    </tr>                   
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="affiliate-rewards-dashboard__pending-orders-table--wrap mt-5">
+        <h3 class="rewards-dashboard__h2 text-uppercase">
+            Top Hostesses
+        </h3>        
+
+        <form class="form-horizontal">
+            <div class="form-row font-weight-bold m-0">
+                <div class="form-group col-md-4 mt-1">
+                    <label>From</label>
+                    <datepicker id="start-date"></datepicker>
+                    <div class="input-group-addon">
+                        <span class="glyphicon glyphicon-th"></span>
+                    </div>
+                </div>
+                <div class="form-group col-md-4 mt-1">
+                    <label>To</label>
+                    <datepicker id="end-date"></datepicker>
+                    <div class="input-group-addon">
+                        <span class="glyphicon glyphicon-th"></span>
+                    </div>
+                </div>
+                <!--Button-->
+
+                <div class="form-group col-md-3 ">
+                        <label>&nbsp;</label><br>
+                    <button
+                            type="button"
+                            class="new-btn-olz btn btn-primary btn-block mt-1"
+                            style="line-height: 25px;top: -1px;position: relative;">
+                        Filter
+                    </button>
+                </div>
+
+            </div>   
+        </form>
+
+        <div class="table-responsive"> 
+            <table class="table table-bordered rewards-dashboard__table affiliate-rewards-dashboard__pending-orders-table display nowrap" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>Hostess ID</th>
+                        <th>Hostess Name</th>
+                        <th>Sharing Link</th>
+                        <th>Total Sales</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>10005</td>
+                        <td>Bernard Stanley</td>
+                        <td>https://shop.oplunzadesigns.com/bernard</td>
+                        <td>\$1,500</td>
+                    </tr>
+                    <tr>
+                        <td>52555</td>
+                        <td>Elsie Simmons</td>
+                        <td>https://shop.oplunzadesigns.com/elsie</td>
+                        <td>\$500</td>
+                    </tr>                            
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- MODALS -->
+    <div class="modal fade" id="modal-create" role="dialog" aria-labelledby="modal-create-label">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <form class="modal-content" id="form-create" v-on:submit.prevent="Save">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="modal-create-label">CREATE AN EVENT</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="hostess-name">Hostess Name</label>
+                        <input type="text" id="hostess-name" class="form-control" placeholder="Enter ID, Site Name, First Name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="start-date">Start Date</label>
+                        <datepicker id="start-date"></datepicker>
+                        <div class="input-group-addon">
+                            <span class="glyphicon glyphicon-th"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="end-date">End Date</label>
+                        <datepicker id="end-date"></datepicker>
+                        <div class="input-group-addon">
+                            <span class="glyphicon glyphicon-th"></span>
+                        </div>                        
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">CLOSE</button>
+                    <button type="submit" class="btn btn-primary" id="btn-save">SAVE</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modal-view" role="dialog" aria-labelledby="modal-view-label">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <form class="modal-content" id="form-view" v-on:submit.prevent="Save">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="modal-view-label">ORDERS</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    <div class="affiliate-rewards-dashboard__pending-orders-table--wrap table-responsive">    
+                        <table class="table table-bordered rewards-dashboard__table affiliate-rewards-dashboard__pending-orders-table display nowrap" style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th>Customer</th>
+                                    <th>Order ID</th>
+                                    <th>Description</th>
+                                    <th>Amount</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Bernard Stanley</td>
+                                    <td>OLZ1212</td>
+                                    <td>Sterling Silber Extender</td>
+                                    <td>\$505.00</td>
+                                </tr>
+                                <tr>
+                                    <td>John Doe</td>
+                                    <td>OLZ9999</td>
+                                    <td>Lobster Loop</td>
+                                    <td>\$280.00</td>
+                                </tr>                 
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modal-delete" role="dialog" aria-labelledby="modal-delete-label">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <form class="modal-content" id="form-delete" v-on:submit.prevent="Delete">
+                <div class="modal-body">
+                    <div class="icon-box">
+                        <i class="fa fa-times"></i>
+                    </div>				
+                    <h4 class="modal-title w-100">Delete Event?</h4>	
+                    <p class="text-center mt-3">Do you really want to delete this event? This process cannot be undone.</p>
+                </div>
+                <div class="modal-footer d-block">
+                    <button class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                    <button class="btn btn-danger">Delete</button>
+                </div>
+		    </form>
+        </div>
+    </div>    
+
+</div>
+
+
+
+    
+    <script src="$commission_engine_api_url/js/app.js?v=$app_js_version"></script>
+    <script src="https://cdn.datatables.net/rowreorder/1.2.5/js/dataTables.rowReorder.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.2.3/js/responsive.bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/js/bootstrap-datepicker.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js" integrity="sha256-4iQZ6BVL4qNKlQ27TExEhBN1HFPvAvAMbFavKKosSWQ=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.5.10/clipboard.min.js"></script>
+    <script src="$commission_engine_api_url/js/affiliate_party_manager_fn2.js"></script>
+    <script src="$commission_engine_api_url/js/affiliate_party_manager2.js"></script>
+EOS
+1;
