@@ -212,6 +212,9 @@ class Autocomplete
             $results = $query->skip($page)->take(static::RESULT_LIMIT)->get();
         }
 
+        echo "<pre>";
+        print_r($results);exit;
+
         return [
             'results' => $results,
             'pagination' => [
