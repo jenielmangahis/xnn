@@ -194,6 +194,7 @@ class Autocomplete
         if(is_numeric($search) && is_int(+$search)) {
             $query->where('u.id', $search);
         } elseif(!!$search) {
+            $query->whereNotNull('text')
             $query->where(function ($query) use ($search) {
                 $query->where('u.fname', 'LIKE', "%" . $search . "%")
                     ->orWhere('u.lname', 'LIKE', "%" . $search . "%")
