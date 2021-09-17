@@ -45,10 +45,10 @@ print <<EOS;
                         </div>
                     </div>
                     <div class="form-group col-lg-2 col-md-3 col-6">
-                        <datepicker id="start-date" placeholder="Start Enrollment Date" v-model="enrollment.start_date" v-bind:end-date="today"></datepicker>
+                        <datepicker v-model="enrollment.start_date" v-bind:end-date="today" placeholder="Start Enrollment Date"></datepicker>
                     </div>
                     <div class="form-group col-lg-2 col-md-3 col-6">
-                        <datepicker id="end-date" v-model="enrollment.end_date" placeholder="End Enrollment Date" v-bind:end-date="today"></datepicker>
+                        <datepicker v-model="enrollment.end_date" v-bind:start-date="enrollment.start_date" v-bind:end-date="today" placeholder="End Enrollment Date"></datepicker>
                     </div>
                 </div>
 

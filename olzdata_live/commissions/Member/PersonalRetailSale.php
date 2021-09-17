@@ -32,7 +32,7 @@ class PersonalRetailSale
         $columns = $filters['columns'];
 
         $start_date = isset($filters['start_date']) ? $filters['start_date'] : null;
-        $start_date = isset($filters['end_date']) ? $filters['end_date'] : null;
+        $end_date = isset($filters['end_date']) ? $filters['end_date'] : null;
 
         if (!$start_date || !$end_date) {
             return compact('recordsTotal', 'draw', 'recordsFiltered', 'data', 'start_date');
