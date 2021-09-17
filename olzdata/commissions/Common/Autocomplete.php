@@ -189,12 +189,12 @@ class Autocomplete
                 CONCAT('#', u.id, ': ', u.fname, ' ', u.lname, ' (', u.site, ')') AS text
             ")
             ->where("u.levelid", 3)
+            ->where('u.fname', '<>', '')
             ->orderBy("u.id");
 
         if(is_numeric($search) && is_int(+$search)) {
             $query->where('u.id', $search);
-        } elseif(!!$search) {
-            $query->where('u.fname', '<>', '')
+        } elseif(!!$search) {            
             $query->where(function ($query) use ($search) {                
                 $query->where('u.fname', 'LIKE', "%{$search}%")
                     ->orWhere('u.lname', 'LIKE', "%{$search}%")
