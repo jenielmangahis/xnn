@@ -44,7 +44,7 @@
                             d.memberId = _this.enrollment.filters.memberId;                   
                         },
                     },
-                    order: [[8, 'desc']],
+                    //order: [[8, 'desc']],
                     columns: [                        
                         {data: 'rownum', className: "text-center"}, // render: $.fn.dataTable.render.number(',', '.', 2, '$')
                         {data: 'user_id', className: "text-center"}, // render: $.fn.dataTable.render.number(',', '.', 2, '$')
