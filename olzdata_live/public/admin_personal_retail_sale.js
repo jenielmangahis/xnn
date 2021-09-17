@@ -5,17 +5,22 @@
 
     const vm = new Vue({
         el: "#personal-retail-sale",
-        data: {
-            enrollment: {
-                start_date: moment().format("YYYY-MM-DD"),
-                end_date: moment().format("YYYY-MM-DD"),
-                prs_500_above : '',
-                filters: {
+        data: function () {
+            return {
+                autocompleteUrl: `${api_url}common/autocomplete/members`,
+                enrollment: {
                     start_date: moment().format("YYYY-MM-DD"),
                     end_date: moment().format("YYYY-MM-DD"),
+                    prs_500_above : '',
+                    filters: {
+                        start_date: moment().format("YYYY-MM-DD"),
+                        end_date: moment().format("YYYY-MM-DD"),
+                        memberId: null,
+                        prs_500_above : '',
+                    },
                 },
-            },
-            today: moment().format("YYYY-MM-DD"),
+                today: moment().format("YYYY-MM-DD"),
+            }
         },
         mounted() {
             this.initializeDataTables();
@@ -34,7 +39,8 @@
                         data: function (d) {
                             d.start_date = _this.enrollment.filters.start_date;
                             d.end_date   = _this.enrollment.filters.end_date;        
-                            d.prs_500_above = _this.enrollment.filters.prs_500_above;                    
+                            d.prs_500_above = _this.enrollment.filters.prs_500_above;
+                            d.memberId = _this.filters.memberId;                   
                         },
                     },
                     order: [[0, 'asc']],
@@ -63,6 +69,7 @@
                 this.enrollment.filters.start_date = this.enrollment.start_date;
                 this.enrollment.filters.end_date = this.enrollment.end_date                
                 this.enrollment.filters.prs_500_above = this.enrollment.prs_500_above;
+                this.enrollment.filters.memberId = this.enrollment.memberId;
 
                 this.dtEnrollment.clear().draw();
                 this.dtEnrollment.responsive.recalc();

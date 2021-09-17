@@ -33,7 +33,7 @@ print <<EOS;
                         <input id="end-date" type="text" class="form-control flat">
                     </div>
                     <div class="form-group col-lg-2 col-md-3 col-6">
-                        <input type="text" class="form-control" placeholder="Rep ID or Name" />
+                        <select2-autocomplete-member id="member-id" :url="autocompleteUrl" v-model="enrollment.memberId"></select2-autocomplete-member>
                     </div>
                     <div class="form-group col-lg-2 col-md-3 col-6">
                         <button type="button" class="btn btn-primary btn-block" v-on:click.prevent="viewPersonalRetail">Search</button>
