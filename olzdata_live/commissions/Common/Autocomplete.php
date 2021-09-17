@@ -195,12 +195,12 @@ class Autocomplete
             $query->where('u.id', $search);
         } elseif(!!$search) {
             $query->where('u.fname', '!=', '');
-            /*$query->where(function ($query) use ($search) {
+            $query->where(function ($query) use ($search) {
                 $query->where('u.fname', 'LIKE', "%{$search}%")
                     ->orWhere('u.lname', 'LIKE', "%{$search}%")
                     ->orWhere('u.site', 'LIKE', "%{$search}%")
-                    ->orWhereRaw("CONCAT('#', u.id, ': ', u.fname, ' ', u.lname) LIKE ?", ["%{$search}%"]);
-            });*/
+                    //->orWhereRaw("CONCAT('#', u.id, ': ', u.fname, ' ', u.lname) LIKE ?", ["%{$search}%"]);
+            });
         }
 
         $count_filtered = $query->count(DB::raw("1"));
