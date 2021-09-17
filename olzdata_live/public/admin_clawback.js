@@ -111,7 +111,7 @@
 
                         },
                     },
-                    order: [[ 9, 'desc' ]],
+                    order: [[ 5, 'desc' ]],
                     columns     : [
                         {data    : 'order_id'},
                         // {data    : 'new_purchaser'},
