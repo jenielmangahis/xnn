@@ -1,0 +1,45 @@
+.table {
+  $self: '.table'; // nested man gud ni sa .tool-container
+
+  &--small {
+    font-size: 0.85em;
+
+    #{ $self }__row, #{ $self }__cell {
+      padding: .3rem;
+    }
+  }
+
+  &--align-middle {
+    th, td {
+      vertical-align: middle !important;
+    }
+  }
+
+  &__header {
+    &--bg-primary {
+      background-color: $brand-primary;
+      color: $primary-text-color;
+    }
+  }
+
+  &__row {
+
+  }
+
+  &__cell {
+    &--text-center {
+      text-align: center;
+    }
+    &--align-middle {
+      vertical-align: middle !important;
+    }
+  }
+}
+
+.table-responsive {
+  @media (max-width: 768px) {
+    .table-bordered {
+      border: 0 !important;
+    }
+  }
+}
