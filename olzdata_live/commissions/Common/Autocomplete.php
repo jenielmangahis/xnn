@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\DB;
 
 class Autocomplete
 {
-    const RESULT_LIMIT = 10;
+    const RESULT_LIMIT = 20;
 
     public function getEnrollerDownline($member_id, $search, $page = 0)
     {
@@ -189,22 +189,16 @@ class Autocomplete
                 CONCAT('#', u.id, ': ', u.fname, ' ', u.lname, ' (', u.site, ')') AS text
             ")
             ->where("u.levelid", 3)
-            ->whereNotNull("CONCAT('#', u.id, ': ', u.fname, ' ', u.lname, ' (', u.site, ')')")
             ->orderBy("u.id");
 
         if(is_numeric($search) && is_int(+$search)) {
             $query->where('u.id', $search);
-        } elseif(!!$search) {            
+        } elseif(!!$search) {
             $query->where(function ($query) use ($search) {
-                $query->where('u.fname', 'LIKE', "%" . $search . "%")
-                    ->orWhere('u.lname', 'LIKE', "%" . $search . "%")
-                    ->orWhere('u.site', 'LIKE', "%" . $search . "%")
-                ;
-                /*$query->where('u.fname', 'LIKE', "%{$search}%")
+                $query->where('u.fname', 'LIKE', "%{$search}%")
                     ->orWhere('u.lname', 'LIKE', "%{$search}%")
                     ->orWhere('u.site', 'LIKE', "%{$search}%")
-                    ->orWhereRaw("CONCAT('#', u.id, ': ', u.fname, ' ', u.lname) LIKE ?", ["%{$search}%"])
-                ;*/
+                    ->orWhereRaw("CONCAT('#', u.id, ': ', u.fname, ' ', u.lname) LIKE ?", ["%{$search}%"]);
             });
         }
 
