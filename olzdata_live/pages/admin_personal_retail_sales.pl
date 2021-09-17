@@ -7,7 +7,7 @@ print <<EOS;
 <link rel="stylesheet" href="$commission_engine_api_url/css/datepicker.css?v=$app_css_version" />
 <link rel="stylesheet" href="$commission_engine_api_url/css/admin_personal_retail_sales.css?v=1" />
 
-<div class="personal-retail-sales tool-container tool-container--default">
+<div id="personal-retail-sale" class="personal-retail-sales tool-container tool-container--default">
     <div class="row">
         <div class="col-md-10">
             <h4>Personal Retail Sales</h4>
@@ -45,10 +45,10 @@ print <<EOS;
                         </div>
                     </div>
                     <div class="form-group col-lg-2 col-md-3 col-6">
-                        <input id="start-date" type="text" class="form-control flat" placeholder="Start Enrollment Date">
+                        <datepicker id="start-date" placeholder="Start Enrollment Date" v-model="enrollment.start_date" v-bind:end-date="today"></datepicker>
                     </div>
                     <div class="form-group col-lg-2 col-md-3 col-6">
-                        <input id="end-date" type="text" class="form-control flat" placeholder="End Enrollment Date">
+                        <datepicker id="end-date" v-model="enrollment.end_date" placeholder="End Enrollment Date" v-bind:end-date="today"></datepicker>
                     </div>
                 </div>
 
@@ -128,9 +128,8 @@ print <<EOS;
 <script src="https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js"></script>
 <script src="https://cdn.datatables.net/responsive/2.2.3/js/responsive.bootstrap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/js/bootstrap-datepicker.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"
-    integrity="sha256-4iQZ6BVL4qNKlQ27TExEhBN1HFPvAvAMbFavKKosSWQ=" crossorigin="anonymous"></script>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js" integrity="sha256-4iQZ6BVL4qNKlQ27TExEhBN1HFPvAvAMbFavKKosSWQ=" crossorigin="anonymous"></script>
+<script src="$commission_engine_api_url/js/admin_personal_retail_sale.js?v=1.1"></script>
 
 EOS
 1;
