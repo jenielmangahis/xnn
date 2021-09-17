@@ -40,13 +40,13 @@
                     theme: "bootstrap",
                     placeholder: "Search by member id, site name, first name or last name",
                     allowClear: true,
-                    minimumInputLength: 1,
+                    // minimumInputLength: 1,
                     width: "100%",
                     ajax: {
                         url:  this.url,
                         dataType: 'json',
                         type: "GET",
-                        //delay: 250,
+                        delay: 250,
                         data(params) {
                             return params;
                         },
