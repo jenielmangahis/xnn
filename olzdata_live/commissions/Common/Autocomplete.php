@@ -188,7 +188,6 @@ class Autocomplete
                 u.id,
                 CONCAT('#', u.id, ': ', u.fname, ' ', u.lname, ' (', u.site, ')') AS text
             ")
-            ->whereNotNull("u.fname")
             ->where("u.levelid", 3)
             ->orderBy("u.id");
 
@@ -211,6 +210,10 @@ class Autocomplete
         } else {
             $results = $query->skip($page)->take(static::RESULT_LIMIT)->get();
         }
+
+        echo "<pre>";
+        print_r($results);
+        exit;
 
         return [
             'results' => $results,
