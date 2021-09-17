@@ -34,6 +34,7 @@ class PersonalRetailSale
         $start_date = isset($filters['start_date']) ? $filters['start_date'] : null;
         $end_date = isset($filters['end_date']) ? $filters['end_date'] : null;
         $prs_500_above = isset($filters['prs_500_above']) ? $filters['prs_500_above'] : null;
+        $memberId = $request['memberId'];
 
         if (!$start_date || !$end_date) {
             return compact('recordsTotal', 'draw', 'recordsFiltered', 'data', 'start_date');
@@ -67,14 +68,19 @@ class PersonalRetailSale
             });
         }
 
+        //Filter by member id
+        if ($memberId) {
+            $query = $query->where('u.id', $memberId);
+        }
+
         $recordsFiltered = $query->count(DB::raw("1"));
 
         if (isset($order) && count($order)) {
             $column = $order[0];
             $query = $query->orderBy($columns[+$column['column']]['data'], $column['dir']);
+        }else{
+            $query->orderBy("dv.prs", "DESC");
         }
-
-        $query->orderBy("dv.prs", "DESC");
 
         $query = $query->take($take);
 
