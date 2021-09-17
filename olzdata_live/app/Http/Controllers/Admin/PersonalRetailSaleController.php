@@ -24,4 +24,5 @@ class PersonalRetailSaleController extends Controller
         return response()->json(
             $this->personal_retail_sale->getEnrollment($request->all())
         );
+    }
 }
