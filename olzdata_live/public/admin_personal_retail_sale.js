@@ -12,6 +12,7 @@
                     start_date: moment().format("YYYY-MM-DD"),
                     end_date: moment().format("YYYY-MM-DD"),
                     prs_500_above : '',
+                    memberId: null,
                     filters: {
                         start_date: moment().format("YYYY-MM-DD"),
                         end_date: moment().format("YYYY-MM-DD"),
@@ -40,7 +41,7 @@
                             d.start_date = _this.enrollment.filters.start_date;
                             d.end_date   = _this.enrollment.filters.end_date;        
                             d.prs_500_above = _this.enrollment.filters.prs_500_above;
-                            d.memberId = _this.filters.memberId;                   
+                            d.memberId = _this.enrollment.filters.memberId;                   
                         },
                     },
                     order: [[0, 'asc']],
