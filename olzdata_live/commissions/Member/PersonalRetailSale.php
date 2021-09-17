@@ -33,6 +33,7 @@ class PersonalRetailSale
 
         $start_date = isset($filters['start_date']) ? $filters['start_date'] : null;
         $end_date = isset($filters['end_date']) ? $filters['end_date'] : null;
+        echo $filters['prs_500_above'];
         $prs_500_above = isset($filters['prs_500_above']) ? $filters['prs_500_above'] : null;
         $memberId = isset($filters['memberId']) ? $filters['memberId'] : null;
 
