@@ -189,17 +189,16 @@ class Autocomplete
                 CONCAT('#', u.id, ': ', u.fname, ' ', u.lname, ' (', u.site, ')') AS text
             ")
             ->where("u.levelid", 3)
-            ->whereNotNull("u.fname")
             ->orderBy("u.id");
 
         if(is_numeric($search) && is_int(+$search)) {
             $query->where('u.id', $search);
-        } elseif(!!$search) {            
-            $query->where(function ($query) use ($search) {                
+        } elseif(!!$search) {
+            $query->where(function ($query) use ($search) {
                 $query->where('u.fname', 'LIKE', "%{$search}%")
-                    /*->orWhere('u.lname', 'LIKE', "%{$search}%")
+                    ->orWhere('u.lname', 'LIKE', "%{$search}%")
                     ->orWhere('u.site', 'LIKE', "%{$search}%")
-                    ->orWhereRaw("CONCAT('#', u.id, ': ', u.fname, ' ', u.lname) LIKE ?", ["%{$search}%"])*/;
+                    ->orWhereRaw("CONCAT('#', u.id, ': ', u.fname, ' ', u.lname) LIKE ?", ["%{$search}%"]);
             });
         }
 
@@ -211,9 +210,6 @@ class Autocomplete
         } else {
             $results = $query->skip($page)->take(static::RESULT_LIMIT)->get();
         }
-
-        echo "<pre>";
-        print_r($results);exit;
 
         return [
             'results' => $results,
