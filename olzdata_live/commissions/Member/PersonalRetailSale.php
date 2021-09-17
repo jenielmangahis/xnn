@@ -34,7 +34,7 @@ class PersonalRetailSale
         $start_date = isset($filters['start_date']) ? $filters['start_date'] : null;
         $end_date = isset($filters['end_date']) ? $filters['end_date'] : null;
         $prs_500_above = isset($filters['prs_500_above']) ? $filters['prs_500_above'] : null;
-        $memberId = $request['memberId'];
+        $memberId = isset($filters['memberId']) ? $filters['memberId'] : null;
 
         if (!$start_date || !$end_date) {
             return compact('recordsTotal', 'draw', 'recordsFiltered', 'data', 'start_date');
