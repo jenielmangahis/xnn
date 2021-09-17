@@ -74,7 +74,7 @@ class PersonalRetailSale
             $query = $query->orderBy($columns[+$column['column']]['data'], $column['dir']);
         }
 
-        $query->orderBy("dv.id", "ASC");
+        $query->orderBy("dv.prs", "DESC");
 
         $query = $query->take($take);
 
@@ -89,6 +89,8 @@ class PersonalRetailSale
 
     protected function getEnrollmentQuery($user_id, $start_date, $end_date, $prs_500_above, &$level = 0)
     {
+        DB::statement(DB::raw('set @rownum=0'));
+
         $level = 0;
 
         if ($end_date > date('Y-m-d')) {
@@ -115,7 +117,7 @@ class PersonalRetailSale
             ->join("cm_affiliates AS ca", "u.id", "=", "ca.user_id")
             ->leftJoin("users AS s", "s.id", "=", "u.sponsorid")
             ->selectRaw("
-                1 AS top,
+                @rownum  := @rownum  + 1 AS rownum,
                 dv.user_id,
                 CONCAT(u.fname, ' ', u.lname) AS member,
                 u.email,

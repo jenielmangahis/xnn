@@ -39,7 +39,7 @@
                     },
                     order: [[0, 'asc']],
                     columns: [                        
-                        {data: 'top', className: "text-center"}, // render: $.fn.dataTable.render.number(',', '.', 2, '$')
+                        {data: 'rownum', className: "text-center"}, // render: $.fn.dataTable.render.number(',', '.', 2, '$')
                         {data: 'user_id', className: "text-center"}, // render: $.fn.dataTable.render.number(',', '.', 2, '$')
                         {data: 'member', className: "text-center"}, // render: $.fn.dataTable.render.number(',', '.', 2, '$')
                         {data: 'enrolled_date', className: "text-center"},
