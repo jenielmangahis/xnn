@@ -198,13 +198,14 @@ class Autocomplete
                 $query->where('u.fname', '<>', "")
                     ->where('u.lname', '<>', "")
                     ->where('u.site', '<>', "")
-                    ->where("CONCAT('#', u.id, ': ', u.fname, ' ', u.lname) LIKE ?", ["%{$search}%"]);
+                ;
             });
             $query->where(function ($query) use ($search) {
                 $query->where('u.fname', 'LIKE', "%{$search}%")
                     ->orWhere('u.lname', 'LIKE', "%{$search}%")
                     ->orWhere('u.site', 'LIKE', "%{$search}%")
-                    ->orWhereRaw("CONCAT('#', u.id, ': ', u.fname, ' ', u.lname) LIKE ?", ["%{$search}%"]);
+                    ->orWhereRaw("CONCAT('#', u.id, ': ', u.fname, ' ', u.lname) LIKE ?", ["%{$search}%"])
+                ;
             });
         }
 
