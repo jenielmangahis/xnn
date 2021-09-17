@@ -70,7 +70,7 @@ class PersonalRetailSale
         $recordsFiltered = $query->count(DB::raw("1"));
 
         if (isset($order) && count($order)) {
-            $column = $order[0];
+            $column = $order[8];
             $query = $query->orderBy($columns[+$column['column']]['data'], $column['dir']);
         }
 
