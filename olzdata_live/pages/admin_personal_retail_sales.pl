@@ -72,7 +72,7 @@ print <<EOS;
     <div class="row">
         <div class="col-md-12">
             <div class="table-responsive">
-                <table class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
+                <table id="table-personal-retail-sales" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
                     <thead class="table__header table__header--bg-primary">
                         <tr class="table__row">
                             <th class="table__cell">Top</th>
@@ -87,32 +87,7 @@ print <<EOS;
                             <th class="table__cell">PRS</th>
                         </tr>
                     </thead>
-                    <tbody class="table__body">
-                        <tr>
-                            <td>1</td>
-                            <td>21123</td>
-                            <td>Ann Renk</td>
-                            <td>09-11-21</td>
-                            <td>09-11-21</td>
-                            <td>annren\@gmail.com</td>
-                            <td>United States</td>
-                            <td>123321</td>
-                            <td>Ben</td>
-                            <td>\$120.00</td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>21123</td>
-                            <td>Ann Renk</td>
-                            <td>09-11-21</td>
-                            <td>09-11-21</td>
-                            <td>annren\@gmail.com</td>
-                            <td>United States</td>
-                            <td>123321</td>
-                            <td>Ben</td>
-                            <td>\$120.00</td>
-                        </tr>
-                    </tbody>
+                    <tbody class="table__body"></tbody>
                 </table>
             </div>
         </div>

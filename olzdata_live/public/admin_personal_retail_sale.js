@@ -13,7 +13,8 @@
                     start_date: moment().format("YYYY-MM-DD"),
                     end_date: moment().format("YYYY-MM-DD"),
                 },
-            }
+            },
+            today: moment().format("YYYY-MM-DD"),
         },
         mounted() {
             
@@ -22,7 +23,7 @@
             initializeDataTables() {
                 let _this = this;
 
-                this.dtEnrollment = $("#table-rank-history-enrollment").DataTable({
+                this.dtEnrollment = $("#table-personal-retail-sales").DataTable({
                     processing: true,
                     serverSide: true,
                     responsive: true,
