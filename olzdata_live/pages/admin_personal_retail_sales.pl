@@ -36,7 +36,7 @@ print <<EOS;
                         <input type="text" class="form-control" placeholder="Rep ID or Name" />
                     </div>
                     <div class="form-group col-lg-2 col-md-3 col-6">
-                        <button type="button" class="btn btn-primary btn-block">Search</button>
+                        <button type="button" class="btn btn-primary btn-block" v-on:click.prevent="viewPersonalRetail">Search</button>
                     </div>
                     <div class="form-group col-lg-4 col-md-3 col-6">
                         <div class="checkbox mt-2">

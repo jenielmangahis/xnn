@@ -38,7 +38,7 @@
                     order: [[0, 'asc']],
                     columns: [                        
                         {data: 'top', className: "text-center"}, // render: $.fn.dataTable.render.number(',', '.', 2, '$')
-                        {data: 'id', className: "text-center"}, // render: $.fn.dataTable.render.number(',', '.', 2, '$')
+                        {data: 'user_id', className: "text-center"}, // render: $.fn.dataTable.render.number(',', '.', 2, '$')
                         {data: 'member', className: "text-center"}, // render: $.fn.dataTable.render.number(',', '.', 2, '$')
                         {data: 'enrolled_date', className: "text-center"},
                         {data: 'affiliated_date', className: "text-center"},
@@ -55,6 +55,15 @@
                         {responsivePriority: 4, targets: -4},
                     ]
                 });
+            },
+            viewPersonalRetail() {
+
+                this.enrollment.filters.start_date = this.enrollment.start_date;
+                this.enrollment.filters.end_date = this.enrollment.end_date
+                //this.highest.filters.is_all = this.highest.is_all;
+
+                this.dtEnrollment.clear().draw();
+                this.dtEnrollment.responsive.recalc();
             },
         }
 
