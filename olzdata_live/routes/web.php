@@ -363,3 +363,7 @@ Route::prefix('admin/group-sales')->namespace('Admin')->group(function () {
     Route::get('generate-report/{year_month}', 'GroupSalesReportController@getReport');
     Route::get('download/{file_name}', 'GroupSalesReportController@getDownload');
 });
+
+Route::prefix('admin/personal-retail-sales')->namespace('Admin')->middleware('jwt.auth.level:1,6')->group(function () {
+    Route::get('enrollment', 'PersonalRetailSaleController@enrollment');
+});

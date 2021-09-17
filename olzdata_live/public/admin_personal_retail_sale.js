@@ -29,7 +29,7 @@
                     responsive: true,
                     autoWidth: false,
                     ajax: {
-                        url: `${api_url}admin/rank-history/enrollment`,
+                        url: `${api_url}admin/personal-retail-sales/enrollment`,
                         data: function (d) {
                             d.start_date = _this.enrollment.filters.start_date;
                             d.rank_id = _this.enrollment.filters.rank_id;
@@ -59,56 +59,6 @@
                         {responsivePriority: 2, targets: -1},
                         {responsivePriority: 3, targets: -3},
                         {responsivePriority: 4, targets: -4},
-                    ]
-                });
-
-                this.dtHighest = $("#table-rank-history-highest").DataTable({
-                    processing: true,
-                    serverSide: true,
-                    responsive: true,
-                    ajax: {
-                        url: `${api_url}admin/rank-history/highest`,
-                        data: function (d) {
-                            d.start_date = _this.highest.filters.start_date;
-                            d.end_date = _this.highest.filters.end_date;
-                            d.is_all = +_this.highest.filters.is_all;
-                            d.rank_id = +_this.highest.filters.rank_id;
-                        },
-                    },
-                    order: [[1, 'desc']],
-                    columns: [
-
-                        {
-                            data: 'user_id',
-                            render: function (data, type, row, meta) {
-                                let user_id = row.user_id;
-                                let member = row.member;
-                                return `${user_id}: ${member}`;
-                            }
-                        },
-                        {
-                            data: 'rank_id',
-                            render: function (data, type, row, meta) {
-                                return row.highest_rank;
-                            }
-                        },
-
-                        {data: 'date_achieved', className: "text-center"},
-                        {data: 'level', className: "text-center"},
-                        {
-                            data: 'sponsor_id',
-                            render: function (data, type, row, meta) {
-                                let sponsor_id = row.sponsor_id;
-                                let sponsor = row.sponsor;
-                                return `${sponsor_id}: ${sponsor}`;
-                            }
-                        },
-                    ],
-                    columnDefs: [
-
-                        {responsivePriority: 1, targets: 0},
-                        {responsivePriority: 2, targets: 1},
-                        {responsivePriority: 3, targets: 2},
                     ]
                 });
             },
