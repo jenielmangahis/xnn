@@ -29,19 +29,18 @@
                     "pageLength": 25,
                     columns     : [
                         {data    : 'id'},
+                        {data    : 'fullname'},
+                        {data    : 'enrollment_date'},
+                        {data    : 'upgrade_date'},
+                        {data    : 'email'},
+                        {data    : 'country'},
+                        {data    : 'sponsorid'},
+                        {data    : 'sponsor_name'},
+                        {data    : 'prs'},
                         {data    : 'id'},
-                        {data    : 'id'},
-                        {data    : 'id'},
-                        {data    : 'id'},
-                        {data    : 'id'},
-                        {data    : 'id'},
-                        {data    : 'id'},
-                        {data    : 'id'},
-                        {data    : 'id'}
+                        {data    : 'grs'}
+
                         /*
-                        {data    : 'purchaser'},
-                        {data    : 'sponsor'},
-                        {data    : 'product'},
                         {data    : 'total_cv', render: $.fn.dataTable.render.number( ',', '.', 2)},
                         {data    :  'volume', render: $.fn.dataTable.render.number( ',', '.', 2 )},
                         {data    : 'transaction_date'},
@@ -66,7 +65,10 @@
                 $('#report-date').ddatepicker({
                     "setDate" : new Date(),
                     "format": "yyyy-mm",
-                    "autoclose": true
+                    "autoclose": true,
+                    "startView": 1,
+                    viewMode: "months",
+                    minViewMode: "months"
                 });
             
                 $('.report-date-icon').on('click', function(){
@@ -97,12 +99,12 @@
                     $('report-date, #date-to, #status').prop('readonly', true).prop('disabled', true);*/
         
                     Promise.all([
-                        client.get(`admin/group-sales/${$("report-date").val()}/${$("#date-to").val()}`),
+                        client.get(`admin/group-sales/${$("#report-date").val()}`),
                     ]).then(responses => {
                         let transactions = responses[0];
         
                         $dt_sales.rows.add(transactions.data).draw();
-                        $dt_sales.columns.adjust().draw();
+                        $dt_sales.columns.draw();
 
         /*
                         let transactionCSV = responses[2];
@@ -114,7 +116,7 @@
                         $btn.html("GO");
                         $btn.prop("disabled", false);
                         $('#download-report-links').show();
-                        $('report-date, #date-to, #status').prop('readonly', false).prop('disabled', false);
+                        $('#report-date').prop('readonly', false).prop('disabled', false);
                     });
         
                 }
