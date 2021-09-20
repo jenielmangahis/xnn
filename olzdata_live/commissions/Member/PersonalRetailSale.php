@@ -193,7 +193,7 @@ class PersonalRetailSale
         $filename = "personal-retail-$start_date-$end_date-";
 
         if ($memberId !== null) {
-            $filename .= "$user_id-";
+            $filename .= "$memberId-";
         }
 
         $filename .= time();
