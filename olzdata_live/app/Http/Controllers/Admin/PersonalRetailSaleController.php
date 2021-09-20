@@ -28,7 +28,7 @@ class PersonalRetailSaleController extends Controller
 
     public function downloadPersonalRetail(Request $request)
     {
-        sleep(2); // test loading
+        sleep(2);
         return response()->json([
             'link' => $this->personal_retail_sale->getPersonalRetailDownloadLink(
                 $request->input('start_date'),

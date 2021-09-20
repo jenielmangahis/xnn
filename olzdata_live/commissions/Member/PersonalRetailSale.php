@@ -190,7 +190,7 @@ class PersonalRetailSale
             $data = $this->getEnrollmentQuery($memberId, $start_date, $end_date, $prs_500_above, $level)->get();
         }
 
-        $filename .= "personal-retail-$start_date-$end_date-";
+        $filename = "personal-retail-$start_date-$end_date-";
 
         if ($memberId !== null) {
             $filename .= "$user_id-";
