@@ -25,4 +25,17 @@ class PersonalRetailSaleController extends Controller
             $this->personal_retail_sale->getEnrollment($request->all())
         );
     }
+
+    public function downloadPersonalRetail(Request $request)
+    {
+        sleep(2); // test loading
+        return response()->json([
+            'link' => $this->personal_retail_sale->getPersonalRetailDownloadLink(
+                $request->input('start_date'),
+                $request->input('end_date'),
+                $request->input('memberId'),
+                $request->input('prs_500_above')
+            )
+        ]);
+    }
 }

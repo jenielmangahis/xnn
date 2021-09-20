@@ -20,6 +20,17 @@
                         prs_500_above : '',
                     },
                 },
+                csvPersonalRetail: {
+                    filters: {
+                        start_date: moment().format("YYYY-MM-DD"),
+                        end_date: moment().format("YYYY-MM-DD"),
+                        memberId: null,
+                        prs_500_above : '',
+                    },
+
+                    downloadLink: "",
+                    downloadLinkState: "loaded",
+                },
                 today: moment().format("YYYY-MM-DD"),
             }
         },
@@ -74,6 +85,27 @@
 
                 this.dtEnrollment.clear().draw();
                 this.dtEnrollment.responsive.recalc();
+            },
+            getDownloadPersonalRetail() {
+                if (this.csvPersonalRetail.downloadLinkState === "fetching") return;
+
+                this.csvPersonalRetail.downloadLinkState = "fetching";
+                this.csvPersonalRetail.downloadLink = "";
+
+                client.get("admin/rank-history/download-personal-retail", {
+                    params: this.csvPersonalRetail.filters
+                })
+                    .then(response => {
+                        this.csvPersonalRetail.downloadLinkState = "loaded";
+                        this.csvPersonalRetail.downloadLink = response.data.link;
+
+                        if (!!this.csvPersonalRetail.downloadLink) {
+                            window.location = this.csvPersonalRetail.downloadLink;
+                        }
+                    })
+                    .catch(error => {
+                        this.csvPersonalRetail.downloadLinkState = "error";
+                    })
             },
         }
 

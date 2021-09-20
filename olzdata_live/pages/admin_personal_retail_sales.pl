@@ -15,8 +15,16 @@ print <<EOS;
 
         <div class="col-md-2">
             <div class="pull-right">
-                <button type="button" class="btn btn-excel">
-                    <i class="bi bi-file-earmark-ruled-fill"></i> Export to Excel
+                <button
+                        type="button"
+                        v-on:click.prevent="getDownloadPersonalRetail"
+                        class="btn btn-excel"
+                        v-bind:disabled="highest.downloadLinkState === 'fetching'"
+                >
+                    <span v-if="highest.downloadLinkState !== 'fetching'"><i class="bi bi-file-earmark-ruled-fill"></i> Export to Excel</span>
+                    <span v-else>
+                    <i class="bi bi-file-earmark-ruled-fill"></i> Generating <i class="fa fa-spinner fa-spin"></i>
+                </span>
                 </button>
             </div>
         </div>

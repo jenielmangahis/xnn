@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\DB;
 
 class PersonalRetailSale
 {
+    const REPORT_PATH = "csv/member/personal_retail";
+
     protected $db;
 
     public function __construct()
@@ -175,5 +177,27 @@ class PersonalRetailSale
         }
 
         return $query;
+    }
+
+    public function getPersonalRetailDownloadLink($start_date, $end_date, $memberId, $prs_500_above)
+    {
+        $level = 0;
+        $csv   = new CsvReport(static::REPORT_PATH);
+
+        if (!$start_date || !$end_date) {
+            $data = [];
+        } else {
+            $data = $this->getEnrollmentQuery($memberId, $start_date, $end_date, $prs_500_above, $level)->get();
+        }
+
+        $filename .= "personal-retail-$start_date-$end_date-";
+
+        if ($memberId !== null) {
+            $filename .= "$user_id-";
+        }
+
+        $filename .= time();
+
+        return $csv->generateLink($filename, $data);
     }
 }
