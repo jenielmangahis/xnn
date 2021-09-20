@@ -19,9 +19,9 @@ print <<EOS;
                         type="button"
                         v-on:click.prevent="getDownloadPersonalRetail"
                         class="btn btn-excel"
-                        v-bind:disabled="highest.downloadLinkState === 'fetching'"
+                        v-bind:disabled="csvPersonalRetail.downloadLinkState === 'fetching'"
                 >
-                    <span v-if="highest.downloadLinkState !== 'fetching'"><i class="bi bi-file-earmark-ruled-fill"></i> Export to Excel</span>
+                    <span v-if="csvPersonalRetail.downloadLinkState !== 'fetching'"><i class="bi bi-file-earmark-ruled-fill"></i> Export to Excel</span>
                     <span v-else>
                     <i class="bi bi-file-earmark-ruled-fill"></i> Generating <i class="fa fa-spinner fa-spin"></i>
                 </span>
