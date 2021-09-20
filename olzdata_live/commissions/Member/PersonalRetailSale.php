@@ -141,7 +141,8 @@ class PersonalRetailSale
                 CONCAT(s.fname, ' ', s.lname) AS sponsor,
                 dr.rank_date
             ")
-            ->whereBetween('dv.volume_date', [$start_date, $end_date]);
+            ->whereBetween('u.enrolled_date', [$start_date, $end_date]);
+            //->whereBetween('dv.volume_date', [$start_date, $end_date]);
 
         if( $prs_500_above ){
             $query->where('dv.prs', '>=', 500);
