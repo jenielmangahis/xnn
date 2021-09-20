@@ -30,12 +30,7 @@ class PersonalRetailSaleController extends Controller
     {
         sleep(2);
         return response()->json([
-            'link' => $this->personal_retail_sale->getPersonalRetailDownloadLink(
-                $request->input('start_date'),
-                $request->input('end_date'),
-                $request->input('memberId'),
-                $request->input('prs_500_above')
-            )
+            'link' => $this->personal_retail_sale->getPersonalRetailDownloadLink($request->all())
         ]);
     }
 }

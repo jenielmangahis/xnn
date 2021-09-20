@@ -44,7 +44,7 @@ class PersonalRetailSale
 
         $level = 0;
 
-        $query = $this->getEnrollmentQuery($user_id, $start_date, $end_date, $prs_500_above, $level);
+        $query = $this->getEnrollmentQuery($user_id, $start_date, $end_date, $prs_500_above, $level, $memberId);
 
         $recordsTotal = $query->count(DB::raw("1"));
 
@@ -70,11 +70,6 @@ class PersonalRetailSale
             });
         }
 
-        //Filter by member id
-        if ($memberId) {
-            $query = $query->where('u.id', $memberId);
-        }
-
         $recordsFiltered = $query->count(DB::raw("1"));
 
         if (isset($order) && count($order)) {
@@ -95,7 +90,7 @@ class PersonalRetailSale
         return compact('recordsTotal', 'draw', 'recordsFiltered', 'data', 'member_id', 'start_date');
     }
 
-    protected function getEnrollmentQuery($user_id, $start_date, $end_date, $prs_500_above, &$level = 0)
+    protected function getEnrollmentQuery($user_id, $start_date, $end_date, $prs_500_above, &$level = 0, $memberId)
     {
         DB::statement(DB::raw('set @rownum=0'));
 
@@ -176,18 +171,28 @@ class PersonalRetailSale
             )", [$user_id]);
         }
 
+        //Filter by member id
+        if (!!$memberId) {
+            $query = $query->where('u.id', $memberId);
+        }
+
         return $query;
     }
 
-    public function getPersonalRetailDownloadLink($start_date, $end_date, $memberId, $prs_500_above)
+    public function getPersonalRetailDownloadLink($filters, $user_id = null)
     {
         $level = 0;
+        $start_date    = isset($filters['start_date']) ? $filters['start_date'] : null;
+        $end_date      = isset($filters['end_date']) ? $filters['end_date'] : null;
+        $prs_500_above = $filters['prs_500_above'] == 'true' ? $filters['prs_500_above'] : null;
+        $memberId      = isset($filters['memberId']) ? $filters['memberId'] : null;
+
         $csv   = new CsvReport(static::REPORT_PATH);
 
         if (!$start_date || !$end_date) {
             $data = [];
         } else {
-            $data = $this->getEnrollmentQuery($memberId, $start_date, $end_date, $prs_500_above, $level)->get();
+            $data = $this->getEnrollmentQuery($user_id, $start_date, $end_date, $prs_500_above, $level, $memberId)->get();
         }
 
         $filename = "personal-retail-$start_date-$end_date-";
