@@ -92,7 +92,7 @@
                 this.csvPersonalRetail.downloadLinkState = "fetching";
                 this.csvPersonalRetail.downloadLink = "";
 
-                client.get("admin/rank-history/download-personal-retail", {
+                client.get("admin/personal-retail-sales/download-personal-retail", {
                     params: this.csvPersonalRetail.filters
                 })
                     .then(response => {
