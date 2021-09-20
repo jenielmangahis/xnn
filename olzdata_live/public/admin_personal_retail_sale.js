@@ -87,6 +87,12 @@
                 this.dtEnrollment.responsive.recalc();
             },
             getDownloadPersonalRetail() {
+
+                this.csvPersonalRetail.filters.start_date = this.enrollment.start_date;
+                this.csvPersonalRetail.filters.end_date = this.enrollment.end_date                
+                this.csvPersonalRetail.filters.prs_500_above = this.enrollment.prs_500_above;
+                this.csvPersonalRetail.filters.memberId = this.enrollment.memberId;
+                
                 if (this.csvPersonalRetail.downloadLinkState === "fetching") return;
 
                 this.csvPersonalRetail.downloadLinkState = "fetching";
