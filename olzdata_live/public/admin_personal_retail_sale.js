@@ -60,8 +60,7 @@
                             d.volume_end_date = _this.enrollment.filters.volume_end_date;                   
                         },
                     },
-                    //order: [[9, 'desc']],
-                    order: [[0, 'asc']],
+                    order: [[9, 'desc']],                    
                     columns: [                        
                         {data: 'rownum', className: "text-center"}, // render: $.fn.dataTable.render.number(',', '.', 2, '$')
                         {data: 'user_id', className: "text-center"}, // render: $.fn.dataTable.render.number(',', '.', 2, '$')
