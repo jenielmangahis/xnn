@@ -36,6 +36,7 @@
         },
         mounted() {
             this.initializeDataTables();
+            this.initializeDatePicker();
         },
         methods: {
             initializeDataTables() {
