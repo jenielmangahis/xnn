@@ -122,7 +122,7 @@ class PersonalRetailSale
             ->join("cm_affiliates AS ca", "u.id", "=", "ca.user_id")
             ->leftJoin("users AS s", "s.id", "=", "u.sponsorid")
             ->selectRaw("
-                @rownum  := @rownum  + 1 AS rownum,
+                @rownum  := @rownum  + 1 AS top,
                 dv.user_id,
                 CONCAT(u.fname, ' ', u.lname) AS member,
                 u.email,
