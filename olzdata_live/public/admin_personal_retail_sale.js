@@ -127,8 +127,8 @@
             },
             getDownloadPersonalRetail() {
 
-                this.csvPersonalRetail.filters.start_date = this.enrollment.filters.start_date;
-                this.csvPersonalRetail.filters.end_date = this.enrollment.filters.end_date                
+                this.csvPersonalRetail.filters.start_date = $('#volume-start-date').val();
+                this.csvPersonalRetail.filters.end_date = $('#volume-end-date').val(); 
                 this.csvPersonalRetail.filters.prs_500_above = this.enrollment.filters.prs_500_above;
                 this.csvPersonalRetail.filters.memberId = this.enrollment.filters.memberId;
                 this.csvPersonalRetail.filters.volume_start_date = this.enrollment.filters.volume_start_date;
