@@ -142,9 +142,10 @@ class PersonalRetailSale
                 u.sponsorid AS sponsor_id,
                 CONCAT(s.fname, ' ', s.lname) AS sponsor,
                 dr.rank_date
-            ")
-            ->groupBy('dv.volume_date', 'dv.user_id', 'dv.prs')
+            ")            
         ;
+
+        $query->groupBy(['dv.volume_date', 'dv.user_id', 'dv.prs']);
 
         if( !!$start_date && !!$end_date ){
             $query->whereBetween('u.enrolled_date', [$start_date, $end_date]);
