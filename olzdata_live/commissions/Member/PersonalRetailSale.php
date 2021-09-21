@@ -125,23 +125,13 @@ class PersonalRetailSale
                 @rownum  := @rownum  + 1 AS top,
                 dv.user_id,
                 CONCAT(u.fname, ' ', u.lname) AS member,
-                u.email,
-                u.country,
                 u.enrolled_date,
                 ca.affiliated_date,
-                dr.rank_id,
-                cr.name AS current_rank,
-                dr.paid_as_rank_id,
-                pr.name AS paid_as_rank,
-                MAX(dv.prs) AS prs,
-                dv.grs,
-                dv.sponsored_qualified_representatives_count,
-                dv.sponsored_leader_or_higher_count,
-                dr.is_active,
-                dv.level - $level AS level,
+                u.email,
+                u.country,
                 u.sponsorid AS sponsor_id,
                 CONCAT(s.fname, ' ', s.lname) AS sponsor,
-                dr.rank_date
+                MAX(dv.prs) AS prs
             ")            
         ;
 
