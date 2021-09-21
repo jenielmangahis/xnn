@@ -145,6 +145,7 @@ class PersonalRetailSale
             ");
 
         if( !!$start_date && !!$end_date ){
+            echo 4444;
             $query->whereBetween('u.enrolled_date', [$start_date, $end_date]);
         }
 
