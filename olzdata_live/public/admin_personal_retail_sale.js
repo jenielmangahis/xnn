@@ -3,6 +3,8 @@
     const client = commissionEngine.createAccessClient();
     commissionEngine.setupAccessTokenJQueryAjax();
 
+    $.fn.ddatepicker = $.fn.datepicker; // jquery-ui is overriding the bootstrap-datepicker
+
     const vm = new Vue({
         el: "#personal-retail-sale",
         data: function () {
