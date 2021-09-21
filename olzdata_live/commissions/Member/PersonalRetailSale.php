@@ -40,9 +40,9 @@ class PersonalRetailSale
         $volume_start_date = isset($filters['volume_start_date']) ? $filters['volume_start_date'] : null;
         $volume_end_date   = isset($filters['volume_end_date']) ? $filters['volume_end_date'] : null;
 
-        if (!$start_date || !$end_date) {
+        /*if (!$start_date || !$end_date) {
             return compact('recordsTotal', 'draw', 'recordsFiltered', 'data', 'start_date');
-        }
+        }*/
 
         $level = 0;
 
@@ -97,7 +97,7 @@ class PersonalRetailSale
         DB::statement(DB::raw('set @rownum=0'));
 
         $level = 0;
-
+        
         if ($end_date > date('Y-m-d')) {
             $end_date = date('Y-m-d');
         }
@@ -142,10 +142,10 @@ class PersonalRetailSale
                 u.sponsorid AS sponsor_id,
                 CONCAT(s.fname, ' ', s.lname) AS sponsor,
                 dr.rank_date
-            ");
+            ")
+        ;
 
         if( !!$start_date && !!$end_date ){
-            echo 4444;
             $query->whereBetween('u.enrolled_date', [$start_date, $end_date]);
         }
 
