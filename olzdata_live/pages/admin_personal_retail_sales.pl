@@ -33,7 +33,13 @@ print <<EOS;
     <div class="row">
         <div class="col-md-10">
             <form class="form-horizontal ">
-                <div class="form-row">                    
+                <div class="form-row">
+                    <div class="form-group col-lg-2 col-md-3 col-6">
+                        <input id="volume-start-date" type="text" class="form-control flat" placeholder="Start Date" v-model="enrollment.filters.volume_start_date">
+                    </div>
+                    <div class="form-group col-lg-2 col-md-3 col-6">
+                        <input id="volume-end-date" type="text" class="form-control flat" placeholder="End Date" v-model="enrollment.filters.volume_end_date">                        
+                    </div>
                     <div class="form-group col-lg-2 col-md-3 col-6">
                         <select2-autocomplete-member id="member-id" :url="autocompleteUrl" v-model="enrollment.filters.memberId"></select2-autocomplete-member>
                     </div>

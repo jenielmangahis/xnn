@@ -12,10 +12,10 @@
                 autocompleteUrl: `${api_url}common/autocomplete/members`,
                 enrollment: {                    
                     filters: {
-                        start_date: moment().format("YYYY-MM-DD"),
-                        end_date: moment().format("YYYY-MM-DD"),
-                        volume_start_date : moment().format("YYYY-MM-DD"),
-                        volume_end_date : moment().format("YYYY-MM-DD"),
+                        start_date: null,
+                        end_date: null,
+                        volume_start_date : null,
+                        volume_end_date : null,
                         memberId: null,
                         prs_500_above : '',
                     },
@@ -96,6 +96,23 @@
                 });
 
                 $('#enrollment-end-date').ddatepicker({
+                    "setDate": new Date(),
+                    "startDate": new Date(),
+                    "format": "yyyy-mm-dd"
+                });
+
+                $('#volume-start-date').ddatepicker({
+                    "setDate": new Date(),
+                    "format": "yyyy-mm-dd"
+                }).on('changeDate', function (e) {
+                    $('#volume-end-date').ddatepicker('setStartDate', e.date);
+
+                    if ($('#volume-end-date').ddatepicker('getDate') < e.date) {
+                        $('#volume-end-date').ddatepicker('setDate', e.date);
+                    }
+                });
+
+                $('#volume-end-date').ddatepicker({
                     "setDate": new Date(),
                     "startDate": new Date(),
                     "format": "yyyy-mm-dd"
