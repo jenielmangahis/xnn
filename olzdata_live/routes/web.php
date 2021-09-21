@@ -368,3 +368,8 @@ Route::prefix('admin/personal-retail-sales')->namespace('Admin')->middleware('jw
     Route::get('enrollment', 'PersonalRetailSaleController@enrollment');
     Route::get('download-personal-retail', 'PersonalRetailSaleController@downloadPersonalRetail');
 });
+
+Route::prefix('admin/qualified-recruits')->namespace('Admin')->middleware('jwt.auth.level:1,6')->group(function () {
+    Route::get('/', 'QualifiedRecruitController@qualified_recruits');
+    Route::get('download-qualified-recruits', 'QualifiedRecruitController@downloadQualifiedRecruits');
+});

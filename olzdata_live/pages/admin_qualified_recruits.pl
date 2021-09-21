@@ -16,8 +16,16 @@ print <<EOS;
 
         <div class="col-md-2">
             <div class="pull-right">
-                <button type="button" class="btn btn-excel">
-                    <i class="bi bi-file-earmark-ruled-fill"></i> Export to Excel
+                <button
+                        type="button"
+                        v-on:click.prevent="getDownloadQualifiedRecruits"
+                        class="btn btn-excel"
+                        v-bind:disabled="csvQualifiedRecruits.downloadLinkState === 'fetching'"
+                >
+                    <span v-if="csvQualifiedRecruits.downloadLinkState !== 'fetching'"><i class="bi bi-file-earmark-ruled-fill"></i> Export to Excel</span>
+                    <span v-else>
+                    <i class="bi bi-file-earmark-ruled-fill"></i> Generating <i class="fa fa-spinner fa-spin"></i>
+                </span>
                 </button>
             </div>    
         </div>
@@ -28,16 +36,16 @@ print <<EOS;
             <form class="form-horizontal ">
                 <div class="form-row">
                     <div class="form-group col-lg-2 col-md-3 col-6">
-                        <input id="start-date" type="text" class="form-control flat">
+                        <input id="start-date" type="text" class="form-control flat" placeholder="Start Date" v-model="qualifiedRecruits.filters.start_date">
                     </div>
                     <div class="form-group col-lg-2 col-md-3 col-6">
-                        <input id="end-date" type="text" class="form-control flat">
+                        <input id="end-date" type="text" class="form-control flat" placeholder="End Date" v-model="qualifiedRecruits.filters.end_date">
                     </div>
                     <div class="form-group col-lg-2 col-md-3 col-6">
-                        <input type="text" class="form-control" placeholder="Rep ID or Name" />
+                        <select2-autocomplete-member id="member-id" :url="autocompleteUrl" v-model="qualifiedRecruits.filters.memberId"></select2-autocomplete-member>
                     </div>
                     <div class="form-group col-lg-2 col-md-3 col-6">
-                        <button type="button" class="btn btn-primary btn-block">Search</button>
+                        <button type="button" class="btn btn-primary btn-block" v-on:click.prevent="viewQualifiedRecruits">Search</button>
                     </div>
                 </div>
 
@@ -74,36 +82,9 @@ print <<EOS;
                             <th class="table__cell">Sponsor Name</th>
                             <th class="table__cell">Reps</th>
                             <th class="table__cell">Qualified Reps</th>
-                           
                         </tr>
                     </thead>
-                    <tbody class="table__body">
-                         <tr>
-                            <td>1001</td>
-                            <td>Ann Renk</td>
-                            <td>09-11-21</td>
-                            <td>09-11-21</td>
-                            <td>annren\@gmail.com</td>
-                            <td>United States</td>
-                            <td>12345680</td>
-                            <td>Ben</td>
-                            <td>4</td>
-                            <td>6</td>
-                           
-                        </tr>
-                        <tr>
-                            <td>1001</td>
-                            <td>Ann Renk</td>
-                            <td>09-11-21</td>
-                            <td>09-11-21</td>
-                            <td>annren\@gmail.com</td>
-                            <td>United States</td>
-                            <td>12345680</td>
-                            <td>Ben</td>
-                            <td>4</td>
-                            <td>6</td>
-                        </tr>
-                    </tbody>
+                    <tbody class="table__body"></tbody>
                 </table>
             </div>
         </div>
@@ -118,9 +99,10 @@ print <<EOS;
 <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/js/select2.full.min.js"></script>
 <script src="https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js"></script>
 <script src="https://cdn.datatables.net/responsive/2.2.3/js/responsive.bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js" integrity="sha256-4iQZ6BVL4qNKlQ27TExEhBN1HFPvAvAMbFavKKosSWQ=" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/js/bootstrap-datepicker.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"
-    integrity="sha256-4iQZ6BVL4qNKlQ27TExEhBN1HFPvAvAMbFavKKosSWQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/eonasdan-bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
+<script src="$commission_engine_api_url/js/admin_qualified_recruits.js?v=1.1"></script>
 
 
 EOS

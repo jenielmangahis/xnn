@@ -1,0 +1,135 @@
+(function ($, api_url, Vue, swal, axios, location, moment, undefined) {
+
+    const client = commissionEngine.createAccessClient();
+    commissionEngine.setupAccessTokenJQueryAjax();
+
+    $.fn.ddatepicker = $.fn.datepicker; // jquery-ui is overriding the bootstrap-datepicker
+
+    const vm = new Vue({
+        el: "#personal-retail-sale",
+        data: function () {
+            return {
+                autocompleteUrl: `${api_url}common/autocomplete/members`,
+                qualifiedRecruits: {                    
+                    filters: {
+                        start_date: null,
+                        end_date: null,
+                        memberId: null                        
+                    },
+                },
+                csvQualifiedRecruits: {
+                    filters: {
+                        start_date: null,
+                        end_date: null,
+                        memberId: null,
+                    },
+
+                    downloadLink: "",
+                    downloadLinkState: "loaded",
+                },
+                today: moment().format("YYYY-MM-DD"),
+            }
+        },
+        mounted() {
+            this.initializeDataTables();
+            this.initializeDatePicker();
+        },
+        methods: {
+            initializeDataTables() {
+                let _this = this;
+
+                this.dtEnrollment = $("#table-qualified-recruits").DataTable({
+                    processing: true,
+                    serverSide: true,
+                    responsive: true,
+                    autoWidth: false,
+                    ajax: {
+                        url: `${api_url}admin/qualified-recruits`,
+                        data: function (d) {
+                            d.start_date = $('#enrollment-start-date').val();
+                            d.end_date   = $('#enrollment-end-date').val();        
+                            d.prs_500_above = _this.enrollment.filters.prs_500_above;
+                            d.memberId = _this.enrollment.filters.memberId;
+                            d.volume_start_date = _this.enrollment.filters.volume_start_date;
+                            d.volume_end_date = _this.enrollment.filters.volume_end_date;                   
+                        },
+                    },
+                    order: [[9, 'desc']],                    
+                    columns: [                        
+                        {data: 'top', className: "text-center"},
+                        {data: 'user_id', className: "text-center"},
+                        {data: 'member', className: "text-center"},
+                        {data: 'enrolled_date', className: "text-center"},
+                        {data: 'affiliated_date', className: "text-center"},
+                        {data: 'email', className: "text-center"},
+                        {data: 'country', className: "text-center"},
+                        {data: 'sponsor_id', className: "text-center"},                        
+                        {data: 'sponsor', className: "text-center"},
+                        {data: 'prs', className: "text-center"},
+                    ],
+                    columnDefs: [
+                        {responsivePriority: 1, targets: 0},
+                        {responsivePriority: 2, targets: -1},
+                        {responsivePriority: 3, targets: -3},
+                        {responsivePriority: 4, targets: -4},
+                    ]
+                });
+            },
+            initializeDatePicker() {
+                let _this = this;
+
+                $('#start-date').ddatepicker({
+                    "setDate": new Date(),
+                    "format": "yyyy-mm-dd"
+                }).on('changeDate', function (e) {
+                    $('#end-date').ddatepicker('setStartDate', e.date);
+
+                    if ($('#end-date').ddatepicker('getDate') < e.date) {
+                        $('#end-date').ddatepicker('setDate', e.date);
+                    }
+                });
+
+                $('#end-date').ddatepicker({
+                    "setDate": new Date(),
+                    "startDate": new Date(),
+                    "format": "yyyy-mm-dd"
+                });
+            },
+            viewQualifiedRecruits() {
+                this.dtEnrollment.clear().draw();
+                this.dtEnrollment.responsive.recalc();
+            },
+            getDownloadQualifiedRecruits() {
+
+                this.csvPersonalRetail.filters.start_date = $('#enrollment-start-date').val();
+                this.csvPersonalRetail.filters.end_date = $('#enrollment-end-date').val(); 
+                this.csvPersonalRetail.filters.prs_500_above = this.enrollment.filters.prs_500_above;
+                this.csvPersonalRetail.filters.memberId = this.enrollment.filters.memberId;
+                this.csvPersonalRetail.filters.volume_start_date = $('#volume-start-date').val();
+                this.csvPersonalRetail.filters.volume_end_date = $('#volume-end-date').val(); 
+                
+                if (this.csvPersonalRetail.downloadLinkState === "fetching") return;
+
+                this.csvPersonalRetail.downloadLinkState = "fetching";
+                this.csvPersonalRetail.downloadLink = "";
+
+                client.get("admin/personal-retail-sales/download-personal-retail", {
+                    params: this.csvPersonalRetail.filters
+                })
+                    .then(response => {
+                        this.csvPersonalRetail.downloadLinkState = "loaded";
+                        this.csvPersonalRetail.downloadLink = response.data.link;
+
+                        if (!!this.csvPersonalRetail.downloadLink) {
+                            window.location = this.csvPersonalRetail.downloadLink;
+                        }
+                    })
+                    .catch(error => {
+                        this.csvPersonalRetail.downloadLinkState = "error";
+                    })
+            },
+        }
+
+    });
+
+}(jQuery, window.commissionEngine.API_URL, Vue, swal, axios, window.location, moment));

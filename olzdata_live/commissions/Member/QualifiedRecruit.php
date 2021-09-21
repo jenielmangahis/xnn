@@ -8,9 +8,9 @@ use App\DailyVolume;
 use Commissions\CsvReport;
 use Illuminate\Support\Facades\DB;
 
-class PersonalRetailSale
+class QualifiedRecruit
 {
-    const REPORT_PATH = "csv/member/personal_retail";
+    const REPORT_PATH = "csv/member/qualified_recruit";
 
     protected $db;
 
@@ -19,7 +19,7 @@ class PersonalRetailSale
         $this->db = DB::connection()->getPdo();
     }
 
-    public function getEnrollment($filters, $user_id = null)
+    public function getQualifiedRecruits($filters, $user_id = null)
     {
         $data = [];
         $recordsTotal = $recordsFiltered = 0;
@@ -36,9 +36,6 @@ class PersonalRetailSale
         $start_date = isset($filters['start_date']) ? $filters['start_date'] : null;
         $end_date   = isset($filters['end_date']) ? $filters['end_date'] : null;
         $memberId   = isset($filters['memberId']) ? $filters['memberId'] : null;
-        $prs_500_above = $filters['prs_500_above'] == 'true' ? $filters['prs_500_above'] : null;        
-        $volume_start_date = isset($filters['volume_start_date']) ? $filters['volume_start_date'] : null;
-        $volume_end_date   = isset($filters['volume_end_date']) ? $filters['volume_end_date'] : null;
 
         /*if (!$start_date || !$end_date) {
             return compact('recordsTotal', 'draw', 'recordsFiltered', 'data', 'start_date');
@@ -46,7 +43,7 @@ class PersonalRetailSale
 
         $level = 0;
 
-        $query = $this->getEnrollmentQuery($user_id, $start_date, $end_date, $prs_500_above, $level, $memberId, $volume_start_date, $volume_end_date);
+        $query = $this->getQualifiedRecruitsQuery($user_id, $start_date, $end_date, $level, $memberId);
 
         $recordsTotal = $query->count(DB::raw("1"));
 
@@ -75,8 +72,6 @@ class PersonalRetailSale
         if (isset($order) && count($order)) {
             $column = $order[0];
             $query = $query->orderBy($columns[+$column['column']]['data'], $column['dir']);
-        }else{
-            $query->orderBy("dv.prs", "DESC");
         }
 
         $query = $query->take($take);
@@ -90,10 +85,8 @@ class PersonalRetailSale
         return compact('recordsTotal', 'draw', 'recordsFiltered', 'data', 'member_id', 'start_date');
     }
 
-    protected function getEnrollmentQuery($user_id, $start_date, $end_date, $prs_500_above, &$level = 0, $memberId, $volume_start_date, $volume_end_date)
+    protected function getQualifiedRecruitsQuery($user_id, $start_date, $end_date, $level = 0, $memberId)
     {
-        DB::statement(DB::raw('SET @rownum=0'));
-
         $level = 0;
 
         if ($end_date > date('Y-m-d')) {
@@ -109,7 +102,8 @@ class PersonalRetailSale
             $volume = DailyVolume::ofMember($user_id)->date($end_date)->first();
             $level = $volume === null ? 0 : +$volume->level;
         }
-        
+
+
         $query =
             DB::table('cm_daily_volumes AS dv')
             ->join("cm_daily_ranks AS dr", "dr.volume_id", "=", "dv.id")
@@ -137,14 +131,6 @@ class PersonalRetailSale
         if( !!$start_date && !!$end_date ){
             $query->whereBetween('u.enrolled_date', [$start_date, $end_date]);
         }
-
-        if( !!$volume_start_date && !!$volume_end_date ){
-            $query->whereBetween('dv.volume_date', [$volume_start_date, $volume_end_date]);
-        }
-
-        if( $prs_500_above ){
-            $query->where('dv.prs', '>=', 500);
-        } 
 
         if (!!$user_id) {
             $query->whereRaw("EXISTS(
@@ -178,21 +164,18 @@ class PersonalRetailSale
         return $query;
     }
 
-    public function getPersonalRetailDownloadLink($filters, $user_id = null)
+    public function getQualifiedRecruitsDownloadLink($filters, $user_id = null)
     {
         $level = 0;
         $start_date    = isset($filters['start_date']) ? $filters['start_date'] : null;
         $end_date      = isset($filters['end_date']) ? $filters['end_date'] : null;
-        $prs_500_above = $filters['prs_500_above'] == 'true' ? $filters['prs_500_above'] : null;
         $memberId      = isset($filters['memberId']) ? $filters['memberId'] : null;
-        $volume_start_date = isset($filters['volume_start_date']) ? $filters['volume_start_date'] : null;
-        $volume_end_date   = isset($filters['volume_end_date']) ? $filters['volume_end_date'] : null;
 
         $csv   = new CsvReport(static::REPORT_PATH);
 
-        $data = $this->getEnrollmentQuery($user_id, $start_date, $end_date, $prs_500_above, $level, $memberId, $volume_start_date, $volume_end_date)->get();
+        $data = $this->getQualifiedRecruitsQuery($user_id, $start_date, $end_date, $level, $memberId)->get();
 
-        $filename = "personal-retail-$start_date-$end_date-";
+        $filename = "qualified-recruits-$start_date-$end_date-";
 
         if ($memberId !== null) {
             $filename .= "$memberId-";
