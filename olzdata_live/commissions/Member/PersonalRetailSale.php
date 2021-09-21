@@ -75,6 +75,7 @@ class PersonalRetailSale
         $recordsFiltered = $query->count(DB::raw("1"));
 
         if (isset($order) && count($order)) {
+            echo 5;
             $column = $order[0];
             $query = $query->orderBy($columns[+$column['column']]['data'], $column['dir']);
         }else{
@@ -97,7 +98,7 @@ class PersonalRetailSale
         DB::statement(DB::raw('set @rownum=0'));
 
         $level = 0;
-        
+
         if ($end_date > date('Y-m-d')) {
             $end_date = date('Y-m-d');
         }
@@ -109,7 +110,6 @@ class PersonalRetailSale
         if (!!$user_id) {
 
             $volume = DailyVolume::ofMember($user_id)->date($end_date)->first();
-
             $level = $volume === null ? 0 : +$volume->level;
         }
 
