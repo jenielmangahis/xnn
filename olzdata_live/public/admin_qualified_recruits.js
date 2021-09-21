@@ -48,7 +48,7 @@
                         data: function (d) {
                             d.start_date = $('#start-date').val();
                             d.end_date   = $('#end-date').val();     
-                            d.memberId = _this.enrollment.filters.memberId;       
+                            d.memberId = _this.qualifiedRecruits.filters.memberId;       
                         },
                     },
                     order: [[0, 'asc']],                    
@@ -98,9 +98,9 @@
             },
             getDownloadQualifiedRecruits() {
 
-                this.csvQualifiedRecruits.filters.start_date = $('#enrollment-start-date').val();
-                this.csvQualifiedRecruits.filters.end_date = $('#enrollment-end-date').val(); 
-                this.csvQualifiedRecruits.filters.memberId = this.enrollment.filters.memberId;
+                this.csvQualifiedRecruits.filters.start_date = $('#start-date').val();
+                this.csvQualifiedRecruits.filters.end_date = $('#end-date').val(); 
+                this.csvQualifiedRecruits.filters.memberId = this.qualifiedRecruits.filters.memberId;
                 
                 if (this.csvQualifiedRecruits.downloadLinkState === "fetching") return;
 

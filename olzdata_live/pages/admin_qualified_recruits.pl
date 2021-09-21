@@ -88,11 +88,7 @@ print <<EOS;
                 </table>
             </div>
         </div>
-
     </div>
-
-
-
 </div>
 
 <script src="$commission_engine_api_url/js/app.js?v=$app_js_version"></script>
