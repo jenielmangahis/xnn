@@ -129,28 +129,6 @@ class QualifiedRecruit
             ")            
         ;
 
-        $query =
-            DB::table('users AS u')
-            ->join("cm_affiliates AS ca", "u.id", "=", "ca.user_id")
-            ->leftJoin("users AS s", "s.id", "=", "u.sponsorid")
-            ->selectRaw("
-                u.id AS user_id,
-                CONCAT(u.fname, ' ', u.lname) AS member,
-                u.enrolled_date,
-                ca.affiliated_date,
-                u.email,
-                u.country,
-                u.sponsorid AS sponsor_id,
-                CONCAT(s.fname, ' ', s.lname) AS sponsor,
-                (
-                    SELECT COUNT(id)
-                    FROM users uu 
-                    WHERE uu.sponsorid = u.id
-                )AS total_reps,
-                ()
-            ")            
-        ;
-
         $query->groupBy(['dv.user_id']);
 
         if( !!$start_date && !!$end_date ){
