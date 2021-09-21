@@ -8,7 +8,7 @@ print <<EOS;
 
 
 
-<div class="qualified-recruits tool-container tool-container--default">
+<div id="qualified-recruits" class="qualified-recruits tool-container tool-container--default">
     <div class="row">
         <div class="col-md-10">
             <h4>Qualified Recruits</h4>
@@ -69,7 +69,7 @@ print <<EOS;
     <div class="row">
         <div class="col-md-12">
             <div class="table-responsive">
-                <table class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
+                <table id="table-qualified-recruits" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
                     <thead class="table__header table__header--bg-primary">
                         <tr class="table__row">
                             <th class="table__cell">ID</th>

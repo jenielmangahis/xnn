@@ -6,7 +6,7 @@
     $.fn.ddatepicker = $.fn.datepicker; // jquery-ui is overriding the bootstrap-datepicker
 
     const vm = new Vue({
-        el: "#personal-retail-sale",
+        el: "#qualified-recruits",
         data: function () {
             return {
                 autocompleteUrl: `${api_url}common/autocomplete/members`,
@@ -38,7 +38,7 @@
             initializeDataTables() {
                 let _this = this;
 
-                this.dtEnrollment = $("#table-qualified-recruits").DataTable({
+                this.dtQualifiedRecruits = $("#table-qualified-recruits").DataTable({
                     processing: true,
                     serverSide: true,
                     responsive: true,
@@ -46,17 +46,13 @@
                     ajax: {
                         url: `${api_url}admin/qualified-recruits`,
                         data: function (d) {
-                            d.start_date = $('#enrollment-start-date').val();
-                            d.end_date   = $('#enrollment-end-date').val();        
-                            d.prs_500_above = _this.enrollment.filters.prs_500_above;
-                            d.memberId = _this.enrollment.filters.memberId;
-                            d.volume_start_date = _this.enrollment.filters.volume_start_date;
-                            d.volume_end_date = _this.enrollment.filters.volume_end_date;                   
+                            d.start_date = $('#start-date').val();
+                            d.end_date   = $('#end-date').val();     
+                            d.memberId = _this.enrollment.filters.memberId;       
                         },
                     },
-                    order: [[9, 'desc']],                    
-                    columns: [                        
-                        {data: 'top', className: "text-center"},
+                    order: [[0, 'asc']],                    
+                    columns: [   
                         {data: 'user_id', className: "text-center"},
                         {data: 'member', className: "text-center"},
                         {data: 'enrolled_date', className: "text-center"},
@@ -65,7 +61,8 @@
                         {data: 'country', className: "text-center"},
                         {data: 'sponsor_id', className: "text-center"},                        
                         {data: 'sponsor', className: "text-center"},
-                        {data: 'prs', className: "text-center"},
+                        {data: 'total_reps', className: "text-center"},
+                        {data: 'sponsored_qualified_representatives_count', className: "text-center"},
                     ],
                     columnDefs: [
                         {responsivePriority: 1, targets: 0},
@@ -96,36 +93,33 @@
                 });
             },
             viewQualifiedRecruits() {
-                this.dtEnrollment.clear().draw();
-                this.dtEnrollment.responsive.recalc();
+                this.dtQualifiedRecruits.clear().draw();
+                this.dtQualifiedRecruits.responsive.recalc();
             },
             getDownloadQualifiedRecruits() {
 
-                this.csvPersonalRetail.filters.start_date = $('#enrollment-start-date').val();
-                this.csvPersonalRetail.filters.end_date = $('#enrollment-end-date').val(); 
-                this.csvPersonalRetail.filters.prs_500_above = this.enrollment.filters.prs_500_above;
-                this.csvPersonalRetail.filters.memberId = this.enrollment.filters.memberId;
-                this.csvPersonalRetail.filters.volume_start_date = $('#volume-start-date').val();
-                this.csvPersonalRetail.filters.volume_end_date = $('#volume-end-date').val(); 
+                this.csvQualifiedRecruits.filters.start_date = $('#enrollment-start-date').val();
+                this.csvQualifiedRecruits.filters.end_date = $('#enrollment-end-date').val(); 
+                this.csvQualifiedRecruits.filters.memberId = this.enrollment.filters.memberId;
                 
-                if (this.csvPersonalRetail.downloadLinkState === "fetching") return;
+                if (this.csvQualifiedRecruits.downloadLinkState === "fetching") return;
 
-                this.csvPersonalRetail.downloadLinkState = "fetching";
-                this.csvPersonalRetail.downloadLink = "";
+                this.csvQualifiedRecruits.downloadLinkState = "fetching";
+                this.csvQualifiedRecruits.downloadLink = "";
 
-                client.get("admin/personal-retail-sales/download-personal-retail", {
-                    params: this.csvPersonalRetail.filters
+                client.get("admin/qualified-recruits/download-qualified-recruits", {
+                    params: this.csvQualifiedRecruits.filters
                 })
                     .then(response => {
-                        this.csvPersonalRetail.downloadLinkState = "loaded";
-                        this.csvPersonalRetail.downloadLink = response.data.link;
+                        this.csvQualifiedRecruits.downloadLinkState = "loaded";
+                        this.csvQualifiedRecruits.downloadLink = response.data.link;
 
-                        if (!!this.csvPersonalRetail.downloadLink) {
-                            window.location = this.csvPersonalRetail.downloadLink;
+                        if (!!this.csvQualifiedRecruits.downloadLink) {
+                            window.location = this.csvQualifiedRecruits.downloadLink;
                         }
                     })
                     .catch(error => {
-                        this.csvPersonalRetail.downloadLinkState = "error";
+                        this.csvQualifiedRecruits.downloadLinkState = "error";
                     })
             },
         }

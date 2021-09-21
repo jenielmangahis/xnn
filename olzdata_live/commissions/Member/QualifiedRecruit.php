@@ -103,7 +103,6 @@ class QualifiedRecruit
             $level = $volume === null ? 0 : +$volume->level;
         }
 
-
         $query =
             DB::table('cm_daily_volumes AS dv')
             ->join("cm_daily_ranks AS dr", "dr.volume_id", "=", "dv.id")
@@ -113,7 +112,6 @@ class QualifiedRecruit
             ->join("cm_affiliates AS ca", "u.id", "=", "ca.user_id")
             ->leftJoin("users AS s", "s.id", "=", "u.sponsorid")
             ->selectRaw("
-                @rownum  := @rownum  + 1 AS top,
                 dv.user_id,
                 CONCAT(u.fname, ' ', u.lname) AS member,
                 u.enrolled_date,
@@ -122,7 +120,34 @@ class QualifiedRecruit
                 u.country,
                 u.sponsorid AS sponsor_id,
                 CONCAT(s.fname, ' ', s.lname) AS sponsor,
-                MAX(dv.prs) AS prs
+                (
+                    SELECT COUNT(id)
+                    FROM users uu 
+                    WHERE uu.sponsorid = u.id
+                )AS total_reps,
+                dv.sponsored_qualified_representatives_count
+            ")            
+        ;
+
+        $query =
+            DB::table('users AS u')
+            ->join("cm_affiliates AS ca", "u.id", "=", "ca.user_id")
+            ->leftJoin("users AS s", "s.id", "=", "u.sponsorid")
+            ->selectRaw("
+                u.id AS user_id,
+                CONCAT(u.fname, ' ', u.lname) AS member,
+                u.enrolled_date,
+                ca.affiliated_date,
+                u.email,
+                u.country,
+                u.sponsorid AS sponsor_id,
+                CONCAT(s.fname, ' ', s.lname) AS sponsor,
+                (
+                    SELECT COUNT(id)
+                    FROM users uu 
+                    WHERE uu.sponsorid = u.id
+                )AS total_reps,
+                ()
             ")            
         ;
 
