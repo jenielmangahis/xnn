@@ -143,6 +143,7 @@ class PersonalRetailSale
                 CONCAT(s.fname, ' ', s.lname) AS sponsor,
                 dr.rank_date
             ")
+            ->groupBy('dv.volume_date', 'dv.user_id')
         ;
 
         if( !!$start_date && !!$end_date ){
