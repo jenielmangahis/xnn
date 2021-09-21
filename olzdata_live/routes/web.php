@@ -357,10 +357,10 @@ Route::prefix('member/incentive-report')->namespace('Member')->middleware('jwt.a
  * Group Sales
  * */
 Route::prefix('admin/group-sales')->namespace('Admin')->group(function () {
-    Route::get('/{year_month}', 'GroupSalesReportController@index');
-    Route::get('getMembers/{parent_id}/{year_month}', 'GroupSalesReportController@getMembers');
-    Route::get('getMemberOrders/{member_id}/{year_month}', 'GroupSalesReportController@getMemberOrders');
-    Route::get('generate-report/{year_month}', 'GroupSalesReportController@getReport');
+    Route::get('/', 'GroupSalesReportController@index');
+    Route::get('getMembers/{parent_id}/', 'GroupSalesReportController@getMembers');
+    Route::get('getMemberOrders/{member_id}/', 'GroupSalesReportController@getMemberOrders');
+    Route::get('generate-report/', 'GroupSalesReportController@getReport');
     Route::get('download/{file_name}', 'GroupSalesReportController@getDownload');
 });
 
