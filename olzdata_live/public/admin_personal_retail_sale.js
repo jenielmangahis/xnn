@@ -103,23 +103,17 @@
                 //$('#enrollment-end-date').ddatepicker('setDate', new Date());
             },
             viewPersonalRetail() {
-
-                this.enrollment.filters.start_date = this.enrollment.start_date;
-                this.enrollment.filters.end_date = this.enrollment.end_date                
-                this.enrollment.filters.prs_500_above = this.enrollment.prs_500_above;
-                this.enrollment.filters.memberId = this.enrollment.memberId;
-
                 this.dtEnrollment.clear().draw();
                 this.dtEnrollment.responsive.recalc();
             },
             getDownloadPersonalRetail() {
 
-                this.csvPersonalRetail.filters.start_date = this.enrollment.start_date;
-                this.csvPersonalRetail.filters.end_date = this.enrollment.end_date                
-                this.csvPersonalRetail.filters.prs_500_above = this.enrollment.prs_500_above;
-                this.csvPersonalRetail.filters.memberId = this.enrollment.memberId;
-                this.csvPersonalRetail.filters.volume_start_date = this.enrollment.volume_start_date;
-                this.csvPersonalRetail.filters.volume_end_date = this.enrollment.volume_end_date;
+                this.csvPersonalRetail.filters.start_date = this.enrollment.filters.start_date;
+                this.csvPersonalRetail.filters.end_date = this.enrollment.filters.end_date                
+                this.csvPersonalRetail.filters.prs_500_above = this.enrollment.filters.prs_500_above;
+                this.csvPersonalRetail.filters.memberId = this.enrollment.filters.memberId;
+                this.csvPersonalRetail.filters.volume_start_date = this.enrollment.filters.volume_start_date;
+                this.csvPersonalRetail.filters.volume_end_date = this.enrollment.filters.volume_end_date;
                 
                 if (this.csvPersonalRetail.downloadLinkState === "fetching") return;
 
