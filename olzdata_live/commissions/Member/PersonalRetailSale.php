@@ -74,12 +74,12 @@ class PersonalRetailSale
 
         $recordsFiltered = $query->count(DB::raw("1"));
 
-        if (isset($order) && count($order)) {
+        /*if (isset($order) && count($order)) {
             $column = $order[0];
             $query = $query->orderBy($columns[+$column['column']]['data'], $column['dir']);
         }else{
             $query->orderBy("dv.prs", "DESC");
-        }
+        }*/
 
         $query = $query->take($take);
 
@@ -94,7 +94,7 @@ class PersonalRetailSale
 
     protected function getEnrollmentQuery($user_id, $start_date, $end_date, $prs_500_above, &$level = 0, $memberId, $volume_start_date, $volume_end_date)
     {
-        DB::statement(DB::raw('set @rownum=0'));
+        DB::statement(DB::raw('SET @rownum=0;'));
 
         $level = 0;
 
