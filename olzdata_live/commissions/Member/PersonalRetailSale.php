@@ -74,12 +74,12 @@ class PersonalRetailSale
 
         $recordsFiltered = $query->count(DB::raw("1"));
 
-        /*if (isset($order) && count($order)) {
+        if (isset($order) && count($order)) {
             $column = $order[0];
             $query = $query->orderBy($columns[+$column['column']]['data'], $column['dir']);
         }else{
             $query->orderBy("dv.prs", "DESC");
-        }*/
+        }
 
         $query = $query->take($take);
 
@@ -143,7 +143,6 @@ class PersonalRetailSale
                 CONCAT(s.fname, ' ', s.lname) AS sponsor,
                 dr.rank_date
             ")
-            ->orderBy("dv.prs", "DESC")
         ;
 
         if( !!$start_date && !!$end_date ){
