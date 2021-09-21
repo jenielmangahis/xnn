@@ -112,6 +112,38 @@ class PersonalRetailSale
             $level = $volume === null ? 0 : +$volume->level;
         }
 
+        $query = DB::table(DB::raw("
+            SELECT 
+                @curRank := @curRank + 1 AS rownum,
+                dv.user_id,
+                CONCAT(u.fname, ' ', u.lname) AS member,
+                u.email,
+                u.country,
+                u.enrolled_date,
+                ca.affiliated_date,
+                dr.rank_id,
+                cr.name AS current_rank,
+                dr.paid_as_rank_id,
+                pr.name AS paid_as_rank,
+                dv.prs,
+                dv.grs,
+                dv.sponsored_qualified_representatives_count,
+                dv.sponsored_leader_or_higher_count,
+                dr.is_active,
+                dv.level - $level AS level,
+                u.sponsorid AS sponsor_id,
+                CONCAT(s.fname, ' ', s.lname) AS sponsor,
+                dr.rank_date
+            FROM cm_daily_volumes dv, (SELECT @curRank := 0) r
+            JOIN cm_daily_ranks AS dr ON dr.volume_id = dv.id 
+            JOIN users AS u ON u.id = dr.user_id 
+            JOIN cm_ranks AS cr ON cr.id = dr.rank_id 
+            JOIN cm_ranks AS pr ON pr.id = dr.paid_as_rank_id
+            JOIN cm_affiliates AS ca ON u.id = ca.user_id 
+            LEFT JOIN users AS s ON s.id = u.sponsorid 
+        "));/*
+
+
         $query =
             DB::table('cm_daily_volumes AS dv')
             ->join("cm_daily_ranks AS dr", "dr.volume_id", "=", "dv.id")
@@ -142,7 +174,7 @@ class PersonalRetailSale
                 CONCAT(s.fname, ' ', s.lname) AS sponsor,
                 dr.rank_date
             ")
-        ;
+        ;*/
 
         if( !!$start_date && !!$end_date ){
             $query->whereBetween('u.enrolled_date', [$start_date, $end_date]);
