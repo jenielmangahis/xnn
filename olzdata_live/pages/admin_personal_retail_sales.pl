@@ -48,7 +48,6 @@ print <<EOS;
                     </div>
                     <div class="form-group col-lg-4 col-md-3 col-6">
                         <div class="checkbox mt-2">
-                            <input type="checkbox">
                             <input type="checkbox" name="prs-500-above" v-model="enrollment.filters.prs_500_above" />
                             <label>PRS of \$500 or above</label>
                         </div>
