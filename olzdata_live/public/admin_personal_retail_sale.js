@@ -9,10 +9,10 @@
             return {
                 autocompleteUrl: `${api_url}common/autocomplete/members`,
                 enrollment: {
-                    start_date: '',
-                    end_date: '',
-                    volume_start_date : '',
-                    volume_end_date : '',
+                    start_date: null,
+                    end_date: null,
+                    volume_start_date : null,
+                    volume_end_date : null,
                     prs_500_above : '',                    
                     memberId: null,
                     filters: {
