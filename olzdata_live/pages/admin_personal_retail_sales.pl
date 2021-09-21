@@ -35,13 +35,13 @@ print <<EOS;
             <form class="form-horizontal ">
                 <div class="form-row">
                     <div class="form-group col-lg-2 col-md-3 col-6">
-                        <datepicker v-model="enrollment.volume_start_date" placeholder="Start Date" v-bind:end-date="today"></datepicker>
+                        <datepicker v-model="enrollment.filters.volume_start_date" placeholder="Start Date" v-bind:end-date="today" v-bind:value></datepicker>
                     </div>
                     <div class="form-group col-lg-2 col-md-3 col-6">
-                        <datepicker v-model="enrollment.volume_end_date" placeholder="End Date" v-bind:start-date="enrollment.volume_start_date" v-bind:end-date="today"></datepicker>
+                        <datepicker v-model="enrollment.filters.volume_end_date" placeholder="End Date" v-bind:start-date="enrollment.volume_start_date" v-bind:end-date="today"></datepicker>
                     </div>
                     <div class="form-group col-lg-2 col-md-3 col-6">
-                        <select2-autocomplete-member id="member-id" :url="autocompleteUrl" v-model="enrollment.memberId"></select2-autocomplete-member>
+                        <select2-autocomplete-member id="member-id" :url="autocompleteUrl" v-model="enrollment.filters.memberId"></select2-autocomplete-member>
                     </div>
                     <div class="form-group col-lg-2 col-md-3 col-6">
                         <button type="button" class="btn btn-primary btn-block" v-on:click.prevent="viewPersonalRetail">Search</button>
@@ -49,15 +49,15 @@ print <<EOS;
                     <div class="form-group col-lg-4 col-md-3 col-6">
                         <div class="checkbox mt-2">
                             <input type="checkbox">
-                            <input type="checkbox" name="prs-500-above" v-model="enrollment.prs_500_above" />
+                            <input type="checkbox" name="prs-500-above" v-model="enrollment.filters.prs_500_above" />
                             <label>PRS of \$500 or above</label>
                         </div>
                     </div>
                     <div class="form-group col-lg-2 col-md-3 col-6">
-                        <datepicker v-model="enrollment.start_date" v-bind:end-date="today" placeholder="Start Enrollment Date"></datepicker>
+                        <input id="enrollment-start-date" type="text" class="form-control flat" placeholder="Start Enrollment Date" v-model="enrollment.filters.start_date">
                     </div>
                     <div class="form-group col-lg-2 col-md-3 col-6">
-                        <datepicker v-model="enrollment.end_date" v-bind:start-date="enrollment.start_date" v-bind:end-date="today" placeholder="End Enrollment Date"></datepicker>
+                        <input id="enrollment-end-date" type="text" class="form-control flat" placeholder="End Enrollment Date" v-model="enrollment.filters.end_date">
                     </div>
                 </div>
 
@@ -113,6 +113,7 @@ print <<EOS;
 <script src="https://cdn.datatables.net/responsive/2.2.3/js/responsive.bootstrap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/js/bootstrap-datepicker.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js" integrity="sha256-4iQZ6BVL4qNKlQ27TExEhBN1HFPvAvAMbFavKKosSWQ=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/eonasdan-bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
 <script src="$commission_engine_api_url/js/admin_personal_retail_sale.js?v=1.1"></script>
 
 EOS

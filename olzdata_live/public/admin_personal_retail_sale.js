@@ -8,28 +8,22 @@
         data: function () {
             return {
                 autocompleteUrl: `${api_url}common/autocomplete/members`,
-                enrollment: {
-                    start_date: null,
-                    end_date: null,
-                    volume_start_date : null,
-                    volume_end_date : null,
-                    prs_500_above : '',                    
-                    memberId: null,
+                enrollment: {                    
                     filters: {
-                        start_date: '',
-                        end_date: '',
-                        volume_start_date : '',
-                        volume_end_date : '',
+                        start_date: moment().format("YYYY-MM-DD"),
+                        end_date: moment().format("YYYY-MM-DD"),
+                        volume_start_date : moment().format("YYYY-MM-DD"),
+                        volume_end_date : moment().format("YYYY-MM-DD"),
                         memberId: null,
                         prs_500_above : '',
                     },
                 },
                 csvPersonalRetail: {
                     filters: {
-                        start_date: '',
-                        end_date: '',
-                        volume_start_date : '',
-                        volume_end_date : '',
+                        start_date: moment().format("YYYY-MM-DD"),
+                        end_date: moment().format("YYYY-MM-DD"),
+                        volume_start_date : moment().format("YYYY-MM-DD"),
+                        volume_end_date : moment().format("YYYY-MM-DD"),
                         memberId: null,
                         prs_500_above : '',
                     },
@@ -55,8 +49,8 @@
                     ajax: {
                         url: `${api_url}admin/personal-retail-sales/enrollment`,
                         data: function (d) {
-                            d.start_date = _this.enrollment.filters.start_date;
-                            d.end_date   = _this.enrollment.filters.end_date;        
+                            d.start_date = $('#enrollment-start-date').val();
+                            d.end_date   = $('#enrollment-end-date').val();        
                             d.prs_500_above = _this.enrollment.filters.prs_500_above;
                             d.memberId = _this.enrollment.filters.memberId;
                             d.volume_start_date = _this.enrollment.filters.volume_start_date;
@@ -83,6 +77,29 @@
                         {responsivePriority: 4, targets: -4},
                     ]
                 });
+            },
+            initializeDatePicker() {
+                let _this = this;
+
+                $('#enrollment-start-date').ddatepicker({
+                    "setDate": new Date(),
+                    "format": "yyyy-mm-dd"
+                }).on('changeDate', function (e) {
+                    $('#enrollment-end-date').ddatepicker('setStartDate', e.date);
+
+                    if ($('#enrollment-end-date').ddatepicker('getDate') < e.date) {
+                        $('#enrollment-end-date').ddatepicker('setDate', e.date);
+                    }
+                });
+
+                $('#enrollment-end-date').ddatepicker({
+                    "setDate": new Date(),
+                    "startDate": new Date(),
+                    "format": "yyyy-mm-dd"
+                });
+
+                //$('#enrollment-start-date').ddatepicker('setDate', new Date());
+                //$('#enrollment-end-date').ddatepicker('setDate', new Date());
             },
             viewPersonalRetail() {
 
