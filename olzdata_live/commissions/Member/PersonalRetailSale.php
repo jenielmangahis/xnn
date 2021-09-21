@@ -29,14 +29,16 @@ class PersonalRetailSale
         $skip = $filters['start'];
         $take = $filters['length'];
 
-        $search = $filters['search'];
-        $order = $filters['order'];
+        $search  = $filters['search'];
+        $order   = $filters['order'];
         $columns = $filters['columns'];
 
         $start_date = isset($filters['start_date']) ? $filters['start_date'] : null;
-        $end_date = isset($filters['end_date']) ? $filters['end_date'] : null;
-        $prs_500_above = $filters['prs_500_above'] == 'true' ? $filters['prs_500_above'] : null;
-        $memberId = isset($filters['memberId']) ? $filters['memberId'] : null;
+        $end_date   = isset($filters['end_date']) ? $filters['end_date'] : null;
+        $memberId   = isset($filters['memberId']) ? $filters['memberId'] : null;
+        $prs_500_above = $filters['prs_500_above'] == 'true' ? $filters['prs_500_above'] : null;        
+        $volume_start_date = isset($filters['volume_start_date']) ? $filters['volume_start_date'] : null;
+        $volume_end_date   = isset($filters['volume_end_date']) ? $filters['volume_end_date'] : null;
 
         if (!$start_date || !$end_date) {
             return compact('recordsTotal', 'draw', 'recordsFiltered', 'data', 'start_date');
@@ -44,7 +46,7 @@ class PersonalRetailSale
 
         $level = 0;
 
-        $query = $this->getEnrollmentQuery($user_id, $start_date, $end_date, $prs_500_above, $level, $memberId);
+        $query = $this->getEnrollmentQuery($user_id, $start_date, $end_date, $prs_500_above, $level, $memberId, $volume_start_date, $volume_end_date);
 
         $recordsTotal = $query->count(DB::raw("1"));
 
@@ -90,7 +92,7 @@ class PersonalRetailSale
         return compact('recordsTotal', 'draw', 'recordsFiltered', 'data', 'member_id', 'start_date');
     }
 
-    protected function getEnrollmentQuery($user_id, $start_date, $end_date, $prs_500_above, &$level = 0, $memberId)
+    protected function getEnrollmentQuery($user_id, $start_date, $end_date, $prs_500_above, &$level = 0, $memberId, $volume_start_date, $volume_end_date)
     {
         DB::statement(DB::raw('set @rownum=0'));
 
@@ -140,9 +142,15 @@ class PersonalRetailSale
                 u.sponsorid AS sponsor_id,
                 CONCAT(s.fname, ' ', s.lname) AS sponsor,
                 dr.rank_date
-            ")
-            ->whereBetween('u.enrolled_date', [$start_date, $end_date]);
-            //->whereBetween('dv.volume_date', [$start_date, $end_date]);
+            ");
+
+        if( !!$start_date && !!$end_date ){
+            $query->whereBetween('u.enrolled_date', [$start_date, $end_date]);
+        }
+
+        if( !!$volume_start_date && !!$volume_end_date ){
+            $query->whereBetween('dv.volume_date', [$volume_start_date, $volume_end_date]);
+        }
 
         if( $prs_500_above ){
             $query->where('dv.prs', '>=', 500);
@@ -187,13 +195,15 @@ class PersonalRetailSale
         $end_date      = isset($filters['end_date']) ? $filters['end_date'] : null;
         $prs_500_above = $filters['prs_500_above'] == 'true' ? $filters['prs_500_above'] : null;
         $memberId      = isset($filters['memberId']) ? $filters['memberId'] : null;
+        $volume_start_date = isset($filters['volume_start_date']) ? $filters['volume_start_date'] : null;
+        $volume_end_date   = isset($filters['volume_end_date']) ? $filters['volume_end_date'] : null;
 
         $csv   = new CsvReport(static::REPORT_PATH);
 
         if (!$start_date || !$end_date) {
             $data = [];
         } else {
-            $data = $this->getEnrollmentQuery($user_id, $start_date, $end_date, $prs_500_above, $level, $memberId)->get();
+            $data = $this->getEnrollmentQuery($user_id, $start_date, $end_date, $prs_500_above, $level, $memberId, $volume_start_date, $volume_end_date)->get();
         }
 
         $filename = "personal-retail-$start_date-$end_date-";

@@ -11,11 +11,15 @@
                 enrollment: {
                     start_date: moment().format("YYYY-MM-DD"),
                     end_date: moment().format("YYYY-MM-DD"),
-                    prs_500_above : '',
+                    volume_start_date : moment().format("YYYY-MM-DD"),
+                    volume_end_date : moment().format("YYYY-MM-DD"),
+                    prs_500_above : '',                    
                     memberId: null,
                     filters: {
                         start_date: moment().format("YYYY-MM-DD"),
                         end_date: moment().format("YYYY-MM-DD"),
+                        volume_start_date : moment().format("YYYY-MM-DD"),
+                        volume_end_date : moment().format("YYYY-MM-DD"),
                         memberId: null,
                         prs_500_above : '',
                     },
@@ -24,6 +28,8 @@
                     filters: {
                         start_date: moment().format("YYYY-MM-DD"),
                         end_date: moment().format("YYYY-MM-DD"),
+                        volume_start_date : moment().format("YYYY-MM-DD"),
+                        volume_end_date : moment().format("YYYY-MM-DD"),
                         memberId: null,
                         prs_500_above : '',
                     },
@@ -52,7 +58,9 @@
                             d.start_date = _this.enrollment.filters.start_date;
                             d.end_date   = _this.enrollment.filters.end_date;        
                             d.prs_500_above = _this.enrollment.filters.prs_500_above;
-                            d.memberId = _this.enrollment.filters.memberId;                   
+                            d.memberId = _this.enrollment.filters.memberId;
+                            d.volume_start_date = _this.enrollment.filters.volume_start_date;
+                            d.volume_end_date = _this.enrollment.filters.volume_end_date;                   
                         },
                     },
                     order: [[9, 'desc']],
@@ -92,6 +100,8 @@
                 this.csvPersonalRetail.filters.end_date = this.enrollment.end_date                
                 this.csvPersonalRetail.filters.prs_500_above = this.enrollment.prs_500_above;
                 this.csvPersonalRetail.filters.memberId = this.enrollment.memberId;
+                this.csvPersonalRetail.filters.volume_start_date = this.enrollment.volume_start_date;
+                this.csvPersonalRetail.filters.volume_end_date = this.enrollment.volume_end_date;
                 
                 if (this.csvPersonalRetail.downloadLinkState === "fetching") return;
 
