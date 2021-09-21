@@ -133,7 +133,7 @@ class PersonalRetailSale
                 cr.name AS current_rank,
                 dr.paid_as_rank_id,
                 pr.name AS paid_as_rank,
-                dv.prs,
+                MAX(dv.prs) AS prs,
                 dv.grs,
                 dv.sponsored_qualified_representatives_count,
                 dv.sponsored_leader_or_higher_count,
@@ -145,7 +145,7 @@ class PersonalRetailSale
             ")            
         ;
 
-        $query->groupBy(['dv.volume_date', 'dv.user_id', 'dv.prs']);
+        $query->groupBy(['dv.user_id']);
 
         if( !!$start_date && !!$end_date ){
             $query->whereBetween('u.enrolled_date', [$start_date, $end_date]);
