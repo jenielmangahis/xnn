@@ -203,11 +203,7 @@ class PersonalRetailSale
 
         $csv   = new CsvReport(static::REPORT_PATH);
 
-        if (!$start_date || !$end_date) {
-            $data = [];
-        } else {
-            $data = $this->getEnrollmentQuery($user_id, $start_date, $end_date, $prs_500_above, $level, $memberId, $volume_start_date, $volume_end_date)->get();
-        }
+        $data = $this->getEnrollmentQuery($user_id, $start_date, $end_date, $prs_500_above, $level, $memberId, $volume_start_date, $volume_end_date)->get();
 
         $filename = "personal-retail-$start_date-$end_date-";
 
