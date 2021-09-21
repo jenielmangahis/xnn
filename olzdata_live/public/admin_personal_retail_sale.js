@@ -62,7 +62,7 @@
                     },
                     order: [[9, 'desc']],                    
                     columns: [                        
-                        {data: 'rownum', className: "text-center"},
+                        {data: 'top', className: "text-center"},
                         {data: 'user_id', className: "text-center"},
                         {data: 'member', className: "text-center"},
                         {data: 'enrolled_date', className: "text-center"},

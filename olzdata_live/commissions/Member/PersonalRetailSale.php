@@ -114,7 +114,7 @@ class PersonalRetailSale
 
         $query = DB::table(DB::raw("
             SELECT 
-                @rownum := @rownum + 1 AS rownum,
+                @rownum := @rownum + 1 AS top,
                 dv.user_id,
                 CONCAT(u.fname, ' ', u.lname) AS member,
                 u.email,
@@ -134,13 +134,14 @@ class PersonalRetailSale
                 u.sponsorid AS sponsor_id,
                 CONCAT(s.fname, ' ', s.lname) AS sponsor,
                 dr.rank_date
-            FROM cm_daily_volumes dv, (SELECT @rownum := 0) r
+            FROM cm_daily_volumes dv
             LEFT JOIN cm_daily_ranks AS dr ON dr.volume_id = dv.id 
             LEFT JOIN users AS u ON u.id = dr.user_id 
             LEFT JOIN cm_ranks AS cr ON cr.id = dr.rank_id 
             LEFT JOIN cm_ranks AS pr ON pr.id = dr.paid_as_rank_id
             LEFT JOIN cm_affiliates AS ca ON u.id = ca.user_id 
             LEFT JOIN users AS s ON s.id = u.sponsorid 
+            ORDER BY dv.prs DESC
         "));/*
 
 
