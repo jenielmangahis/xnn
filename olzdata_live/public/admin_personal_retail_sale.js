@@ -14,8 +14,8 @@
                     filters: {
                         start_date: null,
                         end_date: null,
-                        transaction_start_date : moment().format("YYYY-MM-DD"),
-                        transaction_end_date : moment().format("YYYY-MM-DD"),
+                        transaction_start_date : null,
+                        transaction_end_date : null,
                         memberId: null,
                         prs_500_above : '',
                     },
@@ -24,8 +24,8 @@
                     filters: {
                         start_date: null,
                         end_date: null,
-                        transaction_start_date : moment().format("YYYY-MM-DD"),
-                        transaction_end_date : moment().format("YYYY-MM-DD"),
+                        transaction_start_date : null,
+                        transaction_end_date : null,
                         memberId: null,
                         prs_500_above : '',
                     },
@@ -82,7 +82,6 @@
                 });
             },
             initializeDatePicker() {
-                let _this = this;
 
                 $('#enrollment-start-date').ddatepicker({
                     "setDate": new Date(),
@@ -126,7 +125,7 @@
                 this.dtEnrollment.responsive.recalc();
             },
             getDownloadPersonalRetail() {
-
+                
                 this.csvPersonalRetail.filters.start_date = $('#enrollment-start-date').val();
                 this.csvPersonalRetail.filters.end_date = $('#enrollment-end-date').val(); 
                 this.csvPersonalRetail.filters.prs_500_above = this.enrollment.filters.prs_500_above;
