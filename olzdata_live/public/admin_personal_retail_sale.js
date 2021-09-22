@@ -7,32 +7,34 @@
 
     const vm = new Vue({
         el: "#personal-retail-sale",
-        data: {
-            autocompleteUrl: `${api_url}common/autocomplete/members`,
-            enrollment: {                    
-                filters: {
-                    start_date: null,
-                    end_date: null,
-                    transaction_start_date : null,
-                    transaction_end_date : null,
-                    memberId: null,
-                    prs_500_above : '',
+        data: function () {
+            return {
+                autocompleteUrl: `${api_url}common/autocomplete/members`,
+                enrollment: {                    
+                    filters: {
+                        start_date: null,
+                        end_date: null,
+                        transaction_start_date : null,
+                        transaction_end_date : null,
+                        memberId: null,
+                        prs_500_above : '',
+                    },
                 },
-            },
-            csvPersonalRetail: {
-                filters: {
-                    start_date: null,
-                    end_date: null,
-                    transaction_start_date : null,
-                    transaction_end_date : null,
-                    memberId: null,
-                    prs_500_above : '',
-                },
+                csvPersonalRetail: {
+                    filters: {
+                        start_date: null,
+                        end_date: null,
+                        transaction_start_date : null,
+                        transaction_end_date : null,
+                        memberId: null,
+                        prs_500_above : '',
+                    },
 
-                downloadLink: "",
-                downloadLinkState: "loaded",
-            },
-            today: moment().format("YYYY-MM-DD"),
+                    downloadLink: "",
+                    downloadLinkState: "loaded",
+                },
+                today: moment().format("YYYY-MM-DD"),
+            }
         },
         mounted() {
             this.initializeDataTables();
@@ -123,7 +125,7 @@
                 this.dtEnrollment.responsive.recalc();
             },
             getDownloadPersonalRetail() {
-
+                
                 this.csvPersonalRetail.filters.start_date = $('#enrollment-start-date').val();
                 this.csvPersonalRetail.filters.end_date = $('#enrollment-end-date').val(); 
                 this.csvPersonalRetail.filters.prs_500_above = this.enrollment.filters.prs_500_above;
