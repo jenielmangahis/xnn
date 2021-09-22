@@ -169,7 +169,7 @@ class PersonalRetailSale
         }
 
         if( $prs_500_above ){
-            $query->where('COALESCE(a.ps, 0) + COALESCE(c.cs, 0)', '>=', 500);
+            $query->where('total_prs', '>=', 500);
         } 
 
         if (!!$user_id) {
