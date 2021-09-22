@@ -115,7 +115,7 @@ class PersonalRetailSale
 
         $query =
             DB::table('cm_daily_volumes AS dv')
-            ->join(
+            ->leftJoin(
                 DB::raw("
                 (
                     SELECT
@@ -128,7 +128,7 @@ class PersonalRetailSale
                     GROUP BY t.user_id
                 ) AS a"),"a.user_id", "=", "dv.user_id"
             )
-            ->join(
+            ->leftJoin(
                 DB::raw("
                 (
                     SELECT
@@ -162,14 +162,14 @@ class PersonalRetailSale
             ")            
         ;
 
-        //$query->groupBy(['dv.user_id']);
+        $query->groupBy(['dv.user_id']);
 
         if( !!$start_date && !!$end_date ){
             $query->whereBetween('u.enrolled_date', [$start_date, $end_date]);
         }
 
         if( $prs_500_above ){
-            $query->where('total_prs', '>=', 500);
+            $query->whereRaw('(COALESCE(a.ps, 0) + COALESCE(c.cs, 0)) > 500');
         } 
 
         if (!!$user_id) {
