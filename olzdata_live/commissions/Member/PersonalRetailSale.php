@@ -48,7 +48,7 @@ class PersonalRetailSale
 
         $query = $this->getEnrollmentQuery($user_id, $start_date, $end_date, $prs_500_above, $level, $memberId, $transaction_start_date, $transaction_end_date);
 
-        $recordsTotal = $query->count();
+        $recordsTotal = $query->count(DB::raw("1"));
 
         // apply search
         $search = isset($search['value']) ? $search['value'] : "";
@@ -70,7 +70,7 @@ class PersonalRetailSale
             });
         }
 
-        $recordsFiltered = $query->count();
+        $recordsFiltered = $query->count(DB::raw("1"));
 
         if (isset($order) && count($order)) {
             $column = $order[0];
@@ -211,19 +211,17 @@ class PersonalRetailSale
 
     public function getPersonalRetailDownloadLink($filters, $user_id = null)
     {
-        $level = 0;
-        $start_date    = isset($filters['start_date']) ? $filters['start_date'] : null;
-        $end_date      = isset($filters['end_date']) ? $filters['end_date'] : null;
-        $prs_500_above = $filters['prs_500_above'] == 'true' ? $filters['prs_500_above'] : null;
-        $memberId      = isset($filters['memberId']) ? $filters['memberId'] : null;
+        $start_date = isset($filters['start_date']) ? $filters['start_date'] : null;
+        $end_date   = isset($filters['end_date']) ? $filters['end_date'] : null;
+        $memberId   = isset($filters['memberId']) ? $filters['memberId'] : null;
+        $prs_500_above = $filters['prs_500_above'] == 'true' ? $filters['prs_500_above'] : null;        
         $transaction_start_date = isset($filters['transaction_start_date']) ? $filters['transaction_start_date'] : null;
         $transaction_end_date   = isset($filters['transaction_end_date']) ? $filters['transaction_end_date'] : null;
 
-        $csv   = new CsvReport(static::REPORT_PATH);
-
-        $data = $this->getEnrollmentQuery($user_id, $start_date, $end_date, $prs_500_above, $level, $memberId, $transaction_start_date, $transaction_end_date)->get();
-
-        $filename = "personal-retail-$start_date-$end_date-";
+        $level = 0;
+        $data  = $this->getEnrollmentQuery($user_id, $start_date, $end_date, $prs_500_above, $level, $memberId, $transaction_start_date, $transaction_end_date)->get();        
+        $csv      = new CsvReport(static::REPORT_PATH);
+        $filename = "personal-retail-$transaction_start_date-$transaction_end_date-";
 
         if ($memberId !== null) {
             $filename .= "$memberId-";
