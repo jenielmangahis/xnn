@@ -356,9 +356,12 @@ Route::prefix('member/incentive-report')->namespace('Member')->middleware('jwt.a
 /*
  * Group Sales
  * */
-Route::prefix('admin/group-sales')->namespace('Admin')->group(function () {
+Route::prefix('admin/group-sales')->namespace('Admin')->middleware('jwt.auth.level:1,6')->group(function () {
     Route::get('/', 'GroupSalesReportController@index');
     Route::get('getMembers/{parent_id}/', 'GroupSalesReportController@getMembers');
+    Route::get('getMembers/{parent_id}/report', 'GroupSalesReportController@getMembersReport');
+    Route::get('getMembers/{parent_id}/summary', 'GroupSalesReportController@getMembersSummary');
+
     Route::get('getMemberOrders/{member_id}/', 'GroupSalesReportController@getMemberOrders');
     Route::get('generate-report/', 'GroupSalesReportController@getReport');
     Route::get('download/{file_name}', 'GroupSalesReportController@getDownload');
