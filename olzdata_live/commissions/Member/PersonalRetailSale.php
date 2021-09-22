@@ -162,7 +162,7 @@ class PersonalRetailSale
             ")            
         ;
 
-        $query->groupBy(['ct.userid']);
+        $query->groupBy(['dv.user_id']);
 
         if( !!$start_date && !!$end_date ){
             $query->whereBetween('u.enrolled_date', [$start_date, $end_date]);

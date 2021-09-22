@@ -15,15 +15,15 @@
                         start_date: null,
                         end_date: null,
                         transaction_start_date : moment().format("YYYY-MM-DD"),
-                        transaction_end_date : moment().format("YYYY-MM-DD"),
+                        transaction_end_date : moment().format("YYYY-MM-DD")
                         memberId: null,
                         prs_500_above : '',
                     },
                 },
                 csvPersonalRetail: {
                     filters: {
-                        start_date: moment().format("YYYY-MM-DD"),
-                        end_date: moment().format("YYYY-MM-DD"),
+                        start_date: null,
+                        end_date: null,
                         transaction_start_date : moment().format("YYYY-MM-DD"),
                         transaction_end_date : moment().format("YYYY-MM-DD"),
                         memberId: null,
