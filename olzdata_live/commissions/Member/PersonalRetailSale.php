@@ -48,7 +48,7 @@ class PersonalRetailSale
 
         $query = $this->getEnrollmentQuery($user_id, $start_date, $end_date, $prs_500_above, $level, $memberId, $transaction_start_date, $transaction_end_date);
 
-        $recordsTotal = $query->count(DB::raw("1"));
+        $recordsTotal = $query->count();
 
         // apply search
         $search = isset($search['value']) ? $search['value'] : "";
@@ -70,7 +70,7 @@ class PersonalRetailSale
             });
         }
 
-        $recordsFiltered = $query->count(DB::raw("1"));
+        $recordsFiltered = $query->count();
 
         if (isset($order) && count($order)) {
             $column = $order[0];
