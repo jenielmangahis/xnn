@@ -36,10 +36,10 @@ print <<EOS;
             <form class="form-horizontal ">
                 <div class="form-row">
                     <div class="form-group col-lg-2 col-md-3 col-6">
-                        <input id="start-date" type="text" class="form-control flat" placeholder="Start Date" v-model="qualifiedRecruits.filters.start_date">
+                        <input id="start-date" type="text" class="form-control flat" placeholder="Start Date">
                     </div>
                     <div class="form-group col-lg-2 col-md-3 col-6">
-                        <input id="end-date" type="text" class="form-control flat" placeholder="End Date" v-model="qualifiedRecruits.filters.end_date">
+                        <input id="end-date" type="text" class="form-control flat" placeholder="End Date">
                     </div>
                     <div class="form-group col-lg-2 col-md-3 col-6">
                         <select2-autocomplete-member id="member-id" :url="autocompleteUrl" v-model="qualifiedRecruits.filters.memberId"></select2-autocomplete-member>
