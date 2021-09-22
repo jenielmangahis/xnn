@@ -74,9 +74,10 @@ class PersonalRetailSale
 
         if (isset($order) && count($order)) {
             $column = $order[0];
+            print_r($column);
             $query = $query->orderBy($columns[+$column['column']]['data'], $column['dir']);
         }else{
-            $query->orderBy("dv.prs", "DESC");
+            $query->orderByRaw('(COALESCE(a.ps, 0) + COALESCE(c.cs, 0)) desc');
         }
 
         $query = $query->take($take);
