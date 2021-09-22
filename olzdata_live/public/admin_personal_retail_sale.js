@@ -14,8 +14,8 @@
                     filters: {
                         start_date: null,
                         end_date: null,
-                        volume_start_date : null,
-                        volume_end_date : null,
+                        transaction_start_date : moment().format("YYYY-MM-DD"),
+                        transaction_end_date : moment().format("YYYY-MM-DD"),
                         memberId: null,
                         prs_500_above : '',
                     },
@@ -24,8 +24,8 @@
                     filters: {
                         start_date: moment().format("YYYY-MM-DD"),
                         end_date: moment().format("YYYY-MM-DD"),
-                        volume_start_date : moment().format("YYYY-MM-DD"),
-                        volume_end_date : moment().format("YYYY-MM-DD"),
+                        transaction_start_date : moment().format("YYYY-MM-DD"),
+                        transaction_end_date : moment().format("YYYY-MM-DD"),
                         memberId: null,
                         prs_500_above : '',
                     },
@@ -56,8 +56,8 @@
                             d.end_date   = $('#enrollment-end-date').val();        
                             d.prs_500_above = _this.enrollment.filters.prs_500_above;
                             d.memberId = _this.enrollment.filters.memberId;
-                            d.volume_start_date = _this.enrollment.filters.volume_start_date;
-                            d.volume_end_date = _this.enrollment.filters.volume_end_date;                   
+                            d.transaction_start_date = $('#transaction-start-date').val();
+                            d.transaction_end_date = $('#transaction-end-date').val();                  
                         },
                     },
                     order: [[9, 'desc']],                    
@@ -101,25 +101,25 @@
                     "format": "yyyy-mm-dd"
                 });
 
-                $('#volume-start-date').ddatepicker({
+                $('#transaction-start-date').ddatepicker({
                     "setDate": new Date(),
                     "format": "yyyy-mm-dd"
                 }).on('changeDate', function (e) {
-                    $('#volume-end-date').ddatepicker('setStartDate', e.date);
+                    $('#transaction-end-date').ddatepicker('setStartDate', e.date);
 
-                    if ($('#volume-end-date').ddatepicker('getDate') < e.date) {
-                        $('#volume-end-date').ddatepicker('setDate', e.date);
+                    if ($('#transaction-end-date').ddatepicker('getDate') < e.date) {
+                        $('#transaction-end-date').ddatepicker('setDate', e.date);
                     }
                 });
 
-                $('#volume-end-date').ddatepicker({
+                $('#transaction-end-date').ddatepicker({
                     "setDate": new Date(),
                     "startDate": new Date(),
                     "format": "yyyy-mm-dd"
                 });
 
-                //$('#enrollment-start-date').ddatepicker('setDate', new Date());
-                //$('#enrollment-end-date').ddatepicker('setDate', new Date());
+                $('#transaction-start-date').ddatepicker('setDate', new Date());
+                $('#transaction-end-date').ddatepicker('setDate', new Date());
             },
             viewPersonalRetail() {
                 this.dtEnrollment.clear().draw();
@@ -131,8 +131,8 @@
                 this.csvPersonalRetail.filters.end_date = $('#enrollment-end-date').val(); 
                 this.csvPersonalRetail.filters.prs_500_above = this.enrollment.filters.prs_500_above;
                 this.csvPersonalRetail.filters.memberId = this.enrollment.filters.memberId;
-                this.csvPersonalRetail.filters.volume_start_date = $('#volume-start-date').val();
-                this.csvPersonalRetail.filters.volume_end_date = $('#volume-end-date').val(); 
+                this.csvPersonalRetail.filters.transaction_start_date = $('#transaction-start-date').val();
+                this.csvPersonalRetail.filters.transaction_end_date = $('#transaction-end-date').val(); 
                 
                 if (this.csvPersonalRetail.downloadLinkState === "fetching") return;
 

@@ -37,8 +37,8 @@ class PersonalRetailSale
         $end_date   = isset($filters['end_date']) ? $filters['end_date'] : null;
         $memberId   = isset($filters['memberId']) ? $filters['memberId'] : null;
         $prs_500_above = $filters['prs_500_above'] == 'true' ? $filters['prs_500_above'] : null;        
-        $volume_start_date = isset($filters['volume_start_date']) ? $filters['volume_start_date'] : null;
-        $volume_end_date   = isset($filters['volume_end_date']) ? $filters['volume_end_date'] : null;
+        $transaction_start_date = isset($filters['transaction_start_date']) ? $filters['transaction_start_date'] : null;
+        $transaction_end_date   = isset($filters['transaction_end_date']) ? $filters['transaction_end_date'] : null;
 
         /*if (!$start_date || !$end_date) {
             return compact('recordsTotal', 'draw', 'recordsFiltered', 'data', 'start_date');
@@ -46,7 +46,7 @@ class PersonalRetailSale
 
         $level = 0;
 
-        $query = $this->getEnrollmentQuery($user_id, $start_date, $end_date, $prs_500_above, $level, $memberId, $volume_start_date, $volume_end_date);
+        $query = $this->getEnrollmentQuery($user_id, $start_date, $end_date, $prs_500_above, $level, $memberId, $transaction_start_date, $transaction_end_date);
 
         $recordsTotal = $query->count(DB::raw("1"));
 
@@ -90,8 +90,11 @@ class PersonalRetailSale
         return compact('recordsTotal', 'draw', 'recordsFiltered', 'data', 'member_id', 'start_date');
     }
 
-    protected function getEnrollmentQuery($user_id, $start_date, $end_date, $prs_500_above, &$level = 0, $memberId, $volume_start_date, $volume_end_date)
+    protected function getEnrollmentQuery($user_id, $start_date, $end_date, $prs_500_above, &$level = 0, $memberId, $transaction_start_date, $transaction_end_date)
     {
+        $affiliates = config('commission.member-types.affiliates');
+        $customers  = config('commission.member-types.customers');
+
         DB::statement(DB::raw('SET @rownum=0'));
 
         $level = 0;
@@ -109,9 +112,36 @@ class PersonalRetailSale
             $volume = DailyVolume::ofMember($user_id)->date($end_date)->first();
             $level = $volume === null ? 0 : +$volume->level;
         }
-        
+
         $query =
             DB::table('cm_daily_volumes AS dv')
+            ->join(
+                DB::raw("
+                (
+                    SELECT
+                        t.user_id,
+                        SUM(COALESCE(t.computed_cv, 0)) As ps
+                    FROM v_cm_transactions t
+                    WHERE transaction_date BETWEEN '$transaction_start_date' AND '$transaction_end_date'
+                        AND t.`type` = 'product'
+                        AND FIND_IN_SET(t.purchaser_catid, '$affiliates')
+                    GROUP BY t.user_id
+                ) AS a"),"a.user_id", "=", "dv.user_id"
+            )
+            ->join(
+                DB::raw("
+                (
+                    SELECT
+                        ti.upline_id AS user_id,
+                        SUM(COALESCE(t.computed_cv, 0)) AS cs
+                    FROM v_cm_transactions t
+                    JOIN cm_transaction_info ti ON ti.transaction_id = t.transaction_id
+                    WHERE t.transaction_date BETWEEN '$transaction_start_date' AND '$transaction_end_date'
+                        AND t.`type` = 'product' 
+                        AND FIND_IN_SET(t.purchaser_catid, '$customers')
+                    GROUP BY ti.upline_id
+                ) AS c"),"c.user_id", "=", "dv.user_id"
+            )
             ->join("cm_daily_ranks AS dr", "dr.volume_id", "=", "dv.id")
             ->join("users AS u", "u.id", "=", "dr.user_id")
             ->join("cm_ranks AS cr", "cr.id", "=", "dr.rank_id")
@@ -128,22 +158,18 @@ class PersonalRetailSale
                 u.country,
                 u.sponsorid AS sponsor_id,
                 CONCAT(s.fname, ' ', s.lname) AS sponsor,
-                MAX(dv.prs) AS prs
+                COALESCE(a.ps, 0) + COALESCE(c.cs, 0) AS total_prs
             ")            
         ;
 
-        $query->groupBy(['dv.user_id']);
+        $query->groupBy(['ct.userid']);
 
         if( !!$start_date && !!$end_date ){
             $query->whereBetween('u.enrolled_date', [$start_date, $end_date]);
         }
 
-        if( !!$volume_start_date && !!$volume_end_date ){
-            $query->whereBetween('dv.volume_date', [$volume_start_date, $volume_end_date]);
-        }
-
         if( $prs_500_above ){
-            $query->where('dv.prs', '>=', 500);
+            $query->where('COALESCE(a.ps, 0) + COALESCE(c.cs, 0)', '>=', 500);
         } 
 
         if (!!$user_id) {
@@ -185,12 +211,12 @@ class PersonalRetailSale
         $end_date      = isset($filters['end_date']) ? $filters['end_date'] : null;
         $prs_500_above = $filters['prs_500_above'] == 'true' ? $filters['prs_500_above'] : null;
         $memberId      = isset($filters['memberId']) ? $filters['memberId'] : null;
-        $volume_start_date = isset($filters['volume_start_date']) ? $filters['volume_start_date'] : null;
-        $volume_end_date   = isset($filters['volume_end_date']) ? $filters['volume_end_date'] : null;
+        $transaction_start_date = isset($filters['transaction_start_date']) ? $filters['transaction_start_date'] : null;
+        $transaction_end_date   = isset($filters['transaction_end_date']) ? $filters['transaction_end_date'] : null;
 
         $csv   = new CsvReport(static::REPORT_PATH);
 
-        $data = $this->getEnrollmentQuery($user_id, $start_date, $end_date, $prs_500_above, $level, $memberId, $volume_start_date, $volume_end_date)->get();
+        $data = $this->getEnrollmentQuery($user_id, $start_date, $end_date, $prs_500_above, $level, $memberId, $transaction_start_date, $transaction_end_date)->get();
 
         $filename = "personal-retail-$start_date-$end_date-";
 
