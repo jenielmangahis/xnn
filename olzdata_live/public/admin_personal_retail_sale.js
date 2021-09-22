@@ -60,7 +60,7 @@
                             d.transaction_end_date = $('#transaction-end-date').val();                  
                         },
                     },
-                    order: [[9, 'desc']],                    
+                    order: [[1, 'desc']],                    
                     columns: [                        
                         {data: 'top', className: "text-center"},
                         {data: 'user_id', className: "text-center"},
