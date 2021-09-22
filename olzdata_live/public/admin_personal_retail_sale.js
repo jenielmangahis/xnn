@@ -71,7 +71,7 @@
                         {data: 'country', className: "text-center"},
                         {data: 'sponsor_id', className: "text-center"},                        
                         {data: 'sponsor', className: "text-center"},
-                        {data: 'prs', className: "text-center"},
+                        {data: 'total_prs', className: "text-center"},
                     ],
                     columnDefs: [
                         {responsivePriority: 1, targets: 0},
