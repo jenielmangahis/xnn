@@ -107,8 +107,6 @@ class QualifiedRecruit
             DB::table('cm_daily_volumes AS dv')
             ->join("cm_daily_ranks AS dr", "dr.volume_id", "=", "dv.id")
             ->join("users AS u", "u.id", "=", "dr.user_id")
-            ->join("cm_ranks AS cr", "cr.id", "=", "dr.rank_id")
-            ->join("cm_ranks AS pr", "pr.id", "=", "dr.paid_as_rank_id")
             ->join("cm_affiliates AS ca", "u.id", "=", "ca.user_id")
             ->leftJoin("users AS s", "s.id", "=", "u.sponsorid")
             ->selectRaw("
