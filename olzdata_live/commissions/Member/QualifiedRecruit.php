@@ -259,7 +259,7 @@ class QualifiedRecruit
 			")
 		;
 
-		$query->whereBetween('c.affiliated_date', [$transaction_start_date, $transaction_end_date]);
+		$query->whereBetween('ca.affiliated_date', [$transaction_start_date, $transaction_end_date]);
 		$query->where('u.sponsorid', $user_id);
 
         return $query;
@@ -363,7 +363,7 @@ class QualifiedRecruit
 			)
 		;
 
-		$query->whereBetween('c.affiliated_date', [$transaction_start_date, $transaction_end_date]);
+		$query->whereBetween('ca.affiliated_date', [$transaction_start_date, $transaction_end_date]);
 		$query->where('u.sponsorid', $user_id);
 
         return $query;
