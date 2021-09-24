@@ -17,6 +17,7 @@
                         memberId: null                        
                     },
                 },
+                userReps: [],
                 csvQualifiedRecruits: {
                     filters: {
                         start_date: null,
@@ -26,6 +27,13 @@
 
                     downloadLink: "",
                     downloadLinkState: "loaded",
+                },
+                listRep:{
+                    filters:{
+                        start_date: null,
+                        end_date: null,
+                        userId: null,
+                    },                    
                 },
                 today: moment().format("YYYY-MM-DD"),
             }
@@ -61,7 +69,12 @@
                         {data: 'country', className: "text-center"},
                         {data: 'sponsor_id', className: "text-center"},                        
                         {data: 'sponsor', className: "text-center"},
-                        {data: 'total_reps', className: "text-center"},
+                        {
+                            data: 'action',
+                            render: function (data, type, row, meta) {
+                                return '<a href="javascript:void(0);" class="btn-view-reps" data-id="'+row.user_id+'">'+row.total_reps+'</a>';
+                            }
+                        },
                         {data: 'sponsored_qualified_representatives_count', className: "text-center"},
                     ],
                     columnDefs: [
@@ -70,6 +83,15 @@
                         {responsivePriority: 3, targets: -3},
                         {responsivePriority: 4, targets: -4},
                     ]
+                });
+            },
+            initializeJQueryEvents() {
+
+                let _this = this;
+
+                $('#table-qualified-recruits').on('click', '.btn-view-reps', function () {
+                    let data = $dt.row($(this).parents('tr')).data();
+                    _this.getRepsList(data.user_id);
                 });
             },
             initializeDatePicker() {
@@ -121,6 +143,29 @@
                     .catch(error => {
                         this.csvQualifiedRecruits.downloadLinkState = "error";
                     })
+            },
+            getRepsList: function (user_id) {
+                this.listRep.filters.start_date = $('#start-date').val();
+                this.listRep.filters.end_date = $('#end-date').val(); 
+                this.listRep.filters.userId = user_id;
+
+                client.get(`admin/qualified-recruits/user-representative-list`).then(response => {
+                    this.products = response.data;
+                    this.is_clawback = is_clawback;
+                    this.error.message = null;
+                    $('#modal-order-items').modal('show');
+                }).catch(error => {
+                    swal('Unable to fetch!','','error');
+                });
+
+                client.get("admin/qualified-recruits/user-representative-list", {
+                    params: this.listRep.filters
+                }).then(response => {
+                    this.userReps = response.data;
+                    $('#modal-user-representative-list').modal('show');
+                }).catch(error => {
+                    swal('Unable to fetch!','','error');
+                });
             },
         }
 

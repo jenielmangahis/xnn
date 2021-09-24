@@ -375,4 +375,5 @@ Route::prefix('admin/personal-retail-sales')->namespace('Admin')->middleware('jw
 Route::prefix('admin/qualified-recruits')->namespace('Admin')->middleware('jwt.auth.level:1,6')->group(function () {
     Route::get('/', 'QualifiedRecruitController@qualified_recruits');
     Route::get('download-qualified-recruits', 'QualifiedRecruitController@downloadQualifiedRecruits');
+    Route::get('user-representative-list/{user_id}', 'QualifiedRecruitController@userRepresentativeList');
 });

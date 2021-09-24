@@ -181,4 +181,57 @@ class QualifiedRecruit
 
         return $csv->generateLink($filename, $data);
     }
+
+    public function getUserRepresentativeList($filters, $user_id = null)
+    {
+        $affiliates = config('commission.member-types.affiliates');
+        $customers  = config('commission.member-types.customers');
+
+        $period   = isset($filters['period']) ? $filters['period'] : null;
+        $userId = isset($filters['userId']) ? $filters['userId'] : null;
+
+        if (!$period) {
+            return null;
+        }
+
+		$transaction_start_date = date('Y-m-1', strtotime($period));
+		$transaction_end_date = date('Y-m-t', strtotime($period));
+
+        $sql = "
+            SELECT 
+				u.id AS user_id,
+				u.sponsorid,
+				CONCAT(s.fname, ' ', s.lname) AS member_name,
+			FROM users u
+			LEFT JOIN
+			(
+				SELECT
+					t.user_id,
+					SUM(COALESCE(t.computed_cv, 0)) AS sales
+				FROM v_cm_transactions t
+				WHERE transaction_date BETWEEN '$transaction_start_date' AND '$transaction_end_date'
+					AND t.`type` = 'product'
+					AND FIND_IN_SET(t.purchaser_catid, '$affiliates')
+				GROUP BY t.user_id
+			) AS ps ON ps.user_id = u.id
+			LEFT JOIN (
+				SELECT
+					ti.upline_id AS user_id,
+					SUM(COALESCE(t.computed_cv, 0)) AS sales
+				FROM v_cm_transactions t
+				JOIN cm_transaction_info ti ON ti.transaction_id = t.transaction_id
+				WHERE t.transaction_date BETWEEN '$transaction_start_date' AND '$transaction_end_date'
+					AND t.`type` = 'product' 
+					AND FIND_IN_SET(t.purchaser_catid, '$customers')
+				GROUP BY ti.upline_id
+			) AS cs ON cs.user_id = u.id
+			WHERE u.sponsorid ='$userId'
+			GROUP BY u.id
+			HAVING total_prs >= 500
+        ";
+
+        $smt = $this->db->prepare($sql);
+        $smt->execute();
+        return $smt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }

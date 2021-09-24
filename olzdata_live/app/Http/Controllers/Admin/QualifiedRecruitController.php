@@ -33,4 +33,16 @@ class QualifiedRecruitController extends Controller
             'link' => $this->qualified_recruit->getQualifiedRecruitsDownloadLink($request->all())
         ]);
     }
+
+    public function userRepresentativeList($user_id)
+    {
+        try
+        {
+            return response()->json($this->qualified_recruit->getUserRepresentativeList($request->all()));
+        }
+        catch (Exception $ex)
+        {
+            return response()->json(['error' => ['message' => $ex->getMessage(), 'type' => 'danger']], 400);
+        }
+    }
 }
