@@ -109,16 +109,14 @@ print <<EOS;
                 <div class="modal-body">
 
                     <div class="table-responsive">
-                        <table id="table-reps-list" class="table table table-striped" >
-                            <!--Table head-->
+                        <table id="table-reps-list" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
                             <thead class="table__header table__header--bg-primary">
-                            <tr class="table__row">
-                                <th class="table__cell col-md-1">#</th>
-                                <th class="table__cell col-md-2">ID</th>
-                                <th class="table__cell col-md-3 text-left">Name</th>
-                            </tr>
+                                <tr class="table__row">
+                                    <th class="table__cell">#</th>
+                                    <th class="table__cell">ID</th>
+                                    <th class="table__cell">Name/th>
+                                </tr>
                             </thead>
-                            <!--Table head-->
                             <tbody class="table__body">
                                 <tr v-for="(user, index) in userReps" class="table__row">
                                     <td class="table__cell text-left">{{index + 1}}</td>

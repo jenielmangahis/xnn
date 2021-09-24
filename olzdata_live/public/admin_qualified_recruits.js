@@ -90,11 +90,16 @@
                     */
                 });
 
-                this.dtRepsList = $("#table-reps-list").DataTable({
-                    processing: false,
-                    serverSide: false,
+                this.dtListReps = $("#table-reps-list").DataTable({
+                    "processing": false,
+                    "serverSide": false,
                     responsive: true,
-                    autoWidth: false,
+                    "pageLength": 10,
+                    columns     : [
+                        {data    : 'row'},
+                        {data    : 'user_id'},
+                        {data    : 'member_name'}
+                    ]
                 });
             },
             initializeJQueryEvents() {
