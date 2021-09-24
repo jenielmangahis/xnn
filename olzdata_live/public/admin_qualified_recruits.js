@@ -90,7 +90,7 @@
                 let _this = this;
 
                 $('#table-qualified-recruits').on('click', '.btn-view-reps', function () {
-                    let data = this.dtQualifiedRecruits.row($(this).parents('tr')).data();
+                    let data = _this.dtQualifiedRecruits.row($(this).parents('tr')).data();
                     _this.getRepsList(data.user_id);
                 });
             },
