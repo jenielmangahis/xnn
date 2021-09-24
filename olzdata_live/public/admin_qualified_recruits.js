@@ -91,14 +91,14 @@
                 });
 
                 this.dtListReps = $("#table-reps-list").DataTable({
-                    "processing": false,
-                    "serverSide": false,
-                    responsive: true,
-                    "pageLength": 10,
-                    columns     : [
-                        {data    : 'row'},
-                        {data    : 'user_id'},
-                        {data    : 'member_name'}
+                    processing: false,
+                    serverSide: false,
+                    responsive: false,
+                    pageLength: 10,
+                    columnDefs: [
+                        {responsivePriority: 1, targets: 0},
+                        {responsivePriority: 2, targets: -1},
+                        {responsivePriority: 3, targets: -3}
                     ]
                 });
             },
