@@ -34,7 +34,7 @@ class QualifiedRecruitController extends Controller
         ]);
     }
 
-    public function userRepresentativeList($user_id)
+    public function userRepresentativeList(Request $request)
     {
         try
         {
