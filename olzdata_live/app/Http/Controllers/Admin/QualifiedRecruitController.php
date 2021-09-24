@@ -36,25 +36,15 @@ class QualifiedRecruitController extends Controller
 
     public function userRepresentativeList(Request $request)
     {
-        try
-        {
-            return response()->json($this->qualified_recruit->getUserRepresentativeList($request->all()));
-        }
-        catch (Exception $ex)
-        {
-            return response()->json(['error' => ['message' => $ex->getMessage(), 'type' => 'danger']], 400);
-        }
+        return response()->json(
+            $this->qualified_recruit->getUserRepresentativeList($request->all())
+        );
     }
 
     public function userQualifiedRepresentativeList(Request $request)
     {
-        try
-        {
-            return response()->json($this->qualified_recruit->getQualifiedUserRepresentativeList($request->all()));
-        }
-        catch (Exception $ex)
-        {
-            return response()->json(['error' => ['message' => $ex->getMessage(), 'type' => 'danger']], 400);
-        }
+        return response()->json(
+            $this->qualified_recruit->getQualifiedUserRepresentativeList($request->all())
+        );
     }
 }
