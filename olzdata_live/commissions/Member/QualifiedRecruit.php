@@ -250,7 +250,7 @@ class QualifiedRecruit
 		$transaction_start_date = date('Y-m-1', strtotime($period));
 		$transaction_end_date = date('Y-m-t', strtotime($period));
 
-		$query =DB::table('users u')
+		$query =DB::table('users as u')
 			->join('cm_affiliates AS ca', 'u.id', '=', 'ca.user_id')
 			->selectRaw("
 				u.id AS user_id,
@@ -332,7 +332,7 @@ class QualifiedRecruit
 		$transaction_start_date = date('Y-m-1', strtotime($period));
 		$transaction_end_date = date('Y-m-t', strtotime($period));
 
-		$query =DB::table('users u')
+		$query =DB::table('users as u')
 			->join('cm_affiliates AS ca', 'u.id', '=', 'ca.user_id')
 			->leftJoin(DB::raw("
 				(
