@@ -3,10 +3,11 @@
 
 namespace Commissions\Member;
 
-
-use App\DailyVolume;
+use Carbon\Carbon;
+use Commissions\QueryHelper;
 use Commissions\CsvReport;
 use Illuminate\Support\Facades\DB;
+use \Illuminate\Database\Capsule\Manager;
 use PDO;
 
 class QualifiedRecruit
@@ -42,7 +43,7 @@ class QualifiedRecruit
 
         $query = $this->getQualifiedRecruitsQuery($user_id, $period, $memberId);
 
-        $recordsTotal = count($query->get());//TODO: Not sure why di mo gana ni -> $query->count(DB::raw("1"));
+        $recordsTotal = $query->count(DB::raw("1"));
 
         // apply search
         $search = isset($search['value']) ? $search['value'] : "";
@@ -63,7 +64,7 @@ class QualifiedRecruit
             });
         }
 
-        $recordsFiltered = count($query->get());//TODO: Not sure why di mo gana ni -> $query->count(DB::raw("1"));
+        $recordsFiltered = $query->count(DB::raw("1"));
 
         if (isset($order) && count($order)) {
             $column = $order[0];
@@ -371,7 +372,7 @@ class QualifiedRecruit
 				SUM(COALESCE(ps.sales, 0) + COALESCE(cs.sales, 0)) AS total_prs
 			")
 		;
-		
+
 		$query->where('u.sponsorid', $user_id);
 		$query->groupBy(['u.id']);
 		$query->havingRaw('SUM(COALESCE(ps.sales, 0) + COALESCE(cs.sales, 0)) >= ?', [500]);
