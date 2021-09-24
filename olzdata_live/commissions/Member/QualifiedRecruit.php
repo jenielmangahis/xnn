@@ -211,12 +211,15 @@ class QualifiedRecruit
         $smt = $this->db->prepare($sql);
         $smt->execute();
         $result = $smt->fetchAll(PDO::FETCH_ASSOC);
-        
+
         return $result;
     }
 
     public function getQualifiedUserRepresentativeList($filters, $user_id = null)
     {
+    	$affiliates = config('commission.member-types.affiliates');
+        $customers  = config('commission.member-types.customers');
+        
         $period   = isset($filters['period']) ? $filters['period'] : null;
         $userId = isset($filters['userId']) ? $filters['userId'] : null;
 
