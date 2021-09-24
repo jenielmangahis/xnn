@@ -120,9 +120,6 @@ print <<EOS;
                             </thead>
                             <!--Table head-->
                             <tbody class="table__body">
-                                <tr v-if="userReps.length == 0" class="table__row text-center">
-                                    <td colspan="2">No records found</td>
-                                </tr>
                                 <tr v-for="(user, index) in userReps" class="table__row">
                                     <td class="table__cell text-left">{{index + 1}}</td>
                                     <td class="table__cell text-left">{{ user.user_id }}</td>
