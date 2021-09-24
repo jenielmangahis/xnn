@@ -159,7 +159,7 @@
                 this.listRep.filters.userId = user_id;
                 this.user_id = user_id;
 
-                client.get("admin/qualified-recruits/download-qualified-recruits", {
+                client.get("admin/qualified-recruits/user-representative-list", {
                     params: this.listRep.filters
                 })
                     .then(response => {
