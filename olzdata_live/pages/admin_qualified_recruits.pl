@@ -109,7 +109,7 @@ print <<EOS;
                 <div class="modal-body">
 
                     <div class="table-responsive">
-                        <table id="table-order-items" class="table table table-striped" >
+                        <table id="table-reps-list" class="table table table-striped" >
                             <!--Table head-->
                             <thead class="table__header table__header--bg-primary">
                             <tr class="table__row">
@@ -123,8 +123,8 @@ print <<EOS;
                                     <td colspan="2">No records found</td>
                                 </tr>
                                 <tr v-for="(user, index) in userReps" class="table__row">
-                                    <td class="table__cell text-center">{{ user.user_id }}</td>
-                                    <td class="table__cell text-center">{{ user.member_name }}</td>
+                                    <td class="table__cell text-left">{{ user.user_id }}</td>
+                                    <td class="table__cell text-left">{{ user.member_name }}</td>
                                 </tr>
                             </tbody>
                         </table>
