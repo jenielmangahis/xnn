@@ -28,8 +28,7 @@
                 user_id: null,
                 listRep:{
                     filters:{
-                        start_date: null,
-                        end_date: null,
+                        period: null,
                         userId: null,
                     },                    
                 },
@@ -132,7 +131,7 @@
             },
             getDownloadQualifiedRecruits() {
 
-               this.csvQualifiedRecruits.filters.period = $('#report-date').val();
+                this.csvQualifiedRecruits.filters.period = $('#report-date').val();
                 this.csvQualifiedRecruits.filters.memberId = this.qualifiedRecruits.filters.memberId;
                 
                 if (this.csvQualifiedRecruits.downloadLinkState === "fetching") return;
@@ -156,18 +155,19 @@
                     })
             },
             getRepsList: function (user_id) {
-                this.listRep.filters.start_date = $('#start-date').val();
-                this.listRep.filters.end_date = $('#end-date').val(); 
+                this.listRep.filters.period = $('#report-date').val();
                 this.listRep.filters.userId = user_id;
 
-                client.get("admin/qualified-recruits/user-representative-list", {
+                client.get("admin/qualified-recruits/download-qualified-recruits", {
                     params: this.listRep.filters
-                }).then(response => {
-                    this.userReps = response.data;
-                    $('#modal-user-representative-list').modal('show');
-                }).catch(error => {
-                    swal('Unable to fetch!','','error');
-                });
+                })
+                    .then(response => {
+                        this.userReps = response.data;
+                        $('#modal-user-representative-list').modal('show');
+                    })
+                    .catch(error => {
+                        swal('Unable to fetch!','','error');
+                    })
             },
         }
 
