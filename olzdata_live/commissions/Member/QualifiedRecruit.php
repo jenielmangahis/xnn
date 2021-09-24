@@ -371,7 +371,7 @@ class QualifiedRecruit
 		$query->whereBetween('ca.affiliated_date', [$transaction_start_date, $transaction_end_date]);
 		$query->where('u.sponsorid', $user_id);
 		$query->groupBy(['u.id']);
-		$query->havingRaw('total_prs >= ?', 500)
+		$query->havingRaw('total_prs >= ?', 500);
 
         return $query;
     }
