@@ -157,6 +157,7 @@
             getRepsList: function (user_id) {
                 this.listRep.filters.period = $('#report-date').val();
                 this.listRep.filters.userId = user_id;
+                this.user_id = user_id;
 
                 client.get("admin/qualified-recruits/download-qualified-recruits", {
                     params: this.listRep.filters
@@ -164,6 +165,7 @@
                     .then(response => {
                         this.userReps = response.data;
                         $('#modal-user-representative-list').modal('show');
+                        console.log(response);
                     })
                     .catch(error => {
                         swal('Unable to fetch!','','error');
