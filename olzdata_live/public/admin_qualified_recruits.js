@@ -12,28 +12,18 @@
                 autocompleteUrl: `${api_url}common/autocomplete/members`,
                 qualifiedRecruits: {                    
                     filters: {
-                        start_date: null,
-                        end_date: null,
+                        period: null,
                         memberId: null                        
                     },
                 },
-                userReps: [],
                 csvQualifiedRecruits: {
                     filters: {
-                        start_date: null,
-                        end_date: null,
+                        period: null,
                         memberId: null,
                     },
 
                     downloadLink: "",
                     downloadLinkState: "loaded",
-                },
-                listRep:{
-                    filters:{
-                        start_date: null,
-                        end_date: null,
-                        userId: null,
-                    },                    
                 },
                 today: moment().format("YYYY-MM-DD"),
             }
@@ -54,8 +44,7 @@
                     ajax: {
                         url: `${api_url}admin/qualified-recruits`,
                         data: function (d) {
-                            d.start_date = $('#start-date').val();
-                            d.end_date   = $('#end-date').val();     
+                            d.period = $('#report-date').val();  
                             d.memberId = _this.qualifiedRecruits.filters.memberId;       
                         },
                     },
@@ -76,13 +65,15 @@
                             }
                         },
                         {data: 'sponsored_qualified_representatives_count', className: "text-center"},
-                    ],
+                    ]
+					/*
                     columnDefs: [
                         {responsivePriority: 1, targets: 0},
                         {responsivePriority: 2, targets: -1},
                         {responsivePriority: 3, targets: -3},
                         {responsivePriority: 4, targets: -4},
                     ]
+                    */
                 });
             },
             initializeJQueryEvents() {
@@ -97,6 +88,7 @@
             initializeDatePicker() {
                 let _this = this;
 
+                /*
                 $('#start-date').ddatepicker({
                     "setDate": new Date(),
                     "format": "yyyy-mm-dd"
@@ -113,6 +105,17 @@
                     "startDate": new Date(),
                     "format": "yyyy-mm-dd"
                 });
+*/
+
+				$('#report-date').ddatepicker({
+                    "setDate" : new Date(),
+                    "format": "yyyy-mm",
+                    "autoclose": true,
+                    "startView": 1,
+                    viewMode: "months",
+                    minViewMode: "months",
+                    "endDate" : new Date()
+                });
             },
             viewQualifiedRecruits() {
                 this.dtQualifiedRecruits.clear().draw();
@@ -120,8 +123,7 @@
             },
             getDownloadQualifiedRecruits() {
 
-                this.csvQualifiedRecruits.filters.start_date = $('#start-date').val();
-                this.csvQualifiedRecruits.filters.end_date = $('#end-date').val(); 
+               this.csvQualifiedRecruits.filters.period = $('#report-date').val();
                 this.csvQualifiedRecruits.filters.memberId = this.qualifiedRecruits.filters.memberId;
                 
                 if (this.csvQualifiedRecruits.downloadLinkState === "fetching") return;
