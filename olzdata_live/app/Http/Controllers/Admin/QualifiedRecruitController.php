@@ -50,7 +50,7 @@ class QualifiedRecruitController extends Controller
     {
         try
         {
-            return response()->json($this->qualified_recruit->getUserRepresentativeList($request->all()));
+            return response()->json($this->qualified_recruit->getQualifiedUserRepresentativeList($request->all()));
         }
         catch (Exception $ex)
         {

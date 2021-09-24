@@ -201,7 +201,8 @@ class QualifiedRecruit
             SELECT 
 				u.id AS user_id,
 				u.sponsorid,
-				CONCAT(u.fname, ' ', u.lname) AS member_name
+				CONCAT(u.fname, ' ', u.lname) AS member_name,
+				SUM(COALESCE(ps.sales, 0) + COALESCE(cs.sales, 0)) AS total_prs
 			FROM users u
 			LEFT JOIN
 			(
@@ -228,6 +229,37 @@ class QualifiedRecruit
 			WHERE u.sponsorid ='$userId'
 			GROUP BY u.id
 			HAVING total_prs >= 500
+        ";
+
+        $smt = $this->db->prepare($sql);
+        $smt->execute();
+        $result = $smt->fetchAll(PDO::FETCH_ASSOC);
+
+        echo "<pre>";
+        print_r($result);
+        return $result;
+    }
+
+    public function getQualifiedUserRepresentativeList($filters, $user_id = null)
+    {
+        $period   = isset($filters['period']) ? $filters['period'] : null;
+        $userId = isset($filters['userId']) ? $filters['userId'] : null;
+
+        if (!$period) {
+            return null;
+        }
+
+		$transaction_start_date = date('Y-m-1', strtotime($period));
+		$transaction_end_date = date('Y-m-t', strtotime($period));
+
+        $sql = "
+            SELECT 
+				u.id AS user_id,
+				u.sponsorid,
+				CONCAT(u.fname, ' ', u.lname) AS member_name
+			FROM users u
+			JOIN cm_affiliates c ON u.id = c.user_id
+			WHERE c.affiliated_date BETWEEN '$transaction_start_date' AND '$transaction_end_date' AND u.sponsorid ='$userId'
         ";
 
         $smt = $this->db->prepare($sql);
