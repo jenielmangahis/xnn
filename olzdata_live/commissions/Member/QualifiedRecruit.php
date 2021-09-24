@@ -217,8 +217,8 @@ class QualifiedRecruit
 
         } elseif (!!$search) {
             $query->where(function ($query) use ($search) {
-                $query->where('u.fname', 'LIKE', "%{$search}%")
-                    ->orWhere('u.lname', 'LIKE', "%{$search}%")                    
+                $query->where('s.fname', 'LIKE', "%{$search}%")
+                    ->orWhere('s.lname', 'LIKE', "%{$search}%");
             });
         }
 
