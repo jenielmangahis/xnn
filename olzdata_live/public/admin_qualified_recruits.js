@@ -116,7 +116,6 @@
                     responsive: true,
                     autoWidth: false,
                     searching: false,
-                    ordering: false,
                     ajax: {
                         url: `${api_url}admin/qualified-recruits/user-qualified-representative-list`,
                         data: function (d) {
