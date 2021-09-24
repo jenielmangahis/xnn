@@ -80,7 +80,7 @@
                             }
                         },
                     ]
-					/*
+                    /*
                     columnDefs: [
                         {responsivePriority: 1, targets: 0},
                         {responsivePriority: 2, targets: -1},
@@ -91,21 +91,14 @@
                 });
 
                 this.dtListReps = $("#table-reps-list").DataTable({
-                    processing: true,
-                    serverSide: true,
-                    responsive: true,
-                    autoWidth: false,
-                    ajax: {
-                        url: `${api_url}admin/qualified-recruits/user-representative-list`,
-                        data: function (d) {
-                            d.period = $('#report-date').val();  
-                            d.userId = _this.listRep.filters.userId; 
-                        },
-                    },
-                    order: [[0, 'asc']],                    
-                    columns: [   
-                        {data: 'user_id', className: "text-center"},
-                        {data: 'member_name', className: "text-center"},
+                    processing: false,
+                    serverSide: false,
+                    responsive: false,
+                    pageLength: 10,
+                    columnDefs: [
+                        {responsivePriority: 1, targets: 0},
+                        {responsivePriority: 2, targets: -1},
+                        {responsivePriority: 3, targets: -3}
                     ]
                 });
             },
@@ -145,7 +138,7 @@
                     });
                 */
 
-				$('#report-date').ddatepicker({
+                $('#report-date').ddatepicker({
                     "setDate" : new Date(),
                     "format": "yyyy-mm",
                     "autoclose": true,
@@ -189,10 +182,17 @@
                 this.listRep.filters.userId = user_id;
                 this.user_id = user_id;
 
-                this.dtListReps.clear().draw();
-                this.dtListReps.responsive.recalc();
-
-                $('#modal-user-representative-list').modal('show');
+                client.get("admin/qualified-recruits/user-representative-list", {
+                    params: this.listRep.filters
+                })
+                    .then(response => {
+                        this.userReps = response.data;
+                        $('#modal-user-representative-list').modal('show');
+                        console.log(response);
+                    })
+                    .catch(error => {
+                        swal('Unable to fetch!','','error');
+                    })
             },
             getQualifiedRepsList: function (user_id) {
                 this.listRep.filters.period = $('#report-date').val();

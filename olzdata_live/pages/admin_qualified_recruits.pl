@@ -34,7 +34,7 @@ print <<EOS;
     <div class="row">
         <div class="col-md-10">
             <form class="form-horizontal ">
-				<!--
+                <!--
                 <div class="form-row">
                     <div class="form-group col-lg-2 col-md-3 col-6">
                         <input id="start-date" type="text" class="form-control flat" placeholder="Start Date">
@@ -49,26 +49,26 @@ print <<EOS;
                         <button type="button" class="btn btn-primary btn-block" v-on:click.prevent="viewQualifiedRecruits">Search</button>
                     </div>
                 </div>
-				-->
-				
-				<div class="form-group">
-					<div class="col-lg-3 col-md-4 col-6">
-						<label for="report-date">Calendar Month</label>
-						<input id="report-date" type="text" class="form-control flat" >
-					</div>
-				</div>
-				<div class="form-group">
-					<div class="col-lg-3 col-md-4 col-6">
-						<label for="rep-id">Representative (Optional)</label>
+                -->
+                
+                <div class="form-group">
+                    <div class="col-lg-3 col-md-4 col-6">
+                        <label for="report-date">Calendar Month</label>
+                        <input id="report-date" type="text" class="form-control flat" >
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-lg-3 col-md-4 col-6">
+                        <label for="rep-id">Representative (Optional)</label>
                         <select2-autocomplete-member id="member-id" :url="autocompleteUrl" v-model="qualifiedRecruits.filters.memberId"></select2-autocomplete-member>
-						</select2-autocomplete-member>
-					</div>
-				</div>
-				<div class="form-group">
-					<div class="col-lg-2 col-md-3 col-6">
+                        </select2-autocomplete-member>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-lg-2 col-md-3 col-6">
                         <button type="button" class="btn btn-primary btn-block" v-on:click.prevent="viewQualifiedRecruits">Search</button>
-					</div>
-				</div>
+                    </div>
+                </div>
 
             </form>
         </div>
@@ -112,11 +112,18 @@ print <<EOS;
                         <table id="table-reps-list" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
                             <thead class="table__header table__header--bg-primary">
                                 <tr class="table__row">
+                                    <th class="table__cell">#</th>
                                     <th class="table__cell">ID</th>
-                                    <th class="table__cell">Name/th>
+                                    <th class="table__cell">Name</th>
                                 </tr>
                             </thead>
-                            <tbody class="table__body"></tbody>
+                            <tbody class="table__body">
+                                <tr v-for="(user, index) in userReps" class="table__row">
+                                    <td class="table__cell text-left">{{index + 1}}</td>
+                                    <td class="table__cell text-left">{{ user.user_id }}</td>
+                                    <td class="table__cell text-left">{{ user.member_name }}</td>
+                                </tr>
+                            </tbody>
                         </table>
                     </div>
                 </div>
