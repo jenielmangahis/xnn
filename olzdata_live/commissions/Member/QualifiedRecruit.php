@@ -22,7 +22,6 @@ class QualifiedRecruit
     public function getQualifiedRecruits($filters, $user_id = null)
     {
         $data = [];
-        $recordsTotal = $recordsFiltered = 0;
 
         $draw = intval($filters['draw']);
 
@@ -33,48 +32,46 @@ class QualifiedRecruit
         $order   = $filters['order'];
         $columns = $filters['columns'];
 
-        $start_date = isset($filters['start_date']) ? $filters['start_date'] : null;
-        $end_date   = isset($filters['end_date']) ? $filters['end_date'] : null;
+        $period = isset($filters['period']) ? $filters['period'] : null;
         $memberId   = isset($filters['memberId']) ? $filters['memberId'] : null;
 
-        /*if (!$start_date || !$end_date) {
-            return compact('recordsTotal', 'draw', 'recordsFiltered', 'data', 'start_date');
-        }*/
+        if (!$period) {
+            return compact('recordsTotal', 'draw', 'recordsFiltered', 'data', 'period');
+        }
 
-        $level = 0;
+        $query = $this->getQualifiedRecruitsQuery($user_id, $period, $memberId);
 
-        $query = $this->getQualifiedRecruitsQuery($user_id, $start_date, $end_date, $level, $memberId);
-
-        $recordsTotal = $query->count(DB::raw("1"));
+        $recordsTotal = count($query->get());//TODO: Not sure why di mo gana ni -> $query->count(DB::raw("1"));
 
         // apply search
         $search = isset($search['value']) ? $search['value'] : "";
 
         if (is_numeric($search) && is_int(+$search)) {
 
-            $query->where(function ($query) use ($search, $level) {
-                $query->where('u.id', $search)
-                    ->orWhere('u.sponsorid', $search)
-                    ->orWhereRaw("dv.level - $level = ?", [$search]);
+            $query->where(function ($query) use ($search) {
+                $query->where('s.id', $search)
+                    ->orWhere('s.sponsorid', $search);
             });
 
         } elseif (!!$search) {
             $query->where(function ($query) use ($search) {
-                $query->where('u.fname', 'LIKE', "%{$search}%")
-                    ->orWhere('u.lname', 'LIKE', "%{$search}%")
-                    ->orWhere('s.fname', 'LIKE', "%{$search}%")
-                    ->orWhere('s.lname', 'LIKE', "%{$search}%");
+                $query->where('s.fname', 'LIKE', "%{$search}%")
+                    ->orWhere('s.lname', 'LIKE', "%{$search}%")
+                    ->orWhere('s1.fname', 'LIKE', "%{$search}%")
+                    ->orWhere('s1.lname', 'LIKE', "%{$search}%");
             });
         }
 
-        $recordsFiltered = $query->count(DB::raw("1"));
+        $recordsFiltered = count($query->get());//TODO: Not sure why di mo gana ni -> $query->count(DB::raw("1"));
 
         if (isset($order) && count($order)) {
             $column = $order[0];
             $query = $query->orderBy($columns[+$column['column']]['data'], $column['dir']);
         }
 
-        $query = $query->take($take);
+		if ($take) {
+			$query = $query->take($take);
+		}
 
         if ($skip) {
             $query = $query->skip($skip);
@@ -85,98 +82,96 @@ class QualifiedRecruit
         return compact('recordsTotal', 'draw', 'recordsFiltered', 'data', 'member_id', 'start_date');
     }
 
-    protected function getQualifiedRecruitsQuery($user_id, $start_date, $end_date, $level = 0, $memberId)
+    protected function getQualifiedRecruitsQuery($user_id, $period, $memberId)
     {
-        $level = 0;
+        $affiliates = config('commission.member-types.affiliates');
+        $customers  = config('commission.member-types.customers');
+		
+		$transaction_start_date = date('Y-m-1', strtotime($period));
+		$transaction_end_date = date('Y-m-t', strtotime($period));
 
-        if ($end_date > date('Y-m-d')) {
-            $end_date = date('Y-m-d');
-        }
+		$query =DB::table('users as u')
+				->join('cm_affiliates AS ca', 'ca.user_id', '=', 'u.sponsorid')
+				->leftJoin(DB::raw("
+					(	
+						SELECT 
+							sponsorid,
+							user_id
+						FROM (
+							SELECT 
+								u.id AS user_id,
+								u.sponsorid,
+								SUM(COALESCE(ps.sales, 0) + COALESCE(cs.sales, 0)) AS total_prs
+							FROM users u
+							LEFT JOIN
+							(
+								SELECT
+									t.user_id,
+									SUM(COALESCE(t.computed_cv, 0)) AS sales
+								FROM v_cm_transactions t
+								WHERE transaction_date BETWEEN '$transaction_start_date' AND '$transaction_end_date'
+									AND t.`type` = 'product'
+									AND FIND_IN_SET(t.purchaser_catid, '$affiliates')
+								GROUP BY t.user_id
+							) AS ps ON ps.user_id = u.id
+							LEFT JOIN (
+								SELECT
+									ti.upline_id AS user_id,
+									SUM(COALESCE(t.computed_cv, 0)) AS sales
+								FROM v_cm_transactions t
+								JOIN cm_transaction_info ti ON ti.transaction_id = t.transaction_id
+								WHERE t.transaction_date BETWEEN '$transaction_start_date' AND '$transaction_end_date'
+									AND t.`type` = 'product' 
+									AND FIND_IN_SET(t.purchaser_catid, '$customers')
+								GROUP BY ti.upline_id
+							) AS cs ON cs.user_id = u.id
+							GROUP BY u.id
+							HAVING total_prs >= 500
+						) AS prs_grouped
+					) AS p "), 'u.id', '=', 'p.user_id')
+			->selectRaw("
+				s.id AS user_id,
+				CONCAT(s.fname, ' ', s.lname) AS member,
+				s.created AS enrolled_date,
+                IFNULL(ud.datedone, '') as affiliated_date,
+				s.email,
+				s.country,
+				s1.id AS sponsor_id,
+				CONCAT(s1.fname, ' ', s1.lname) AS sponsor,
+				COUNT(p.user_id) AS sponsored_qualified_representatives_count,
+				(SELECT
+					COUNT(*) AS total_reps
+				FROM users u
+				JOIN cm_affiliates c ON u.id = c.user_id
+				WHERE c.affiliated_date BETWEEN '$transaction_start_date' AND '$transaction_end_date'
+				AND u.sponsorid = ca.user_id) AS total_reps
+			")
+			->leftJoin('users AS s', 's.id', '=', 'u.sponsorid')
+			->leftJoin('users AS s1', 's1.id', '=', 's.sponsorid')
+			->leftJoin(
+                DB::raw(
+                    "(SELECT userid, datedone FROM updowngrade where status = 'done' AND FIND_IN_SET(newcatid, '$affiliates')) as ud"
+                ), 's.id', '=', 'ud.userid');
 
-        if ($start_date > date('Y-m-d')) {
-            $start_date = date('Y-m-d');
-        }
+		$query->groupBy('u.sponsorid');
 
-        if (!!$user_id) {
-
-            $volume = DailyVolume::ofMember($user_id)->date($end_date)->first();
-            $level = $volume === null ? 0 : +$volume->level;
-        }
-
-        $query =
-            DB::table('cm_daily_volumes AS dv')
-            ->join("cm_daily_ranks AS dr", "dr.volume_id", "=", "dv.id")
-            ->join("users AS u", "u.id", "=", "dr.user_id")
-            ->join("cm_affiliates AS ca", "u.id", "=", "ca.user_id")
-            ->leftJoin("users AS s", "s.id", "=", "u.sponsorid")
-            ->selectRaw("
-                dv.user_id,
-                CONCAT(u.fname, ' ', u.lname) AS member,
-                u.enrolled_date,
-                ca.affiliated_date,
-                u.email,
-                u.country,
-                u.sponsorid AS sponsor_id,
-                CONCAT(s.fname, ' ', s.lname) AS sponsor,
-                (
-                    SELECT COUNT(id)
-                    FROM users uu 
-                    WHERE uu.sponsorid = u.id
-                )AS total_reps,
-                dv.sponsored_qualified_representatives_count
-            ")            
-        ;
-
-        $query->groupBy(['dv.user_id']);
-
-        if( !!$start_date && !!$end_date ){
-            $query->whereBetween('u.enrolled_date', [$start_date, $end_date]);
-        }
-
-        if (!!$user_id) {
-            $query->whereRaw("EXISTS(
-                WITH RECURSIVE downline (user_id, parent_id, `level`) AS (
-                    SELECT 
-                        id AS user_id,
-                        sponsorid AS parent_id,
-                        1 AS `level`
-                    FROM users
-                    WHERE sponsorid = ? AND levelid = 3
-                    
-                    UNION ALL
-                    
-                    SELECT
-                        p.id AS user_id,
-                        p.sponsorid AS parent_id,
-                        downline.`level` + 1 `level`
-                    FROM users p
-                    INNER JOIN downline ON p.sponsorid = downline.user_id
-                    WHERE p.levelid = 3
-                )
-                SELECT 1 FROM downline d WHERE d.user_id = dv.user_id
-            )", [$user_id]);
-        }
-
-        //Filter by member id
-        if (!!$memberId) {
-            $query = $query->where('u.id', $memberId);
-        }
+		if (!!$memberId) {
+			$query = $query->where('u.sponsorid', $memberId);
+		}
 
         return $query;
     }
 
     public function getQualifiedRecruitsDownloadLink($filters, $user_id = null)
     {
-        $level = 0;
-        $start_date    = isset($filters['start_date']) ? $filters['start_date'] : null;
-        $end_date      = isset($filters['end_date']) ? $filters['end_date'] : null;
+        $period    = isset($filters['period']) ? $filters['period'] : null;
         $memberId      = isset($filters['memberId']) ? $filters['memberId'] : null;
 
         $csv   = new CsvReport(static::REPORT_PATH);
 
-        $data = $this->getQualifiedRecruitsQuery($user_id, $start_date, $end_date, $level, $memberId)->get();
+        $data = $this->getQualifiedRecruitsQuery($user_id, $period, $memberId)->get();
 
-        $filename = "qualified-recruits-$start_date-$end_date-";
+        $filename = "qualified-recruits-$period";
 
         if ($memberId !== null) {
             $filename .= "$memberId-";

@@ -34,6 +34,7 @@ print <<EOS;
     <div class="row">
         <div class="col-md-10">
             <form class="form-horizontal ">
+				<!--
                 <div class="form-row">
                     <div class="form-group col-lg-2 col-md-3 col-6">
                         <input id="start-date" type="text" class="form-control flat" placeholder="Start Date">
@@ -48,20 +49,28 @@ print <<EOS;
                         <button type="button" class="btn btn-primary btn-block" v-on:click.prevent="viewQualifiedRecruits">Search</button>
                     </div>
                 </div>
+				-->
+				
+				<div class="form-group">
+					<div class="col-lg-3 col-md-4 col-6">
+						<label for="report-date">Calendar Month</label>
+						<input id="report-date" type="text" class="form-control flat" >
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-lg-3 col-md-4 col-6">
+						<label for="rep-id">Representative (Optional)</label>
+                        <select2-autocomplete-member id="member-id" :url="autocompleteUrl" v-model="qualifiedRecruits.filters.memberId"></select2-autocomplete-member>
+						</select2-autocomplete-member>
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-lg-2 col-md-3 col-6">
+                        <button type="button" class="btn btn-primary btn-block" v-on:click.prevent="viewQualifiedRecruits">Search</button>
+					</div>
+				</div>
 
             </form>
-        </div>
-        <div class="col-md-2 ">
-            <div class="pull-right">
-                <div class="form-group">
-                    <select class="form-control form-control-sm">
-                        <option selected="">100</option>
-                        <option value="75">75</option>
-                        <option value="50">50</option>
-                        <option value="25">25</option>
-                    </select>
-                </div>
-            </div>
         </div>
    
     </div>
