@@ -105,7 +105,6 @@
                     },
                     order: [[0, 'asc']],                    
                     columns: [   
-                        {data: 'row_num', className: "text-center"},
                         {data: 'user_id', className: "text-center"},
                         {data: 'member_name', className: "text-center"},
                     ]
@@ -126,7 +125,6 @@
                     },
                     order: [[0, 'asc']],                    
                     columns: [   
-                        {data: 'row_num', className: "text-center"},
                         {data: 'user_id', className: "text-center"},
                         {data: 'member_name', className: "text-center"},
                     ]
