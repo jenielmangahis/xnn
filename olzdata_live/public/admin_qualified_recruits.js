@@ -110,6 +110,27 @@
                         {data: 'member_name', className: "text-center"},
                     ]
                 });
+
+                this.dtQualifiedListReps = $("#table-qualified-reps-list").DataTable({
+                    processing: true,
+                    serverSide: true,
+                    responsive: true,
+                    autoWidth: false,
+                    searching: false,
+                    ordering: false,
+                    ajax: {
+                        url: `${api_url}admin/qualified-recruits/user-qualified-representative-list`,
+                        data: function (d) {
+                            d.period = $('#report-date').val();  
+                            d.userId = _this.listRep.filters.userId; 
+                        },
+                    },
+                    order: [[0, 'asc']],                    
+                    columns: [   
+                        {data: 'user_id', className: "text-center"},
+                        {data: 'member_name', className: "text-center"},
+                    ]
+                });
             },
             initializeJQueryEvents() {
 
@@ -201,17 +222,10 @@
                 this.listRep.filters.userId = user_id;
                 this.user_id = user_id;
 
-                client.get("admin/qualified-recruits/user-qualified-representative-list", {
-                    params: this.listRep.filters
-                })
-                    .then(response => {
-                        this.userReps = response.data;
-                        $('#modal-user-representative-list').modal('show');
-                        console.log(response);
-                    })
-                    .catch(error => {
-                        swal('Unable to fetch!','','error');
-                    })
+                this.dtQualifiedListReps.clear().draw();
+                this.dtQualifiedListReps.responsive.recalc();
+
+                $('#modal-qualified-user-representative-list').modal('show');
             },
         }
 

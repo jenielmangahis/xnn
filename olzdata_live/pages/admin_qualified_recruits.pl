@@ -127,6 +127,34 @@ print <<EOS;
         </div>
     </div>
 
+    <div class="modal fade" id="modal-qualified-user-representative-list" role="dialog" aria-labelledby="modal-order-items-label">
+        <div class="modal-dialog modal-xl modal-lg" role="document">
+            <form class="modal-content" v-on:submit.prevent>
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="modal-order-items-label">USER ID {{ user_id }} - Qualified Representative List</h4>
+                </div>
+                <div class="modal-body">
+
+                    <div class="table-responsive">
+                        <table id="table-qualified-reps-list" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
+                            <thead class="table__header table__header--bg-primary">
+                                <tr class="table__row">
+                                    <th class="table__cell">ID</th>
+                                    <th class="table__cell">Name</th>
+                                </tr>
+                            </thead>
+                            <tbody class="table__body"></tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
 </div>
 
 <script src="$commission_engine_api_url/js/app.js?v=$app_js_version"></script>

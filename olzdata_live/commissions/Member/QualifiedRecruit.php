@@ -163,29 +163,6 @@ class QualifiedRecruit
         return $query;
     }
 
-    protected function getUserRepresentativeQuery($user_id, $period)
-    {
-        $affiliates = config('commission.member-types.affiliates');
-        $customers  = config('commission.member-types.customers');
-		
-		$transaction_start_date = date('Y-m-1', strtotime($period));
-		$transaction_end_date = date('Y-m-t', strtotime($period));
-
-		$query =DB::table('users u')
-			->join('cm_affiliates AS ca', 'u.id', '=', 'ca.user_id')
-			->selectRaw("
-				u.id AS user_id,
-				u.sponsorid,
-				CONCAT(u.fname, ' ', u.lname) AS member_name
-			")
-		;
-
-		$query->whereBetween('c.affiliated_date', [$transaction_start_date, $transaction_end_date]);
-		$query->where('u.sponsorid', $user_id);
-
-        return $query;
-    }
-
     public function getQualifiedRecruitsDownloadLink($filters, $user_id = null)
     {
         $period    = isset($filters['period']) ? $filters['period'] : null;
@@ -265,58 +242,130 @@ class QualifiedRecruit
         return compact('recordsTotal', 'draw', 'recordsFiltered', 'data', 'member_id', 'start_date');
     }
 
-    public function getQualifiedUserRepresentativeList($filters, $user_id = null)
+    protected function getUserRepresentativeQuery($user_id, $period)
     {
-    	$affiliates = config('commission.member-types.affiliates');
+        $affiliates = config('commission.member-types.affiliates');
         $customers  = config('commission.member-types.customers');
-
-        $period   = isset($filters['period']) ? $filters['period'] : null;
-        $userId = isset($filters['userId']) ? $filters['userId'] : null;
-
-        if (!$period) {
-            return null;
-        }
-
+		
 		$transaction_start_date = date('Y-m-1', strtotime($period));
 		$transaction_end_date = date('Y-m-t', strtotime($period));
 
-		$sql = "
-            SELECT 
+		$query =DB::table('users u')
+			->join('cm_affiliates AS ca', 'u.id', '=', 'ca.user_id')
+			->selectRaw("
 				u.id AS user_id,
 				u.sponsorid,
-				CONCAT(u.fname, ' ', u.lname) AS member_name,
-				SUM(COALESCE(ps.sales, 0) + COALESCE(cs.sales, 0)) AS total_prs
-			FROM users u
-			LEFT JOIN
-			(
-				SELECT
-					t.user_id,
-					SUM(COALESCE(t.computed_cv, 0)) AS sales
-				FROM v_cm_transactions t
-				WHERE transaction_date BETWEEN '$transaction_start_date' AND '$transaction_end_date'
-					AND t.`type` = 'product'
-					AND FIND_IN_SET(t.purchaser_catid, '$affiliates')
-				GROUP BY t.user_id
-			) AS ps ON ps.user_id = u.id
-			LEFT JOIN (
-				SELECT
-					ti.upline_id AS user_id,
-					SUM(COALESCE(t.computed_cv, 0)) AS sales
-				FROM v_cm_transactions t
-				JOIN cm_transaction_info ti ON ti.transaction_id = t.transaction_id
-				WHERE t.transaction_date BETWEEN '$transaction_start_date' AND '$transaction_end_date'
-					AND t.`type` = 'product' 
-					AND FIND_IN_SET(t.purchaser_catid, '$customers')
-				GROUP BY ti.upline_id
-			) AS cs ON cs.user_id = u.id
-			WHERE u.sponsorid ='$userId'
-			GROUP BY u.id
-			HAVING total_prs >= 500
-        ";
+				CONCAT(u.fname, ' ', u.lname) AS member_name
+			")
+		;
 
-        $smt = $this->db->prepare($sql);
-        $smt->execute();
-        $result = $smt->fetchAll(PDO::FETCH_ASSOC);
-        return $result;
+		$query->whereBetween('c.affiliated_date', [$transaction_start_date, $transaction_end_date]);
+		$query->where('u.sponsorid', $user_id);
+
+        return $query;
+    }
+
+    protected function getQualifiedUserRepresentativeQuery($user_id, $period)
+    {
+        $affiliates = config('commission.member-types.affiliates');
+        $customers  = config('commission.member-types.customers');
+		
+		$transaction_start_date = date('Y-m-1', strtotime($period));
+		$transaction_end_date = date('Y-m-t', strtotime($period));
+
+		$query =DB::table('users u')
+			->join('cm_affiliates AS ca', 'u.id', '=', 'ca.user_id')
+			->leftJoin(DB::raw("
+				(
+					SELECT
+						t.user_id,
+						SUM(COALESCE(t.computed_cv, 0)) AS sales
+					FROM v_cm_transactions t
+					WHERE transaction_date BETWEEN '$transaction_start_date' AND '$transaction_end_date'
+						AND t.`type` = 'product'
+						AND FIND_IN_SET(t.purchaser_catid, '$affiliates')
+					GROUP BY t.user_id
+				)AS ps
+				"), 'ps.user_id', '=', 'u.id'
+			)
+			->leftJoin(DB::raw("
+				(
+					SELECT
+						ti.upline_id AS user_id,
+						SUM(COALESCE(t.computed_cv, 0)) AS sales
+					FROM v_cm_transactions t
+					JOIN cm_transaction_info ti ON ti.transaction_id = t.transaction_id
+					WHERE t.transaction_date BETWEEN '$transaction_start_date' AND '$transaction_end_date'
+						AND t.`type` = 'product' 
+						AND FIND_IN_SET(t.purchaser_catid, '$customers')
+					GROUP BY ti.upline_id
+				) AS cs
+				"), 'cs.user_id', '=', 'u.id'
+			)
+		;
+
+		$query->whereBetween('c.affiliated_date', [$transaction_start_date, $transaction_end_date]);
+		$query->where('u.sponsorid', $user_id);
+
+        return $query;
+    }
+
+    public function getQualifiedUserRepresentativeList($filters, $user_id = null)
+    {
+    	$data = [];
+
+        $draw = intval($filters['draw']);
+
+        $skip = $filters['start'];
+        $take = $filters['length'];
+
+        $search  = $filters['search'];
+        $order   = $filters['order'];
+        $columns = $filters['columns'];
+
+        $period  = isset($filters['period']) ? $filters['period'] : null;
+        $userId  = isset($filters['userId']) ? $filters['userId'] : null;
+
+        if (!$period) {
+            return compact('recordsTotal', 'draw', 'recordsFiltered', 'data', 'period');
+        }
+
+        $query = $this->getQualifiedUserRepresentativeQuery($userId, $period);
+        $recordsTotal = count($query->get());//TODO: Not sure why di mo gana ni -> $query->count(DB::raw("1"));
+
+        // apply search
+        $search = isset($search['value']) ? $search['value'] : "";
+
+        if (is_numeric($search) && is_int(+$search)) {
+
+            $query->where(function ($query) use ($search) {
+                $query->where('s.user_id', $search);
+            });
+
+        } elseif (!!$search) {
+            $query->where(function ($query) use ($search) {
+                $query->where('u.fname', 'LIKE', "%{$search}%")
+                    ->orWhere('u.lname', 'LIKE', "%{$search}%")                    
+            });
+        }
+
+        $recordsFiltered = count($query->get());//TODO: Not sure why di mo gana ni -> $query->count(DB::raw("1"));
+
+        if (isset($order) && count($order)) {
+            $column = $order[0];
+            $query = $query->orderBy($columns[+$column['column']]['data'], $column['dir']);
+        }
+
+		if ($take) {
+			$query = $query->take($take);
+		}
+
+        if ($skip) {
+            $query = $query->skip($skip);
+        }
+
+        $data = $query->get();
+
+        return compact('recordsTotal', 'draw', 'recordsFiltered', 'data', 'member_id', 'start_date');
     }
 }
