@@ -25,6 +25,13 @@
                     downloadLink: "",
                     downloadLinkState: "loaded",
                 },
+                listRep:{
+                    filters:{
+                        start_date: null,
+                        end_date: null,
+                        userId: null,
+                    },                    
+                },
                 today: moment().format("YYYY-MM-DD"),
             }
         },
@@ -89,23 +96,23 @@
                 let _this = this;
 
                 /*
-                $('#start-date').ddatepicker({
-                    "setDate": new Date(),
-                    "format": "yyyy-mm-dd"
-                }).on('changeDate', function (e) {
-                    $('#end-date').ddatepicker('setStartDate', e.date);
+                    $('#start-date').ddatepicker({
+                        "setDate": new Date(),
+                        "format": "yyyy-mm-dd"
+                    }).on('changeDate', function (e) {
+                        $('#end-date').ddatepicker('setStartDate', e.date);
 
-                    if ($('#end-date').ddatepicker('getDate') < e.date) {
-                        $('#end-date').ddatepicker('setDate', e.date);
-                    }
-                });
+                        if ($('#end-date').ddatepicker('getDate') < e.date) {
+                            $('#end-date').ddatepicker('setDate', e.date);
+                        }
+                    });
 
-                $('#end-date').ddatepicker({
-                    "setDate": new Date(),
-                    "startDate": new Date(),
-                    "format": "yyyy-mm-dd"
-                });
-*/
+                    $('#end-date').ddatepicker({
+                        "setDate": new Date(),
+                        "startDate": new Date(),
+                        "format": "yyyy-mm-dd"
+                    });
+                */
 
 				$('#report-date').ddatepicker({
                     "setDate" : new Date(),
@@ -150,15 +157,6 @@
                 this.listRep.filters.start_date = $('#start-date').val();
                 this.listRep.filters.end_date = $('#end-date').val(); 
                 this.listRep.filters.userId = user_id;
-
-                client.get(`admin/qualified-recruits/user-representative-list`).then(response => {
-                    this.products = response.data;
-                    this.is_clawback = is_clawback;
-                    this.error.message = null;
-                    $('#modal-order-items').modal('show');
-                }).catch(error => {
-                    swal('Unable to fetch!','','error');
-                });
 
                 client.get("admin/qualified-recruits/user-representative-list", {
                     params: this.listRep.filters
