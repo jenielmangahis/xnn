@@ -112,18 +112,11 @@ print <<EOS;
                         <table id="table-reps-list" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
                             <thead class="table__header table__header--bg-primary">
                                 <tr class="table__row">
-                                    <th class="table__cell">#</th>
                                     <th class="table__cell">ID</th>
                                     <th class="table__cell">Name/th>
                                 </tr>
                             </thead>
-                            <tbody class="table__body">
-                                <tr v-for="(user, index) in userReps" class="table__row">
-                                    <td class="table__cell text-left">{{index + 1}}</td>
-                                    <td class="table__cell text-left">{{ user.user_id }}</td>
-                                    <td class="table__cell text-left">{{ user.member_name }}</td>
-                                </tr>
-                            </tbody>
+                            <tbody class="table__body"></tbody>
                         </table>
                     </div>
                 </div>
