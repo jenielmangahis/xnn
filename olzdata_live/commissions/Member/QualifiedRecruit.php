@@ -188,11 +188,20 @@ class QualifiedRecruit
         $affiliates = config('commission.member-types.affiliates');
         $customers  = config('commission.member-types.customers');
 
-        $period   = isset($filters['period']) ? $filters['period'] : null;
-        $userId = isset($filters['userId']) ? $filters['userId'] : null;
+        $data = [];
+
+        $draw = intval($filters['draw']);
+        $skip = $filters['start'];
+        $take = $filters['length'];
+
+        $search  = $filters['search'];
+        $order   = $filters['order'];
+        $columns = $filters['columns'];
+        $period  = isset($filters['period']) ? $filters['period'] : null;
+        $userId  = isset($filters['userId']) ? $filters['userId'] : null;
 
         if (!$period) {
-            return null;
+             return compact('recordsTotal', 'draw', 'recordsFiltered', 'data', 'period');
         }
 
 		$transaction_start_date = date('Y-m-1', strtotime($period));
@@ -212,6 +221,21 @@ class QualifiedRecruit
         $smt->execute();
         $result = $smt->fetchAll(PDO::FETCH_ASSOC);
 
+        $recordsTotal    = $smt->rowCount();
+        $recordsFiltered = $smt->rowCount();
+
+		if ($take) {
+			$query = $query->take($take);
+		}
+
+        if ($skip) {
+            $query = $query->skip($skip);
+        }
+
+        $data = $result;
+
+        return compact('recordsTotal', 'draw', 'recordsFiltered', 'data', 'member_id', 'start_date');
+
         return $result;
     }
 
@@ -219,7 +243,7 @@ class QualifiedRecruit
     {
     	$affiliates = config('commission.member-types.affiliates');
         $customers  = config('commission.member-types.customers');
-        
+
         $period   = isset($filters['period']) ? $filters['period'] : null;
         $userId = isset($filters['userId']) ? $filters['userId'] : null;
 
