@@ -89,6 +89,11 @@
                     ]
                     */
                 });
+
+                this.dtListRepresentatives = $("#table-reps-list").DataTable({
+                    responsive: true,
+                    autoWidth: false
+                });
             },
             initializeJQueryEvents() {
 

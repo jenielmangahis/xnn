@@ -113,6 +113,7 @@ print <<EOS;
                             <!--Table head-->
                             <thead class="table__header table__header--bg-primary">
                             <tr class="table__row">
+                                <th class="table__cell col-md-1"></th>
                                 <th class="table__cell col-md-2">ID</th>
                                 <th class="table__cell col-md-3 text-left">Name</th>
                             </tr>
@@ -123,6 +124,7 @@ print <<EOS;
                                     <td colspan="2">No records found</td>
                                 </tr>
                                 <tr v-for="(user, index) in userReps" class="table__row">
+                                    <td class="table__cell text-left">{{index + 1}}</td>
                                     <td class="table__cell text-left">{{ user.user_id }}</td>
                                     <td class="table__cell text-left">{{ user.member_name }}</td>
                                 </tr>
