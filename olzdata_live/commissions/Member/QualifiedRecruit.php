@@ -201,7 +201,7 @@ class QualifiedRecruit
             SELECT 
 				u.id AS user_id,
 				u.sponsorid,
-				CONCAT(s.fname, ' ', s.lname) AS member_name,
+				CONCAT(s.fname, ' ', s.lname) AS member_name
 			FROM users u
 			LEFT JOIN
 			(
