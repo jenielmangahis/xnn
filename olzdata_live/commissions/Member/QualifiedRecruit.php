@@ -244,6 +244,8 @@ class QualifiedRecruit
 
     protected function getUserRepresentativeQuery($user_id, $period)
     {
+    	DB::statement(DB::raw('SET @rownum=0'));
+
         $affiliates = config('commission.member-types.affiliates');
         $customers  = config('commission.member-types.customers');
 		
@@ -253,6 +255,7 @@ class QualifiedRecruit
 		$query =DB::table('users as u')
 			->join('cm_affiliates AS ca', 'u.id', '=', 'ca.user_id')
 			->selectRaw("
+				@rownum  := @rownum  + 1 AS index,
 				u.id AS user_id,
 				u.sponsorid,
 				CONCAT(u.fname, ' ', u.lname) AS member_name
@@ -326,6 +329,8 @@ class QualifiedRecruit
 
     protected function getQualifiedUserRepresentativeQuery($user_id, $period)
     {
+    	DB::statement(DB::raw('SET @rownum=0'));
+
         $affiliates = config('commission.member-types.affiliates');
         $customers  = config('commission.member-types.customers');
 		
@@ -361,6 +366,12 @@ class QualifiedRecruit
 				) AS cs
 				"), 'cs.user_id', '=', 'u.id'
 			)
+			->selectRaw("
+				@rownum  := @rownum  + 1 AS index,
+				u.id AS user_id,
+				u.sponsorid,
+				CONCAT(u.fname, ' ', u.lname) AS member_name
+			")
 		;
 
 		$query->whereBetween('ca.affiliated_date', [$transaction_start_date, $transaction_end_date]);

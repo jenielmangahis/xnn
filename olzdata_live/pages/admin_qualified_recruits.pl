@@ -112,6 +112,7 @@ print <<EOS;
                         <table id="table-reps-list" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
                             <thead class="table__header table__header--bg-primary">
                                 <tr class="table__row">
+                                    <th class="table__cell">Index</th>
                                     <th class="table__cell">ID</th>
                                     <th class="table__cell">Name</th>
                                 </tr>
@@ -140,6 +141,7 @@ print <<EOS;
                         <table id="table-qualified-reps-list" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
                             <thead class="table__header table__header--bg-primary">
                                 <tr class="table__row">
+                                    <th class="table__cell">Index</th>
                                     <th class="table__cell">ID</th>
                                     <th class="table__cell">Name</th>
                                 </tr>
