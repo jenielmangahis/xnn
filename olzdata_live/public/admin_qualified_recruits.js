@@ -104,9 +104,15 @@
                         },
                     },
                     order: [[0, 'asc']],                    
-                    columns: [   
+                    columns: [ 
+                        {data: 'top', className: "text-center"},  
                         {data: 'user_id', className: "text-center"},
                         {data: 'member_name', className: "text-center"},
+                    ],
+                    columnDefs: [
+                        {responsivePriority: 1, targets: 0},
+                        {responsivePriority: 2, targets: -1},
+                        {responsivePriority: 3, targets: -3},
                     ]
                 });
 
@@ -125,8 +131,14 @@
                     },
                     order: [[0, 'asc']],                    
                     columns: [   
+                        {data: 'top', className: "text-center"},
                         {data: 'user_id', className: "text-center"},
                         {data: 'member_name', className: "text-center"},
+                    ],
+                    columnDefs: [
+                        {responsivePriority: 1, targets: 0},
+                        {responsivePriority: 2, targets: -1},
+                        {responsivePriority: 3, targets: -3},
                     ]
                 });
             },
