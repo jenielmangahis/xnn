@@ -372,8 +372,7 @@ class QualifiedRecruit
 				SUM(COALESCE(ps.sales, 0) + COALESCE(cs.sales, 0)) AS total_prs
 			")
 		;
-
-		$query->whereBetween('ca.affiliated_date', [$transaction_start_date, $transaction_end_date]);
+		
 		$query->where('u.sponsorid', $user_id);
 		$query->groupBy(['u.id']);
 		$query->havingRaw('SUM(COALESCE(ps.sales, 0) + COALESCE(cs.sales, 0)) >= ?', [500]);

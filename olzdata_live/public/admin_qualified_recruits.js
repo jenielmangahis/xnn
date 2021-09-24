@@ -105,8 +105,8 @@
                     },
                     order: [[0, 'asc']],                    
                     columns: [ 
-                        {data: 'top', className: "text-center"},  
-                        {data: 'user_id', className: "text-center"},
+                        {data: 'top', className: "text-center", width: '100px'},  
+                        {data: 'user_id', className: "text-center", width: '100px'},
                         {data: 'member_name', className: "text-center"},
                     ],
                     columnDefs: [
@@ -131,8 +131,8 @@
                     },
                     order: [[0, 'asc']],                    
                     columns: [   
-                        {data: 'top', className: "text-center"},
-                        {data: 'user_id', className: "text-center"},
+                        {data: 'top', className: "text-center", width: '100px'},  
+                        {data: 'user_id', className: "text-center", width: '100px'},
                         {data: 'member_name', className: "text-center"},
                     ],
                     columnDefs: [
