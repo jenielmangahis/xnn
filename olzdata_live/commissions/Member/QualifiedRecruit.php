@@ -224,14 +224,6 @@ class QualifiedRecruit
         $recordsTotal    = $smt->rowCount();
         $recordsFiltered = $smt->rowCount();
 
-		if ($take) {
-			$query = $query->take($take);
-		}
-
-        if ($skip) {
-            $query = $query->skip($skip);
-        }
-
         $data = $result;
 
         return compact('recordsTotal', 'draw', 'recordsFiltered', 'data', 'member_id', 'start_date');
