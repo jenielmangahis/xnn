@@ -204,7 +204,6 @@ class QualifiedRecruit
         }
 
         $query = $this->getUserRepresentativeQuery($userId, $period);
-        $recordsTotal = count($query->get());//TODO: Not sure why di mo gana ni -> $query->count(DB::raw("1"));
         $recordsTotal = $query->count(DB::raw("1"));
 
         // apply search
@@ -223,7 +222,7 @@ class QualifiedRecruit
             });
         }
 
-        $recordsFiltered = count($query->get());//TODO: Not sure why di mo gana ni -> $query->count(DB::raw("1"));
+        $recordsFiltered = $query->count(DB::raw("1"));
 
         if (isset($order) && count($order)) {
             $column = $order[0];
