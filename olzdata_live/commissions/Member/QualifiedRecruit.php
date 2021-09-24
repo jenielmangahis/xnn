@@ -43,7 +43,7 @@ class QualifiedRecruit
 
         $query = $this->getQualifiedRecruitsQuery($user_id, $period, $memberId);
 
-        $recordsTotal = $query->count(DB::raw("1"));
+        $recordsTotal = count($query->get());//TODO: Not sure why di mo gana ni -> $query->count(DB::raw("1"));
 
         // apply search
         $search = isset($search['value']) ? $search['value'] : "";
@@ -64,7 +64,7 @@ class QualifiedRecruit
             });
         }
 
-        $recordsFiltered = $query->count(DB::raw("1"));
+        $recordsFiltered = count($query->get());//TODO: Not sure why di mo gana ni -> $query->count(DB::raw("1"));
 
         if (isset($order) && count($order)) {
             $column = $order[0];
