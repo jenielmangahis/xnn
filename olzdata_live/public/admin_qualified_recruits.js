@@ -68,7 +68,7 @@
                         {
                             data: 'action',
                             render: function (data, type, row, meta) {
-                                return '<a href="javascript:void(0);" class="btn-view-reps" data-id="'+row.user_id+'">'+row.total_reps+'</a>';
+                                return '<a href="javascript:void(0);" class="btn-view-reps" data-id="'+row.total_reps+'">'+row.total_reps+'</a>';
                             }
                         },
                         {data: 'sponsored_qualified_representatives_count', className: "text-center"},
