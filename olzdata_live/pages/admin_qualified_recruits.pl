@@ -113,7 +113,7 @@ print <<EOS;
                             <!--Table head-->
                             <thead class="table__header table__header--bg-primary">
                             <tr class="table__row">
-                                <th class="table__cell col-md-1"></th>
+                                <th class="table__cell col-md-1">#</th>
                                 <th class="table__cell col-md-2">ID</th>
                                 <th class="table__cell col-md-3 text-left">Name</th>
                             </tr>
