@@ -90,10 +90,7 @@
                     */
                 });
 
-                $("#table-reps-list").DataTable({
-                    responsive: true,
-                    autoWidth: false,
-                });
+                $("#table-reps-list").DataTable();
             },
             initializeJQueryEvents() {
 
