@@ -7,6 +7,7 @@ namespace Commissions\Member;
 use App\DailyVolume;
 use Commissions\CsvReport;
 use Illuminate\Support\Facades\DB;
+use PDO;
 
 class QualifiedRecruit
 {
