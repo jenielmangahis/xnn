@@ -104,8 +104,7 @@
                         },
                     },
                     order: [[0, 'asc']],                    
-                    columns: [ 
-                        {data: 'user_id', className: "text-center", width: '80px'},
+                    columns: [                         
                         {data: 'user_id', className: "text-center", width: '100px'},
                         {data: 'member_name', className: "text-center"},
                     ],
