@@ -328,7 +328,7 @@ class QualifiedRecruit
     protected function getQualifiedUserRepresentativeQuery($user_id, $period)
     {
     	DB::statement(DB::raw('SET @rownum=0'));
-    	
+
         $affiliates = config('commission.member-types.affiliates');
         $customers  = config('commission.member-types.customers');
 		
@@ -368,14 +368,15 @@ class QualifiedRecruit
 				@rownum  := @rownum  + 1 AS top,
 				u.id AS user_id,
 				u.sponsorid,
-				CONCAT(u.fname, ' ', u.lname) AS member_name
+				CONCAT(u.fname, ' ', u.lname) AS member_name,
+				SUM(COALESCE(ps.sales, 0) + COALESCE(cs.sales, 0)) AS total_prs
 			")
 		;
 
 		$query->whereBetween('ca.affiliated_date', [$transaction_start_date, $transaction_end_date]);
 		$query->where('u.sponsorid', $user_id);
 		$query->groupBy(['u.id']);
-		$query->havingRaw('total_prs >= ?', [500]);
+		$query->havingRaw('SUM(COALESCE(ps.sales, 0) + COALESCE(cs.sales, 0)) >= ?', [500]);
 
         return $query;
     }
