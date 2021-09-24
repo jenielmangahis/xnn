@@ -215,6 +215,7 @@ class QualifiedRecruit
 			FROM users u
 			JOIN cm_affiliates c ON u.id = c.user_id
 			WHERE c.affiliated_date BETWEEN '$transaction_start_date' AND '$transaction_end_date' AND u.sponsorid ='$userId'
+			LIMIT '$skip' OFFSET '$take'
         ";
 
         $smt = $this->db->prepare($sql);
