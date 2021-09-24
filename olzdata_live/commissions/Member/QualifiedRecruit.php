@@ -255,7 +255,7 @@ class QualifiedRecruit
 		$query =DB::table('users as u')
 			->join('cm_affiliates AS ca', 'u.id', '=', 'ca.user_id')
 			->selectRaw("
-				@rownum  := @rownum  + 1 AS index,
+				@rownum  := @rownum  + 1 AS row_num,
 				u.id AS user_id,
 				u.sponsorid,
 				CONCAT(u.fname, ' ', u.lname) AS member_name
@@ -367,7 +367,7 @@ class QualifiedRecruit
 				"), 'cs.user_id', '=', 'u.id'
 			)
 			->selectRaw("
-				@rownum  := @rownum  + 1 AS index,
+				@rownum  := @rownum  + 1 AS row_num,
 				u.id AS user_id,
 				u.sponsorid,
 				CONCAT(u.fname, ' ', u.lname) AS member_name
