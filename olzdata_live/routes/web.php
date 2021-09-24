@@ -376,4 +376,5 @@ Route::prefix('admin/qualified-recruits')->namespace('Admin')->middleware('jwt.a
     Route::get('/', 'QualifiedRecruitController@qualified_recruits');
     Route::get('download-qualified-recruits', 'QualifiedRecruitController@downloadQualifiedRecruits');
     Route::get('user-representative-list', 'QualifiedRecruitController@userRepresentativeList');
+    Route::get('user-qualified-representative-list', 'QualifiedRecruitController@userQualifiedRepresentativeList');
 });

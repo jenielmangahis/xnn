@@ -25,6 +25,7 @@
                     downloadLink: "",
                     downloadLinkState: "loaded",
                 },
+                userReps: [],
                 user_id: null,
                 listRep:{
                     filters:{
@@ -72,7 +73,12 @@
                                 return '<a href="javascript:void(0);" class="btn-view-reps">'+row.total_reps+'</a>';
                             }
                         },
-                        {data: 'sponsored_qualified_representatives_count', className: "text-center"},
+                        {
+                            data: 'action',
+                            render: function (data, type, row, meta) {
+                                return '<a href="javascript:void(0);" class="btn-view-qualified-reps">'+row.sponsored_qualified_representatives_count+'</a>';
+                            }
+                        },
                     ]
 					/*
                     columnDefs: [
@@ -91,6 +97,11 @@
                 $('#table-qualified-recruits').on('click', '.btn-view-reps', function () {
                     let data = _this.dtQualifiedRecruits.row($(this).parents('tr')).data();
                     _this.getRepsList(data.user_id);
+                });
+
+                $('#table-qualified-recruits').on('click', '.btn-view-qualified-reps', function () {
+                    let data = _this.dtQualifiedRecruits.row($(this).parents('tr')).data();
+                    _this.getQualifiedRepsList(data.user_id);
                 });
             },
             initializeDatePicker() {
@@ -160,6 +171,23 @@
                 this.user_id = user_id;
 
                 client.get("admin/qualified-recruits/user-representative-list", {
+                    params: this.listRep.filters
+                })
+                    .then(response => {
+                        this.userReps = response.data;
+                        $('#modal-user-representative-list').modal('show');
+                        console.log(response);
+                    })
+                    .catch(error => {
+                        swal('Unable to fetch!','','error');
+                    })
+            },
+            getQualifiedRepsList: function (user_id) {
+                this.listRep.filters.period = $('#report-date').val();
+                this.listRep.filters.userId = user_id;
+                this.user_id = user_id;
+
+                client.get("admin/qualified-recruits/user-qualified-representative-list", {
                     params: this.listRep.filters
                 })
                     .then(response => {
