@@ -90,7 +90,12 @@
                     */
                 });
 
-                $("#table-reps-list").DataTable();
+                this.dtRepsList = $("#table-reps-list").DataTable({
+                    processing: false,
+                    serverSide: false,
+                    responsive: true,
+                    autoWidth: false,
+                });
             },
             initializeJQueryEvents() {
 
