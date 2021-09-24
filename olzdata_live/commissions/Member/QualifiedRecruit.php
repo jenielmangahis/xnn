@@ -265,51 +265,6 @@ class QualifiedRecruit
         return $query;
     }
 
-    protected function getQualifiedUserRepresentativeQuery($user_id, $period)
-    {
-        $affiliates = config('commission.member-types.affiliates');
-        $customers  = config('commission.member-types.customers');
-		
-		$transaction_start_date = date('Y-m-1', strtotime($period));
-		$transaction_end_date = date('Y-m-t', strtotime($period));
-
-		$query =DB::table('users u')
-			->join('cm_affiliates AS ca', 'u.id', '=', 'ca.user_id')
-			->leftJoin(DB::raw("
-				(
-					SELECT
-						t.user_id,
-						SUM(COALESCE(t.computed_cv, 0)) AS sales
-					FROM v_cm_transactions t
-					WHERE transaction_date BETWEEN '$transaction_start_date' AND '$transaction_end_date'
-						AND t.`type` = 'product'
-						AND FIND_IN_SET(t.purchaser_catid, '$affiliates')
-					GROUP BY t.user_id
-				)AS ps
-				"), 'ps.user_id', '=', 'u.id'
-			)
-			->leftJoin(DB::raw("
-				(
-					SELECT
-						ti.upline_id AS user_id,
-						SUM(COALESCE(t.computed_cv, 0)) AS sales
-					FROM v_cm_transactions t
-					JOIN cm_transaction_info ti ON ti.transaction_id = t.transaction_id
-					WHERE t.transaction_date BETWEEN '$transaction_start_date' AND '$transaction_end_date'
-						AND t.`type` = 'product' 
-						AND FIND_IN_SET(t.purchaser_catid, '$customers')
-					GROUP BY ti.upline_id
-				) AS cs
-				"), 'cs.user_id', '=', 'u.id'
-			)
-		;
-
-		$query->whereBetween('c.affiliated_date', [$transaction_start_date, $transaction_end_date]);
-		$query->where('u.sponsorid', $user_id);
-
-        return $query;
-    }
-
     public function getQualifiedUserRepresentativeList($filters, $user_id = null)
     {
     	$data = [];
@@ -367,5 +322,50 @@ class QualifiedRecruit
         $data = $query->get();
 
         return compact('recordsTotal', 'draw', 'recordsFiltered', 'data', 'member_id', 'start_date');
+    }
+
+    protected function getQualifiedUserRepresentativeQuery($user_id, $period)
+    {
+        $affiliates = config('commission.member-types.affiliates');
+        $customers  = config('commission.member-types.customers');
+		
+		$transaction_start_date = date('Y-m-1', strtotime($period));
+		$transaction_end_date = date('Y-m-t', strtotime($period));
+
+		$query =DB::table('users u')
+			->join('cm_affiliates AS ca', 'u.id', '=', 'ca.user_id')
+			->leftJoin(DB::raw("
+				(
+					SELECT
+						t.user_id,
+						SUM(COALESCE(t.computed_cv, 0)) AS sales
+					FROM v_cm_transactions t
+					WHERE transaction_date BETWEEN '$transaction_start_date' AND '$transaction_end_date'
+						AND t.`type` = 'product'
+						AND FIND_IN_SET(t.purchaser_catid, '$affiliates')
+					GROUP BY t.user_id
+				)AS ps
+				"), 'ps.user_id', '=', 'u.id'
+			)
+			->leftJoin(DB::raw("
+				(
+					SELECT
+						ti.upline_id AS user_id,
+						SUM(COALESCE(t.computed_cv, 0)) AS sales
+					FROM v_cm_transactions t
+					JOIN cm_transaction_info ti ON ti.transaction_id = t.transaction_id
+					WHERE t.transaction_date BETWEEN '$transaction_start_date' AND '$transaction_end_date'
+						AND t.`type` = 'product' 
+						AND FIND_IN_SET(t.purchaser_catid, '$customers')
+					GROUP BY ti.upline_id
+				) AS cs
+				"), 'cs.user_id', '=', 'u.id'
+			)
+		;
+
+		$query->whereBetween('c.affiliated_date', [$transaction_start_date, $transaction_end_date]);
+		$query->where('u.sponsorid', $user_id);
+
+        return $query;
     }
 }
