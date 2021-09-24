@@ -265,9 +265,6 @@ class QualifiedRecruit
         $smt = $this->db->prepare($sql);
         $smt->execute();
         $result = $smt->fetchAll(PDO::FETCH_ASSOC);
-
-        echo "<pre>";
-        print_r($result);
         return $result;
     }
 }

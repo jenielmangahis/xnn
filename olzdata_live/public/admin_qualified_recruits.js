@@ -70,13 +70,13 @@
                         {
                             data: 'action',
                             render: function (data, type, row, meta) {
-                                return '<a href="javascript:void(0);" class="btn-view-reps">'+row.total_reps+'</a>';
+                                return '<a href="javascript:void(0);" class="btn-view-reps" data-id="'+row.user_id+'">'+row.total_reps+'</a>';
                             }
                         },
                         {
                             data: 'action',
                             render: function (data, type, row, meta) {
-                                return '<a href="javascript:void(0);" class="btn-view-qualified-reps">'+row.sponsored_qualified_representatives_count+'</a>';
+                                return '<a href="javascript:void(0);" class="btn-view-qualified-reps" data-id="'+row.user_id+'">'+row.sponsored_qualified_representatives_count+'</a>';
                             }
                         },
                     ]
@@ -95,13 +95,13 @@
                 let _this = this;
 
                 $('#table-qualified-recruits').on('click', '.btn-view-reps', function () {
-                    let data = _this.dtQualifiedRecruits.row($(this).parents('tr')).data();
-                    _this.getRepsList(data.user_id);
+                    let row_user_id = $(this).attr('data-id');
+                    _this.getRepsList(row_user_id);
                 });
 
                 $('#table-qualified-recruits').on('click', '.btn-view-qualified-reps', function () {
-                    let data = _this.dtQualifiedRecruits.row($(this).parents('tr')).data();
-                    _this.getQualifiedRepsList(data.user_id);
+                    let row_user_id = $(this).attr('data-id');
+                    _this.getQualifiedRepsList(row_user_id);
                 });
             },
             initializeDatePicker() {
