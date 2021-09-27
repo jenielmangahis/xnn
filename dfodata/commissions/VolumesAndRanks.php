@@ -69,28 +69,10 @@ final class VolumesAndRanks extends Console
             $this->log('Setting PV');
             $this->setPv();
 
-            $this->log('Setting GV');
-            $this->setGv();   
+            $this->log('Setting L1V');
+            $this->setL1V();   
 
-            // $this->log("Setting Coach Points");
-            // $this->setCoachPoints();
-
-            // $this->log("Setting Organization Points");
-            // $this->setOrganizationPoints();
-
-            // $this->log("Setting Team Group Points");
-            // $this->setTeamGroupPoints();
-
-            // $this->log("Setting Preferred Customer Count");
-            // $this->setPreferredCustomerCount();
-
-            // $this->log("Setting Referral Points from New Preferred Customers (3 months)");
-            // $this->setReferralPointsFromNewPreferredCustomers();
-
-            // $this->log("Setting Referral Points from New Active Coaches (3 months)");
-            // $this->setReferralPointsFromNewActiveEnrolledCoaches();
-
-            /*$this->log("Setting Minimum Rank");
+            $this->log("Setting Minimum Rank");
             $this->setMinimumRank();
 
             $this->log("Setting Paid-as Rank");
@@ -100,7 +82,7 @@ final class VolumesAndRanks extends Console
             $this->setIfMemberIsActive();
 
             $this->log("Deleting Previous Highest Achieved Rank This Month");
-            $this->deletePreviousHighestAchievedRanksThisMonth();*/
+            $this->deletePreviousHighestAchievedRanksThisMonth();
 
         }, 3);
     }
@@ -142,380 +124,6 @@ final class VolumesAndRanks extends Console
 
             $this->log_debug($stmt->fetch());
         }
-    }
-
-    private function setCoachPoints()
-    {
-        $sql = "
-            UPDATE cm_daily_volumes dv
-            LEFT JOIN (
-                SELECT
-                    a.user_id,
-                    IF(a.ppv >= @max_points, @max_points, a.ppv) ppv_capped, 
-                    a.ppv
-                FROM (
-                    SELECT
-                        t.user_id,
-                        SUM(COALESCE(t.computed_cv, 0)) As ppv
-                    FROM v_cm_transactions t
-                    WHERE transaction_date BETWEEN @start_date AND DATE(@end_date)
-                        AND t.`type` = 'product'
-                        AND FIND_IN_SET(t.purchaser_catid, @affiliates)
-                    GROUP BY t.user_id
-                ) a
-            ) AS a ON a.user_id = dv.user_id 
-            LEFT JOIN (
-                WITH RECURSIVE downline (user_id, parent_id, `level`, root_id) AS (
-                    SELECT 
-                        id AS user_id,
-                        sponsorid AS parent_id,
-                        1 AS `level`,
-                        sponsorid root_id
-                    FROM users u
-                    WHERE u.levelid = 3
-                        AND (
-                            EXISTS(SELECT 1 FROM categorymap cm WHERE cm.userid = u.id AND FIND_IN_SET(cm.catid, @customers))
-                            OR EXISTS(
-                                SELECT 1 
-                                FROM v_cm_transactions t 
-                                WHERE t.`type` = 'product' 
-                                    AND t.transaction_date BETWEEN @start_date AND @end_date
-                                    AND FIND_IN_SET(t.purchaser_catid, @customers)
-                                    AND t.user_id = u.id 
-                            )
-                        )
-                        
-                    UNION ALL
-                    
-                    SELECT
-                        p.id AS user_id,
-                        p.sponsorid AS parent_id,
-                        downline.`level` + 1 `level`,
-                        downline.root_id
-                    FROM users p
-                    INNER JOIN downline ON p.sponsorid = downline.user_id
-                    WHERE p.levelid = 3
-                        AND (
-                            EXISTS(SELECT 1 FROM categorymap cm WHERE cm.userid = p.id AND FIND_IN_SET(cm.catid, @customers))
-                            OR EXISTS(
-                                SELECT 1 
-                                FROM v_cm_transactions t 
-                                WHERE t.`type` = 'product' 
-                                    AND t.transaction_date BETWEEN @start_date AND @end_date
-                                    AND FIND_IN_SET(t.purchaser_catid, @customers)
-                                    AND t.user_id = p.id 
-                            )
-                        )            
-                )
-                SELECT
-                    a.root_id AS user_id,
-                    SUM(IF(a.pcv > @max_points, @max_points, a.pcv)) pcv_capped,
-                    SUM(a.pcv) pcv,
-                    CONCAT('[', 
-                        GROUP_CONCAT(JSON_OBJECT('user_id', a.user_id, 'uncapped', a.pcv, 'capped', IF(a.pcv > @max_points, @max_points, a.pcv))), 
-                    ']') `users`
-                FROM (
-                    SELECT
-                        d.root_id,
-                        d.user_id,
-                        SUM(COALESCE(t.computed_cv, 0)) AS pcv
-                    FROM downline d
-                    JOIN v_cm_transactions t ON t.user_id = d.user_id
-                    WHERE t.transaction_date BETWEEN @start_date AND @end_date
-                        AND t.`type` = 'product' 
-                        AND FIND_IN_SET(t.purchaser_catid, @customers)
-                    GROUP BY d.root_id, d.user_id
-                ) a
-                GROUP BY a.root_id   
-            ) AS c ON c.user_id = dv.user_id
-            SET
-                dv.ppv = COALESCE(a.ppv, 0),
-                dv.ppv_capped = COALESCE(a.ppv_capped, 0),
-                dv.pcv = COALESCE(c.pcv, 0),
-                dv.pcv_capped = COALESCE(c.pcv_capped, 0),
-                dv.pcv_users = c.`users`,
-                dv.coach_points = COALESCE(a.ppv_capped, 0) + COALESCE(c.pcv_capped, 0)
-            WHERE dv.volume_date = @end_date
-        ";
-
-        $smt = $this->db->prepare($sql);
-        $smt->execute();
-
-        return $smt->fetchColumn();
-    }
-
-    private function setOrganizationPoints()
-    {
-        $sql = "
-            UPDATE cm_daily_volumes dv
-            JOIN (                
-                WITH RECURSIVE downline (user_id, parent_id, root_id, `level`, coach_points) AS (
-                    SELECT 
-                        p.user_id,
-                        p.sponsor_id AS parent_id,
-                        p.user_id AS root_id,
-                        0 AS `level`,
-                        dv.coach_points AS coach_points
-                    FROM cm_genealogy_placement p
-                    JOIN cm_daily_volumes dv ON dv.user_id = p.user_id AND dv.volume_date = @end_date
-                    
-                    UNION ALL
-                    
-                    SELECT
-                        p.user_id AS user_id,
-                        p.sponsor_id AS parent_id,
-                        downline.root_id,
-                        downline.`level` + 1 `level`,
-                        dv.coach_points AS coach_points
-                    FROM cm_genealogy_placement p
-                    JOIN downline ON downline.user_id = p.sponsor_id
-                    JOIN cm_daily_volumes dv ON dv.user_id = p.user_id AND dv.volume_date = @end_date
-                    WHERE downline.`level` < 5
-                )
-                SELECT 
-                    d.root_id AS user_id,
-                    SUM(d.coach_points) AS organization_points
-                    /*,CONCAT('[', 
-                        GROUP_CONCAT(JSON_OBJECT('user_id', d.user_id, 'coach_points', d.coach_points, 'level', d.`level`) ORDER BY d.`level`, d.user_id), 
-                    ']') `users`*/
-                FROM downline d
-                WHERE d.root_id <> d.user_id
-                GROUP BY d.root_id
-            ) a ON a.user_id = dv.user_id
-            SET
-                dv.organization_points = a.organization_points
-            WHERE dv.volume_date = @end_date
-        ";
-
-        $smt = $this->db->prepare($sql);
-        $smt->execute();
-    }
-
-    private function setTeamGroupPoints()
-    {
-        $sql = "
-            UPDATE cm_daily_volumes dv
-            LEFT JOIN (
-                SELECT
-                    sdv.user_id,
-                    COALESCE(SUM(dv.organization_points), 0) team_group_points
-                FROM cm_daily_volumes sdv
-                JOIN users u ON u.sponsorid = sdv.user_id
-                JOIN cm_daily_volumes dv ON dv.user_id = u.id AND dv.volume_date = @end_date AND dv.organization_points > 0
-                WHERE sdv.volume_date = @end_date
-                GROUP BY sdv.user_id
-            ) AS a ON a.user_id = dv.user_id 
-            SET
-                dv.team_group_points = COALESCE(a.team_group_points, 0)
-            WHERE dv.volume_date = @end_date
-        ";
-
-        $smt = $this->db->prepare($sql);
-        $smt->execute();
-
-        return $smt->fetchColumn();
-    }
-
-    private function setPreferredCustomerCount()
-    {
-        $sql = "
-            UPDATE cm_daily_volumes dv
-            LEFT JOIN (
-                WITH RECURSIVE downline (user_id, parent_id, `level`, root_id) AS (
-                    SELECT 
-                        id AS user_id,
-                        sponsorid AS parent_id,
-                        1 AS `level`,
-                        sponsorid root_id
-                    FROM users u
-                    WHERE u.levelid = 3
-                        AND (
-                            EXISTS(SELECT 1 FROM categorymap cm WHERE cm.userid = u.id AND FIND_IN_SET(cm.catid, @customers))
-                            /*OR EXISTS(
-                                SELECT 1 
-                                FROM v_cm_transactions t 
-                                WHERE t.`type` = 'product' 
-                                    AND t.transaction_date BETWEEN @start_date AND @end_date
-                                    AND FIND_IN_SET(t.purchaser_catid, @customers)
-                                    AND t.user_id = u.id 
-                            )*/
-                        )
-                        
-                    UNION ALL
-                    
-                    SELECT
-                        p.id AS user_id,
-                        p.sponsorid AS parent_id,
-                        downline.`level` + 1 `level`,
-                        downline.root_id
-                    FROM users p
-                    INNER JOIN downline ON p.sponsorid = downline.user_id
-                    WHERE p.levelid = 3
-                        AND (
-                            EXISTS(SELECT 1 FROM categorymap cm WHERE cm.userid = p.id AND FIND_IN_SET(cm.catid, @customers))
-                            /*OR EXISTS(
-                                SELECT 1 
-                                FROM v_cm_transactions t 
-                                WHERE t.`type` = 'product' 
-                                    AND t.transaction_date BETWEEN @start_date AND @end_date
-                                    AND FIND_IN_SET(t.purchaser_catid, @customers)
-                                    AND t.user_id = p.id 
-                            )*/
-                        )
-                )
-                SELECT
-                    a.root_id AS user_id,
-                    COUNT(IF(a.pp >= @min_active_points, 1, NULL)) `count`,
-                    CONCAT('[', 
-                        GROUP_CONCAT(JSON_OBJECT('user_id', a.user_id, 'pp', a.pp)), 
-                    ']') `users`
-                FROM (
-                    SELECT
-                        d.root_id,
-                        d.user_id,
-                        COALESCE(SUM(t.computed_cv), 0) pp
-                    FROM downline d
-                    JOIN v_cm_transactions t ON t.user_id = d.user_id
-                    WHERE t.`type` = 'product'
-                        AND t.transaction_date BETWEEN @start_date AND @end_date
-                        AND FIND_IN_SET(t.purchaser_catid, @customers)
-                    GROUP BY d.root_id, d.user_id
-                ) a
-                JOIN oc_autoship oca ON oca.customer_id = a.user_id AND oca.is_active = 1
-                GROUP BY a.root_id
-            ) AS b ON b.user_id = dv.user_id 
-            SET
-                dv.preferred_customer_count = COALESCE(b.`count`, 0),
-                dv.preferred_customer_users = b.`users`
-            WHERE dv.volume_date = @end_date
-        ";
-
-        $smt = $this->db->prepare($sql);
-        $smt->execute();
-
-        return $smt->fetchColumn();
-    }
-
-    private function setReferralPointsFromNewPreferredCustomers()
-    {
-        $sql = "
-            UPDATE cm_daily_volumes dv
-            LEFT JOIN (
-                WITH RECURSIVE downline (user_id, parent_id, `level`, root_id) AS (
-                    SELECT 
-                        id AS user_id,
-                        u.sponsorid AS parent_id,
-                        1 AS `level`,
-                        u.sponsorid root_id
-                    FROM users u
-                    WHERE u.levelid = 3
-                        AND (
-                            EXISTS(SELECT 1 FROM categorymap cm WHERE cm.userid = u.id AND FIND_IN_SET(cm.catid, @customers))
-                            /*OR EXISTS(
-                                SELECT 1 
-                                FROM v_cm_transactions t 
-                                WHERE t.`type` = 'product' 
-                                    AND t.transaction_date BETWEEN @start_date AND @end_date
-                                    AND FIND_IN_SET(t.purchaser_catid, @customers)
-                                    AND t.user_id = u.id 
-                            )*/
-                        )
-                        
-                    UNION ALL
-                    
-                    SELECT
-                        p.id AS user_id,
-                        p.sponsorid AS parent_id,
-                        d.`level` + 1 `level`,
-                        d.root_id
-                    FROM users p
-                    JOIN downline d ON d.user_id = p.sponsorid
-                    WHERE p.levelid = 3
-                        AND (
-                            EXISTS(SELECT 1 FROM categorymap cm WHERE cm.userid = p.id AND FIND_IN_SET(cm.catid, @customers))
-                            /*OR EXISTS(
-                                SELECT 1 
-                                FROM v_cm_transactions t 
-                                WHERE t.`type` = 'product' 
-                                    AND t.transaction_date BETWEEN @start_date AND @end_date
-                                    AND FIND_IN_SET(t.purchaser_catid, @customers)
-                                    AND t.user_id = p.id 
-                            )*/
-                        )
-                    
-                )
-                SELECT
-                    a.root_id AS user_id,
-                    COUNT(IF(a.pp >= @min_active_points, 1, NULL)) `count`,
-                    CONCAT('[', 
-                        GROUP_CONCAT(JSON_OBJECT('user_id', a.user_id, 'pp', a.pp, 'created_date', a.created_date, 'third_month_date', a.third_month_date, 'points', IF(a.pp >= @min_active_points, 1, 0))), 
-                    ']') `users`
-                FROM (
-                    SELECT
-                        d.root_id,
-                        d.user_id,
-                        COALESCE(SUM(t.computed_cv), 0) pp,
-                        u.created_date,
-                        LAST_DAY(DATE_ADD(u.created_date, INTERVAL 2 MONTH)) third_month_date
-                    FROM downline d
-                    JOIN users u ON u.id = d.user_id
-                    JOIN v_cm_transactions t ON t.user_id = d.user_id
-                    WHERE t.`type` = 'product'
-                        AND t.transaction_date BETWEEN @start_date AND @end_date
-                        AND FIND_IN_SET(t.purchaser_catid, @customers)
-                        AND @end_date BETWEEN u.created_date AND LAST_DAY(DATE_ADD(u.created_date, INTERVAL 2 MONTH))
-                    GROUP BY d.root_id, d.user_id
-                ) a
-                JOIN oc_autoship oca ON oca.customer_id = a.user_id AND oca.is_active = 1
-                GROUP BY a.root_id
-            ) AS b ON b.user_id = dv.user_id 
-            SET
-                dv.referral_preferred_customer_points = COALESCE(b.`count`, 0),
-                dv.referral_preferred_customer_users = b.`users`
-            WHERE dv.volume_date = @end_date
-        ";
-
-        $smt = $this->db->prepare($sql);
-        $smt->execute();
-
-        return $smt->fetchColumn();
-    }
-
-    private function setReferralPointsFromNewActiveEnrolledCoaches()
-    {
-
-        $sql = "
-            UPDATE cm_daily_volumes dv
-            LEFT JOIN (
-                SELECT
-                    sdv.user_id,
-                     /* same lng ang logic sa upgraded customer ug ang new affiliate,
-                        need gihapon niyag preferred customer para ma 2 points.
-                     */
-                    -- COALESCE(SUM(IF(cus.user_id IS NOT NULL AND oca.customer_id IS NOT NULL, 2, 1)), 0) points, 
-                    COALESCE(SUM(IF( dv.preferred_customer_count >= 1, 2, 1)), 0) points,
-                    CONCAT('[',
-                        GROUP_CONCAT(JSON_OBJECT('user_id', dv.user_id, 'has_upgraded', IF(cus.user_id IS NOT NULL, 1, 0), 'has_autoship',  IF(oca.customer_id IS NOT NULL, 1, 0), 'points', IF( dv.preferred_customer_count >= 1, 2, 1), 'preferred_customer_count', dv.preferred_customer_count)), 
-                    ']') `users`
-                FROM cm_daily_volumes sdv
-                JOIN users u ON u.sponsorid = sdv.user_id
-                JOIN cm_daily_volumes dv ON dv.user_id = u.id AND dv.volume_date = @end_date
-                LEFT JOIN cm_customers cus ON cus.user_id = dv.user_id AND cus.enrolled_date BETWEEN u.created_date AND LAST_DAY(DATE_ADD(u.created_date, INTERVAL 2 MONTH))
-                LEFT JOIN oc_autoship oca ON oca.customer_id = cus.user_id AND oca.is_active = 1
-                WHERE sdv.volume_date = @end_date
-                    AND @end_date BETWEEN u.created_date AND LAST_DAY(DATE_ADD(u.created_date, INTERVAL 2 MONTH))
-                GROUP BY sdv.user_id
-            ) AS a ON a.user_id = dv.user_id 
-            SET
-                dv.referral_enrolled_coach_points = COALESCE(a.points, 0),
-                dv.referral_enrolled_coach_users = a.`users`
-            WHERE dv.volume_date = @end_date
-        ";
-
-        $smt = $this->db->prepare($sql);
-        $smt->execute();
-
-        return $smt->fetchColumn();
     }
 
     private function setIfMemberIsActive()
@@ -1038,7 +646,7 @@ final class VolumesAndRanks extends Console
         return $smt->fetchColumn();
     }
 
-    private function setGv()
+    private function setL1V()
     {
         $sql = "
             UPDATE cm_daily_volumes dv
@@ -1052,6 +660,8 @@ final class VolumesAndRanks extends Console
                         dv.pv AS pv
                     FROM cm_genealogy_placement p
                     JOIN cm_daily_volumes dv ON dv.user_id = p.user_id AND dv.volume_date = @end_date
+                    JOIN users u ON dv.user_id = u.id
+                    WHERE u.levelid = 1
                     
                     UNION ALL
                     
@@ -1063,17 +673,19 @@ final class VolumesAndRanks extends Console
                         dv.pv AS pv
                     FROM cm_genealogy_placement p
                     JOIN downline ON downline.user_id = p.sponsor_id
+                    JOIN users uu ON dv.user_id = uu.id
                     JOIN cm_daily_volumes dv ON dv.user_id = p.user_id AND dv.volume_date = @end_date
+                    WHERE uu.levelid = 1
                 )
                 SELECT 
                     d.root_id AS user_id,
-                    SUM(d.pv) AS gv
+                    SUM(d.pv) AS l1v
                 FROM downline d
                 WHERE d.root_id <> d.user_id
                 GROUP BY d.root_id
             ) AS a ON a.user_id = dv.user_id             
             SET
-                dv.gv = COALESCE(a.gv, 0)
+                dv.l1v = COALESCE(a.l1v, 0)
             WHERE dv.volume_date = @end_date
         ";
 
