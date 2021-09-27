@@ -157,23 +157,6 @@ final class VolumesAndRanks extends Console
 
             $user_id = +$volume->user_id;
 
-            $c = $this->getEnrolledCoachesRankCount($user_id);
-
-            $volume->influencer_count = +$c->get("Influencer");
-            $volume->silver_influencer_count = +$c->get("Silver Influencer");
-            $volume->gold_influencer_count = +$c->get("Gold Influencer");
-            $volume->platinum_influencer_count = +$c->get("Platinum Influencer");
-            $volume->diamond_influencer_count = +$c->get("Diamond Influencer");
-
-            $rf = $this->getReferralPointsFromRankAdvancement($user_id);
-
-            $volume->referral_rank_advancement_points = +$rf['points'];
-            $volume->referral_rank_advancement_users = $rf['users'];
-
-            $volume->referral_points = $volume->referral_preferred_customer_points + $volume->referral_enrolled_coach_points + $volume->referral_rank_advancement_points;
-
-            $volume->save();
-
             $rank = $volume->rank;
 
             $rank->rank_id = $this->getRank($volume);
