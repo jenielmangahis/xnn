@@ -679,13 +679,13 @@ final class VolumesAndRanks extends Console
                 )
                 SELECT 
                     d.root_id AS user_id,
-                    SUM(d.pv) AS l1v
+                    SUM(d.pv) AS vl1v
                 FROM downline d
                 WHERE d.root_id <> d.user_id
                 GROUP BY d.root_id
             ) AS a ON a.user_id = dv.user_id             
             SET
-                dv.l1v = COALESCE(a.l1v, 0)
+                dv.l1v = COALESCE(a.vl1v, 0)
             WHERE dv.volume_date = @end_date
         ";
 
