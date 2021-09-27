@@ -651,28 +651,34 @@ final class VolumesAndRanks extends Console
         $sql = "
             UPDATE cm_daily_volumes dv
             LEFT JOIN (
-                WITH RECURSIVE downline (user_id, parent_id,`active`) AS (
+                WITH RECURSIVE downline (user_id, parent_id, root_id, `level`, pv) AS (
                     SELECT 
-                        id AS user_id,
-                        sponsorid AS parent_id,
-                        active
-                    FROM users u
-                    WHERE u.id = @root_user_id AND u.levelid = 1
+                        p.user_id,
+                        p.sponsor_id AS parent_id,
+                        p.user_id AS root_id,
+                        0 AS `level`,
+                        dv.pv AS pv
+                    FROM cm_genealogy_placement p
+                    JOIN cm_daily_volumes dv ON dv.user_id = p.user_id AND dv.volume_date = @end_date
+                    JOIN users u ON dv.user_id = u.id 
+                    WHERE u.levelid = 1
                     
                     UNION ALL
                     
                     SELECT
-                        p.id AS user_id,
-                        p.sponsorid AS parent_id,
-                        p.active
-                    FROM users p
-                    INNER JOIN downline ON p.sponsorid = downline.user_id
-                    WHERE p.levelid = 1
-                    
+                        p.user_id AS user_id,
+                        p.sponsor_id AS parent_id,
+                        downline.root_id,
+                        downline.`level` + 1 `level`,
+                        dv.pv AS pv
+                    FROM cm_genealogy_placement p
+                    JOIN downline ON downline.user_id = p.sponsor_id                    
+                    JOIN cm_daily_volumes dv ON dv.user_id = p.user_id AND dv.volume_date = @end_date
+                    JOIN users uu ON dv.user_id = uu.id
+                    WHERE uu.levelid = 1
                 )
-                SELECT
-                    d.user_id, 
-                    @end_date volume_date, 
+                SELECT 
+                    d.root_id AS user_id,
                     SUM(d.pv) AS total_pv
                 FROM downline d
                 WHERE d.root_id <> d.user_id
