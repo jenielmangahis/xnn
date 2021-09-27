@@ -256,20 +256,12 @@ final class VolumesAndRanks extends Console
     {
         foreach ($this->rank_requirements as $rank) {
 
-            $diamond_influencer_count = +$volume->diamond_influencer_count;
-            $platinum_influencer_count = $diamond_influencer_count + +$volume->platinum_influencer_count;
-            $gold_influencer_count = $platinum_influencer_count + +$volume->gold_influencer_count;
-            $silver_influencer_count = $gold_influencer_count + +$volume->silver_influencer_count;
-            $influencer_count = $silver_influencer_count + +$volume->influencer_count;
+            $pv_count = +$volume->pv;
+            $l1v_count = +$volume->l1v;
 
             if (
-                +$volume->preferred_customer_count >= +$rank->preferred_customer_count_requirement
-                && +$volume->referral_points >= +$rank->referral_points_requirement
-                && +$volume->organization_points >= +$rank->organization_points_requirement
-                && +$volume->team_group_points >= +$rank->team_group_points_requirement
-                && $gold_influencer_count >= +$rank->gold_influencer_count_requirement
-                && ($silver_influencer_count - $rank->gold_influencer_count_requirement) >= +$rank->silver_influencer_count_requirement
-                && ($influencer_count - $rank->gold_influencer_count_requirement - $rank->silver_influencer_count_requirement) >= +$rank->influencer_count_requirement
+                $pv_count >= +$rank->pv
+                && $l1v_count >= +$rank->l1v
             ) {
                 return +$rank->id;
             }
