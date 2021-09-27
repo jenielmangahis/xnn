@@ -135,7 +135,7 @@ final class VolumesAndRanks extends Console
             SET 
                 dr.is_active =  dr.paid_as_rank_id > 1, -- the same as checking the preferred customer. minimum rank is considered.
                 dr.is_system_active = (u.active = 'Yes')
-            WHERE dv.volume_date = @end_date;
+            WHERE dv.volume_date = @end_date AND dv.pv >= 100;
         ";
 
         $stmt = $this->db->prepare($sql);
@@ -144,7 +144,7 @@ final class VolumesAndRanks extends Console
 
     private function setRanks()
     {
-        $volumes = DailyVolume::date($this->getEndDate())->orderBy('level', 'desc')->orderBy('user_id', 'desc')->get();
+        $volumes = DailyVolume::date($this->getEndDate())->orderBy('user_id', 'desc')->get();
 
         $level = null;
 
@@ -167,69 +167,7 @@ final class VolumesAndRanks extends Console
         }
     }
 
-    private function getReferralPointsFromRankAdvancement($member_id)
-    {
-        $sql = "
-            SELECT
-                SUM(IF(dr.paid_as_rank_id >= a.rank_id, 6, 0)) points,
-                CONCAT('[', 
-                    GROUP_CONCAT(JSON_OBJECT(
-                        'user_id', a.user_id,
-                        'is_rank_maintained', IF(dr.paid_as_rank_id >= a.rank_id, 1, 0),
-                        'maintained_rank_id', dr.paid_as_rank_id,
-                        'achieved_rank_id', a.rank_id,
-                        'achieved_date', a.date_achieved,
-                        'third_month_date', LAST_DAY(DATE_ADD(a.date_achieved, INTERVAL 2 MONTH)),
-                        'points', IF(dr.paid_as_rank_id >= a.rank_id, 6, 0)
-                    )), 
-                ']') `users`
-            FROM cm_achieved_ranks a
-            JOIN users u ON u.id = a.user_id
-            JOIN cm_daily_ranks dr ON dr.user_id = a.user_id AND dr.rank_date = @end_date
-            WHERE u.sponsorid = :member_id
-                AND @end_date BETWEEN a.date_achieved  AND LAST_DAY(DATE_ADD(a.date_achieved, INTERVAL 2 MONTH))
-                AND a.rank_id BETWEEN :influencer_1 AND :silver_influencer_1
-        ";
-
-        $influencer_1 = config('commission.ranks.influencer-1');
-        $silver_influencer_1 = config('commission.ranks.silver-influencer-1');
-
-        $stmt = $this->db->prepare($sql);
-        $stmt->bindParam(':member_id', $member_id);
-        $stmt->bindParam(':influencer_1', $influencer_1);
-        $stmt->bindParam(':silver_influencer_1', $silver_influencer_1);
-        $stmt->execute();
-
-        return $stmt->fetch(PDO::FETCH_ASSOC);
-    }
-
-    private function getEnrolledCoachesRankCount($member_id)
-    {
-        $sql = "
-            SELECT
-                r.`group`,
-                COUNT(a.rank_id) `count`
-            FROM cm_ranks r
-            LEFT JOIN (
-                SELECT
-                    dr.paid_as_rank_id AS rank_id
-                FROM cm_daily_ranks dr 
-                JOIN users u ON u.id = dr.user_id
-                WHERE dr.rank_date = @end_date AND u.sponsorid = :member_id
-            ) a ON a.rank_id = r.id
-            GROUP BY r.`group`
-        ";
-
-        $stmt = $this->db->prepare($sql);
-        $stmt->bindParam(':member_id', $member_id);
-        $stmt->execute();
-
-        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-        return collect($result)->mapWithKeys(function ($item) {
-            return [$item['group'] => $item['count']];
-        });
-    }
+   
 
     private function saveAchievedRank($user_id, $rank_id)
     {
@@ -428,81 +366,66 @@ final class VolumesAndRanks extends Console
     {
         if ($next_rank === null || $volume === null) return [];
 
-        $needs = [];
+        $needs = [];  
 
-        $diamond_influencer_count = +$volume->diamond_influencer_count;
-        $platinum_influencer_count = $diamond_influencer_count + +$volume->platinum_influencer_count;
-        $gold_influencer_count = $platinum_influencer_count + +$volume->gold_influencer_count;
-        $silver_influencer_count = $gold_influencer_count + +$volume->silver_influencer_count;
-        $influencer_count = $silver_influencer_count + +$volume->influencer_count;
+        $pv_needs = $next_rank->pv - $volume->pv;
+        $l1v_needs = $next_rank->liv - $volume->l1v;
 
-        $preferred_customer_count_requirement = $next_rank->preferred_customer_count_requirement - $volume->preferred_customer_count;
-        $referral_points_requirement = $next_rank->referral_points_requirement - $volume->referral_points;
-        $organization_points_requirement = $next_rank->organization_points_requirement - $volume->organization_points;
-        $team_group_points_requirement = $next_rank->team_group_points_requirement - $volume->team_group_points;
-        $gold_influencer_count_requirement = $next_rank->gold_influencer_count_requirement - $gold_influencer_count;
-
-        if ($silver_influencer_count - $next_rank->gold_influencer_count_requirement < 0) {
-            $silver_influencer_count_requirement = $next_rank->silver_influencer_count_requirement;
-        } else {
-            $silver_influencer_count_requirement = $next_rank->silver_influencer_count_requirement - ($silver_influencer_count - $next_rank->gold_influencer_count_requirement);
+         if($next_rank->pv >= 100 && $next_rank->liv >= 4000){ 
+            $consultant_1_requirement = 0 
+            $consultant_2_requirement = 0
+            $consultant_3_requirement = 1   
+        }
+       
+        if($next_rank->pv >= 100 && $next_rank->liv <= 3999){ 
+            $consultant_1_requirement = 0 
+            $consultant_2_requirement = 1
+            $consultant_3_requirement = 0
         }
 
-        if ($influencer_count - $next_rank->gold_influencer_count_requirement - $next_rank->silver_influencer_count_requirement < 0) {
-            $influencer_count_requirement = $next_rank->influencer_count_requirement;
-        } else {
-            $influencer_count_requirement = $next_rank->influencer_count_requirement - ($influencer_count - $next_rank->gold_influencer_count_requirement - $next_rank->silver_influencer_count_requirement);
-        }
+        if($next_rank->pv >= 100 && $next_rank->liv <= 1199){ 
+            $consultant_1_requirement = 1 
+            $consultant_2_requirement = 0
+            $consultant_3_requirement = 0
+        }       
 
-        if ($preferred_customer_count_requirement > 0) {
+        if($pv_needs > 0) {
             $needs[] = [
-                'value' => $preferred_customer_count_requirement,
-                'description' => 'Preferred Customer(s)',
+                'value' => $pv_needs,
+                'description' => 'PV',
             ];
         }
 
-        if ($referral_points_requirement > 0) {
+        if($l1v_needs > 0) {
             $needs[] = [
-                'value' => $referral_points_requirement,
-                'description' => 'Referral Points'
+                'value' => $l1v_needs,
+                'description' => 'L1V',
             ];
         }
 
-        if ($organization_points_requirement > 0) {
+       
+        if ($consultant_3_requirement > 0) {
             $needs[] = [
-                'value' => $organization_points_requirement,
-                'description' => 'Organization Points'
+                'value' => $consultant_3_requirement,
+                'description' => 'Consultant 3'
             ];
         }
 
-        if ($team_group_points_requirement > 0) {
+        if ($consultant_2_requirement > 0) {
             $needs[] = [
-                'value' => $team_group_points_requirement,
-                'description' => 'Team Group Points'
+                'value' => $consultant_2_requirement,
+                'description' => 'Consultant 2'
             ];
         }
 
-        if ($gold_influencer_count_requirement > 0) {
+        if ($consultant_1_requirement > 0) {
             $needs[] = [
-                'value' => $gold_influencer_count_requirement,
-                'description' => 'Gold Influencer(s)'
+                'value' => $consultant_1_requirement,
+                'description' => 'Consultant 1'
             ];
         }
 
-        if ($silver_influencer_count_requirement > 0) {
-            $needs[] = [
-                'value' => $silver_influencer_count_requirement,
-                'description' => 'Silver Influencer(s)'
-            ];
-        }
-
-        if ($influencer_count_requirement > 0) {
-            $needs[] = [
-                'value' => $influencer_count_requirement,
-                'description' => 'Influencer(s)'
-            ];
-        }
-
+      
         if (false && "test") {
             $needs[] = [
                 'html' => '<h1>HTML TEST</h1>',
