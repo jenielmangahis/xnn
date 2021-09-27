@@ -156,17 +156,7 @@ final class VolumesAndRanks extends Console
             }
 
             $user_id = +$volume->user_id;
-
-            $rf = $this->getReferralPointsFromRankAdvancement($user_id);
-
-            $volume->referral_rank_advancement_points = +$rf['points'];
-            $volume->referral_rank_advancement_users = $rf['users'];
-
-            $volume->referral_points = $volume->referral_preferred_customer_points + $volume->referral_enrolled_coach_points + $volume->referral_rank_advancement_points;
-
-            $volume->save();
-
-            $rank = $volume->rank;
+            $rank    = $volume->rank;
 
             $rank->rank_id = $this->getRank($volume);
             $rank->paid_as_rank_id = $rank->rank_id > $rank->min_rank_id ? $rank->rank_id : $rank->min_rank_id;
