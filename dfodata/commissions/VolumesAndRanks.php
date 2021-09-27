@@ -13,7 +13,7 @@ use DateTime;
 
 final class VolumesAndRanks extends Console
 {
-    const MAX_POINTS = 200;
+    const MAX_POINTS = 20000;
     const MIN_ACTIVE_POINTS = 100;
 
     protected $db;
@@ -372,21 +372,21 @@ final class VolumesAndRanks extends Console
         $l1v_needs = $next_rank->liv - $volume->l1v;
 
          if($next_rank->pv >= 100 && $next_rank->liv >= 4000){ 
-            $consultant_1_requirement = 0 
-            $consultant_2_requirement = 0
-            $consultant_3_requirement = 1   
+            $consultant_1_requirement = 0; 
+            $consultant_2_requirement = 0;
+            $consultant_3_requirement = 1;  
         }
        
         if($next_rank->pv >= 100 && $next_rank->liv <= 3999){ 
-            $consultant_1_requirement = 0 
-            $consultant_2_requirement = 1
-            $consultant_3_requirement = 0
+            $consultant_1_requirement = 0; 
+            $consultant_2_requirement = 1;
+            $consultant_3_requirement = 0;
         }
 
         if($next_rank->pv >= 100 && $next_rank->liv <= 1199){ 
-            $consultant_1_requirement = 1 
-            $consultant_2_requirement = 0
-            $consultant_3_requirement = 0
+            $consultant_1_requirement = 1; 
+            $consultant_2_requirement = 0;
+            $consultant_3_requirement = 0;
         }       
 
         if($pv_needs > 0) {
@@ -558,7 +558,7 @@ final class VolumesAndRanks extends Console
                     FROM cm_genealogy_placement p
                     JOIN cm_daily_volumes dv ON dv.user_id = p.user_id AND dv.volume_date = @end_date
                     JOIN users u ON dv.user_id = u.id 
-                    WHERE u.levelid = 1
+                    WHERE u.levelid = 3
                     
                     UNION ALL
                     
@@ -572,7 +572,7 @@ final class VolumesAndRanks extends Console
                     JOIN downline ON downline.user_id = p.sponsor_id                    
                     JOIN cm_daily_volumes dv ON dv.user_id = p.user_id AND dv.volume_date = @end_date
                     JOIN users uu ON dv.user_id = uu.id
-                    WHERE uu.levelid = 1
+                    WHERE uu.levelid = 3
                 )
                 SELECT 
                     d.root_id AS user_id,
