@@ -559,7 +559,7 @@ final class VolumesAndRanks extends Console
                     dv.user_id
                 FROM cm_daily_volumes dv
                 JOIN users u ON dv.user_id = u.id 
-                WHERE u.levelid = 1 AND dv.volume_date = @end_date
+                WHERE u.sponsorid = dv.user_id AND dv.volume_date = @end_date
             ) AS a ON a.user_id = dv.user_id             
             SET
                 dv.l1v = COALESCE(a.total_pv, 0)
