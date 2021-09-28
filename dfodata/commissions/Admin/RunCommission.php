@@ -17,6 +17,7 @@ use App\OfficeGiftCard;
 use Commissions\BackgroundWorkerLogger;
 use Commissions\CsvReport;
 use Commissions\CommissionTypes\SampleCommission;
+use Commissions\CommissionTypes\MonthlyCustomerProfit;
 use Commissions\Exceptions\AlertException;
 use Commissions\Repositories\PayoutRepository;
 use Illuminate\Support\Facades\DB;
@@ -274,6 +275,11 @@ class RunCommission
         }
 
         return $this->details($background_worker->id);
+    }
+
+    public function getCustomerProfit()
+    {
+
     }
 
     public function getPreviousRun($id)
@@ -553,6 +559,19 @@ class RunCommission
 
     public static function getCommissionTypeClass($commission_type_id, $commission_period_id, $background_worker_id = null, $background_worker_process_id = null)
     {
+        $period = CommissionPeriod::find($commission_period_id);
+        $background_worker_logger = new BackgroundWorkerLogger(storage_path(static::LOG_PATH), $background_worker_id, $background_worker_process_id);
+        $payout_repository = new PayoutRepository();
+
+        switch (+$commission_type_id) {
+            case config('commission.commission-types.customer-profit'):
+                return new MonthlyCustomerProfit($period, $background_worker_logger, $payout_repository);    
+            case config('commission.commission-types.sample-commission'):
+            default:
+                return new SampleCommission($period, $background_worker_logger, $payout_repository);
+            
+        }
+        
         $period = CommissionPeriod::find($commission_period_id);
         $background_worker_logger = new BackgroundWorkerLogger(storage_path(static::LOG_PATH), $background_worker_id, $background_worker_process_id);
         $payout_repository = new PayoutRepository();

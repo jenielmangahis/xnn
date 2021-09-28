@@ -7,7 +7,7 @@ return [
     ],
 
     'commission-types' => [
-        'customer_profit' => 1
+        'customer-profit' => 1
     ],
 
     'member-types' => [
