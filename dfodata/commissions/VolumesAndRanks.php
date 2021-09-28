@@ -133,9 +133,15 @@ final class VolumesAndRanks extends Console
             JOIN cm_daily_volumes dv ON dv.id = dr.volume_id
             JOIN users u ON u.id = dv.user_id
             SET 
-                dr.is_active =  dr.paid_as_rank_id > 1, -- the same as checking the preferred customer. minimum rank is considered.
+                dr.is_active =  dr.paid_as_rank_id > 1,
                 dr.is_system_active = (u.active = 'Yes')
-            WHERE dv.volume_date = @end_date AND dv.pv >= 100;
+            WHERE (
+                SELECT 
+                    SUM(dv.pv) AS total_pv
+                FROM cm_daily_volumes dvv
+                WHERE dvv.user_id = dr.user_id
+                AND dvv.volume_date BETWEEN @start_date AND @end_date
+            ) >= 100;
         ";
 
         $stmt = $this->db->prepare($sql);
@@ -548,38 +554,12 @@ final class VolumesAndRanks extends Console
         $sql = "
             UPDATE cm_daily_volumes dv
             LEFT JOIN (
-                WITH RECURSIVE downline (user_id, parent_id, root_id, `level`, pv) AS (
-                    SELECT 
-                        p.user_id,
-                        p.sponsor_id AS parent_id,
-                        p.user_id AS root_id,
-                        0 AS `level`,
-                        dv.pv AS pv
-                    FROM cm_genealogy_placement p
-                    JOIN cm_daily_volumes dv ON dv.user_id = p.user_id AND dv.volume_date = @end_date
-                    JOIN users u ON dv.user_id = u.id 
-                    WHERE u.levelid = 3
-                    
-                    UNION ALL
-                    
-                    SELECT
-                        p.user_id AS user_id,
-                        p.sponsor_id AS parent_id,
-                        downline.root_id,
-                        downline.`level` + 1 `level`,
-                        dv.pv AS pv
-                    FROM cm_genealogy_placement p
-                    JOIN downline ON downline.user_id = p.sponsor_id                    
-                    JOIN cm_daily_volumes dv ON dv.user_id = p.user_id AND dv.volume_date = @end_date
-                    JOIN users uu ON dv.user_id = uu.id
-                    WHERE uu.levelid = 3
-                )
                 SELECT 
-                    d.root_id AS user_id,
-                    SUM(d.pv) AS total_pv
-                FROM downline d
-                WHERE d.root_id <> d.user_id
-                GROUP BY d.root_id
+                    SUM(dv.pv) AS total_pv,
+                    dv.user_id
+                FROM cm_daily_volumes dv
+                JOIN users u ON dv.user_id = u.id 
+                WHERE u.levelid = 1 AND dv.volume_date = @end_date
             ) AS a ON a.user_id = dv.user_id             
             SET
                 dv.l1v = COALESCE(a.total_pv, 0)
