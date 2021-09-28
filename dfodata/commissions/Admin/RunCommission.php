@@ -571,15 +571,5 @@ class RunCommission
                 return new SampleCommission($period, $background_worker_logger, $payout_repository);
             
         }
-        
-        $period = CommissionPeriod::find($commission_period_id);
-        $background_worker_logger = new BackgroundWorkerLogger(storage_path(static::LOG_PATH), $background_worker_id, $background_worker_process_id);
-        $payout_repository = new PayoutRepository();
-
-        switch (+$commission_type_id) {
-            case config('commission.commission-types.sample-commission'):
-            default:
-                return new SampleCommission($period, $background_worker_logger, $payout_repository);
-        }
     }
 }
