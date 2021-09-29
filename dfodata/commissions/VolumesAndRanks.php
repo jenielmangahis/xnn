@@ -428,12 +428,14 @@ final class VolumesAndRanks extends Console
                 user_id, 
                 volume_date, 
                 pv,
-                l1v
+                l1v,
+                level
             )
-            WITH RECURSIVE downline (user_id, parent_id,`active`) AS (
+            WITH RECURSIVE downline (user_id, parent_id, `level` , `active`) AS (
                 SELECT 
                     id AS user_id,
                     sponsorid AS parent_id,
+                    0 AS `level`,
                     active
                 FROM users u
                 WHERE u.id = @root_user_id AND u.levelid = 3
@@ -443,6 +445,7 @@ final class VolumesAndRanks extends Console
                 SELECT
                     p.id AS user_id,
                     p.sponsorid AS parent_id,
+                    downline.`level` + 1 `level`,
                     p.active
                 FROM users p
                 INNER JOIN downline ON p.sponsorid = downline.user_id
@@ -453,13 +456,15 @@ final class VolumesAndRanks extends Console
                 d.user_id, 
                 @end_date volume_date, 
                 0 pv,
-                0 l1v
+                0 l1v,
+                d.level 
             FROM downline d
             ON DUPLICATE KEY UPDATE
                 pv = 0,
                 l1v = 0,
-                dt_created = CURRENT_TIMESTAMP(),
-                dt_updated = CURRENT_TIMESTAMP()
+                level = d.level,
+                created_at = CURRENT_TIMESTAMP(),
+                updated_at = CURRENT_TIMESTAMP()
         ";
 
         $stmt = $this->db->prepare($sql);
@@ -497,8 +502,8 @@ final class VolumesAndRanks extends Console
                 is_active = 0,
                 is_system_active = 0,
                 volume_id = VALUES(volume_id),
-                dt_created = CURRENT_TIMESTAMP(),
-                dt_updated = CURRENT_TIMESTAMP();
+                created_at = CURRENT_TIMESTAMP(),
+                updated_at = CURRENT_TIMESTAMP();
         ";
 
         $stmt = $this->db->prepare($sql);
