@@ -13,9 +13,6 @@ use DateTime;
 
 final class VolumesAndRanks extends Console
 {
-    const MAX_POINTS = 20000;
-    const MIN_ACTIVE_POINTS = 100;
-
     protected $db;
     protected $end_date;
     protected $start_date;
@@ -45,11 +42,6 @@ final class VolumesAndRanks extends Console
 
             $this->log("Customer IDs: " . $this->customers);
             $this->log("Affiliate IDs: " . $this->affiliates);
-
-            $this->log("Max Points per user: " . static::MAX_POINTS);
-
-            $influencer_1 = config('commission.ranks.influencer-1');
-            $silver_influencer_1 = config('commission.ranks.silver-influencer-1');
 
             $this->log("Deleting ranks and volumes records of customers");
             $this->deleteCustomerRecords();
@@ -94,18 +86,14 @@ final class VolumesAndRanks extends Console
                 @start_date = :start_date,
                 @end_date = :end_date,
                 @affiliates = :affiliates,
-                @customers = :customers,
-                @max_points = :max_points,
-                @min_active_points = :min_active_points
+                @customers = :customers
             ")
             ->execute([
                 ':root_user_id' => $this->root_user_id,
                 ':start_date' => $this->getStartDate(),
                 ':end_date' => $this->getEndDate(),
                 ':customers' => $this->customers,
-                ':affiliates' => $this->affiliates,
-                ':max_points' => static::MAX_POINTS,
-                ':min_active_points' => static::MIN_ACTIVE_POINTS,
+                ':affiliates' => $this->affiliates
             ]);
 
         if (false) {
@@ -115,9 +103,7 @@ final class VolumesAndRanks extends Console
                     @start_date,
                     @end_date,
                     @affiliates,
-                    @customers,
-                    @max_points,
-                    @min_active_points
+                    @customers
             ");
 
             $stmt->execute();
@@ -130,18 +116,12 @@ final class VolumesAndRanks extends Console
     {
         $sql = "
             UPDATE cm_daily_ranks dr
-            JOIN cm_daily_volumes dv ON dv.id = dr.volume_id
+            JOIN cm_daily_volumes dv ON dv.id = dr.volume_id AND dv.volume_date = @end_date
             JOIN users u ON u.id = dv.user_id
             SET 
-                dr.is_active =  dr.paid_as_rank_id > 1,
+                dr.is_active =  IF(dv.pv >= 100, 1, 0),
                 dr.is_system_active = (u.active = 'Yes')
-            WHERE (
-                SELECT 
-                    SUM(dv.pv) AS total_pv
-                FROM cm_daily_volumes dvv
-                WHERE dvv.user_id = dr.user_id
-                AND dvv.volume_date BETWEEN @start_date AND @end_date
-            ) >= 100;
+            WHERE dr.rank_date = @end_date
         ";
 
         $stmt = $this->db->prepare($sql);
@@ -568,8 +548,6 @@ final class VolumesAndRanks extends Console
 
         $smt = $this->db->prepare($sql);
         $smt->execute();
-
-        //return $smt->fetchColumn();
     }
 
 }
