@@ -514,55 +514,84 @@ final class VolumesAndRanks extends Console
     }
 
     private function setPv()
-    {
+    { // DFO
+        // $sql = "
+        //     UPDATE cm_daily_volumes dv
+
+        //     LEFT JOIN (
+        //         WITH RECURSIVE downline (user_id, parent_id, root_id, `level`, `active`) AS (
+        //             SELECT 
+        //                 p.id AS user_id,
+        //                 p.sponsorid AS parent_id,
+        //                 p.id AS root_id,
+        //                 0 AS `level`,
+        //                 active
+        //             FROM users p
+        //             WHERE p.id = @root_user_id
+
+        //             UNION ALL 
+
+        //             SELECT
+        //                 p.id AS user_id,
+        //                 p.sponsorid AS parent_id,
+        //                 downline.root_id,
+        //                 downline.`level` + 1 `level`,
+        //                 p.active
+        //             FROM users p
+        //             JOIN downline ON downline.user_id = p.sponsorid
+        //         )
+        //         SELECT
+        //             t.user_id,
+        //             SUM(COALESCE(t.computed_cv, 0)) As pv
+        //         FROM downline d
+        //         JOIN v_cm_transactions t ON t.user_id = d.user_id
+        //         WHERE transaction_date BETWEEN @start_date AND @end_date
+        //             AND t.`type` = 'product'
+        //             AND FIND_IN_SET(t.purchaser_catid, @customers)
+        //             AND d.level <= 2
+        //     ) AS a ON a.user_id = dv.user_id      
+        //     SET
+        //         dv.pv = COALESCE(a.pv, 0)
+        //     WHERE dv.volume_date = @end_date
+        // ";
+
+       //9tr
         $sql = "
             UPDATE cm_daily_volumes dv
-
             LEFT JOIN (
-                WITH RECURSIVE downline (user_id, parent_id, root_id, `level`, `active`, `compress_level`) AS (
-                    SELECT 
-                        p.id AS user_id,
-                        p.sponsorid AS parent_id,
-                        p.id AS root_id,
-                        0 AS `level`,
-                        active,
-                        0 AS `compress_level`
-                    FROM users p
-                    WHERE p.id = @root_user_id
-
-                    UNION ALL 
-
-                    SELECT
-                        p.id AS user_id,
-                        p.sponsorid AS parent_id,
-                        downline.root_id,
-                        downline.`level` + 1 `level`,
-                        p.active,
-                        downline.compress_level + IF(p.active = 'Yes', 1, 0)
-                    FROM users p
-                    JOIN downline ON downline.user_id = p.sponsorid
-                )
                 SELECT
                     t.user_id,
-                    SUM(COALESCE(t.computed_cv, 0)) As pv
-                FROM downline d
-                JOIN v_cm_transactions t ON t.user_id = d.user_id
+                    SUM(COALESCE(t.computed_bv, 0)) As ps
+                FROM v_cm_transactions t
                 WHERE transaction_date BETWEEN @start_date AND @end_date
                     AND t.`type` = 'product'
+                    AND FIND_IN_SET(t.purchaser_catid, @affiliates)
+                    -- AND FIND_IN_SET(t.sponsor_catid, @affiliates)
+                GROUP BY t.user_id
+            ) AS a ON a.user_id = dv.user_id 
+            LEFT JOIN (
+                SELECT
+                    t.sponsor_id AS user_id,
+                    SUM(COALESCE(t.computed_bv, 0)) AS cs
+                FROM v_cm_transactions t
+                WHERE t.transaction_date BETWEEN @start_date AND @end_date
+                    AND t.`type` = 'product' 
                     AND FIND_IN_SET(t.purchaser_catid, @customers)
-                    AND d.level <= 2
-            ) AS a ON a.user_id = dv.user_id      
+                GROUP BY t.sponsor_id
+            ) AS c ON c.user_id = dv.user_id
             SET
-                dv.pv = COALESCE(a.pv, 0)
+                dv.ps = COALESCE(a.ps, 0),
+                dv.cs = COALESCE(c.cs, 0),
+                dv.cs_ps = COALESCE(a.ps, 0) + COALESCE(c.cs, 0)
             WHERE dv.volume_date = @end_date
         ";
+
 
         $smt = $this->db->prepare($sql);
         $smt->execute();
 
         return $smt->fetchColumn();
     }
-
 
     private function setPvCustomerOrder()
     { 
@@ -595,7 +624,28 @@ final class VolumesAndRanks extends Console
         return $smt->fetchColumn();
     }
 
-    
+
+    private function nextUplineRep($user_id) {
+        $sql = "
+            WITH RECURSIVE upline () {
+                SELECT
+                    user_id,
+                    sponsorid
+                FROM users u
+                WHERE u.id = :user_id
+
+                UNION
+
+
+            }
+        
+        ";
+
+        return $repID
+
+
+    }
+
 
     private function setL1V()
     {
@@ -616,69 +666,6 @@ final class VolumesAndRanks extends Console
 
         $smt = $this->db->prepare($sql);
         $smt->execute();
-    }
-
-    private function setPvCustomerOrder() {
-        $sql = "
-        SELECT
-            t.sponsor_id AS user_id,
-            SUM(COALESCE(t.computed_cv, 0)) AS cs
-        FROM v_cm_transactions t
-        WHERE t.transaction_date BETWEEN @start_date AND @end_date
-            AND t.`type` = 'product' 
-            AND FIND_IN_SET(t.purchaser_catid, @customers)
-            AND FIND_IN_SET(t.sponsor_catid, @customers)"
-        ;
-
-        $stmt = $this->db->prepare($sql);        
-        $stmt->execute();
-        $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-        foreach ($orders as $order) {
-            $repID = $this->nextUplineRep($order['user_id']);
-
-            $sql = "
-                UPDATE cm_daily_volumes dv
-                    SET pv = pv + :pv
-                WHERE user_id = :repID AND volume_date = @end_date
-            ";
-
-            $smt = $this->db->prepare($sql);
-            $smt->bindParam(':repID', $repID);
-            $smt->bindParam(':pv', $order['cs']);
-            $smt->execute();
-        }
-    }
-
-    private function nextUplineRep($user_id) {
-        $sql = "
-            WITH RECURSIVE upline (user_id,) AS (
-                SELECT
-                    u.id AS user_id
-                FROM users u
-                WHERE u.id = :user_id
-                
-                UNION ALL
-                
-                SELECT
-                    uu.id AS user_id
-                FROM users uu
-                INNER JOIN upline ON upline.parent_id = uu.id
-            )
-            SELECT 
-                u.parent_id AS user_id
-            FROM upline u 
-            WHERE EXISTS(SELECT 1 FROM categorymap cm WHERE cm.userid = u.parent_id AND FIND_IN_SET(cm.catid, :affiliates))
-            LIMIT 1;
-        ";
-
-        $affiliates = config('commission.member-types.affiliates');
-
-        $smt = $this->db->prepare($sql);
-        $smt->bindParam(':user_id', $user_id);
-        $smt->bindParam(':affiliates', $affiliates);
-        $smt->execute();
-        return $smt->fetchColumn();
     }
 
 }
