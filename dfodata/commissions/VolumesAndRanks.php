@@ -514,17 +514,43 @@ final class VolumesAndRanks extends Console
     {
         $sql = "
             UPDATE cm_daily_volumes dv
+
             LEFT JOIN (
+                WITH RECURSIVE downline (user_id, parent_id, root_id, `level`, `active`, `compress_level`) AS (
+                    SELECT 
+                        p.id AS user_id,
+                        p.sponsorid AS parent_id,
+                        p.id AS root_id,
+                        0 AS `level`,
+                        active,
+                        0 AS `compress_level`
+                    FROM users p
+                    WHERE p.id = @root_user_id
+
+                    UNION ALL 
+
+                    SELECT
+                        p.id AS user_id,
+                        p.sponsorid AS parent_id,
+                        downline.root_id,
+                        downline.`level` + 1 `level`,
+                        p.active,
+                        downline.compress_level + IF(p.active = 'Yes', 1, 0)
+                    FROM users p
+                    JOIN downline ON downline.user_id = p.sponsorid
+                )
                 SELECT
                     t.user_id,
-                    SUM(COALESCE(t.computed_cv, 0)) As ps
-                FROM v_cm_transactions t
+                    SUM(COALESCE(t.computed_cv, 0)) As pv
+                FROM downline d
+                JOIN v_cm_transactions t ON t.user_id = d.user_id
                 WHERE transaction_date BETWEEN @start_date AND @end_date
-                    AND t.`type` = 'product'                    
-                GROUP BY t.user_id
-            ) AS a ON a.user_id = dv.user_id             
+                    AND t.`type` = 'product'
+                    AND FIND_IN_SET(t.purchaser_catid, @customers)
+                    AND d.level <= 2
+            ) AS a ON a.user_id = dv.user_id      
             SET
-                dv.pv = COALESCE(a.ps, 0)
+                dv.pv = COALESCE(a.pv, 0)
             WHERE dv.volume_date = @end_date
         ";
 
