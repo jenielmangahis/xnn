@@ -61,6 +61,9 @@ final class VolumesAndRanks extends Console
             $this->log('Setting PV');
             $this->setPv();
 
+            $this->log('Setting PV From customer order sponsored by customers');
+            $this->setPvCustomerOrder();
+
             $this->log('Setting L1V');
             $this->setL1V();   
 
@@ -579,6 +582,69 @@ final class VolumesAndRanks extends Console
 
         $smt = $this->db->prepare($sql);
         $smt->execute();
+    }
+
+    private function setPvCustomerOrder() {
+        $sql = "
+        SELECT
+            t.sponsor_id AS user_id,
+            SUM(COALESCE(t.computed_cv, 0)) AS cs
+        FROM v_cm_transactions t
+        WHERE t.transaction_date BETWEEN @start_date AND @end_date
+            AND t.`type` = 'product' 
+            AND FIND_IN_SET(t.purchaser_catid, @customers)
+            AND FIND_IN_SET(t.sponsor_catid, @customers)"
+        ;
+
+        $stmt = $this->db->prepare($sql);        
+        $stmt->execute();
+        $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        foreach ($orders as $order) {
+            $repID = $this->nextUplineRep($order['user_id']);
+
+            $sql = "
+                UPDATE cm_daily_volumes dv
+                    SET pv = pv + :pv
+                WHERE user_id = :repID AND volume_date = @end_date
+            ";
+
+            $smt = $this->db->prepare($sql);
+            $smt->bindParam(':repID', $repID);
+            $smt->bindParam(':pv', $order['cs']);
+            $smt->execute();
+        }
+    }
+
+    private function nextUplineRep($user_id) {
+        $sql = "
+            WITH RECURSIVE upline (user_id,) AS (
+                SELECT
+                    u.id AS user_id
+                FROM users u
+                WHERE u.id = :user_id
+                
+                UNION ALL
+                
+                SELECT
+                    uu.id AS user_id
+                FROM users uu
+                INNER JOIN upline ON upline.parent_id = uu.id
+            )
+            SELECT 
+                u.parent_id AS user_id
+            FROM upline u 
+            WHERE EXISTS(SELECT 1 FROM categorymap cm WHERE cm.userid = u.parent_id AND FIND_IN_SET(cm.catid, :affiliates))
+            LIMIT 1;
+        ";
+
+        $affiliates = config('commission.member-types.affiliates');
+
+        $smt = $this->db->prepare($sql);
+        $smt->bindParam(':user_id', $user_id);
+        $smt->bindParam(':affiliates', $affiliates);
+        $smt->execute();
+        return $smt->fetchColumn();
     }
 
 }
