@@ -15,8 +15,6 @@ use App\Ledger;
 use App\LedgerPayout;
 use App\OfficeGiftCard;
 use Commissions\BackgroundWorkerLogger;
-use Commissions\CommissionTypes\EnrollerBonus;
-use Commissions\CommissionTypes\LevelBonus;
 use Commissions\CsvReport;
 use Commissions\CommissionTypes\SampleCommission;
 use Commissions\CommissionTypes\MonthlyCustomerProfit;
@@ -418,7 +416,7 @@ class RunCommission
                 $logger->log("          ");
                 // $links = $commission->generateReportLinks($b->id . "_");
 
-                $csv_report = new CsvReport("csv/admin/run_commission_files");
+                $csv_report = new CsvReport("csv/admin/run_commission");
 
                 $file_name = $b->id . "_" . $commission->getCommissionType() . "_" . $commission->getPeriodStartDate() . "_" . $commission->getPeriodEndDate();
                 $download_link = $csv_report->generateLink(
@@ -567,18 +565,10 @@ class RunCommission
 
         switch (+$commission_type_id) {
             case config('commission.commission-types.customer-profit'):
-                return new MonthlyCustomerProfit($period, $background_worker_logger, $payout_repository);
-                break;
-            case config('commission.commission-types.enroller-bonus'):
-                return new EnrollerBonus($period, $background_worker_logger, $payout_repository);
-                break;
-            case config('commission.commission-types.level-bonus'):
-                return new LevelBonus($period, $background_worker_logger, $payout_repository);
-                break;
+                return new MonthlyCustomerProfit($period, $background_worker_logger, $payout_repository);    
             case config('commission.commission-types.sample-commission'):
             default:
                 return new SampleCommission($period, $background_worker_logger, $payout_repository);
-            break;
             
         }
     }
