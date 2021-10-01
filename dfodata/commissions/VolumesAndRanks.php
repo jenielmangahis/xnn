@@ -590,21 +590,23 @@ final class VolumesAndRanks extends Console
         $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         foreach ($orders as $order) {
-            $this->log("went order test " . $order->user_id);
-            $repIDs = $this->nextUplineRep($order->user_id);
-            foreach( $repIDs as $repID ){
-                $this->log("went repid : " . $repID->user_id);
-                $sql = "
-                    UPDATE cm_daily_volumes dv
-                        SET pv = pv + :pv
-                    WHERE user_id = :repID AND volume_date = @end_date
-                ";
+            if( $order['user_id'] > 0 ){
+                $this->log("went order test" . $order['user_id']);
+                $repIDs = $this->nextUplineRep($order['user_id']);
+                foreach( $repIDs as $repID ){
+                    $this->log("went repid : " . $repID['user_id']);
+                    $sql = "
+                        UPDATE cm_daily_volumes dv
+                            SET pv = pv + :pv
+                        WHERE user_id = :repID AND volume_date = @end_date
+                    ";
 
-                $smt = $this->db->prepare($sql);
-                $smt->bindParam(':repID', $repID->user_id);
-                $smt->bindParam(':pv', $order->cs);
-                $smt->execute();
-            }
+                    $smt = $this->db->prepare($sql);
+                    $smt->bindParam(':repID', $repID['user_id']);
+                    $smt->bindParam(':pv', $order['cs']);
+                    $smt->execute();
+                }
+            }            
         }
     }
 
