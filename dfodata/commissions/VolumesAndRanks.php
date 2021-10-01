@@ -589,8 +589,10 @@ final class VolumesAndRanks extends Console
         $stmt->execute();
         $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
         foreach ($orders as $order) {
+            $this->log("went order");
             $repIDs = $this->nextUplineRep($order['user_id']);
             foreach( $repIDs as $repID ){
+                $this->log("went repid : " . $repID['user_id']);
                 $sql = "
                     UPDATE cm_daily_volumes dv
                         SET pv = pv + :pv
