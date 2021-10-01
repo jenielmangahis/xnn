@@ -588,8 +588,9 @@ final class VolumesAndRanks extends Console
         $stmt = $this->db->prepare($sql);        
         $stmt->execute();
         $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
         foreach ($orders as $order) {
-            $this->log("went order");
+            $this->log("went order " . $order['user_id']);
             $repIDs = $this->nextUplineRep($order['user_id']);
             foreach( $repIDs as $repID ){
                 $this->log("went repid : " . $repID['user_id']);
@@ -644,7 +645,7 @@ final class VolumesAndRanks extends Console
                     id AS user_id,
                     sponsorid AS parent_id
                 FROM users
-                WHERE id = :user_id
+                WHERE id = :v_user_id
                 
                 UNION ALL
                 
@@ -660,9 +661,10 @@ final class VolumesAndRanks extends Console
             WHERE EXISTS(SELECT 1 FROM categorymap cm WHERE cm.userid = u.parent_id)
         ";
 
-        $smt = $this->db->prepare($sql);
-        $smt->bindParam(':user_id', $user_id);        
-        $smt->execute();
+        $stmt = $this->db->prepare($sql);  
+        $smt->bindParam(':v_user_id', $user_id);       
+        $stmt->execute();
+        $this->log("went execute"]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
