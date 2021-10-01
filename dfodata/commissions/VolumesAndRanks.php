@@ -515,54 +515,12 @@ final class VolumesAndRanks extends Console
 
     private function setPv()
     {
-        // DFO
-        // $sql = "
-        //     UPDATE cm_daily_volumes dv
-
-        //     LEFT JOIN (
-        //         WITH RECURSIVE downline (user_id, parent_id, root_id, `level`, `active`) AS (
-        //             SELECT 
-        //                 p.id AS user_id,
-        //                 p.sponsorid AS parent_id,
-        //                 p.id AS root_id,
-        //                 0 AS `level`,
-        //                 active
-        //             FROM users p
-        //             WHERE p.id = @root_user_id
-
-        //             UNION ALL 
-
-        //             SELECT
-        //                 p.id AS user_id,
-        //                 p.sponsorid AS parent_id,
-        //                 downline.root_id,
-        //                 downline.`level` + 1 `level`,
-        //                 p.active
-        //             FROM users p
-        //             JOIN downline ON downline.user_id = p.sponsorid
-        //         )
-        //         SELECT
-        //             t.user_id,
-        //             SUM(COALESCE(t.computed_cv, 0)) As pv
-        //         FROM downline d
-        //         JOIN v_cm_transactions t ON t.user_id = d.user_id
-        //         WHERE transaction_date BETWEEN @start_date AND @end_date
-        //             AND t.`type` = 'product'
-        //             AND FIND_IN_SET(t.purchaser_catid, @customers)
-        //             AND d.level <= 2
-        //     ) AS a ON a.user_id = dv.user_id      
-        //     SET
-        //         dv.pv = COALESCE(a.pv, 0)
-        //     WHERE dv.volume_date = @end_date
-        // ";
-
-       //9tr
         $sql = "
             UPDATE cm_daily_volumes dv
             LEFT JOIN (
                 SELECT
                     t.user_id,
-                    SUM(COALESCE(t.computed_bv, 0)) As ps
+                    SUM(COALESCE(t.computed_cv, 0)) As pv
                 FROM v_cm_transactions t
                 WHERE transaction_date BETWEEN @start_date AND @end_date
                     AND t.`type` = 'product'
@@ -573,7 +531,7 @@ final class VolumesAndRanks extends Console
             LEFT JOIN (
                 SELECT
                     t.sponsor_id AS user_id,
-                    SUM(COALESCE(t.computed_bv, 0)) AS cs
+                    SUM(COALESCE(t.computed_cv, 0)) AS cs
                 FROM v_cm_transactions t
                 WHERE t.transaction_date BETWEEN @start_date AND @end_date
                     AND t.`type` = 'product' 
@@ -581,9 +539,8 @@ final class VolumesAndRanks extends Console
                 GROUP BY t.sponsor_id
             ) AS c ON c.user_id = dv.user_id
             SET
-                dv.ps = COALESCE(a.ps, 0),
-                dv.cs = COALESCE(c.cs, 0),
-                dv.cs_ps = COALESCE(a.ps, 0) + COALESCE(c.cs, 0)
+                dv.pv = COALESCE(a.pv, 0)
+               
             WHERE dv.volume_date = @end_date
         ";
 
@@ -631,7 +588,6 @@ final class VolumesAndRanks extends Console
         $stmt = $this->db->prepare($sql);        
         $stmt->execute();
         $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
         foreach ($orders as $order) {
             $repID = $this->nextUplineRep($order['user_id']);
 
@@ -649,19 +605,21 @@ final class VolumesAndRanks extends Console
     }
 
     private function nextUplineRep($user_id) {
-        $sql = "
-            WITH RECURSIVE upline (user_id,) AS (
+       $sql = "
+            WITH RECURSIVE upline (user_id, `parent_id`) AS (
                 SELECT
-                    u.id AS user_id
-                FROM users u
-                WHERE u.id = :user_id
+                    id AS user_id,
+                    sponsorid AS parent_id
+                FROM users
+                WHERE id = :user_id
                 
                 UNION ALL
                 
                 SELECT
-                    uu.id AS user_id
-                FROM users uu
-                INNER JOIN upline ON upline.parent_id = uu.id
+                    u.id AS user_id,
+                  u.sponsorid AS parent_id
+                FROM users u
+                INNER JOIN upline ON upline.parent_id = u.id
             )
             SELECT 
                 u.parent_id AS user_id
