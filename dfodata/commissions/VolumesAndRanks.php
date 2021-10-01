@@ -589,24 +589,55 @@ final class VolumesAndRanks extends Console
         $stmt->execute();
         $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
         foreach ($orders as $order) {
-            $repID = $this->nextUplineRep($order['user_id']);
+            $repIDs = $this->nextUplineRep($order['user_id']);
+            foreach( $repIDs as as $repID ){
+                $sql = "
+                    UPDATE cm_daily_volumes dv
+                        SET pv = pv + :pv
+                    WHERE user_id = :repID AND volume_date = @end_date
+                ";
 
-            $sql = "
-                UPDATE cm_daily_volumes dv
-                    SET pv = pv + :pv
-                WHERE user_id = :repID AND volume_date = @end_date
-            ";
-
-            $smt = $this->db->prepare($sql);
-            $smt->bindParam(':repID', $repID);
-            $smt->bindParam(':pv', $order['cs']);
-            $smt->execute();
+                $smt = $this->db->prepare($sql);
+                $smt->bindParam(':repID', $repID['user_id']);
+                $smt->bindParam(':pv', $order['cs']);
+                $smt->execute();
+            }
         }
     }
 
     private function nextUplineRep($user_id) {
-       $sql = "
-            WITH RECURSIVE upline (user_id, `parent_id`) AS (
+       /*$sql = "
+            WITH RECURSIVE upline (user_id, parent_id, `level`) AS (
+                SELECT
+                    id AS user_id,
+                    sponsorid AS parent_id,
+                    1 AS `level`
+                FROM users
+                WHERE id = :user_id
+                
+                UNION ALL
+                
+                SELECT
+                    u.id AS user_id,
+                  u.sponsorid AS parent_id,
+                  upline.`level` + 1 `level`
+                FROM users u
+                INNER JOIN upline ON upline.parent_id = u.id
+            )
+            SELECT 
+                u.parent_id AS user_id
+            FROM upline u 
+            WHERE EXISTS(SELECT 1 FROM categorymap cm WHERE cm.userid = u.parent_id)
+            LIMIT 1;
+        ";
+
+        $smt = $this->db->prepare($sql);
+        $smt->bindParam(':user_id', $user_id);        
+        $smt->execute();
+        return $smt->fetchColumn();*/
+
+        $sql = "
+            WITH RECURSIVE upline (user_id, parent_id) AS (
                 SELECT
                     id AS user_id,
                     sponsorid AS parent_id
@@ -624,17 +655,13 @@ final class VolumesAndRanks extends Console
             SELECT 
                 u.parent_id AS user_id
             FROM upline u 
-            WHERE EXISTS(SELECT 1 FROM categorymap cm WHERE cm.userid = u.parent_id AND FIND_IN_SET(cm.catid, :affiliates))
-            LIMIT 1;
+            WHERE EXISTS(SELECT 1 FROM categorymap cm WHERE cm.userid = u.parent_id)
         ";
 
-        $affiliates = config('commission.member-types.affiliates');
-
         $smt = $this->db->prepare($sql);
-        $smt->bindParam(':user_id', $user_id);
-        $smt->bindParam(':affiliates', $affiliates);
+        $smt->bindParam(':user_id', $user_id);        
         $smt->execute();
-        return $smt->fetchColumn();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
 }
