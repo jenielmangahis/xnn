@@ -592,20 +592,20 @@ final class VolumesAndRanks extends Console
         foreach ($orders as $order) {
             if( $order['user_id'] > 0 ){
                 $this->log("went order test" . $order['user_id']);
-                $repIDs = $this->nextUplineRep($order['user_id']);
-                foreach( $repIDs as $repID ){
+                $repID = $this->nextUplineRep($order['user_id']);
+
+                 if(isset($repID)){ 
                     $this->log("went repid : " . $repID['user_id']);
                     $sql = "
                         UPDATE cm_daily_volumes dv
                             SET pv = pv + :pv
-                        WHERE user_id = :repID AND volume_date = @end_date AND level >= 1
+                        WHERE user_id = :repID AND volume_date = @end_date
                     ";
-
                     $smt = $this->db->prepare($sql);
                     $smt->bindParam(':repID', $repID['user_id']);
                     $smt->bindParam(':pv', $order['cs']);
-                    $smt->execute();
-                }
+                    $smt->execute(); 
+                 }   
             }            
         }
     }
@@ -631,7 +631,8 @@ final class VolumesAndRanks extends Console
             SELECT 
                 u.parent_id AS user_id
             FROM upline u 
-            WHERE EXISTS(SELECT 1 FROM categorymap cm WHERE cm.userid = u.parent_id)
+            WHERE EXISTS(SELECT 1 FROM categorymap cm WHERE cm.userid = u.parent_id AND FIND_IN_SET(cm.catid, @affiliates))
+            LIMIT 1
         ";
 
         $stmt = $this->db->prepare($sql);  
