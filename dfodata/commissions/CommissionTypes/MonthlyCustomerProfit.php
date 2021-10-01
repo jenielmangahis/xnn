@@ -12,8 +12,6 @@ use Carbon\Carbon;
 use \PDO;
 use DateTime;
 
-use Commissions\Contracts\CommissionTypeInterface;
-
 
 class MonthlyCustomerProfit extends CommissionType implements CommissionTypeInterface
 {

@@ -598,7 +598,7 @@ final class VolumesAndRanks extends Console
                     $sql = "
                         UPDATE cm_daily_volumes dv
                             SET pv = pv + :pv
-                        WHERE user_id = :repID AND volume_date = @end_date
+                        WHERE user_id = :repID AND volume_date = @end_date AND level >= 1
                     ";
 
                     $smt = $this->db->prepare($sql);
@@ -611,35 +611,6 @@ final class VolumesAndRanks extends Console
     }
 
     private function nextUplineRep($user_id) {
-       /*$sql = "
-            WITH RECURSIVE upline (user_id, parent_id, `level`) AS (
-                SELECT
-                    id AS user_id,
-                    sponsorid AS parent_id,
-                    1 AS `level`
-                FROM users
-                WHERE id = :user_id
-                
-                UNION ALL
-                
-                SELECT
-                    u.id AS user_id,
-                  u.sponsorid AS parent_id,
-                  upline.`level` + 1 `level`
-                FROM users u
-                INNER JOIN upline ON upline.parent_id = u.id
-            )
-            SELECT 
-                u.parent_id AS user_id
-            FROM upline u 
-            WHERE EXISTS(SELECT 1 FROM categorymap cm WHERE cm.userid = u.parent_id)
-            LIMIT 1;
-        ";
-
-        $smt = $this->db->prepare($sql);
-        $smt->bindParam(':user_id', $user_id);        
-        $smt->execute();
-        return $smt->fetchColumn();*/
 
         $sql = "
             WITH RECURSIVE upline (user_id, parent_id) AS (

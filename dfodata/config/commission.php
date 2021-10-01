@@ -3,16 +3,30 @@
 return [
 
     'ranks' => [
-
+        'C0' => 0,
+        'C1' => 1,
+        'C2' => 2,
+        'C3' => 3,
+        'C4' => 4,
     ],
 
     'commission-types' => [
-        'customer-profit' => 1
+        'customer-profit' => 1,
+        'level-bonus' => 2,
+        'enroller-bonus' => 3,
     ],
 
     'member-types' => [
-        'customers' => '19',
-        'affiliates' => '13,15'
+        'customers' => '15',
+        'affiliates' => '13,14',
+        'pro'   => 13,
+        'premium'   => 14,
+        'retail-customer'   => 15,
+    ],
+
+    'minimum-requirements' =>
+    [
+        'active_pv' => 100,
     ],
 
     'payment' => env('COMMISSION_PAYMENT'),
