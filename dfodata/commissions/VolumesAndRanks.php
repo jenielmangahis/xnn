@@ -664,7 +664,7 @@ final class VolumesAndRanks extends Console
         $stmt = $this->db->prepare($sql);  
         $smt->bindParam(':v_user_id', $user_id);       
         $stmt->execute();
-        $this->log("went execute"]);
+        $this->log("went execute");
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
