@@ -418,7 +418,7 @@ class RunCommission
                 $logger->log("          ");
                 // $links = $commission->generateReportLinks($b->id . "_");
 
-                $csv_report = new CsvReport("csv/admin/run_commission");
+                $csv_report = new CsvReport("csv/admin/run_commission_files");
 
                 $file_name = $b->id . "_" . $commission->getCommissionType() . "_" . $commission->getPeriodStartDate() . "_" . $commission->getPeriodEndDate();
                 $download_link = $csv_report->generateLink(
