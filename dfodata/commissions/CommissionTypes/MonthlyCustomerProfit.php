@@ -42,12 +42,13 @@ class MonthlyCustomerProfit extends CommissionType implements CommissionTypeInte
                 $is_autoship_order = +$order['subscription_purchase'] === 1 ? "Yes" : "No";
                 $order_type = $order['order_type'];
                 $product_name = $order['product_name'];
+                $computed_customer_profit = $order['computed_customer_profit'];
 
                 if($commission_value > 0){
                     $this->insertPayout(
                         $payee_id,
                         $user_id,
-                        $commission_value,
+                        $computed_customer_profit,
                         $percentage * 100,
                         $commission_value * $percentage,
                         "Order: $product_name | Order Type: $order_type | Autoship Order: $is_autoship_order",
@@ -124,6 +125,7 @@ class MonthlyCustomerProfit extends CommissionType implements CommissionTypeInte
                     op.`model` AS product_name,
                     op.is_autoship AS subscription_purchase,
                     t.transaction_id AS order_id,
+                    tp.computed_customer_profit,
                     'Customer Order' AS order_type
                 FROM v_cm_transactions t
                 JOIN users u ON u.id = t.user_id
@@ -150,6 +152,7 @@ class MonthlyCustomerProfit extends CommissionType implements CommissionTypeInte
                     op.`model` AS product_name,
                     op.is_autoship AS subscription_purchase,
                     t.transaction_id AS order_id,
+                    tp.computed_customer_profit,
                     'Personal Order' AS order_type
                 FROM v_cm_transactions t
                 JOIN users u ON u.id = t.user_id
