@@ -24,7 +24,7 @@ class MonthlyCustomerProfit extends CommissionType
             $transactions = $this->getTransactions($c['sponsorid']);
             
             if(count($transactions) <= 0){
-                $this->log('No transactions found for sponsor id ' . $sponsor_id);
+                $this->log('No transactions found for sponsor id ' . $c['sponsorid']);
                 continue;
             }
 
