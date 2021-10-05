@@ -87,8 +87,7 @@ class MonthlyCustomerProfit extends CommissionType
                 SUM(tp.computed_customer_profit) AS customer_profit
             FROM transaction_products tp
             JOIN oc_product op ON  tp.shoppingcart_product_id = op.product_id 
-            JOIN v_cm_transactions t ON tp.transaction_id = t.transaction_id
-            JOIN oc_product op ON  tp.shoppingcart_product_id = op.product_id 
+            JOIN v_cm_transactions t ON tp.transaction_id = t.transaction_id            
             WHERE (tp.shoppingcart_product_id NOT IN(19,16) AND op.is_giftcard != 1)
                 AND DATE(t.transaction_date) BETWEEN :start_date AND :end_date
                 AND t.sponsor_id = :sponsorid
