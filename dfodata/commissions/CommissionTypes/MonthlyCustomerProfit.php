@@ -38,7 +38,7 @@ class MonthlyCustomerProfit extends CommissionType implements CommissionTypeInte
                 $commission_value = $order['price'];
                 $payee_id = $order['payee_id'];
                 $order_id = $order['order_id'];
-                $percentage = +$order['subscription_purchase'] === 1 ? 0.10 : 0.20; //if autoship/subscription purchase 10%
+                $percentage = 0
                 $is_autoship_order = +$order['subscription_purchase'] === 1 ? "Yes" : "No";
                 $order_type = $order['order_type'];
                 $product_name = $order['product_name'];
@@ -49,9 +49,9 @@ class MonthlyCustomerProfit extends CommissionType implements CommissionTypeInte
                         $payee_id,
                         $user_id,
                         $computed_customer_profit,
-                        $percentage * 100,
+                        $percentage,
                         $commission_value * $percentage,
-                        "Order: $product_name | Order Type: $order_type | Autoship Order: $is_autoship_order",
+                        "Customer Profit - Order: $product_name | Order Type: $order_type",
                         $order_id,
                         $order['order_type'] === 'Customer Order' ? 1 : 0,
                         $sponsor_id
