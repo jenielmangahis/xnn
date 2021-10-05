@@ -148,4 +148,43 @@ class MonthlyCustomerProfit extends CommissionType
         $this->throwIfInvalidDateFormat($start_date);
         $this->start_date = $start_date;
     }
+
+    /*
+     * used for dashboard display
+     * */
+    public static function isMemberQualified($consultant_id)
+    {
+        /*
+         * Check if there is an enroller who has first membership purchase
+         * */
+
+        $membership_products = "19,16";
+        $end_date = new Carbon();
+
+        $start_date = clone  $end_date;
+        $start_date->firstOfMonth();
+
+        $d = DailyRank::where('rank_date', $end_date->format('Y-m-d'))
+            ->where('user_id', $consultant_id);
+
+        if(
+            !($d->is_active == 0
+                || $d->is_system_active == 0
+            )
+        )
+        {
+        }
+
+        $transactions = DB::table('v_cm_transactions as t')
+            ->join('transaction_products as tp', 't.transaction_id', '=', 'tp.transaction_id')
+            ->join('oc_product as p', 'tp.shoppingcart_product_id', '=', 'p.product_id')
+            ->whereBetween('t.transactiondate', [$start_date->format('Y-m-d'), $end_date->format('Y-m-d')])
+            ->whereRaw("!(FIND_IN_SET(tp.shoppingcart_product_id, '$membership_products') || p.is_giftcard = 1)")
+            ->where('tp.computed_customer_profit','>' ,0)
+            ->where('t.sponsor_id', $consultant_id)
+            ->toSql();
+
+        return $transactions;
+
+    }
 }
