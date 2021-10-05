@@ -21,7 +21,7 @@ class MonthlyCustomerProfit extends CommissionType
     {
         $consultants = $this->getQualifiedConsultants();
         foreach( $consultants as $c ){
-            $transactions = $this->getTransactions($c->sponsorid);
+            $transactions = $this->getTransactions($c['sponsorid']);
             
             if(count($transactions) <= 0){
                 $this->log('No transactions found for sponsor id ' . $sponsor_id);
@@ -29,22 +29,22 @@ class MonthlyCustomerProfit extends CommissionType
             }
 
             foreach( $transactions as $t ){
-                $payee_id = $t->sponsor_id;
-                $customer_profit = $t->customer_profit;
+                $payee_id = $t['sponsor_id'];
+                $customer_profit = $t['customer_profit'];
 
-                $remarks =" $payee_id has earned customer profit amounting of ".$customer_profit." from order ". $t->transaction_id;
+                $remarks =" $payee_id has earned customer profit amounting of ".$customer_profit." from order ". $t['transaction_id'];
                 $this->log($remarks);
 
                 $this->insertPayout(
                     $payee_id,
-                    $t->user_id,
+                    $t['user_id'],
                     0,
                     0,
                     $customer_profit,
                     $remarks,
-                    $t->transaction_id,
+                    $t['transaction_id'],
                     0,
-                    $t->sponsor_id
+                    $t['sponsor_id']
                 );
             }
         }
