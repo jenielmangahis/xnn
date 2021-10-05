@@ -95,9 +95,9 @@ class MonthlyCustomerProfit extends CommissionType
         ";
 
         $stmt = $this->db->prepare($sql); 
-        $q->bindParam(':sponsorid', $sponsor_id); 
-        $q->bindParam(':start_date', $start_date);
-        $q->bindParam(':end_date', $end_date);          
+        $stmt->bindParam(':sponsorid', $sponsor_id); 
+        $stmt->bindParam(':start_date', $start_date);
+        $stmt->bindParam(':end_date', $end_date);          
         $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
         return $result;
     }
