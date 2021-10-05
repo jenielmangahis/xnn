@@ -59,11 +59,14 @@ class MonthlyCustomerProfit extends CommissionType
 
         $sql = "
             SELECT 
-            id AS user_id,
-            sponsorid,
-            active
-            FROM users
-            WHERE users.levelid = 3
+            u.id AS user_id,
+            u.sponsorid,
+            u.active
+            FROM users u
+            JOIN cm_daily_ranks cdr ON u.id = cdr.user_id
+            WHERE u.levelid = 3
+                AND cdr.is_system_active = 1
+                AND u.active = 'Yes'
         ";
 
         $db = DB::connection()->getPdo();
