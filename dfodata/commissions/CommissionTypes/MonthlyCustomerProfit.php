@@ -79,7 +79,7 @@ class MonthlyCustomerProfit extends CommissionType
         $end_date   = $this->getPeriodEndDate();
         $membership_products = "19,16";
 
-        $query = "
+        $sql = "
             SELECT  
                 tp.transaction_id,          
                 t.sponsor_id,
