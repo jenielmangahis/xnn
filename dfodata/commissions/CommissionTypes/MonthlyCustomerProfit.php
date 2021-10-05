@@ -38,7 +38,7 @@ class MonthlyCustomerProfit extends CommissionType implements CommissionTypeInte
                 $commission_value = $order['price'];
                 $payee_id = $order['payee_id'];
                 $order_id = $order['order_id'];
-                $percentage = 0
+                $percentage = 0;
                 $is_autoship_order = +$order['subscription_purchase'] === 1 ? "Yes" : "No";
                 $order_type = $order['order_type'];
                 $product_name = $order['product_name'];
