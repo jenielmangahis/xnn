@@ -267,33 +267,34 @@
                 swal({
                     title: "Are you sure you want to clawback/refund Order ID " + this.transaction_id + " - Items? " + (type == 'commission' ? "(Commission Only)" :"(Merchant & Commission)"),
                     text: "You cannot undo this.",
-                    type: "warning",
-                    showCancelButton: true,
-                    confirmButtonClass: "btn-danger",
-                    confirmButtonText: "Confirm Refund",
-                    closeOnConfirm: false,
-                    showLoaderOnConfirm: true,
-                }, function () {
+                    icon: "warning",
+                    buttons: ["Cancel", "Confirm Refund"],
+                    closeModal: false,
+                })
+                .then((result) => {
+                    if( result ){
+                        client.post(`admin/clawback/refund-order-products`, {
+                            products : _this.products,
+                            transaction_id: _this.transaction_id,
+                            set_user_id: $('#member').val(),
+                            type: type
+                        }).then(response => {
 
-                    client.post(`admin/clawback/refund-order-products`, {
-                        products : _this.products,
-                        transaction_id: _this.transaction_id,
-                        set_user_id: $('#member').val(),
-                        type: type
-                    }).then(response => {
+                            $dt.clear().draw();
+                            $dt.responsive.recalc();
 
-                        $dt.clear().draw();
-                        $dt.responsive.recalc();
+                            _this.products = [];
+                            _this.transaction_id = null;
 
-                        _this.products = [];
-                        _this.transaction_id = null;
+                            $('#modal-order-items').modal('hide');
+                            swal("Successfully added for clawback/refund!", "", "success");
+                        }).catch(this.axiosErrorHandler).finally(()=> {
 
-                        $('#modal-order-items').modal('hide');
-                        swal("Successfully added for clawback/refund!", "", "success");
-                    }).catch(this.axiosErrorHandler).finally(()=> {
-
-                    });
-
+                        });
+                    }else{
+                       swal.close(); 
+                    }
+                    
                 });
             },
             onSubmitRefund: function (type){
@@ -304,21 +305,18 @@
                 let $form = $('#form-refund-order');
 
                 swal({
-                        title: "Are you sure you want to clawback/refund Order ID " + $('#form-refund-order [name="transaction_id"]').val() + "? " + (type == 'commission' ? "(Commission Only)" :"(Merchant & Commission)"),
-                        text: "You cannot undo this.",
-                        type: "warning",
-                        showCancelButton: true,
-                        confirmButtonClass: "btn-danger",
-                        confirmButtonText: "Confirm Refund",
-                        closeOnConfirm: false,
-                        showLoaderOnConfirm: true,
-                    },
-                    function () {
-
-                        // if (!proceed) {
-                        //     swal.close();
-                        //     return;
-                        // }
+                    title: "Are you sure you want to clawback/refund Order ID " + $('#form-refund-order [name="transaction_id"]').val() + "? " + (type == 'commission' ? "(Commission Only)" :"(Merchant & Commission)"),
+                    text: "You cannot undo this.",
+                    icon: "warning",
+                    buttons: ["Cancel", "Confirm Refund"],
+                    closeModal: false,
+                })
+                .then((result) => {
+                    // if (!proceed) {
+                    //     swal.close();
+                    //     return;
+                    // }
+                    if( result ){
                         console.log($form.serialize() + "&set_user_id=" + $('#member').val() + "&type=" + type);
                         $.post(api_url + 'admin/clawback/refund-order', $form.serialize() + "&set_user_id=" + $('#member').val() + "&type=" + type, function (result) {
                             console.log(result);
@@ -349,12 +347,20 @@
                             } else if(xhr.responseJSON.message != undefined) {
                                 $this.error.message = xhr.responseJSON.message;
                             } else {
-                                $this.error.message = 'Something went wrong!';
+                                if( xhr.responseJSON.error != undefined ){
+                                    $this.error.message = "Cannot Process : " + xhr.responseJSON.error.message;
+                                }else{
+                                    $this.error.message = 'Something went wrong!';  
+                                }                                
+                                //$this.error.message = 'Something went wrong!';
                             }
                             swal.close();
                         });
-
-                    });
+                    }else{
+                        swal.close();
+                    }
+                    
+                });
             },
             showMoveOrder(order) {
                 this.order.invoice = order.invoice;
@@ -372,33 +378,33 @@
             save() {
                 swal({
                     title: `Are you sure you want to update Order ID ${this.order.order_id}?`,
-                    // text: "You cannot undo this.",
-                    type: "warning",
-                    confirmButtonClass: "btn-success",
-                    confirmButtonText: "Confirm",
-                    cancelButtonText: "Cancel",
-                    showCancelButton: true,
-                    closeOnConfirm: false,
-                    showLoaderOnConfirm: true,
-                }, () => {
+                    //text: "You cannot undo this.",
+                    icon: "warning",
+                    buttons: ["Cancel", "Confirm"],
+                    closeModal: false,
+                })
+                .then((result) => {
+                    if( result ){
+                        this.is_saving = 1;
 
-                    this.is_saving = 1;
-
-                    client.post(`admin/move-order/orders/${this.order.order_id}/change`, {modified: $('#member').val(), ...this.order}).then(response => {
-
-                        $('#modal-move').modal('hide');
-                        // swal.close();
-                        swal("Successfully updated!", "", "success");
-                        $dt.clear().draw();
-                        $dt.responsive.recalc();
-                        $dtLogs.clear().draw();
-                        $dtLogs.responsive.recalc();
-
-                    }).catch(this.axiosErrorHandler).finally(()=> {
-
-                        this.is_saving = 0;
-                    });
-
+                        client.post(`admin/move-order/orders/${this.order.order_id}/change`, {
+                            modified: $('#member').val(), 
+                            is_sharing_link_order: this.order.sharing_link_order, 
+                            ...this.order
+                        }).then(response => {
+                            $('#modal-move').modal('hide');
+                            // swal.close();
+                            swal("Successfully updated!", "", "success");
+                            $dt.clear().draw();
+                            $dt.responsive.recalc();
+                            $dtLogs.clear().draw();
+                            $dtLogs.responsive.recalc();
+                        }).catch(this.axiosErrorHandler).finally(()=> {
+                            this.is_saving = 0;
+                        });
+                    }else{
+                        swal.close(); 
+                    }
                 });
             },
             axiosErrorHandler(error) {
