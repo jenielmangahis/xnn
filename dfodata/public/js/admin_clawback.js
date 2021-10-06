@@ -61,8 +61,10 @@
                 let _this = this;
 
                 $dt = $("#table-orders").DataTable({
-                    search: "_INPUT_",
-                    searchPlaceholder: "Search",
+                    language: {
+                        search: "_INPUT_",
+                        searchPlaceholder: "Search"
+                    },                    
                     paginate: {
                         next: 'Next',
                         previous: 'Previous &nbsp;&nbsp;&nbsp;|'
@@ -106,13 +108,57 @@
                         {responsivePriority: 2, targets: -1},
                     ]
                 });
-                
+
                 $dtLogs = $("#table-logs").DataTable({
                     language: {
                         search: "_INPUT_",
                         searchPlaceholder: "Search..."
                     },
-                    responsive: true,
+                    processing: true,
+                    serverSide: true,
+                    ajax: {
+                        url : api_url + 'admin/move-order/logs',
+                        data: function(d) {
+
+                        },
+                    },
+                    order: [[ 5, 'desc' ]],
+                    columns     : [
+                        {data    : 'order_id'},
+                        // {data    : 'new_purchaser'},
+                        {
+                            data: 'new_purchaser',
+                            render: function ( data, type, row, meta ) {
+
+                                if(row.new_user_id == row.old_user_id)
+                                {
+                                    return '<span class="label label-info">No changes</span>';
+                                }
+
+                                return data;
+                            }
+                        },
+                        // {data    : 'new_sponsor'},
+                        {data    : 'old_purchaser'},
+                        // {data    : 'old_sponsor'},
+                        // {data    : 'new_transaction_date'},
+                        {
+                            data: 'new_transaction_date',
+                            render: function ( data, type, row, meta ) {
+
+                                if(row.old_transaction_date == row.new_transaction_date)
+                                {
+                                    return '<span class="label label-info">No changes</span>';
+                                }
+
+                                return data;
+                            }
+                        },
+                        {data    : 'old_transaction_date'},
+                        {data    : 'created_at'},
+                        {data    : 'changed_by'},
+                        {data    : 'is_sharing_link_order'},
+                    ]
                 });
                 
             },
