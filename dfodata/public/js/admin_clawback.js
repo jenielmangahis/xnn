@@ -61,17 +61,52 @@
                 let _this = this;
 
                 $dt = $("#table-orders").DataTable({
-                    language: {
-                        search: "_INPUT_",
-                        searchPlaceholder: "Search",
-                        paginate: {
-                            next: 'Next',
-                            previous: 'Previous &nbsp;&nbsp;&nbsp;|'
-                        }
+                    search: "_INPUT_",
+                    searchPlaceholder: "Search",
+                    paginate: {
+                        next: 'Next',
+                        previous: 'Previous &nbsp;&nbsp;&nbsp;|'
                     },
+                    processing: true,
+                    serverSide: true,
                     responsive: true,
-                });
+                    pageLength: 25,
+                    ajax: {
+                        "url": api_url + 'admin/clawback/',
+                        "data": function (d) {
+                            d.startDate = $("#start-date").val();
+                            d.endDate = $("#end-date").val();
+                            d.memberId = _this.filters.memberId;
+                        },
+                    },
+                    columns: [
+                        {data: 'order_id'},
+                        {data: 'invoice'},
+                        {data: 'purchaser', className: 'text-left text-capitalize'},
+                        {data: 'description', className: 'text-left text-capitalize'},
+                        {data: 'transaction_date'},
+                        {data: 'commission_value'},
+                        {data: 'amount_paid'},
+                        {data: 'set_by', className: 'text-left'},
+                        {
+                            data: 'action',
+                            width: '200px',
+                            render: function (data, type, row, meta) {
+                                return '<div class="btn-group-xs" role="group" aria-label="...">' +
+                                    '<button ' + ((+row.is_clawback && +row.is_per_product) ? 'disabled' : '') + ' type="button" class="btn btn-danger btn-order-refund" style="margin-right: 5px;">Refund</button>' +
+                                    '<button ' + ((+row.is_clawback && !+row.is_per_product) ? 'disabled' : '') + ' type="button" class="btn btn-info btn-view-items" style="margin-right: 5px;">Refund By Items</button>' +
+                                    '<button type="button" class="btn btn-warning btn-order-move">Move</button>' +
+                                    '</div>';
+                            }
+                        },
+                    ],
+                    columnDefs: [
 
+                        {responsivePriority: 1, targets: 0},
+                        {responsivePriority: 2, targets: -1},
+                    ]
+                });
+                
                 $dtLogs = $("#table-logs").DataTable({
                     language: {
                         search: "_INPUT_",
