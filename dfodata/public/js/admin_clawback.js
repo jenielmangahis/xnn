@@ -238,7 +238,7 @@
                 this.error.message = null;
 
                 this.order = JSON.parse(JSON.stringify(data));
-                this.order.total = data.amount_paid > 0 ? data.amount_paid : 0;
+                this.order.total = data.amount_paid > 0 ? data.amount_paid : 0.00;
                 this.order.amount_off = data.amount_off ? data.amount_off : data.commission_value;
                 // this.order.is_full_order = data.is_full_order;
                 $('#modal-refund-order').modal('show');
