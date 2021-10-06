@@ -323,6 +323,14 @@ print <<EOS;
                             <select2-autocomplete-member id="new-purchaser-id" :url="autocompleteUrl" v-model="order.new_purchaser_id"></select2-autocomplete-member>
                         </div>
                     </div>
+                    <div class="form-group">
+                        <div class="col-sm-12">
+                            <div class="form-group form-check">
+                                <input type="checkbox" class="form-check-input" v-model="order.sharing_link_order" id="is-sharing-link">
+                                <label class="form-check-label" for="exampleCheck1">Mark as Sharing link order</label>
+                            </div>
+                        </div>
+                    </div>
                     <div class="form-group" v-show="error.message != null">
                         <div class="col-sm-12 has-error text-center">
                             <span class="help-block">{{ error.message }}</span>

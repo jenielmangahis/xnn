@@ -225,6 +225,7 @@ class MoveOrder
             $transaction->userid = $newPurchaser->id;
             $transaction->sponsorid = $newPurchaser->sponsorid;
             $transaction->transactiondate = $data['transaction_date'];
+            $transaction->is_replicated_cart_order = $data['is_sharing_link_order'] == 'on' ? 1 : 0;
             $transaction->save();
 
             $log = new MoveInvoiceLogs();
@@ -236,6 +237,7 @@ class MoveOrder
             $log->changed_by_id = $loginUser->id;
             $log->old_transaction_date = $oldTransactionDate;
             $log->new_transaction_date = $data['transaction_date'];
+            $log->is_sharing_link_order = $data['is_sharing_link_order'] == 'on' ? 1 : 0;
             $log->save();
 
             return $log;
