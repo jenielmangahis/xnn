@@ -125,7 +125,6 @@
                     order: [[ 5, 'desc' ]],
                     columns     : [
                         {data    : 'order_id'},
-                        // {data    : 'new_purchaser'},
                         {
                             data: 'new_purchaser',
                             render: function ( data, type, row, meta ) {
@@ -138,10 +137,7 @@
                                 return data;
                             }
                         },
-                        // {data    : 'new_sponsor'},
                         {data    : 'old_purchaser'},
-                        // {data    : 'old_sponsor'},
-                        // {data    : 'new_transaction_date'},
                         {
                             data: 'new_transaction_date',
                             render: function ( data, type, row, meta ) {

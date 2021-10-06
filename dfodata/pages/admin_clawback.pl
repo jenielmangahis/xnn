@@ -107,16 +107,16 @@ print <<EOS;
                             
                                 <table id="table-logs" class="table table-bordered" style="width: 100%;">
                                     <thead class="table__header table__header--bg-primary">
-                                    <tr class="table__row">
-                                        <th class="table__cell">Order ID</th>
-                                        <th class="table__cell">New Purchaser</th>
-                                        <th class="table__cell">Old Purchaser</th>
-                                        <th class="table__cell">New Transaction Date</th>
-                                        <th class="table__cell">Old Transaction Date</th>
-                                        <th class="table__cell">Date</th>
-                                        <th class="table__cell">Changed by</th>
-                                        <th class="table__cell">Sharing Link Order</th>
-                                    </tr>
+                                        <tr class="table__row" style="font-size: 13px;">
+                                            <td class="table__cell">Order ID</td>
+                                            <td class="table__cell">New Purchaser</td>
+                                            <td class="table__cell">Old Purchaser</td>
+                                            <td class="table__cell">New Transaction Date</td>
+                                            <td class="table__cell">Old Transaction Date</td>
+                                            <td class="table__cell">Date</td>
+                                            <td class="table__cell">Changed by</td>
+                                            <td class="table__cell">Sharing Link Order</td>
+                                        </tr>
                                     </thead>
                                     <tbody class="table__body">
                                     </tbody>
@@ -192,7 +192,7 @@ print <<EOS;
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <!--<button v-on:click.prevent="onSubmit('merchant')" type="submit" class="btn btn-primary hidden" id="btn-save-refund-products">Refund</button>-->
+                    <button v-on:click.prevent="onSubmit('merchant')" type="submit" class="btn btn-primary hidden" id="btn-save-refund-products">Refund</button>
                     <!--<button v-on:click.prevent="onSubmit('commission')" type="submit" class="btn btn-primary" id="btn-save-refund-products-commission">Refund (Commission Only)</button>-->
                     <button v-on:click.prevent="onSubmit('commission')" type="submit" class="btn btn-primary" id="btn-save-refund-products-commission">Refund</button>
                 </div>
