@@ -194,6 +194,12 @@ class MoveOrder
 
             $transaction = Transaction::lockForUpdate()->findOrFail($id);
 
+            $is_sharing_link_order = 0;
+            if( isset($data['is_sharing_link_order']) ){
+                $is_sharing_link_order = 1;
+            }
+
+
             if(!isset($data['modified']) || $data['modified'] === '')
             {
                 throw new \Exception("Login User ID is required.");
@@ -214,6 +220,8 @@ class MoveOrder
                 throw new \Exception("No changes found. Update either the purchaser or the transaction date.");
             }
 
+
+
             $loginUser = User::findOrFail($data['modified']);
             $newPurchaser = User::findOrFail($data['new_purchaser_id']);
 
@@ -224,7 +232,7 @@ class MoveOrder
             $transaction->userid = $newPurchaser->id;
             $transaction->sponsorid = $newPurchaser->sponsorid;
             $transaction->transactiondate = $data['transaction_date'];
-			$transaction->is_replicated_cart_order = $data['is_sharing_link_order'] == 'on' ? 1 : 0;
+			$transaction->is_replicated_cart_order = $is_sharing_link_order;
             $transaction->save();
 
             $log = new MoveInvoiceLogs();
@@ -236,7 +244,7 @@ class MoveOrder
             $log->changed_by_id = $loginUser->id;
             $log->old_transaction_date  = $oldTransactionDate;
             $log->new_transaction_date  = $data['transaction_date'];
-            $log->is_sharing_link_order = $data['is_sharing_link_order'] == 'on' ? 1 : 0;
+            $log->is_sharing_link_order = $is_sharing_link_order;
             $log->save();
 
             return $log;
