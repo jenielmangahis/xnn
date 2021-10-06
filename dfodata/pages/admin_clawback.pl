@@ -7,6 +7,11 @@ print <<EOS;
 <link rel="stylesheet" href="$commission_engine_api_url/css/datepicker.css?v=$app_css_version" />
 <link rel="stylesheet" href="$commission_engine_api_url/css/select2-bootstrap.css"/>
 <link rel="stylesheet" href="$commission_engine_api_url/css/admin_clawback.css?v=1" />
+<style>
+.hidden {
+    display: none !important;
+}
+</style>
 
 <div class="tool-container tool-container--default" id="app-clawback">
     <div class="row">
