@@ -12,50 +12,61 @@ print <<EOS;
 
     <div class="row">
         <div class="col-md-12">
-            <h4 class="admin-money-title">CLAWBACK/REFUND/MOVE ORDERS</h4>
+            <h4 class="admin-money-title">Clawback/Refund/Move Orders</h4>
         </div>
     </div>
 
     <div class="row">
         <div class="col-lg-12">
 
-            <ul class="nav nav-tabs" role="tablist" id='nav-tab-report'>
-                <li role="presentation" class="active"><a href="#tab-orders" aria-controls="tab-orders" role="tab" data-toggle="tab">Orders</a></li>
-                <li role="presentation"><a href="#tab-logs" aria-controls="tab-logs" role="tab" data-toggle="tab">Move Logs</a></li>
+            <ul class="nav nav-tabs" id="myTab" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active" id="tab-orders-tab" data-toggle="tab" href="#tab-orders" role="tab" aria-controls="tab-orders" aria-selected="true">Orders</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="tab-logs-tab" data-toggle="tab" href="#tab-logs" role="tab" aria-controls="tab-logs" aria-selected="false">Move Logs</a>
+                </li>
             </ul>
 
-            <div class="tab-content" style="padding: 15px;border: 1px solid #ddd;border-top: none;">
-
-                <div role="tabpanel" class="tab-pane active" id="tab-orders">
+            <div class="tab-content dfo-tab-container">
+                <div class="tab-pane fade show active" id="tab-orders" role="tabpanel" aria-labelledby="tab-orders-tab">
 
                     <div class="row margin-top-bottom">
 
-                        <div class="col-md-3">
+                        <div class="col-md-3 mb-3">
+
                             <label for="start-date">From</label>
                             <div class="input-group start-date">
-                                <input type="text" id="start-date" class="form-control"> 
-                                <span class="input-group-addon date-from-icon">
-                                    <i class="glyphicon glyphicon-calendar"></i>
-                                </span>
+                                <input type="text" id="start-date" class="form-control">
+                                <div class="input-group-append">
+                                    <span class="input-group-text" id="basic-addon2">
+                                        <i class="bi bi-calendar"></i>
+                                    </span>
+                                </div>
                             </div>
+
                         </div>
 
-                        <div class="col-md-3">
+                        <div class="col-md-3 mb-3">
+
                             <label for="end-date">To</label>
-                            <div class="input-group start-date">
+                            <div class="input-group end-date">
                                 <input type="text" id="end-date" class="form-control"> 
-                                <span class="input-group-addon date-from-icon">
-                                    <i class="glyphicon glyphicon-calendar"></i>
-                                </span>
+                                <div class="input-group-append">
+                                    <span class="input-group-text" id="basic-addon2">
+                                        <i class="bi bi-calendar"></i>
+                                    </span>
+                                </div>
                             </div>
+
                         </div> 
 
-                        <div class="col-md-3">
+                        <div class="col-md-3 mb-3">
                             <label for="purchaser-id">Purchaser (Optional)</label>
                             <select2-autocomplete-member id="purchaser-id" :url="autocompleteUrl" v-model="filters.memberId"></select2-autocomplete-member>
                         </div>
 
-                        <div class="col-md-3">
+                        <div class="col-md-3 mb-3">
                             <label>&nbsp;</label><br>
                             <button id="button-view-orders" type="button" class="btn btn-block btn-primary" >View Orders</button>
                         </div>
@@ -63,8 +74,9 @@ print <<EOS;
                     </div>
 
                     <div class="row">
-                        <div class="table-responsive">
-                            <div class="col-md-12">
+                        <div class="col-md-12">
+                            <div class="table-responsive clawback-orders-table">
+                            
                                 <table id="table-orders" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%;">
                                     <thead class="table__header table__header--bg-primary">
                                         <tr class="table__row">
@@ -86,13 +98,14 @@ print <<EOS;
                             </div>
                         </div>
                     </div>
-
                 </div>
 
-                <div role="tabpanel" class="tab-pane" id="tab-logs">
-                    <div class="row">
-                        <div class="table-responsive">
-                            <div class="col-md-12 margin-top">
+                <div class="tab-pane fade" id="tab-logs" role="tabpanel" aria-labelledby="tab-logs-tab">
+
+                    <div class="row margin-top">
+                        <div class="col-md-12">
+                            <div class="table-responsive">
+                            
                                 <table id="table-logs" class="table table-bordered" style="width: 100%;">
                                     <thead class="table__header table__header--bg-primary">
                                         <tr class="table__row" style="font-size: 13px;">
@@ -110,10 +123,13 @@ print <<EOS;
                                     <tbody class="table__body">
                                     </tbody>
                                 </table>
+
                             </div>
                         </div>
                     </div>
+
                 </div>
+
             </div>
 
         </div>
