@@ -9,7 +9,6 @@ print <<EOS;
 <link rel="stylesheet" href="$commission_engine_api_url/css/admin_clawback.css?v=1" />
 
 <div class="tool-container tool-container--default" id="app-clawback">
-
     <div class="row">
         <div class="col-md-12">
             <h4 class="admin-money-title">Clawback/Refund/Move Orders</h4>
