@@ -281,7 +281,7 @@ print <<EOS;
                 </div>
                 <div class="modal-footer">
                     <a type="button" class="btn btn-default" data-dismiss="modal">Close</a>
-                    <button v-if="!order.is_clawback" v-on:click.prevent="onSubmitRefund('merchant')" type="submit" class="btn btn-primary hidden" id="btn-save-refund">Refund</button>
+                    <!--<button v-if="!order.is_clawback" v-on:click.prevent="onSubmitRefund('merchant')" type="submit" class="btn btn-primary hidden" id="btn-save-refund">Refund</button>-->
                     <!--<button v-if="!order.is_clawback" v-on:click.prevent="onSubmitRefund('commission')" type="submit" class="btn btn-primary" id="btn-save-refund-commission">Refund (Commission Only)</button>-->
                     <button v-if="!order.is_clawback" v-on:click.prevent="onSubmitRefund('commission')" type="submit" class="btn btn-primary" id="btn-save-refund-commission">Refund</button>
                 </div>
