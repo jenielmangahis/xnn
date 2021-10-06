@@ -210,7 +210,7 @@ class MoveOrder
                 $data['new_purchaser_id'] = $transaction->userid;
             }
 
-            if($data['transaction_date'] == $transaction->transactiondate && $data['new_purchaser_id'] == $transaction->userid)
+            if($data['transaction_date'] == $transaction->transactiondate && $data['new_purchaser_id'] == $transaction->userid && $transaction->is_sharing_link_order == ($data['is_sharing_link_order'] == 'on' ? 1 : 0))
             {
                 throw new \Exception("No changes found. Update either the purchaser or the transaction date.");
             }
