@@ -377,6 +377,12 @@
                 this.order.sharing_link_order = order.is_replicated_cart_order;
                 this.error.message = null;
 
+                if( order.is_replicated_cart_order == 1 ){
+                    $('#is-sharing-link').prop('checked', true);
+                }else{
+                    $('#is-sharing-link').prop('checked', false);
+                }
+
                 $('#modal-move').modal({backdrop: 'static', keyboard: false});
             },
             save() {
@@ -420,13 +426,6 @@
                 this.error.data = data.data;
 
                 swal(this.error.message, "", "error");
-            },
-            sharingLinkOrderIsChecked() {
-                if( this.order.sharing_link_order == 1 ){
-                    return 'checked';
-                }else{
-                    return '';
-                }                   
             },
         },
         computed: {
