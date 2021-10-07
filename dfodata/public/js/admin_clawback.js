@@ -212,8 +212,17 @@
 
                 $('#table-orders tbody').on('click', '.btn-order-move', function () {
                     let data = $dt.row($(this).parents('tr')).data();
-                    data.is_replicated_cart_order = $(this).attr("data-id");
+                    let is_replicated_cart_order = $(this).attr("data-id");
                     _this.showMoveOrder(data);
+                    
+                    console.log(is_replicated_cart_order);
+
+                    if( is_replicated_cart_order == 1 ){                    
+                        $('#is-sharing-link').attr('checked', true);
+                    }else{
+                        $('#is-sharing-link').removeAttr('checked');
+                    }
+
                 });
             },
             readonlyProduct: function(order) {
@@ -377,16 +386,6 @@
                 this.order.new_purchaser_id = null;
                 this.order.sharing_link_order = order.is_replicated_cart_order;
                 this.error.message = null;
-
-                console.log(order);
-                console.log(order.is_replicated_cart_order);
-
-                if( order.is_replicated_cart_order == 1 ){                    
-                    $('#is-sharing-link').attr('checked', true);
-                }else{
-                    $('#is-sharing-link').removeAttr('checked');
-                }
-
                 $('#modal-move').modal({backdrop: 'static', keyboard: false});
             },
             save() {
