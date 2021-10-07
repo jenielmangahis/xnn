@@ -212,7 +212,7 @@
 
                 $('#table-orders tbody').on('click', '.btn-order-move', function () {
                     let data = $dt.row($(this).parents('tr')).data();
-                    data.is_replicated_cart_order = $(this).attr("data-replicated");
+                    data.is_replicated_cart_order = $(this).attr("data-id");
                     _this.showMoveOrder(data);
                 });
             },
