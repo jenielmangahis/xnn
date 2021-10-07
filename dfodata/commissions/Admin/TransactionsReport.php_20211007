@@ -2,7 +2,6 @@
 
 namespace Commissions\Admin;
 use Carbon\Carbon;
-use Commissions\QueryHelper;
 use Illuminate\Support\Facades\DB;
 use PDO;
 use Commissions\CsvReport;
@@ -246,34 +245,9 @@ class TransactionsReport
 
           return $html;
      } 
-	 
-	 private function getQueryV2($start_date, $end_date, $status = "All")
-	 {
-		$sql = "
-		SELECT * FROM v_cm_all_transactions WHERE commission_date BETWEEN DATE(:start_date) AND DATE(:end_date)
-		
-		"; // AND " . QueryHelper::NotExistsUnderBen('user_id') . "
-
-		$start_date = Carbon::createFromFormat('Y-m-d', $start_date)->format('Y-m-d');
-		$end_date = Carbon::createFromFormat('Y-m-d', $end_date)->format('Y-m-d');
-
-		if(in_array($status, ['Approved', 'Declined', 'Error', 'Failed'])) {
-				$sql .= " AND t_status = '$status' ";
-
-				if($status == 'Approved') {
-					$sql .= " AND EXISTS(SELECT 1 FROM v_cm_transactions tt WHERE tt.transaction_id = transaction_id AND DATE(tt.transaction_date) BETWEEN '$start_date' AND '$end_date')";
-				}
-		}
-
-		return $sql;
-	 }
 
      private function getQuery($start_date, $end_date, $status = "All")
      {
-		return $this->getQueryV2($start_date, $end_date, $status);
-
-
-		//TODO: VSY i'm going to use the get query v2 for now
           $sql = "
                SELECT
                     a.id,
@@ -375,7 +349,7 @@ class TransactionsReport
                $sql .= " WHERE a.status = '$status' ";
 
                if($status == 'Approved') {
-                    $sql .= " AND EXISTS(SELECT 1 FROM v_cm_transactions tt WHERE tt.transaction_id = a.id AND DATE(tt.transaction_date) BETWEEN '$start_date' AND '$end_date')";
+                    $sql .= " AND EXISTS(SELECT 1 FROM v_cm_transactions tt WHERE tt.transaction_id = a.id AND DATE(tt.transactiondate) BETWEEN '$start_date' AND '$end_date')";
                }
           }
 
@@ -405,7 +379,7 @@ class TransactionsReport
                $sql .= " AND t.status = '$status' ";
 
                if($status == 'Approved') {
-                    $sql .= " AND EXISTS(SELECT 1 FROM v_cm_transactions tt WHERE tt.transaction_id = t.id AND DATE(tt.transaction_date) BETWEEN '$start_date' AND '$end_date')";
+                    $sql .= " AND EXISTS(SELECT 1 FROM v_cm_transactions tt WHERE tt.transaction_id = t.id AND DATE(tt.transactiondate) BETWEEN '$start_date' AND '$end_date')";
                }
           }
 
@@ -482,7 +456,7 @@ class TransactionsReport
                $sql .= " AND t.status = '$status' ";
 
                if($status == 'Approved') {
-                    $sql .= " AND EXISTS(SELECT 1 FROM v_cm_transactions tt WHERE tt.transaction_id = t.id AND DATE(tt.transaction_date) BETWEEN '$start_date' AND '$end_date')";
+                    $sql .= " AND EXISTS(SELECT 1 FROM v_cm_transactions tt WHERE tt.transaction_id = t.id AND DATE(tt.transactiondate) BETWEEN '$start_date' AND '$end_date')";
                }
           }
 

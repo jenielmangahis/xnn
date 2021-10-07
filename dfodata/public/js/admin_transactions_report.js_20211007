@@ -10,9 +10,7 @@
 
     const vm = new Vue({
         el: "#transactions-report",
-        data: {
-            
-        },
+        data: {},
         mounted() {
             this.initializeDataTables();
             this.initializeDatePicker();
@@ -23,32 +21,22 @@
                 let _this = this;
 
                 $dt_transactions = $("#table-admin-transactions").DataTable({
-                    //scrollX: true,
-                    "processing": false,
-                    "serverSide": false,
-                    responsive: true,
-                    "pageLength": 25,
-                    columns     : [
-                        {data    : 'invoice', className: "text-center"},
-                        {data    : 'purchaser', className: "text-center"},
-                        {data    : 'sponsor'},
-                        {data    : 'product'},
-                        {data    : 'total_cv', render: $.fn.dataTable.render.number( ',', '.' )},
-                        {data    :  'volume', render: $.fn.dataTable.render.number( ',', '.' )},
-                        {data    : 'transaction_date'},
-                        {data    : 'amount_paid'},
-                        {data    : 'credited'},
-                        {data    : 't_status'},
-                        {data    : 'order_type'},
-                        {data    : 'payment_type'},
-                        {data    : 'phone'},
-                        {data    : 'gift_card'},
-                        {data    : 'coupon'},
-                        {data    : 'ledger_payment', render: $.fn.dataTable.render.number( ',', '.', 2, '$' )}
-                    ]
+                    language: {
+                        search: "_INPUT_",
+                        searchPlaceholder: "Search",
+                        paginate: {
+                            next: 'Next',
+                            previous: 'Previous &nbsp;&nbsp;&nbsp;|'
+                        }
+                    },
+                    responsive: true
                 });
             
                 $dt_totals = $("#table-admin-totals").DataTable({
+                    language: {
+                        search: "_INPUT_",
+                        searchPlaceholder: "Search..."
+                    },
                     processing: false,
                     serverSide: false,
                     searching: false,
