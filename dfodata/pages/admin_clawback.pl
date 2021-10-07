@@ -331,7 +331,7 @@ print <<EOS;
                     <div class="form-group">
                         <div class="col-sm-12">
                             <div class="form-group form-check">
-                                <input type="checkbox" class="form-check-input" v-model="order.sharing_link_order" :checked="sharingLinkOrderIsChecked(order)" id="is-sharing-link">
+                                <input type="checkbox" class="form-check-input" v-model="order.sharing_link_order" :checked="sharingLinkOrderIsChecked()" id="is-sharing-link">
                                 <label class="form-check-label" for="exampleCheck1">Mark as Sharing link order</label>
                             </div>
                         </div>

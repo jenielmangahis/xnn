@@ -421,8 +421,8 @@
 
                 swal(this.error.message, "", "error");
             },
-            sharingLinkOrderIsChecked(obj) {
-                if( obj.sharing_link_order == 1 ){
+            sharingLinkOrderIsChecked() {
+                if( this.order.sharing_link_order == 1 ){
                     return 'checked';
                 }else{
                     return '';
