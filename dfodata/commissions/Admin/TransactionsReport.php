@@ -290,6 +290,7 @@ class TransactionsReport
                     a.levelid,
                     a.level,
                     a.percent,
+                    a.amount,
                     CASE 
                          WHEN a.amount = 0 AND a.gc_coupon > 0 AND a.ledger_payment = 0 THEN 'Gift Cards'
                          WHEN a.amount > 0 AND a.gc_coupon > 0 AND a.ledger_payment = 0 THEN 'Gift Cards + CC'
@@ -310,8 +311,8 @@ class TransactionsReport
                          t.invoice,
                          CONCAT(u.fname, ' ', u.lname) AS purchaser,
                          u.levelid,
-                         ccp.level,
-                         ccp.percent,
+                         IFNULL(ccp.level, 0) AS level,
+                         IFNULL(ccp.percent, 0) AS percent,
                          CONCAT(s.fname, ' ', s.lname) AS sponsor,
                          (
                               SELECT CONCAT(cp.start_date, '-', cp.end_date)
@@ -336,7 +337,7 @@ class TransactionsReport
                          getVolume(t.id) AS volume,
                          t.amount,
                          t.transactiondate AS transaction_date,
-                         CONCAT('$',FORMAT(t.amount, 2)) AS amount_paid,
+                         CONCAT('$',FORMAT(IFNULL(t.amount, 0), 2)) AS amount_paid,
                          t.credited AS credited,
                          t.status AS t_status,
                          CASE 

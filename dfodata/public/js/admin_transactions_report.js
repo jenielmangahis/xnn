@@ -37,7 +37,7 @@
                         {data    : 'level', className: "text-center"},
                         {data    : 'total_cv', render: $.fn.dataTable.render.number( ',', '.' )},
                         {data    : 'percent'},
-                        {data    : 'amount', render: $.fn.dataTable.render.number( ',', '.' )}
+                        {data    : 'amount_paid', render: $.fn.dataTable.render.number( ',', '.' )}
                     ]
                 });
             
