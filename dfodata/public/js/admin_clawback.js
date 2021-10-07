@@ -182,7 +182,7 @@
                 $('#start-date').ddatepicker('setDate', new Date());
                 $('#end-date').ddatepicker('setDate', new Date());
 
-                // Transaction Date
+                // Transaction Date - datetimepicker YYYY-MM-DD HH:mm:ss
                 $('#transaction-date').datetimepicker({
                     defaultDate: moment(),
                     format: 'YYYY-MM-DD HH:mm:ss',
