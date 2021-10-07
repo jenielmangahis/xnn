@@ -384,7 +384,7 @@
                 if( order.is_replicated_cart_order == 1 ){                    
                     $('#is-sharing-link').attr('checked', true);
                 }else{
-                    $('#is-sharing-link').attr('checked', false);
+                    $('#is-sharing-link').removeAttr('checked');
                 }
 
                 $('#modal-move').modal({backdrop: 'static', keyboard: false});
