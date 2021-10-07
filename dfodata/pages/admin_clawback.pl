@@ -6,7 +6,7 @@ print <<EOS;
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/css/select2.min.css" />
 <link rel="stylesheet" href="$commission_engine_api_url/css/datepicker.css?v=$app_css_version" />
 <link rel="stylesheet" href="$commission_engine_api_url/css/select2-bootstrap.css"/>
-<link rel="stylesheet" href="$commission_engine_api_url/css/admin_clawback.css?v=1" />
+<link rel="stylesheet" href="$commission_engine_api_url/css/admin_clawback.css?v=1" />  
 <style>
 .hidden {
     display: none !important;
@@ -331,7 +331,7 @@ print <<EOS;
                     <div class="form-group">
                         <div class="col-sm-12">
                             <div class="form-group form-check">
-                                <input type="checkbox" class="form-check-input" v-model="order.sharing_link_order" id="is-sharing-link">
+                                <input type="checkbox" class="form-check-input" v-model="order.sharing_link_order" :checked="isChecked(order)" id="is-sharing-link">
                                 <label class="form-check-label" for="exampleCheck1">Mark as Sharing link order</label>
                             </div>
                         </div>

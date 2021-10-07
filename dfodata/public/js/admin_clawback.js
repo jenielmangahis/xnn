@@ -421,6 +421,9 @@
 
                 swal(this.error.message, "", "error");
             },
+            sharingLinkOrderIsChecked(obj) {
+                return obj.sharing_link_order;                
+            },
         },
         computed: {
             displayPurchaser() {
