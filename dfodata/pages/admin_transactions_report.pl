@@ -8,7 +8,7 @@ print <<EOS;
 <link rel="stylesheet" href="$commission_engine_api_url/css/admin_transactions_report.css?v=1" />
 <style>
 .summary-header{
-    background-color:#4ba0d6;
+    background-color:#007398!important;
     color:#ffffff;
     padding:10px;
     display:block;

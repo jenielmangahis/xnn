@@ -270,10 +270,7 @@ class TransactionsReport
 
      private function getQuery($start_date, $end_date, $status = "All")
      {
-		return $this->getQueryV2($start_date, $end_date, $status);
-
-
-		//TODO: VSY i'm going to use the get query v2 for now
+		//return $this->getQueryV2($start_date, $end_date, $status);
           $sql = "
                SELECT
                     a.id,
