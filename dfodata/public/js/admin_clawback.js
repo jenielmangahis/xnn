@@ -378,7 +378,8 @@
                 this.order.sharing_link_order = order.is_replicated_cart_order;
                 this.error.message = null;
 
-                console.log(this.order.is_replicated_cart_order);
+                console.log(order);
+                console.log(order.is_replicated_cart_order);
 
                 if( order.is_replicated_cart_order == 1 ){                    
                     $('#is-sharing-link').attr('checked', true);
