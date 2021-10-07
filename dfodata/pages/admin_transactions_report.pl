@@ -8,7 +8,7 @@ print <<EOS;
 <link rel="stylesheet" href="$commission_engine_api_url/css/admin_transactions_report.css?v=1" />
 <style>
 .summary-header{
-    background-color:#007398!important;
+    background-color:#007398;
     color:#ffffff;
     padding:10px;
     display:block;
@@ -90,9 +90,11 @@ print <<EOS;
 
                     <div class="col-md-6">
                         <div class="col-md-12">
-                            <h3 class="summary-header">Summary</h3>
                             <table id="table-admin-totals" class="table table-striped table-bordered dt-responsive nowrap" style="width: 100%;">
                                 <thead class="table__header table__header--bg-primary">
+                                <tr class="table__row">
+                                    <th class="table__cell" colspan="6">Summary</th>
+                                </tr>
                                 <tr class="table__row">
                                     <th class="table__cell">Totals</th>
                                     <th class="table__cell">All</th>
