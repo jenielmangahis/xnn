@@ -36,7 +36,7 @@ class Clawback
                 DB::raw("DISTINCT t.id AS order_id"),
                 't.invoice',
                 'u.id AS purchaser_id',
-                `t.is_replicated_cart_order`,
+                DB::raw('IFNULL(t.is_replicated_cart_order, 0) AS is_replicated_cart_order'),
                 'sponsor.id AS sponsor_id',
                 DB::raw("CONCAT(u.fname, ' ', u.lname) AS purchaser"),
                 DB::raw("CONCAT(sponsor.fname, ' ', sponsor.lname) AS sponsor"),
