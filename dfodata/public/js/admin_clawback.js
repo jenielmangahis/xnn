@@ -422,7 +422,11 @@
                 swal(this.error.message, "", "error");
             },
             sharingLinkOrderIsChecked(obj) {
-                return obj.sharing_link_order;                
+                if( obj.sharing_link_order == 1 ){
+                    return 'checked';
+                }else{
+                    return '';
+                }                   
             },
         },
         computed: {
