@@ -29,22 +29,15 @@
                     responsive: true,
                     "pageLength": 25,
                     columns     : [
+                        {data    : 'commission_type', className: "text-center"},
+                        {data    : 'commission_period', className: "text-center"},
                         {data    : 'invoice', className: "text-center"},
                         {data    : 'purchaser', className: "text-center"},
-                        {data    : 'sponsor'},
-                        {data    : 'product'},
-                        {data    : 'total_cv', render: $.fn.dataTable.render.number( ',', '.' )},
-                        {data    :  'volume', render: $.fn.dataTable.render.number( ',', '.' )},
                         {data    : 'transaction_date'},
-                        {data    : 'amount_paid'},
-                        {data    : 'credited'},
-                        {data    : 't_status'},
-                        {data    : 'order_type'},
-                        {data    : 'payment_type'},
-                        {data    : 'phone'},
-                        {data    : 'gift_card'},
-                        {data    : 'coupon'},
-                        {data    : 'ledger_payment', render: $.fn.dataTable.render.number( ',', '.', 2, '$' )}
+                        {data    : 'level', className: "text-center"},
+                        {data    : 'total_cv', render: $.fn.dataTable.render.number( ',', '.' )},
+                        {data    : 'percent'},
+                        {data    : 'amount_paid', render: $.fn.dataTable.render.number( ',', '.' )}
                     ]
                 });
             

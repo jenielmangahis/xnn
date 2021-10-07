@@ -285,7 +285,11 @@ class TransactionsReport
                     a.credited,
                     a.t_status,
                     a.order_type,
-                    
+                    a.commission_type,
+                    a.commission_period,
+                    a.levelid,
+                    a.level,
+                    a.percent,
                     CASE 
                          WHEN a.amount = 0 AND a.gc_coupon > 0 AND a.ledger_payment = 0 THEN 'Gift Cards'
                          WHEN a.amount > 0 AND a.gc_coupon > 0 AND a.ledger_payment = 0 THEN 'Gift Cards + CC'
@@ -305,7 +309,22 @@ class TransactionsReport
                          t.id,
                          t.invoice,
                          CONCAT(u.fname, ' ', u.lname) AS purchaser,
+                         u.levelid,
+                         ccp.level,
+                         ccp.percent,
                          CONCAT(s.fname, ' ', s.lname) AS sponsor,
+                         (
+                              SELECT CONCAT(ct.start_date, '-', ct.end_date)
+                              FROM cm_commission_periods AS cp 
+                              LEFT JOIN cm_commission_types ct ON cp.commission_type_id = ct.id
+                              WHERE t.commission_date >= cp.start_date AND t.commission_date <= cp.end_date
+                         )AS commission_period,
+                         (
+                              SELECT ct.name 
+                              FROM cm_commission_periods AS cp 
+                              LEFT JOIN cm_commission_types ct ON cp.commission_type_id = ct.id
+                              WHERE t.commission_date >= cp.start_date AND t.commission_date <= cp.end_date
+                         )AS commission_type,
                          (
                          SELECT GROUP_CONCAT(CONCAT(tp.quantity,' ',p.model) SEPARATOR ', ')
                          FROM transaction_products tp 
@@ -358,6 +377,7 @@ class TransactionsReport
                     FROM transactions t
                     LEFT JOIN users u ON u.id = t.userid
                     LEFT JOIN users s ON s.id = t.sponsorid
+                    LEFT JOIN cm_commission_payouts ccp ON t.id = ccp.transaction_id
                     WHERE 
                          t.type = 'product'
                          AND t.commission_date BETWEEN DATE(:start_date) AND DATE(:end_date)
