@@ -314,16 +314,17 @@ class TransactionsReport
                          ccp.percent,
                          CONCAT(s.fname, ' ', s.lname) AS sponsor,
                          (
-                              SELECT CONCAT(ct.start_date, '-', ct.end_date)
-                              FROM cm_commission_periods AS cp 
-                              LEFT JOIN cm_commission_types ct ON cp.commission_type_id = ct.id
-                              WHERE t.commission_date >= cp.start_date AND t.commission_date <= cp.end_date
+                              SELECT CONCAT(cp.start_date, '-', cp.end_date)
+                              FROM cm_commission_payouts ccp 
+                                   LEFT JOIN cm_commission_periods cp ON ccp.commission_period_id = cp.id 
+                              WHERE ccp.transaction_id = t.id
                          )AS commission_period,
                          (
-                              SELECT ct.name 
-                              FROM cm_commission_periods AS cp 
-                              LEFT JOIN cm_commission_types ct ON cp.commission_type_id = ct.id
-                              WHERE t.commission_date >= cp.start_date AND t.commission_date <= cp.end_date
+                              SELECT ct.name
+                              FROM cm_commission_payouts ccp 
+                                   LEFT JOIN cm_commission_periods cp ON ccp.commission_period_id = cp.id 
+                                   LEFT JOIN cm_commission_types ct ON cp.commission_type_id = ct.id 
+                              WHERE ccp.transaction_id = t.id
                          )AS commission_type,
                          (
                          SELECT GROUP_CONCAT(CONCAT(tp.quantity,' ',p.model) SEPARATOR ', ')
