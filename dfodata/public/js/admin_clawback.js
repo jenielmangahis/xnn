@@ -97,8 +97,8 @@
                             render: function (data, type, row, meta) {
                                 return '<div class="btn-group-xs" role="group" aria-label="...">' +
                                     '<button ' + ((+row.is_clawback && +row.is_per_product) ? 'disabled' : '') + ' type="button" class="btn btn-danger btn-order-refund" style="margin-right: 5px;">Refund</button>' +
-                                    '<button ' + ((+row.is_clawback && !+row.is_per_product) ? 'disabled' : '') + ' data-replicated="'+row.is_replicated_cart_order+'" type="button" class="btn btn-info btn-view-items" style="margin-right: 5px;">Refund By Items</button>' +
-                                    '<button type="button" class="btn btn-warning btn-order-move">Move</button>' +
+                                    '<button ' + ((+row.is_clawback && !+row.is_per_product) ? 'disabled' : '') + ' type="button" class="btn btn-info btn-view-items" style="margin-right: 5px;">Refund By Items</button>' +
+                                    '<button type="button" class="btn btn-warning btn-order-move" data-id="'+row.is_replicated_cart_order+'">Move</button>' +
                                     '</div>';
                             }
                         },
