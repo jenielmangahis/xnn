@@ -377,10 +377,12 @@
                 this.order.sharing_link_order = order.is_replicated_cart_order;
                 this.error.message = null;
 
-                if( order.is_replicated_cart_order == 1 ){
-                    $('#is-sharing-link').prop('checked', true);
+                console.log(order.is_replicated_cart_order);
+
+                if( order.is_replicated_cart_order == 1 ){                    
+                    $('#is-sharing-link').attr('checked', true);
                 }else{
-                    $('#is-sharing-link').prop('checked', false);
+                    $('#is-sharing-link').attr('checked', false);
                 }
 
                 $('#modal-move').modal({backdrop: 'static', keyboard: false});
