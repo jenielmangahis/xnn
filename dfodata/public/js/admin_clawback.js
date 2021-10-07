@@ -97,7 +97,7 @@
                             render: function (data, type, row, meta) {
                                 return '<div class="btn-group-xs" role="group" aria-label="...">' +
                                     '<button ' + ((+row.is_clawback && +row.is_per_product) ? 'disabled' : '') + ' type="button" class="btn btn-danger btn-order-refund" style="margin-right: 5px;">Refund</button>' +
-                                    '<button ' + ((+row.is_clawback && !+row.is_per_product) ? 'disabled' : '') + ' type="button" class="btn btn-info btn-view-items" style="margin-right: 5px;">Refund By Items</button>' +
+                                    '<button ' + ((+row.is_clawback && !+row.is_per_product) ? 'disabled' : '') + ' data-replicated="'+row.is_replicated_cart_order+'" type="button" class="btn btn-info btn-view-items" style="margin-right: 5px;">Refund By Items</button>' +
                                     '<button type="button" class="btn btn-warning btn-order-move">Move</button>' +
                                     '</div>';
                             }
@@ -212,6 +212,7 @@
 
                 $('#table-orders tbody').on('click', '.btn-order-move', function () {
                     let data = $dt.row($(this).parents('tr')).data();
+                    data.is_replicated_cart_order = $(this).attr("data-replicated");
                     _this.showMoveOrder(data);
                 });
             },
@@ -377,7 +378,7 @@
                 this.order.sharing_link_order = order.is_replicated_cart_order;
                 this.error.message = null;
 
-                console.log(order.is_replicated_cart_order);
+                console.log(this.order.is_replicated_cart_order);
 
                 if( order.is_replicated_cart_order == 1 ){                    
                     $('#is-sharing-link').attr('checked', true);
