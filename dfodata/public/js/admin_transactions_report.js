@@ -165,10 +165,9 @@
                         console.log(totals.data);
                         
                         const iteratedData = totals.data.map((item, index) => {
-                            console.log(`Index ${index}`);
                             console.log(item);
                             let total = item.over_all.replace('$','').replace(',','');
-                            g_total = g_total + total;
+                            g_total = g_total + parseInt(total);
                         });
 
                         console.log(g_total);
