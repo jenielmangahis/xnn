@@ -11,7 +11,7 @@
     const vm = new Vue({
         el: "#transactions-report",
         data: {
-            g_total : 0.00
+            g_total : "0.00"
         },
         mounted() {
             this.initializeDataTables();
@@ -155,7 +155,7 @@
                         // client.get('generate-transaction-level/'+$("#date-from").val()+'/'+ $("#date-to").val() + "?status=" + $("#status").val())
                     ]).then(responses => {
                         let transactions = responses[0];
-                        let g_total = 0;
+                        this.g_total     = "0.00";
         
                         $dt_transactions.rows.add(transactions.data);
                         $dt_transactions.columns.adjust().draw();
@@ -167,6 +167,7 @@
                             console.log(item);
                             let total = item.over_all.replace('$','').replace(',','');
                             this.g_total = this.g_total + parseInt(total);
+                            this.g_total = this.g_total.toLocaleString();
                         });
 
                         $dt_totals.rows.add(totals.data);
