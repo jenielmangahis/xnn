@@ -161,7 +161,10 @@
                         $dt_transactions.responsive.recalc();
         
                         let totals = responses[1];
-                        console.log(totals);
+                        console.log(totals)
+                        $.each(responses.data, function(key, value) {
+                         console.log(value);
+                        });
         
                         $dt_totals.rows.add(totals.data);
                         $dt_totals.columns.adjust().draw();
