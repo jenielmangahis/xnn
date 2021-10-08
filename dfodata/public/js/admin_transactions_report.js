@@ -162,14 +162,13 @@
                         $dt_transactions.responsive.recalc();
         
                         let totals = responses[1];
-                        
+                        let total  = 0;
                         const iteratedData = totals.data.map((item, index) => {
                             console.log(item);
-                            let total = item.over_all.replace('$','').replace(',','');
-                            this.g_total = this.g_total + parseInt(total);                            
+                            total = total + parseInt(item.over_all.replace('$','').replace(',',''));                       
                         });
-                        
-                        this.g_total = this.g_total.toFixed(2);
+
+                        this.g_total = total.toFixed(2);
 
                         $dt_totals.rows.add(totals.data);
                         $dt_totals.columns.adjust().draw();
