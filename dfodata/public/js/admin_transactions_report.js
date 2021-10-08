@@ -161,8 +161,9 @@
                         $dt_transactions.responsive.recalc();
         
                         let totals = responses[1];
-                        console.log(totals)
-                        $.each(responses.data, function(key, value) {
+                        console.log(totals);
+                        responses.data.message.map(function(value, key) {
+                         console.log(key);
                          console.log(value);
                         });
         
