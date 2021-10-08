@@ -162,7 +162,7 @@
         
                         let totals = responses[1];
                         console.log(totals);
-                        responses.forEach((value, index) => {
+                        responses.data.forEach((value, index) => {
                             console.log(value);
                             console.log(index);
                         });
