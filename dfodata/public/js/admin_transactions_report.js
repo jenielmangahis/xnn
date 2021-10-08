@@ -162,7 +162,7 @@
         
                         let totals = responses[1];
                         console.log(totals);
-                        responses.data.message.map(function(value, key) {
+                        responses.data.map(function(value, key) {
                          console.log(key);
                          console.log(value);
                         });
