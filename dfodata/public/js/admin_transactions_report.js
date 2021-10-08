@@ -161,12 +161,13 @@
                         $dt_transactions.responsive.recalc();
         
                         let totals = responses[1];
-                        console.log(totals);
-                        responses.data.forEach((value, index) => {
-                            console.log(value);
-                            console.log(index);
+                        console.log(totals.data);
+                        
+                        const iteratedData = totals.data.map((item, index) => {
+                            console.log(`Index ${index}`);
+                            console.log(item);
                         });
-        
+
                         $dt_totals.rows.add(totals.data);
                         $dt_totals.columns.adjust().draw();
                         $dt_totals.responsive.recalc();
