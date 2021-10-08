@@ -162,9 +162,9 @@
         
                         let totals = responses[1];
                         console.log(totals);
-                        responses.data.map(function(value, key) {
-                         console.log(key);
-                         console.log(value);
+                        responses.forEach((value, index) => {
+                            console.log(value);
+                            console.log(index);
                         });
         
                         $dt_totals.rows.add(totals.data);
