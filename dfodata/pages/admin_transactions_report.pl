@@ -148,15 +148,20 @@ print <<EOS;
                             <table id="table-admin-transactions" class="table table-striped table-bordered dt-responsive nowrap" style="width: 100%;">
                                 <thead class="table__header table__header--bg-primary">
                                 <tr class="table__row">
-                                    <td class="table__cell">Commission Type</td>
-                                    <td class="table__cell">Commission Period</td>
-                                    <td class="table__cell">Invoice</td>
-                                    <td class="table__cell">Purchaser</td>
-                                    <td class="table__cell">Order Date</td>
-                                    <td class="table__cell">Level</td>
-                                    <td class="table__cell">CV</td>
-                                    <td class="table__cell">Percentage</td>
-                                    <td class="table__cell">Amount</td>
+                                    <th class="table__cell">Invoice</th>
+                                    <th class="table__cell">Purchaser</th>
+                                    <th class="table__cell">Sponsor</th>
+                                    <th class="table__cell">Product</th>
+                                    <th class="table__cell">Order Date</th>
+                                    <th class="table__cell">CV</th>
+                                    <th class="table__cell">QV</th>
+                                    <th class="table__cell">Subtotal</th>
+                                    <th class="table__cell">Tax</th>
+                                    <th class="table__cell">Shipping Fee</th>
+                                    <th class="table__cell">Ledger</th>
+                                    <th class="table__cell">Gift Card</th>
+                                    <th class="table__cell">Coupons</th>
+                                    <th class="table__cell">Amount Paid</th>
                                 </tr>
                                 </thead>
                                 <tbody class="table__body">

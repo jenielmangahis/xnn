@@ -285,12 +285,13 @@ class TransactionsReport
                     a.credited,
                     a.t_status,
                     a.order_type,
-                    a.commission_type,
-                    a.commission_period,
                     a.levelid,
                     a.level,
                     a.percent,
                     a.amount,
+                    a.shipping_fee,
+                    a.sub_total,
+                    a.tax,
                     CASE 
                          WHEN a.amount = 0 AND a.gc_coupon > 0 AND a.ledger_payment = 0 THEN 'Gift Cards'
                          WHEN a.amount > 0 AND a.gc_coupon > 0 AND a.ledger_payment = 0 THEN 'Gift Cards + CC'
@@ -309,24 +310,14 @@ class TransactionsReport
                     SELECT
                          t.id,
                          t.invoice,
+                         t.shipping_fee,
+                         t.sub_total,
+                         t.tax,
                          CONCAT(u.fname, ' ', u.lname) AS purchaser,
                          u.levelid,
                          IFNULL(ccp.level, 0) AS level,
                          IFNULL(ccp.percent, 0) AS percent,
-                         CONCAT(s.fname, ' ', s.lname) AS sponsor,
-                         (
-                              SELECT CONCAT(cp.start_date, '-', cp.end_date)
-                              FROM cm_commission_payouts ccp 
-                                   LEFT JOIN cm_commission_periods cp ON ccp.commission_period_id = cp.id 
-                              WHERE ccp.transaction_id = t.id
-                         )AS commission_period,
-                         (
-                              SELECT ct.name
-                              FROM cm_commission_payouts ccp 
-                                   LEFT JOIN cm_commission_periods cp ON ccp.commission_period_id = cp.id 
-                                   LEFT JOIN cm_commission_types ct ON cp.commission_type_id = ct.id 
-                              WHERE ccp.transaction_id = t.id
-                         )AS commission_type,
+                         CONCAT(s.fname, ' ', s.lname) AS sponsor,                         
                          (
                          SELECT GROUP_CONCAT(CONCAT(tp.quantity,' ',p.model) SEPARATOR ', ')
                          FROM transaction_products tp 
