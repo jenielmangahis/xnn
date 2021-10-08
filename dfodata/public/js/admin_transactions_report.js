@@ -166,9 +166,10 @@
                         const iteratedData = totals.data.map((item, index) => {
                             console.log(item);
                             let total = item.over_all.replace('$','').replace(',','');
-                            this.g_total = this.g_total + parseInt(total);
-                            this.g_total = Number(this.g_total).toLocaleString();
+                            this.g_total = this.g_total + parseInt(total);                            
                         });
+                        
+                        this.g_total = this.g_total.toFixed(2);
 
                         $dt_totals.rows.add(totals.data);
                         $dt_totals.columns.adjust().draw();
