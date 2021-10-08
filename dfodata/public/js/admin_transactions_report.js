@@ -11,7 +11,7 @@
     const vm = new Vue({
         el: "#transactions-report",
         data: {
-            
+            g_total : 0.00
         },
         mounted() {
             this.initializeDataTables();
@@ -162,15 +162,12 @@
                         $dt_transactions.responsive.recalc();
         
                         let totals = responses[1];
-                        console.log(totals.data);
                         
                         const iteratedData = totals.data.map((item, index) => {
                             console.log(item);
                             let total = item.over_all.replace('$','').replace(',','');
-                            g_total = g_total + parseInt(total);
+                            this.g_total = this.g_total + parseInt(total);
                         });
-
-                        console.log(g_total);
 
                         $dt_totals.rows.add(totals.data);
                         $dt_totals.columns.adjust().draw();

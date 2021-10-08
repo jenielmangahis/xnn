@@ -132,7 +132,7 @@ print <<EOS;
 
                             <div class="col-md-4">
                                 <div class="total-style-controller">
-                                    <h5 class="admin-money-total"><strong>Total: 0.00 </strong></h5>
+                                    <h5 class="admin-money-total"><strong>Total: <span v-html="g_total">0.00</span> </strong></h5>
                                 </div>
                             </div>
 
