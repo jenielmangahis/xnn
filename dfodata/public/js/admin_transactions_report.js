@@ -155,6 +155,7 @@
                         // client.get('generate-transaction-level/'+$("#date-from").val()+'/'+ $("#date-to").val() + "?status=" + $("#status").val())
                     ]).then(responses => {
                         let transactions = responses[0];
+                        let g_total = 0;
         
                         $dt_transactions.rows.add(transactions.data);
                         $dt_transactions.columns.adjust().draw();
@@ -166,7 +167,11 @@
                         const iteratedData = totals.data.map((item, index) => {
                             console.log(`Index ${index}`);
                             console.log(item);
+                            let total = item.over_all.replace('$','').replace(',','');
+                            g_total = g_total + total;
                         });
+
+                        console.log(g_total);
 
                         $dt_totals.rows.add(totals.data);
                         $dt_totals.columns.adjust().draw();
