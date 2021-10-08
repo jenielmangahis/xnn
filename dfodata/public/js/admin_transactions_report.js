@@ -161,6 +161,7 @@
                         $dt_transactions.responsive.recalc();
         
                         let totals = responses[1];
+                        console.log(totals);
         
                         $dt_totals.rows.add(totals.data);
                         $dt_totals.columns.adjust().draw();
