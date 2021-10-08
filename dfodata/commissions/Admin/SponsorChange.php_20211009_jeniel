@@ -12,12 +12,12 @@ use PDO;
 
 class SponsorChange
 {
-    public function changeSponsor($tree_id, $member_id, $sponsor_id, $moved_by_id, $update_past_orders = false)
+    public function changeSponsor($tree_id, $member_id, $sponsor_id, $moved_by_id)
     {
         $this->checkForError($tree_id, $member_id, $sponsor_id);
 
 
-        DB::transaction(function() use ($tree_id, $member_id, $sponsor_id, $moved_by_id, $update_past_orders){
+        DB::transaction(function() use ($tree_id, $member_id, $sponsor_id, $moved_by_id){
 
             $db = DB::connection()->getPdo();
 
@@ -41,38 +41,25 @@ class SponsorChange
 
                 #################################################
 
-                $category_ids =  config('commission.member-types.customers');
-                $category_ids .= ',';
-                $category_ids .= config('commission.member-types.affiliates');
-
-				//UPDATE ORDERS HERE
-				if ($update_past_orders) {
-					$qry = "
+                $qry = "
                     UPDATE transactions t
-                    SET t.sponsorid = :sponsor_id,
-                    t.sponsor_catid = (
-                        SELECT 
-                            cm.catid 
-                        FROM categorymap cm 
-                        WHERE cm.userid = $sponsor_id
-                        ORDER BY FIND_IN_SET(cm.catid, '$category_ids') DESC
-                        LIMIT 1
-                    )
+                    SET t.sponsorid = :sponsor_id
                     WHERE userid = :user_id
+                        AND NOT EXISTS (
+                            SELECT 1 FROM cm_commission_periods p
+                            WHERE
+                                p.is_locked = 1
+                                AND DATE(t.transactiondate) BETWEEN p.start_date AND p.end_date
+                        )
                 ";
                 $smt = $db->prepare($qry);
                 $smt->bindParam(':user_id',$member_id);
                 $smt->bindParam(':sponsor_id',$sponsor_id);
                 $smt->execute();
 
-					$update_past_orders = 1;
-				} else {
-					$update_past_orders = 0;
-				}
-
                 #################################################
 
-                $qry = "INSERT INTO cm_genealogy_history(user_id, old_parent_id, new_parent_id, tree_id, moved_by_id, module_used, orders_updated) VALUES(:user_id, :old_parent_id, :new_parent_id, :tree_id, :moved_by_id, 'sponsorchange', :update_past_orders)";
+                $qry = "INSERT INTO cm_genealogy_history(user_id, old_parent_id, new_parent_id, tree_id, moved_by_id, module_used) VALUES(:user_id, :old_parent_id, :new_parent_id, :tree_id, :moved_by_id, 'sponsorchange')";
 
                 $smt = $db->prepare($qry);
 
@@ -81,7 +68,6 @@ class SponsorChange
                 $smt->bindParam(':new_parent_id',$sponsor_id);
                 $smt->bindParam(':tree_id',$tree_id);
                 $smt->bindParam(':moved_by_id',$moved_by_id);
-				$smt->bindParam(':update_past_orders',$update_past_orders);
                 $smt->execute();
 
                 // #################################################
@@ -848,11 +834,7 @@ class SponsorChange
                     WHEN tree_id = 3 THEN 'Matrix Tree'
                     ELSE ''
                 END AS tree,
-                created_at,
-				CASE 
-					WHEN orders_updated = 1 THEN 'Yes'
-					ELSE 'No'
-				END AS orders_updated
+                created_at
             ")
             ->join('users AS u', 'u.id', '=', 'h.user_id')
             ->join('users AS n', 'n.id', '=', 'h.new_parent_id')

@@ -79,8 +79,7 @@ class SponsorChangeController extends Controller
                     $request->input("tree_id"),
                     $request->input("member_id"),
                     $request->input("sponsor_id"),
-                    $request->input("moved_by_id"),
-                    $request->input("update_past_orders")
+                    $request->input("moved_by_id")
                 )
             );
         }

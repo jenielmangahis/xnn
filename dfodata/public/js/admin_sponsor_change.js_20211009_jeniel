@@ -23,7 +23,6 @@
                     after:[],
                 },
                 autocompleteUrl: `${api_url}common/autocomplete/members`,
-				update_past_orders: ''
             }
         },
         mounted() {
@@ -33,25 +32,15 @@
             initializeDatatable() {
 
                 this.dtHistory = $("#table-history").DataTable({
-                    "processing": true,
-                    "serverSide": true,
-                    "ajax": {
-                        "url" : api_url + 'admin/sponsor-change/logs',
-                        "data": function(d) {
-                            return d;
-                        },
+                    language: {
+                        search: "_INPUT_",
+                        searchPlaceholder: "Search",
+                        paginate: {
+                            next: 'Next',
+                            previous: 'Previous &nbsp;&nbsp;&nbsp;|'
+                        }
                     },
-                    order: [[ 0, 'desc' ]],
-                    columns     : [
-                        {data    : 'id'},
-                        {data    : 'member'},
-                        {data    : 'new_sponsor'},
-                        {data    : 'old_sponsor'},
-                        {data    : 'tree'},
-                        {data    : 'moved_by'},
-                        {data    : 'orders_updated'},	//orders updated
-                        {data    : 'created_at'},
-                    ]
+                    responsive: true
                 });
             },
             clear() {
@@ -109,19 +98,19 @@
             changeSponsor() {
                 if(this.is_processing === 1) return;
 
-                 swal({
+                swal({
                     title: "Change Sponsor",
                     text:
                         "Are you sure you'd like to change the sponsor of the selected member. \n" +
                         "Do you want to continue?",
-                    icon: "warning",
+                    type: "warning",
                     confirmButtonClass: "btn-success",
-                    buttons: ["No, cancel please!", "Yes!"],
-                    closeModal: false,
-                }).then((isConfirm) => {
-
-                    if (!isConfirm) return;
-                    
+                    confirmButtonText: "Yes!",
+                    cancelButtonText: "No, cancel please!",
+                    showCancelButton: true,
+                    closeOnConfirm: false,
+                    showLoaderOnConfirm: true,
+                }, () => {
                     this.is_processing = 1;
 
                     client.post(`admin/sponsor-change/change`, {
@@ -129,7 +118,6 @@
                         member_id: this.selected_member_id,
                         sponsor_id: this.selected_sponsor_id,
                         moved_by_id: $('#member').val(),
-						update_past_orders: this.update_past_orders
                     }).then(response => {
 
                         this.error.message = null;
