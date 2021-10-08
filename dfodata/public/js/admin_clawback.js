@@ -39,8 +39,7 @@
                     amount_off: null,
                     commission_value: null,
                     is_full_order: null,
-                    new_purchaser_id: null,
-                    sharing_link_order: null,
+                    new_purchaser_id: null,                    
                     is_clawback: 0
                 },
 
@@ -98,7 +97,7 @@
                                 return '<div class="btn-group-xs" role="group" aria-label="...">' +
                                     '<button ' + ((+row.is_clawback && +row.is_per_product) ? 'disabled' : '') + ' type="button" class="btn btn-danger btn-order-refund" style="margin-right: 5px;">Refund</button>' +
                                     '<button ' + ((+row.is_clawback && !+row.is_per_product) ? 'disabled' : '') + ' type="button" class="btn btn-info btn-view-items" style="margin-right: 5px;">Refund By Items</button>' +
-                                    '<button type="button" class="btn btn-warning btn-order-move" data-id="'+row.is_replicated_cart_order+'">Move</button>' +
+                                    '<button type="button" class="btn btn-warning btn-order-move">Move</button>' +
                                     '</div>';
                             }
                         },
@@ -153,8 +152,7 @@
                         },
                         {data    : 'old_transaction_date'},
                         {data    : 'created_at'},
-                        {data    : 'changed_by'},
-                        {data    : 'is_sharing_link_order'},
+                        {data    : 'changed_by'}
                     ]
                 });
                 
@@ -212,17 +210,7 @@
 
                 $('#table-orders tbody').on('click', '.btn-order-move', function () {
                     let data = $dt.row($(this).parents('tr')).data();
-                    let is_replicated_cart_order = $(this).attr("data-id");
                     _this.showMoveOrder(data);
-                    
-                    console.log(is_replicated_cart_order);
-
-                    if( is_replicated_cart_order == 1 ){                    
-                        $('#is-sharing-link').attr('checked', true);
-                    }else{
-                        $('#is-sharing-link').removeAttr('checked');
-                    }
-
                 });
             },
             readonlyProduct: function(order) {
@@ -383,8 +371,7 @@
                 this.order.sponsor = order.sponsor;
                 this.order.sponsor_id = order.sponsor_id;
                 this.order.transaction_date = order.transaction_date;
-                this.order.new_purchaser_id = null;
-                this.order.sharing_link_order = order.is_replicated_cart_order;
+                this.order.new_purchaser_id = null;                
                 this.error.message = null;
                 $('#modal-move').modal({backdrop: 'static', keyboard: false});
             },
@@ -402,7 +389,6 @@
 
                         client.post(`admin/move-order/orders/${this.order.order_id}/change`, {
                             modified: $('#member').val(), 
-                            is_sharing_link_order: this.order.sharing_link_order, 
                             ...this.order
                         }).then(response => {
                             $('#modal-move').modal('hide');

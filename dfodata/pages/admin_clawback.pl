@@ -120,7 +120,6 @@ print <<EOS;
                                             <td class="table__cell">Old Transaction Date</td>
                                             <td class="table__cell">Date</td>
                                             <td class="table__cell">Changed by</td>
-                                            <td class="table__cell">Sharing Link Order</td>
                                         </tr>
                                     </thead>
                                     <tbody class="table__body">
@@ -326,14 +325,6 @@ print <<EOS;
                         <div class="col-sm-12">
                             <label for="new-purchaser-id">New Purchaser</label><br/>
                             <select2-autocomplete-member id="new-purchaser-id" :url="autocompleteUrl" v-model="order.new_purchaser_id"></select2-autocomplete-member>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="col-sm-12">
-                            <div class="form-group form-check">
-                                <input type="checkbox" class="form-check-input" v-model="order.sharing_link_order" id="is-sharing-link">
-                                <label class="form-check-label" for="exampleCheck1">Mark as Sharing link order</label>
-                            </div>
                         </div>
                     </div>
                     <div class="form-group" v-show="error.message != null">
