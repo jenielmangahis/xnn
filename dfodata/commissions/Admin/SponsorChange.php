@@ -73,14 +73,13 @@ class SponsorChange
                 #################################################
 
                 $qry = "INSERT INTO cm_genealogy_history(user_id, old_parent_id, new_parent_id, tree_id, moved_by_id, module_used, orders_updated, created_at) VALUES(:user_id, :old_parent_id, :new_parent_id, :tree_id, :moved_by_id, 'sponsorchange', :update_past_orders, :created_at)";
-
-                $smt = $db->prepare($qry);
-
+                $created_at = date("Y-m-d H:i:s");
+                $smt = $db->prepare($qry);                
                 $smt->bindParam(':user_id',$member_id);
                 $smt->bindParam(':old_parent_id',$old_parent_id);
                 $smt->bindParam(':new_parent_id',$sponsor_id);
                 $smt->bindParam(':tree_id',$tree_id);
-                $smt->bindParam(':created_at',date("Y-m-d H:i:s"));
+                $smt->bindParam(':created_at',$created_at);
                 $smt->bindParam(':moved_by_id',$moved_by_id);
 				$smt->bindParam(':update_past_orders',$update_past_orders);
                 $smt->execute();
