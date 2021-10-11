@@ -105,64 +105,64 @@ class SponsorChange
                 // tree id 2 placement
 
                 $member = UserPlacement::findOrFail($member_id);
+                if( $member ){
+                    //$old_parent_id = $member->sponsor_id;
 
-                $old_parent_id = $member->sponsor_id;
+                    // #################################################
 
-                // #################################################
+                    $qry = "UPDATE cm_genealogy_placement SET sponsor_id = :sponsor_id WHERE user_id = :user_id";
+                    $smt = $db->prepare($qry);
+                    $smt->bindParam(':user_id',$member_id);
+                    $smt->bindParam(':sponsor_id',$sponsor_id);
+                    $smt->execute();
 
-                $qry = "UPDATE cm_genealogy_placement SET sponsor_id = :sponsor_id WHERE user_id = :user_id";
-                $smt = $db->prepare($qry);
-                $smt->bindParam(':user_id',$member_id);
-                $smt->bindParam(':sponsor_id',$sponsor_id);
-                $smt->execute();
+                    // #################################################
 
-                // #################################################
+    //                $qry = "
+    //                    UPDATE transactions t
+    //                    SET t.sponsorid = :sponsor_id
+    //                    WHERE userid = :user_id
+    //                        AND NOT EXISTS (
+    //                            SELECT 1 FROM cm_commission_periods p
+    //                            WHERE
+    //                                p.is_locked = 1
+    //                                AND DATE(t.transactiondate) BETWEEN p.start_date AND p.end_date
+    //                        )
+    //                ";
+    //                $smt = $db->prepare($qry);
+    //                $smt->bindParam(':user_id',$member_id);
+    //                $smt->bindParam(':sponsor_id',$sponsor_id);
+    //                $smt->execute();
 
-//                $qry = "
-//                    UPDATE transactions t
-//                    SET t.sponsorid = :sponsor_id
-//                    WHERE userid = :user_id
-//                        AND NOT EXISTS (
-//                            SELECT 1 FROM cm_commission_periods p
-//                            WHERE
-//                                p.is_locked = 1
-//                                AND DATE(t.transactiondate) BETWEEN p.start_date AND p.end_date
-//                        )
-//                ";
-//                $smt = $db->prepare($qry);
-//                $smt->bindParam(':user_id',$member_id);
-//                $smt->bindParam(':sponsor_id',$sponsor_id);
-//                $smt->execute();
+                    // #################################################
 
-                // #################################################
+                    $qry = "INSERT INTO cm_genealogy_history(user_id, old_parent_id, new_parent_id, tree_id, moved_by_id, module_used) VALUES(:user_id, :old_parent_id, :new_parent_id, :tree_id, :moved_by_id, 'sponsorchange')";
 
-                $qry = "INSERT INTO cm_genealogy_history(user_id, old_parent_id, new_parent_id, tree_id, moved_by_id, module_used) VALUES(:user_id, :old_parent_id, :new_parent_id, :tree_id, :moved_by_id, 'sponsorchange')";
+                    $smt = $db->prepare($qry);
 
-                $smt = $db->prepare($qry);
+                    $smt->bindParam(':user_id',$member_id);
+                    $smt->bindParam(':old_parent_id',$old_parent_id);
+                    $smt->bindParam(':new_parent_id',$sponsor_id);
+                    $smt->bindParam(':tree_id',$tree_id);
+                    $smt->bindParam(':moved_by_id',$moved_by_id);
+                    $smt->execute();
 
-                $smt->bindParam(':user_id',$member_id);
-                $smt->bindParam(':old_parent_id',$old_parent_id);
-                $smt->bindParam(':new_parent_id',$sponsor_id);
-                $smt->bindParam(':tree_id',$tree_id);
-                $smt->bindParam(':moved_by_id',$moved_by_id);
-                $smt->execute();
+                    // #################################################
 
-                // #################################################
+                    $value = 'PLACEMENT Tree Change Sponsor: Old sponsor('.$old_parent_id.') to New Sponsor('.$sponsor_id.')';
 
-                $value = 'PLACEMENT Tree Change Sponsor: Old sponsor('.$old_parent_id.') to New Sponsor('.$sponsor_id.')';
+                    $doneby = $moved_by_id.' SPONSOR CHANGE TOOL';
 
-                $doneby = $moved_by_id.' SPONSOR CHANGE TOOL';
+                    $qry = "INSERT INTO users_mods(userid, doneby, vals) VALUES(:user_id, :doneby, :value)";
 
-                $qry = "INSERT INTO users_mods(userid, doneby, vals) VALUES(:user_id, :doneby, :value)";
+                    $smt = $db->prepare($qry);
 
-                $smt = $db->prepare($qry);
+                    $smt->bindParam(':user_id',$member_id);
+                    $smt->bindParam(':value',$value);
+                    $smt->bindParam(':doneby',$doneby);
 
-                $smt->bindParam(':user_id',$member_id);
-                $smt->bindParam(':value',$value);
-                $smt->bindParam(':doneby',$doneby);
-
-                $smt->execute();
-
+                    $smt->execute();  
+                }
             } 
             else {
                 // tree id 3 matrix
