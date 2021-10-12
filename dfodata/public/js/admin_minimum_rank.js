@@ -174,31 +174,30 @@
                     swal({
                         title: title,
                         text: text,
-                        type: "warning",
+                        icon: "warning",
                         confirmButtonClass: "btn-success",
-                        confirmButtonText: "Confirm",
-                        cancelButtonText: "Cancel",
-                        showCancelButton: true,
-                        closeOnConfirm: false,
-                        showLoaderOnConfirm: true,
-                    }, () => {
+                        buttons: ["No, cancel please!", "Yes!"],
+                        closeModal: false,
+                    }).then((isConfirm) => {
+                        if( isConfirm ){
+                            this.isProcessing = 1;
 
-                        this.isProcessing = 1;
+                            client.post("admin/minimum-rank", this.minimumRank).then(response => {
+                                this.error.message = null;
+                                this.error.type = null;
 
-                        client.post("admin/minimum-rank", this.minimumRank).then(response => {
-                            this.error.message = null;
-                            this.error.type = null;
+                                console.log(response.data);
 
-                            console.log(response.data);
+                                this.dt.draw();
+                                $('#modal-minimum-rank').modal('hide');
+                                swal('Success','','success');
 
-                            this.dt.draw();
-                            $('#modal-minimum-rank').modal('hide');
-                            swal('Success','','success');
-
-                        }).catch(this.axiosErrorHandler).finally(()=> {
-                            this.isProcessing = 0;
-                        });
-
+                            }).catch(this.axiosErrorHandler).finally(()=> {
+                                this.isProcessing = 0;
+                            });
+                        }else{
+                            swal.close(); 
+                        }
                     });
                 });
 
