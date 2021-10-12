@@ -36,14 +36,6 @@
             initializeDataTables() {
                 let _this = this;
                 this.dt = $("#table-minimum-rank").DataTable({
-                    language: {
-                        search: "_INPUT_",
-                        searchPlaceholder: "Search...",
-                        paginate: {
-                          next: 'Next',
-                          previous: 'Previous &nbsp;&nbsp;&nbsp;|'
-                        }
-                    },
                     processing: true,
                     serverSide: true,
                     responsive: true,
@@ -182,14 +174,13 @@
                     swal({
                         title: title,
                         text: text,
-                        type: "warning",
+                        icon: "warning",
                         confirmButtonClass: "btn-success",
-                        confirmButtonText: "Confirm",
-                        cancelButtonText: "Cancel",
-                        showCancelButton: true,
-                        closeOnConfirm: false,
-                        showLoaderOnConfirm: true,
-                    }, () => {
+                        buttons: ["No, cancel please!", "Yes!"],
+                        closeModal: false,
+                    }).then((isConfirm) => {
+
+                        if (!isConfirm) return;
 
                         this.isProcessing = 1;
 
@@ -218,14 +209,13 @@
                 swal({
                     title: "Delete minimum rank",
                     text: `Are you sure you want to delete the minimum rank of ${data.member} (ID ${data.user_id})?`,
-                    type: "warning",
+                    icon: "warning",
                     confirmButtonClass: "btn-success",
-                    confirmButtonText: "Confirm",
-                    cancelButtonText: "Cancel",
-                    showCancelButton: true,
-                    closeOnConfirm: false,
-                    showLoaderOnConfirm: true,
-                }, () => {
+                    buttons: ["No, cancel please!", "Yes!"],
+                    closeModal: false,
+                }).then((isConfirm) => {
+
+                    if (!isConfirm) return;
 
                     this.isProcessing = 1;
 

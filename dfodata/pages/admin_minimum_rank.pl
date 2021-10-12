@@ -13,107 +13,90 @@ print <<EOS;
 </style>
 
 <div class="minimum-rank tool-container tool-container--default" v-cloak>
-
     <div class="row">
         <div class="col-md-12">
-            <h4 class="admin-money-title">Minimum $rank_title</h4>
+            <h4>Minimum $rank_title</h4>
+            <hr />
         </div>
     </div>
 
-    <div class="put-mobile-lr-padding">
-
-        <div class="panel panel-default">
-
-            <div class="panel-body">
-
-                <div class="row margin-bottom margin-top">
-
-                    <div class="col-md-4">
-                        <div class="tool-container__actions">
-                            <button type="button" class="btn btn-primary btn-block" v-on:click.prevent="showAddModal">
-                                Add Minimum $rank_title
-                            </button>
-                        </div>
-                    </div>
-
-                    <div class="col-md-4">
-                    </div>
-
-                    <div class="col-md-4">
-                    </div>
-
-                </div>
-
-                <div class="row">
-                    <div class="table-responsive">
-                        <div class="col-md-12 padding-left-right">
-                            <table id="table-minimum-rank" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
-                                <thead class="table__header table__header--bg-primary">
-                                <tr class="table__row">
-                                    <td class="table__cell">Name</td>
-                                    <td class="table__cell">$rank_title</td>
-                                    <td class="table__cell">Start Date</td>
-                                    <td class="table__cell">End Date</td>
-                                    <td class="table__cell">Set By</td>
-                                    <td class="table__cell">Set Date</td>
-                                    <td class="table__cell">Action</td>
-                                </tr>
-                                </thead>
-                                <tbody class="table__body">
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="modal fade" id="modal-minimum-rank" role="dialog" aria-labelledby="modal-minimum-rank-label">
-                    <div class="modal-dialog" role="document">
-                        <form class="modal-content" id="form-minimum-rank" >
-                            <div class="modal-header">
-                                <button v-bind:disabled="isProcessing === 1" type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                <h4 class="modal-title" id="modal-minimum-rank-label">{{ isEditMode ? 'Edit' : 'Set' }} Minimum Rank</h4>
-                            </div>
-                            <div class="modal-body">
-                                <div class="form-group">
-                                    <label for="user_id">Member</label>
-                                    <select2-autocomplete-member ref="autocompleteMember" id="user_id"  v-bind:url="autocompleteUrl" v-model="minimumRank.user_id"></select2-autocomplete-member>
-                                </div>
-                                <div class="form-group">
-                                    <label for="rank_id">Minimum $rank_title</label>
-                                    <select
-                                            name="rank_id"
-                                            id="rank_id"
-                                            class="form-control"
-                                            v-model="minimumRank.rank_id"
-                                    >
-                                        <option value="" selected disabled>Select a $rank_title</option>
-                                        <option v-for="(rank, index) in ranks"
-                                                v-bind:value="rank.id"
-                                                v-bind:key="rank.id">
-                                            {{ rank.name }}
-                                        </option>
-                                    </select>
-                                </div>
-                                <div class="form-group">
-                                    <label for="start_date">Start Date</label>
-                                    <datepicker id="start_date" v-model="minimumRank.start_date" v-bind:start-date="today"></datepicker>
-                                </div>
-                                <div class="form-group">
-                                    <label for="end_date">End Date</label>
-                                    <datepicker id="end_date" v-model="minimumRank.end_date" v-bind:start-date="minimumRank.start_date" ></datepicker>
-                                </div>
-
-                            </div>
-                            <div class="modal-footer">
-                                <a type="button" class="btn btn-default" data-dismiss="modal" v-show="isProcessing === 0">Close</a>
-                                <button type="submit" class="btn btn-primary" id="btn-set" v-bind:disabled="isProcessing === 1" v-on:click.prevent="saveMinimumRank">{{ isEditMode ? 'Edit' : 'Set' }}</button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
+    <div class="row">
+        <div class="col-md-12 ">
+            <div class="tool-container__actions pull-right">
+                <button type="button" class="btn btn-success" v-on:click.prevent="showAddModal">
+                    Add Minimum $rank_title
+                </button>
             </div>
         </div>
     </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="table-responsive">
+            <table id="table-minimum-rank" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
+                <thead class="table__header table__header--bg-primary">
+                <tr class="table__row">
+                    <th class="table__cell">Name</th>
+                    <th class="table__cell">$rank_title</th>
+                    <th class="table__cell">Start Date</th>
+                    <th class="table__cell">End Date</th>
+                    <th class="table__cell">Set By</th>
+                    <th class="table__cell">Set Date</th>
+                    <th class="table__cell">Action</th>
+                </tr>
+                </thead>
+                <tbody class="table__body">
+                </tbody>
+            </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modal-minimum-rank" role="dialog" aria-labelledby="modal-minimum-rank-label">
+        <div class="modal-dialog" role="document">
+            <form class="modal-content" id="form-minimum-rank" >
+                <div class="modal-header">
+                    <button v-bind:disabled="isProcessing === 1" type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="modal-minimum-rank-label">{{ isEditMode ? 'Edit' : 'Set' }} Minimum Rank</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="user_id">Member</label>
+                        <select2-autocomplete-member ref="autocompleteMember" id="user_id"  v-bind:url="autocompleteUrl" v-model="minimumRank.user_id"></select2-autocomplete-member>
+                    </div>
+                    <div class="form-group">
+                        <label for="rank_id">Minimum $rank_title</label>
+                        <select
+                                name="rank_id"
+                                id="rank_id"
+                                class="form-control"
+                                v-model="minimumRank.rank_id"
+                        >
+                            <option value="" selected disabled>Select a $rank_title</option>
+                            <option v-for="(rank, index) in ranks"
+                                    v-bind:value="rank.id"
+                                    v-bind:key="rank.id">
+                                {{ rank.name }}
+                            </option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="start_date">Start Date</label>
+                        <datepicker id="start_date" v-model="minimumRank.start_date" v-bind:start-date="today"></datepicker>
+                    </div>
+                    <div class="form-group">
+                        <label for="end_date">End Date</label>
+                        <datepicker id="end_date" v-model="minimumRank.end_date" v-bind:start-date="minimumRank.start_date" ></datepicker>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <a type="button" class="btn btn-default" data-dismiss="modal" v-show="isProcessing === 0">Close</a>
+                    <button type="submit" class="btn btn-primary" id="btn-set" v-bind:disabled="isProcessing === 1" v-on:click.prevent="saveMinimumRank">{{ isEditMode ? 'Edit' : 'Set' }}</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
 </div>
 
 <script src="$commission_engine_api_url/js/app.js?v=$app_js_version"></script>
