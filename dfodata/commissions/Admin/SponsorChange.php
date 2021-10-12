@@ -12,7 +12,7 @@ use PDO;
 
 class SponsorChange
 {
-    public function changeSponsor($tree_id, $member_id, $sponsor_id, $moved_by_id, $update_past_orders = false)
+    public function changeSponsor($tree_id, $member_id, $sponsor_id, $moved_by_id, $update_past_orders)
     {
         $this->checkForError($tree_id, $member_id, $sponsor_id);
 
