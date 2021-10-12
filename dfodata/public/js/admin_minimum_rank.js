@@ -174,13 +174,14 @@
                     swal({
                         title: title,
                         text: text,
-                        icon: "warning",
+                        type: "warning",
                         confirmButtonClass: "btn-success",
-                        buttons: ["No, cancel please!", "Yes!"],
-                        closeModal: false,
-                    }).then((isConfirm) => {
-
-                        if (!isConfirm) return;
+                        confirmButtonText: "Confirm",
+                        cancelButtonText: "Cancel",
+                        showCancelButton: true,
+                        closeOnConfirm: false,
+                        showLoaderOnConfirm: true,
+                    }, () => {
 
                         this.isProcessing = 1;
 
