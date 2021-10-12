@@ -362,18 +362,93 @@ class SponsorChange
 
     public function getPlacementRelationship($tree_id, $member_id, $sponsor_id)
     {
-        $member = UserPlacement::findOrFail($member_id);
+        $member  = UserPlacement::findOrFail($member_id);
         $sponsor = UserPlacement::findOrFail($sponsor_id);
+        if( $member && $sponsor ){
+            $member_sponsor = $member->sponsor;
+            $sponsor_sponsor = $sponsor->sponsor;
 
-        $member_sponsor = $member->sponsor;
-        $sponsor_sponsor = $sponsor->sponsor;
+            $before = [];
+            $after = [];
 
-        $before = [];
-        $after = [];
+            if($member->sponsor_id == $sponsor_id)
+            {
+                $before[] = [
+                    'member_id' => $sponsor_id,
+                    'member_name' => $sponsor->user->fname . ' ' . $sponsor->user->lname,
+                    'level' => 0,
+                    'sponsor_id' => $sponsor->sponsor_id,
+                    'sponsor_name' => $sponsor_sponsor->user->fname . ' ' . $sponsor_sponsor->user->lname,
+                ];
 
-        if($member->sponsor_id == $sponsor_id)
-        {
+                $before[] = [
+                    'member_id' => $member_id,
+                    'member_name' => $member->user->fname . ' ' . $member->user->lname,
+                    'level' => 1,
+                    'sponsor_id' => $sponsor->id,
+                    'sponsor_name' => $sponsor->user->fname . ' ' . $sponsor->user->lname,
+                ];
+
+                $after[] = [
+                    'message' => 'No changes'
+                ];
+
+                return compact('before', 'after');
+            }
+
+            $on_leg = $this->on_leg($tree_id, $member_id, $sponsor_id);
+
+            if(!empty($on_leg))
+            {
+                $before[] = [
+                    'member_id' => $member_sponsor->id,
+                    'member_name' => $member_sponsor->user->fname . ' ' . $member_sponsor->user->lname,
+                    'level' => 0,
+                    'sponsor_id' => $member_sponsor->sponsor_id,
+                    'sponsor_name' => $member_sponsor->sponsor->user->fname . ' ' . $member_sponsor->sponsor->user->lname,
+                ];
+
+                $before[] = [
+                    'member_id' => $sponsor->id,
+                    'member_name' => $sponsor->user->fname . ' ' . $sponsor->user->lname,
+                    'level' => $on_leg['level'],
+                    'sponsor_id' => $sponsor_sponsor->id,
+                    'sponsor_name' => $sponsor_sponsor->user->fname . ' ' . $sponsor_sponsor->user->lname,
+                ];
+
+                $before[] = [
+                    'member_id' => $member->id,
+                    'member_name' => $member->user->fname . ' ' . $member->user->lname,
+                    'level' => $on_leg['level'] + 1,
+                    'sponsor_id' => $sponsor->id,
+                    'sponsor_name' => $sponsor->user->fname . ' ' . $sponsor->user->lname,
+                ];
+
+                $after[] = [
+                    'member_id' => $sponsor_id,
+                    'member_name' => $sponsor->user->fname . ' ' . $sponsor->user->lname,
+                    'level' => 0,
+                    'sponsor_id' => $sponsor->sponsor_id,
+                    'sponsor_name' => $sponsor_sponsor->user->fname . ' ' . $sponsor_sponsor->user->lname,
+                ];
+
+                $after[] = [
+                    'member_id' => $member_id,
+                    'member_name' => $member->user->fname . ' ' . $member->user->lname,
+                    'level' => 1,
+                    'sponsor_id' => $sponsor->id,
+                    'sponsor_name' => $sponsor->user->fname . ' ' . $sponsor->user->lname,
+                ];
+
+                return compact('before', 'after');
+            }
+
+
             $before[] = [
+                'message' => 'No Relationship. New sponsor is on different leg.'
+            ];
+
+            $after[] = [
                 'member_id' => $sponsor_id,
                 'member_name' => $sponsor->user->fname . ' ' . $sponsor->user->lname,
                 'level' => 0,
@@ -381,57 +456,6 @@ class SponsorChange
                 'sponsor_name' => $sponsor_sponsor->user->fname . ' ' . $sponsor_sponsor->user->lname,
             ];
 
-            $before[] = [
-                'member_id' => $member_id,
-                'member_name' => $member->user->fname . ' ' . $member->user->lname,
-                'level' => 1,
-                'sponsor_id' => $sponsor->id,
-                'sponsor_name' => $sponsor->user->fname . ' ' . $sponsor->user->lname,
-            ];
-
-            $after[] = [
-                'message' => 'No changes'
-            ];
-
-            return compact('before', 'after');
-        }
-
-        $on_leg = $this->on_leg($tree_id, $member_id, $sponsor_id);
-
-        if(!empty($on_leg))
-        {
-            $before[] = [
-                'member_id' => $member_sponsor->id,
-                'member_name' => $member_sponsor->user->fname . ' ' . $member_sponsor->user->lname,
-                'level' => 0,
-                'sponsor_id' => $member_sponsor->sponsor_id,
-                'sponsor_name' => $member_sponsor->sponsor->user->fname . ' ' . $member_sponsor->sponsor->user->lname,
-            ];
-
-            $before[] = [
-                'member_id' => $sponsor->id,
-                'member_name' => $sponsor->user->fname . ' ' . $sponsor->user->lname,
-                'level' => $on_leg['level'],
-                'sponsor_id' => $sponsor_sponsor->id,
-                'sponsor_name' => $sponsor_sponsor->user->fname . ' ' . $sponsor_sponsor->user->lname,
-            ];
-
-            $before[] = [
-                'member_id' => $member->id,
-                'member_name' => $member->user->fname . ' ' . $member->user->lname,
-                'level' => $on_leg['level'] + 1,
-                'sponsor_id' => $sponsor->id,
-                'sponsor_name' => $sponsor->user->fname . ' ' . $sponsor->user->lname,
-            ];
-
-            $after[] = [
-                'member_id' => $sponsor_id,
-                'member_name' => $sponsor->user->fname . ' ' . $sponsor->user->lname,
-                'level' => 0,
-                'sponsor_id' => $sponsor->sponsor_id,
-                'sponsor_name' => $sponsor_sponsor->user->fname . ' ' . $sponsor_sponsor->user->lname,
-            ];
-
             $after[] = [
                 'member_id' => $member_id,
                 'member_name' => $member->user->fname . ' ' . $member->user->lname,
@@ -439,31 +463,7 @@ class SponsorChange
                 'sponsor_id' => $sponsor->id,
                 'sponsor_name' => $sponsor->user->fname . ' ' . $sponsor->user->lname,
             ];
-
-            return compact('before', 'after');
         }
-
-
-        $before[] = [
-            'message' => 'No Relationship. New sponsor is on different leg.'
-        ];
-
-        $after[] = [
-            'member_id' => $sponsor_id,
-            'member_name' => $sponsor->user->fname . ' ' . $sponsor->user->lname,
-            'level' => 0,
-            'sponsor_id' => $sponsor->sponsor_id,
-            'sponsor_name' => $sponsor_sponsor->user->fname . ' ' . $sponsor_sponsor->user->lname,
-        ];
-
-        $after[] = [
-            'member_id' => $member_id,
-            'member_name' => $member->user->fname . ' ' . $member->user->lname,
-            'level' => 1,
-            'sponsor_id' => $sponsor->id,
-            'sponsor_name' => $sponsor->user->fname . ' ' . $sponsor->user->lname,
-        ];
-
         return compact('before', 'after');
     }
 
