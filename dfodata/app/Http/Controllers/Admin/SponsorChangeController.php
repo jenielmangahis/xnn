@@ -72,6 +72,7 @@ class SponsorChangeController extends Controller
 
     public function change(Request $request)
     {
+        var_dump($request->input("update_past_orders"));exit;
         try
         {
             return response()->json(
