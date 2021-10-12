@@ -259,11 +259,6 @@ class SponsorChange
         if($sponsor_id == 3 || !($sponsor->sponsor))
         $sponsor_sponsor = $sponsor;
 
-        echo "<pre>";
-        print_r($sponsor);
-        print_r($member);
-        exit;
-
         $before = [];
         $after = [];
 
@@ -373,6 +368,11 @@ class SponsorChange
 
         $before = [];
         $after = [];
+
+        echo "<pre>";
+        print_r($sponsor);
+        print_r($member);
+        exit;
 
         if($member->sponsor_id == $sponsor_id)
         {
