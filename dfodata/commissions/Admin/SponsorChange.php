@@ -369,11 +369,6 @@ class SponsorChange
         $before = [];
         $after = [];
 
-        echo "<pre>";
-        print_r($sponsor);
-        print_r($member);
-        exit;
-
         if($member->sponsor_id == $sponsor_id)
         {
             $before[] = [
