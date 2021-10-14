@@ -26,7 +26,7 @@
         methods: {
             initializeDataTables() {
                 let _this = this;
-                $dt = $("#table-rank-progress").DataTable({
+                this.dt = $("#table-rank-progress").DataTable({
                     // searching: false,
                     // lengthChange: true,
                     processing: true,
@@ -47,27 +47,7 @@
                         { data: 'paid_as_rank' },
                         {data: 'pv', className: "text-center"}, // render: $.fn.dataTable.render.number(',', '.', 2, '$')
                         {data: 'l1v', className: "text-center"},
-                        {data: 'needs', className: "text-center"},
-                        {
-                            data: null,
-                            orderable: false,
-                            render: function (data, type, row) {
-                                let needs = row.needs;
-                                let list = '';
-
-                                for (let i = 0; i < needs.length; i++) {
-                                    let n = needs[i];
-
-                                    if(typeof n.html !== "undefined") {
-                                        list += `<li>${n.html}</li>`
-                                    } else {
-                                        list += `<li><strong>${n.value}</strong> ${n.description}</li>`
-                                    }
-                                }
-
-                                return `<ul class="list-unstyled">${list}</ul>`;
-                            }
-                        },
+                        {data: 'needs', className: "text-center"}                        
                     ]
                 });
             },
@@ -95,8 +75,8 @@
                 this.filters.rankId = this.rankId;
                 this.filters.isAllBelow = this.isAllBelow;
 
-                $dt.clear().draw();
-                $dt.responsive.recalc();
+                this.dt.clear().draw();
+                this.dt.responsive.recalc();
             },
         },
     });
