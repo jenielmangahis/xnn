@@ -69,6 +69,7 @@ class RankProgress
             ->selectRaw("
                 cm_daily_volumes.*,
                 CONCAT(u.fname, ' ', u.lname) AS member,
+                CONCAT(cr.pv, ' - ', cr.l1v)AS needs,
                 dr.rank_id,
                 cr.name AS current_rank,
                 dr.paid_as_rank_id,

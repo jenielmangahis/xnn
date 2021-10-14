@@ -25,15 +25,48 @@
             initializeDataTables() {
                 let _this = this;
                 this.dt = $("#table-rank-progress").DataTable({
-                    language: {
-                        search: "_INPUT_",
-                        searchPlaceholder: "Search",
-                        paginate: {
-                            next: 'Next',
-                            previous: 'Previous &nbsp;&nbsp;&nbsp;|'
-                        }
-                    },
+                    // searching: false,
+                    // lengthChange: true,
+                    processing: true,
+                    serverSide: true,
                     responsive: true,
+                    ajax: {
+                        url: `${api_url}admin/rank-progress`,
+                        data: function (d) {
+                            d.rank_id = _this.filters.rankId;
+                            d.is_all_below = _this.filters.isAllBelow;
+                        },
+                    },
+                    order: [[2, 'asc']],
+                    columns: [
+                        { data: 'member' },
+                        { data: 'level' },
+                        { data: 'current_rank' },
+                        { data: 'paid_as_rank' },
+                        {data: 'pv', className: "text-center"}, // render: $.fn.dataTable.render.number(',', '.', 2, '$')
+                        {data: 'l1v', className: "text-center"},
+                        {data: 'needs', className: "text-center"},
+                        {
+                            data: null,
+                            orderable: false,
+                            render: function (data, type, row) {
+                                let needs = row.needs;
+                                let list = '';
+
+                                for (let i = 0; i < needs.length; i++) {
+                                    let n = needs[i];
+
+                                    if(typeof n.html !== "undefined") {
+                                        list += `<li>${n.html}</li>`
+                                    } else {
+                                        list += `<li><strong>${n.value}</strong> ${n.description}</li>`
+                                    }
+                                }
+
+                                return `<ul class="list-unstyled">${list}</ul>`;
+                            }
+                        },
+                    ]
                 });
             },
             getRanks() {
