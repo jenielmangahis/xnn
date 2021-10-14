@@ -3,6 +3,8 @@
     const client = commissionEngine.createAccessClient();
     commissionEngine.setupAccessTokenJQueryAjax();
 
+    let $dt;
+
     const vm = new Vue({
         el: "#rank-progress",
         data: {
@@ -24,7 +26,7 @@
         methods: {
             initializeDataTables() {
                 let _this = this;
-                this.dt = $("#table-rank-progress").DataTable({
+                $dt = $("#table-rank-progress").DataTable({
                     // searching: false,
                     // lengthChange: true,
                     processing: true,
@@ -93,8 +95,8 @@
                 this.filters.rankId = this.rankId;
                 this.filters.isAllBelow = this.isAllBelow;
 
-                this.dt.clear().draw();
-                this.dt.responsive.recalc();
+                $dt.clear().draw();
+                $dt.responsive.recalc();
             },
         },
     });
