@@ -48,8 +48,12 @@ print <<EOS;
                 </div>
                     <div class="col-sm-3">
                         <div class="form-group">
-                            <label style="visibility: hidden;">.</label>
-                                <button type="button" class="btn btn-primary btn-block">
+                            <label style="visibility: hidden;">.</label>                                
+                                <button
+                                    type="button"
+                                    class="btn btn-primary btn-block"
+                                    v-on:click.prevent="view"
+                                >
                                     View
                                 </button>
                         </div>
