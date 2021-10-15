@@ -19,7 +19,7 @@
         },
         mounted() {
             this.getRanks();
-            //this.initializeDataTables();
+            this.initializeDataTables();
         },
         methods: {
             initializeDataTables() {
