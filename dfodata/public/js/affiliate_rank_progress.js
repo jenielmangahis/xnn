@@ -46,7 +46,7 @@
                         {data: 'pv', className: "text-center"}, // render: $.fn.dataTable.render.number(',', '.', 2, '$')
                         {data: 'l1v', className: "text-center"},
                         {data: 'l1vneeds', className: "text-center"}                        
-                    ]
+                    ],
                     columnDefs: [
 
                         {responsivePriority: 1, targets: 0},
