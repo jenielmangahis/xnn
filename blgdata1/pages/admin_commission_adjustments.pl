@@ -7,6 +7,13 @@ print <<EOS;
 <link rel="stylesheet" href="$commission_engine_api_url/css/admin_commission_adjustments.css?v=1.0&app=$app_css_version" />
 <link rel="stylesheet" href="$commission_engine_api_url/css/money-admin-menu.css" />
 
+<style>
+div.dataTables_wrapper div.dataTables_length select 
+    {
+        margin-left: 14px !important;
+    }
+</style>
+
 <div class="tool-container tool-container--default" v-cloak >
 	<div class="row">
         <div class="col-md-12">

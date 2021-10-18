@@ -39,6 +39,7 @@ print <<EOS;
     #table-new-members > thead > tr > th {
         font-size: 12px !important;
     }
+    .table-responsive { overflow:hidden; overflow-x: scroll;}
 
 </style>
 
@@ -55,11 +56,11 @@ print <<EOS;
         <div class="col-md-12">
             <form class="form-horizontal">
                 <div class="form-group">
-                    <div class="form-sub-group col-sm-3 col-md-3 col-lg-3">
+                    <div class="form-sub-group col-sm-3 col-md-3 col-lg-3" style="margin-top:15px">
                         <label for="start-date">From</label>
                         <input type="text" id="start-date" class="form-control" />
                     </div>
-                    <div class="form-sub-group col-sm-3 col-md-3 col-lg-3">
+                    <div class="form-sub-group col-sm-3 col-md-3 col-lg-3" style="margin-top:15px">
                         <label for="end-date">To</label>
                         <input type="text" id="end-date" class="form-control" />
                     </div>
@@ -193,27 +194,28 @@ print <<EOS;
                         <span v-if="is_downloading">Generating&hellip;</span>
                         <span v-else>Download</span>
                     </button>
-
-                    <table id="table-new-members" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
-                        <thead class="table__header table__header--bg-primary">
-                        <tr class="table__row">
-                            <th>ID</th>
-                            <th class="table-new-member-type">Member</th>
-                            <th>Sponsor ID</th>
-                            <th>Sponsor</th>
-                            <th>Sponsor Type</th>
-                            <th>Order #</th>
-                            <th>CV</th>
-                            <th>Total \$ paid</th>
-                            <th>Gift Card used</th>
-                            <th>Coupon used</th>
-                            <th>Shipping City</th>
-                            <th>Shipping State</th>
-                            <th>Product Subscription</th>
-                            <th>Phone Number</th>
-                        </tr>
-                        </thead>
-                    </table>
+                    <div class="table-responsive">
+                        <table id="table-new-members" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
+                            <thead class="table__header table__header--bg-primary">
+                            <tr class="table__row">
+                                <th>ID</th>
+                                <th class="table-new-member-type">Member</th>
+                                <th>Sponsor ID</th>
+                                <th>Sponsor</th>
+                                <th>Sponsor Type</th>
+                                <th>Order #</th>
+                                <th>CV</th>
+                                <th>Total \$ paid</th>
+                                <th>Gift Card used</th>
+                                <th>Coupon used</th>
+                                <th>Shipping City</th>
+                                <th>Shipping State</th>
+                                <th>Product Subscription</th>
+                                <th>Phone Number</th>
+                            </tr>
+                            </thead>
+                        </table>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <a type="button" class="btn btn-primary" data-dismiss="modal">Close</a>
@@ -237,26 +239,27 @@ print <<EOS;
                         <span v-if="is_downloading">Generating&hellip;</span>
                         <span v-else>Download</span>
                     </button>
-
-                    <table id="table-pack-sales" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
-                        <thead class="table__header table__header--bg-primary">
-                        <tr class="table__row">
-                            <th>Purchaser ID</th>
-                            <th>Purchaser</th>
-                            <th>Invoice</th>
-                            <th>Sponsor ID</th>
-                            <th>Sponsor</th>
-                            <th>Order #</th>
-                            <th>CV</th>
-                            <th>Total \$ paid</th>
-                            <th>Gift Card used</th>
-                            <th>Coupon used</th>
-                            <th>Shipping City</th>
-                            <th>Shipping State</th>
-                            <th>Sponsor Type</th>
-                        </tr>
-                        </thead>
-                    </table>
+                    <div class="table-responsive">
+                        <table id="table-pack-sales" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
+                            <thead class="table__header table__header--bg-primary">
+                            <tr class="table__row">
+                                <th>Purchaser ID</th>
+                                <th>Purchaser</th>
+                                <th>Invoice</th>
+                                <th>Sponsor ID</th>
+                                <th>Sponsor</th>
+                                <th>Order #</th>
+                                <th>CV</th>
+                                <th>Total \$ paid</th>
+                                <th>Gift Card used</th>
+                                <th>Coupon used</th>
+                                <th>Shipping City</th>
+                                <th>Shipping State</th>
+                                <th>Sponsor Type</th>
+                            </tr>
+                            </thead>
+                        </table>
+                    </div>                    
                 </div>
                 <div class="modal-footer">
                     <a type="button" class="btn btn-primary" data-dismiss="modal">Close</a>
@@ -280,29 +283,30 @@ print <<EOS;
                         <span v-if="is_downloading">Generating&hellip;</span>
                         <span v-else>Download</span>
                     </button>
-
-                    <table id="table-modal-view-endorsers" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
-                        <thead class="table__header table__header--bg-primary">
-                        <tr class="table__row">
-                            <th>$affiliate ID</th>
-                            <th>$affiliate</th>
-                            <th>Invoice</th>
-                            <th>Description</th>
-                            <th>Transaction Date</th>
-                            <th>Sponsor ID</th>
-                            <th>Sponsor</th>
-                            <th>Order #</th>
-                            <th>CV</th>
-                            <th>Total \$ paid</th>
-                            <th>Gift Card used</th>
-                            <th>Coupon used</th>
-                            <th>Shipping City</th>
-                            <th>Shipping State</th>
-                            <th>Sponsor Type</th>
-                            <th>Phone Number</th>
-                        </tr>
-                        </thead>
-                    </table>
+                    <div class="table-responsive">
+                        <table id="table-modal-view-endorsers" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
+                            <thead class="table__header table__header--bg-primary">
+                            <tr class="table__row">
+                                <th>$affiliate ID</th>
+                                <th>$affiliate</th>
+                                <th>Invoice</th>
+                                <th>Description</th>
+                                <th>Transaction Date</th>
+                                <th>Sponsor ID</th>
+                                <th>Sponsor</th>
+                                <th>Order #</th>
+                                <th>CV</th>
+                                <th>Total \$ paid</th>
+                                <th>Gift Card used</th>
+                                <th>Coupon used</th>
+                                <th>Shipping City</th>
+                                <th>Shipping State</th>
+                                <th>Sponsor Type</th>
+                                <th>Phone Number</th>
+                            </tr>
+                            </thead>
+                        </table>
+                    </div>                    
                     <p class="endorser-purchase-note">The invoice shown per member is the first purchased of the member as $affiliate type</p>
                 </div>
                 <div class="modal-footer">

@@ -11,6 +11,10 @@ print <<EOS;
     .tool-container__actions {
         margin-bottom: 15px;
     }
+    div.dataTables_wrapper div.dataTables_length select 
+    {
+        margin-left: 14px !important;
+    }    
 </style>
 
 <div class="minimum-rank tool-container tool-container--default" v-cloak>

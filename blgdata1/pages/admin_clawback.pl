@@ -9,6 +9,13 @@ print <<EOS;
 <link rel="stylesheet" href="$commission_engine_api_url/css/admin_clawback.css?v=1" />
 <link rel="stylesheet" href="$commission_engine_api_url/css/money-admin-menu.css" />
 
+<style>
+div.dataTables_wrapper div.dataTables_length select 
+    {
+        margin-left: 14px !important;
+    }
+</style>
+
 <div class="tool-container tool-container--default" id="app-clawback">
 
     <div class="row">
@@ -29,11 +36,11 @@ print <<EOS;
 
                     <form class="form-horizontal">
                         <div class="form-group">
-                            <div class="col-sm-3 col-md-3 col-lg-3">
+                            <div class="col-sm-3 col-md-3 col-lg-3" style="margin-top:15px">
                                 <label for="start-date">From</label>
                                 <input id="start-date" type="text" class="form-control flat">
                             </div>
-                            <div class="col-sm-3 col-md-3 col-lg-3">
+                            <div class="col-sm-3 col-md-3 col-lg-3" style="margin-top:15px">
                                 <label for="end-date">To</label>
                                 <input id="end-date" type="text" class="form-control flat">
                             </div>
@@ -71,23 +78,23 @@ print <<EOS;
                     </div>                    
                 </div>
                 <div role="tabpanel" class="tab-pane" id="tab-logs">
-
-                    <table id="table-logs" class="table table-bordered" style="width: 100%;">
-                        <thead class="table__header table__header--bg-primary">
-                        <tr class="table__row">
-                            <th class="table__cell">Order ID</th>
-                            <th class="table__cell">New Purchaser</th>
-                            <th class="table__cell">Old Purchaser</th>
-                            <th class="table__cell">New Transaction Date</th>
-                            <th class="table__cell">Old Transaction Date</th>
-                            <th class="table__cell">Date</th>
-                            <th class="table__cell">Changed by</th>
-                        </tr>
-                        </thead>
-                        <tbody class="table__body">
-                        </tbody>
-                    </table>
-
+                    <div class="table-responsive">
+                        <table id="table-logs" class="table table-bordered" style="width: 100%;">
+                            <thead class="table__header table__header--bg-primary">
+                            <tr class="table__row">
+                                <th class="table__cell">Order ID</th>
+                                <th class="table__cell">New Purchaser</th>
+                                <th class="table__cell">Old Purchaser</th>
+                                <th class="table__cell">New Transaction Date</th>
+                                <th class="table__cell">Old Transaction Date</th>
+                                <th class="table__cell">Date</th>
+                                <th class="table__cell">Changed by</th>
+                            </tr>
+                            </thead>
+                            <tbody class="table__body">
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
 
@@ -169,39 +176,40 @@ print <<EOS;
                     <h4 class="modal-title" id="modal-refund-order-label">CLAWBACK/REFUND ORDER ID {{ order.order_id }}</h4>
                 </div>
                 <div class="modal-body">
-                    <table class="table table table-striped" style="width:100%">
-                        <tbody>
-                        <tr>
-                            <th>ORDER ID</th>
-                            <td><span class="r-order-id">{{ order.order_id }}</span></td>
-                        </tr>
-                        <tr>
-                            <th>PURCHASER</th>
-                            <td><span class="r-purchaser">{{ order.purchaser }}</span></td>
-                        </tr>
-                        <tr>
-                            <th>SUB-TOTAL</th>
-                            <td class="text-right">\$<span class="r-sub-total">{{ order.sub_total }}</span></td>
-                        </tr>
-                        <tr>
-                            <th>TAX</th>
-                            <td class="text-right">\$<span class="r-tax">{{ order.tax }}</span></td>
-                        </tr>
-                        <tr>
-                            <th>SHIPPING</th>
-                            <td class="text-right">\$<span class="r-shipping">{{ order.shipping_fee }}</span></td>
-                        </tr>
-                        <tr>
-                            <th>TOTAL</th>
-                            <td class="text-right">\$<span class="r-total">{{ order.total }}</span></td>
-                        </tr>
-                        <tr>
-                            <th>CV</th>
-                            <td class="text-right">\${{ formatMoney(order.commission_value) }}</td>
-                        </tr>
-                        </tbody>
-                    </table>
-
+                    <div class="table-responsive">
+                        <table class="table table table-striped" style="width:100%">
+                            <tbody>
+                            <tr>
+                                <th>ORDER ID</th>
+                                <td><span class="r-order-id">{{ order.order_id }}</span></td>
+                            </tr>
+                            <tr>
+                                <th>PURCHASER</th>
+                                <td><span class="r-purchaser">{{ order.purchaser }}</span></td>
+                            </tr>
+                            <tr>
+                                <th>SUB-TOTAL</th>
+                                <td class="text-right">\$<span class="r-sub-total">{{ order.sub_total }}</span></td>
+                            </tr>
+                            <tr>
+                                <th>TAX</th>
+                                <td class="text-right">\$<span class="r-tax">{{ order.tax }}</span></td>
+                            </tr>
+                            <tr>
+                                <th>SHIPPING</th>
+                                <td class="text-right">\$<span class="r-shipping">{{ order.shipping_fee }}</span></td>
+                            </tr>
+                            <tr>
+                                <th>TOTAL</th>
+                                <td class="text-right">\$<span class="r-total">{{ order.total }}</span></td>
+                            </tr>
+                            <tr>
+                                <th>CV</th>
+                                <td class="text-right">\${{ formatMoney(order.commission_value) }}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
                     <input type="hidden" name="transaction_id" v-model="order.order_id"/>
                     <div class="form-group hidden">
                         <div class="col-sm-12">

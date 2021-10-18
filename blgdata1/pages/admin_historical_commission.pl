@@ -7,6 +7,13 @@ print <<EOS;
 <link rel="stylesheet" href="$commission_engine_api_url/css/affiliate_historical_commission.css?v=1.0&app=$app_css_version" />
 <link rel="stylesheet" href="$commission_engine_api_url/css/money-admin-menu.css" />
 
+<style>
+div.dataTables_wrapper div.dataTables_length select 
+    {
+        margin-left: 14px !important;
+    }
+</style>
+
 <div class="historical-commission tool-container tool-container--default" v-cloak>
     <div class="row">
         <div class="col-md-12">
@@ -19,7 +26,7 @@ print <<EOS;
         <div class="col-md-4">
             <form class="form-horizontal" style="margin-bottom: 15px;">
                 <div class="form-group">
-                    <div class="col-md-6">
+                    <div class="col-md-6" style="margin-top: 15px;">
                         <label for="frequency">Frequency <span class="text-danger">*</span></label>
                         <select disabled
                                 v-bind:disabled="frequencyState !== 'loaded' || commissionPeriodState === 'fetching'"
@@ -44,7 +51,7 @@ print <<EOS;
                         </select>
                         <a style="display: none;" v-show="frequencyState === 'error'" v-on:click.prevent="getFrequencies" class="help-block text-danger">Unable to fetch. Click here to try again.</a>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-6" style="margin-top: 15px;">
                         <label for="commission_type">Commission Type</label>
                         <select
                                 name="commission_type"

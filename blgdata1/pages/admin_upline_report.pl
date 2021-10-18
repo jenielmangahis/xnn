@@ -6,6 +6,14 @@ print <<EOS;
 <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.3/css/responsive.bootstrap.min.css">
 <link rel="stylesheet" href="$commission_engine_api_url/css/money-admin-menu.css" />
 
+<style>
+    div.dataTables_wrapper div.dataTables_length select 
+    {
+        margin-left: 14px !important;
+        width: 102px;
+    }
+</style>
+
 <div class="tool-container tool-container--default" v-cloak >
     <div class="row">
         <div class="col-md-12">
