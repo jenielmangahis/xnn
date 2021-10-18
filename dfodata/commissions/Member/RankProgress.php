@@ -101,7 +101,7 @@ class RankProgress
                     FROM users p
                     INNER JOIN downline ON p.sponsorid = downline.user_id
                     WHERE p.levelid = 3
-                        AND downline.level < 2
+                        
                 )
                 SELECT 1 FROM downline d WHERE d.user_id = cm_daily_volumes.user_id
             )", [$user_id]);
