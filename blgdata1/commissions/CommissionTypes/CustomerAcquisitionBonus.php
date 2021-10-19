@@ -54,7 +54,10 @@ class CustomerAcquisitionBonus extends CommissionType
     {
         $end_date = $this->getPeriodEndDate();
         $start_date = $this->getPeriodStartDate();
+        $last_60_days = date('Y-m-d', strtotime('-60 days'));
+        $today = date('Y-m-d');
 
+        //method 1
         $sql = "SELECT 
                 t.transaction_id,
                 t.user_id,
@@ -69,7 +72,34 @@ class CustomerAcquisitionBonus extends CommissionType
             JOIN transaction_products tp ON tp.transaction_id = t.transaction_id
             WHERE t.transaction_date BETWEEN '$start_date' AND '$end_date' AND dr.is_active = 1
             AND FIND_IN_SET(tp.shoppingcart_product_id,'13,14,15')
+            AND (   
+                SELECT COUNT(id)
+                FROM v_cm_transactions
+                WHERE DATE(transaction_date) < DATE_SUB(CURDATE(), INTERVAL 60 DAY)
+            ) > 0
             AND t.`type` = 'product' AND t.sponsor_catid = 13 -- for ambassadors catid only";
+
+        //method 2
+        $sql = "SELECT 
+                t.transaction_id,
+                t.user_id,
+                t.sponsor_id,
+                t.purchaser_catid,
+                t.sponsor_catid,
+                tp.shoppingcart_product_id,
+                dr.influencer_level,
+                t.computed_cv
+            FROM v_cm_transactions t
+            JOIN cm_daily_ranks dr ON dr.user_id = t.sponsor_id AND dr.rank_date = '$end_date'
+            JOIN transaction_products tp ON tp.transaction_id = t.transaction_id
+            WHERE t.transaction_date BETWEEN '$start_date' AND '$end_date' AND dr.is_active = 1
+            AND FIND_IN_SET(tp.shoppingcart_product_id,'13,14,15')
+            AND (   
+                SELECT COUNT(id)
+                FROM v_cm_transactions
+                WHERE transaction_date >= '$last_60_days' AND transaction_date <= '$today'
+            ) > 0
+            AND t.`type` = 'product' AND t.sponsor_catid = 13 -- for ambassadors catid only";            
 
         if ($start !== null) {
             $sql .= " LIMIT {$start}, {$length}";
