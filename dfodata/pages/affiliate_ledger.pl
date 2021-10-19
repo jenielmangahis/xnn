@@ -31,18 +31,18 @@ print <<EOS;
                             <div class="form-group ">
                                 <div class="form-sub-group col-md-2 mt-1">
                                     <button class="new-btn-dfo btn btn-primary btn-block"
-                                        v-on:click.stop="refresh">Refresh</button>
+                                        v-on:click.prevent="refresh">Refresh</button>
                                 </div>
                                 <div class="form-sub-group col-md-6">
 
                                 </div>
                                 <div class="form-sub-group col-md-2 mt-1">
                                     <button class="new-btn-dfo-tw btn btn-success btn-block"
-                                        v-on:click.stop="showTransfer">Transfer</button>
+                                        v-on:click.prevent="showTransfer">Transfer</button>
                                 </div>
                                 <div class="form-sub-group col-md-2 mt-1">
                                     <button class="new-btn-dfo-tw btn btn-danger btn-block"
-                                        v-on:click.stop="showWithdraw">Withdraw</button>
+                                        v-on:click.prevent="showWithdraw">Withdraw</button>
                                 </div>
                             </div>
 
@@ -85,7 +85,7 @@ print <<EOS;
                             <div class="form-group ">
                                 <div class="form-sub-group col-md-2 mt-1">
                                     <button class="new-btn-dfo btn btn-primary btn-block"
-                                        v-on:click.stop="refresh">Refresh</button>
+                                        v-on:click.prevent="refresh">Refresh</button>
                                 </div>
                                 <div class="form-sub-group col-md-10">
 
