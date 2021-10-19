@@ -17,28 +17,28 @@ class CustomerAcquisitionBonus extends CommissionType
 
     public function count()
     {
-        return $this->getTransactions()->count();
+        return $this->getSponsoredCustomerOrders()->count();
     }
     public function generateCommission($start, $length)
     {
-        $orders = $this->getOrders($start, $length);
+        $orders = $this->getSponsoredCustomerOrders($start, $length);
 
         foreach ($orders as $order) {
             $this->log("Processing Order ID " . $order['transaction_id']);
             $purchaser_id = $order['user_id'];
             $sponsor_id = $order['sponsor_id'];
             $product_id = +$order['shoppingcart_product_id'];
-
-            $amount = $this->getBonus($product_id);
+            $percentage = $this->getInfluencerCommission($order['influencer_level'])
+            $amount = $this->computedInfluencerCommission($order['computed_cv'] ,$percentage);
 
             if($amount > 0) {
                 $this->insertPayout(
                     $sponsor_id,
                     $purchaser_id,
                     0,
-                    100,
+                    0,
                     $amount,
-                    "Sponsor ID: $sponsor_id received Fast Start Bonus from purchaser $purchaser_id",
+                    "Sponsor ID: $sponsor_id received Customer Acquisition Bonus from purchaser $purchaser_id",
                     $order['transaction_id'],
                     1,
                     $sponsor_id
@@ -50,7 +50,7 @@ class CustomerAcquisitionBonus extends CommissionType
 
     }
 
-     private function getSponsoredCustomerOrders($start = null, $length = null)
+    private function getSponsoredCustomerOrders($start = null, $length = null)
     {
         $end_date = $this->getPeriodEndDate();
         $start_date = $this->getPeriodStartDate();
@@ -61,7 +61,9 @@ class CustomerAcquisitionBonus extends CommissionType
                 t.sponsor_id,
                 t.purchaser_catid,
                 t.sponsor_catid,
-                tp.shoppingcart_product_id
+                tp.shoppingcart_product_id,
+                dr.influencer_level,
+                t.computed_cv
             FROM v_cm_transactions t
             JOIN cm_daily_ranks dr ON dr.user_id = t.sponsor_id AND dr.rank_date = '$end_date'
             JOIN transaction_products tp ON tp.transaction_id = t.transaction_id
@@ -79,26 +81,21 @@ class CustomerAcquisitionBonus extends CommissionType
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
 
-   
-    private function getPercentage($rank_id, $level = 1)
-    {
-        if($rank_id == config('commission.ranks.ambassador')) return 0;
+    private function computedInfluencerCommission($amount,$percent)
+    {  
+        $computed = $amount * ( $percent/100 );
+        return $computed;
+    }
 
+   
+    private function getInfluencerCommission($influencer_id)
+    {  
         $percentage = [
-            config('commission.ranks.silver-influencer')     => [2]
-            , config('commission.ranks.gold-influencer')     => [2, 3]
-		    , config('commission.ranks.platinum-influencer') => [2, 3, 4]
-            , config('commission.ranks.sapphire-influencer') => [2, 3, 4, 5]
-            , config('commission.ranks.pearl-influencer')    => [2, 3, 4, 5, 6]
-            , config('commission.ranks.emerald-influencer')  => [2, 3, 4, 5, 6]
-            , config('commission.ranks.ruby-influencer')     => [2, 3, 4, 5, 6, 7]
-            , config('commission.ranks.diamond-influencer')  => [2, 3, 4, 5, 6, 7]
-            , config('commission.ranks.double-diamond-influencer') => [2, 3, 4, 5, 6, 7, 8]
-            , config('commission.ranks.triple-diamond-influencer') => [2, 3, 4, 5, 6, 7, 8]
-            , config('commission.ranks.crown-diamond-influencer') => [2, 3, 4, 5, 6, 7, 8, 8]
-            , config('commission.ranks.grace-diamond-influencer') => [2, 3, 4, 5, 6, 7, 8, 10]
+              1 => 10
+            , 2 => 15
+		    , 3 => 20
         ];
 
-        return $percentage[$rank_id][$level-1];
+        return $percentage[$influencer_id];
     }
 }
