@@ -252,6 +252,8 @@
                 if(this.is_processing) return;
 
                 this.is_processing = 1;
+                this.start_date = $("#start_date").val();
+                this.end_date   = $("#end_date").val();
 
                 client.get(`pending?start_date=${this.start_date}&end_date=${this.end_date}`).then(response => {
                     this.is_processing = 0;
