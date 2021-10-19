@@ -12,7 +12,7 @@
             this.hadSignup(had_signup => {
                 this.had_signup = had_signup;
                 if(! this.had_signup) {
-                    // window.location.replace("https://office.stg1-mydefinelife.xyz/nxm_money.cgi?p=affiliate_payquicker");
+                    // window.location.replace("https://office.mydefinelife.com/nxm_money.cgi?p=affiliate_payquicker");
                     return;
                 }
             });

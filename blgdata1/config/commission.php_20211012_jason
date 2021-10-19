@@ -19,19 +19,11 @@ return [
     ],
 
     'commission-types' => [
-        'fast-start-bonus' => 1,
-        'fast-start-matching-bonus' => 2,
-        'unilevel-team-commission' => 6,
-        'unilevel-team-matching-bonus' => 7,
-        'customer-acquisition-bonus' => 12,
     ],
 
     'member-types' => [
         'customers' => '16',
-        'affiliates' => '13,14',
-        'influencer' => '14',
-        'ambasador' => '13',
-        'pro-free-plan' => '8033',
+        'affiliates' => '13,14'
     ],
 
     'payment' => env('COMMISSION_PAYMENT'),

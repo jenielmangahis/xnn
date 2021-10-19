@@ -19,6 +19,7 @@ use Commissions\CommissionTypes\FastStartBonus;
 use Commissions\CommissionTypes\FastStartMatchingBonus;
 use Commissions\CommissionTypes\UnilevelMatchingBonus;
 use Commissions\CommissionTypes\UnilevelTeamCommission;
+use Commissions\CommissionTypes\CustomerAcquisitionBonus;
 use Commissions\CsvReport;
 use Commissions\CommissionTypes\SampleCommission;
 use Commissions\Exceptions\AlertException;
@@ -571,6 +572,9 @@ class RunCommission
             break;
             case config('commission.commission-types.unilevel-team-matching-bonus'):
                 return new UnilevelMatchingBonus($period, $background_worker_logger, $payout_repository);
+            break;
+            case config('commission.commission-types.customer-acquisition-bonus'):
+                return new CustomerAcquisitionBonus($period, $background_worker_logger, $payout_repository);
             break;
             case config('commission.commission-types.sample-commission'):
             default:
