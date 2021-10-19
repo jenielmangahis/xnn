@@ -91,9 +91,9 @@ class CustomerAcquisitionBonus extends CommissionType
     private function getInfluencerCommission($influencer_id)
     {  
         $percentage = [
-              1 => 10
-            , 2 => 15
-		    , 3 => 20
+              1 => 10,
+              2 => 15,
+		      3 => 20
         ];
 
         return $percentage[$influencer_id];
