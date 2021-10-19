@@ -133,7 +133,6 @@
                 let title = `Ledger adjustment`;
                 let text = `Are you sure you want to ${type} ${this.adjustment.amount} amount to User ID ${this.adjustment.user_id}?`;
 
-
                 swal({
                     title: title,
                     text: text,
@@ -144,8 +143,10 @@
                     showCancelButton: true,
                     closeOnConfirm: false,
                     showLoaderOnConfirm: true,
-                }, () => {
+                }).then((isConfirm) => {
 
+                    if (!isConfirm) return;
+                    
                     this.isProcessing = 1;
 
                     client.post("admin/ledger-adjustment", this.adjustment).then(response => {
@@ -161,7 +162,6 @@
                     }).catch(this.axiosErrorHandler).finally(()=> {
                         this.isProcessing = 0;
                     });
-
                 });
 
             },
@@ -179,8 +179,10 @@
                     showCancelButton: true,
                     closeOnConfirm: false,
                     showLoaderOnConfirm: true,
-                }, () => {
+                }).then((isConfirm) => {
 
+                    if (!isConfirm) return;
+                    
                     this.isProcessing = 1;
 
                     client.post(`admin/ledger-adjustment/${data.id}/delete`).then(response => {
@@ -193,7 +195,6 @@
                     }).catch(this.axiosErrorHandler).finally(()=> {
                         this.isProcessing = 0;
                     });
-
                 });
             },
             axiosErrorHandler(error) {
