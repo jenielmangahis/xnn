@@ -1,9 +1,9 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: Jeniel
- * Date: 10/12/2021
- * Time: 1:00 AM
+ * Created by 
+ * User: Jeniel Mangahis
+ * Date: 10/19/2021
+ * Time: 10:00 PM
  */
 
 namespace Commissions\CommissionTypes;
