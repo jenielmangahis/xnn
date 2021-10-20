@@ -22,7 +22,7 @@ class SampleCommission extends CommissionType implements CommissionTypeInterface
         $orders = $this->getOrders($start, $length);
 
         foreach ($orders as $key => $order) {
-            $this->log("Processing Order ID " . $order['order_id']);
+            $this->log("Processing sample com Order ID " . $order['order_id']);
 
             if($key <= 15) {
                 sleep(1);
