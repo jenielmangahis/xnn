@@ -563,7 +563,7 @@ class RunCommission
         $period = CommissionPeriod::find($commission_period_id);
         $background_worker_logger = new BackgroundWorkerLogger(storage_path(static::LOG_PATH), $background_worker_id, $background_worker_process_id);
         $payout_repository = new PayoutRepository();
-
+        $this->log("Com ID " . $commission_type_id);
         switch (+$commission_type_id) {
             case config('commission.commission-types.fast-start-bonus'):
                 return new FastStartBonus($period, $background_worker_logger, $payout_repository);
