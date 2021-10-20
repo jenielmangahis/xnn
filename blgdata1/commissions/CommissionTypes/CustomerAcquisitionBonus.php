@@ -27,7 +27,6 @@ class CustomerAcquisitionBonus extends CommissionType
             $this->log("Processing Order ID " . $order['transaction_id']);
             $purchaser_id = $order['user_id'];
             $sponsor_id = $order['sponsor_id'];
-            $product_id = +$order['shoppingcart_product_id'];
             $percentage = $this->getInfluencerCommission($order['influencer_level'])
             $amount = $this->computedInfluencerCommission($order['computed_cv'] ,$percentage);
 
@@ -35,8 +34,8 @@ class CustomerAcquisitionBonus extends CommissionType
                 $this->insertPayout(
                     $sponsor_id,
                     $purchaser_id,
-                    0,
-                    0,
+                    $order['computed_cv'],
+                    $percentage,
                     $amount,
                     "Sponsor ID: $sponsor_id received Customer Acquisition Bonus from purchaser $purchaser_id",
                     $order['transaction_id'],
@@ -58,7 +57,7 @@ class CustomerAcquisitionBonus extends CommissionType
         $today = date('Y-m-d');
 
         //method 1
-        $sql = "SELECT 
+        $sql1 = "SELECT 
                 t.transaction_id,
                 t.user_id,
                 t.sponsor_id,
@@ -77,7 +76,7 @@ class CustomerAcquisitionBonus extends CommissionType
                 FROM v_cm_transactions
                 WHERE DATE(transaction_date) < DATE_SUB(CURDATE(), INTERVAL 60 DAY)
             ) > 0
-            AND t.`type` = 'product' AND t.sponsor_catid = 13 -- for ambassadors catid only";
+            AND t.`type` = 'product' -- AND t.sponsor_catid = 13 -- for ambassadors catid only";
 
         //method 2
         $sql = "SELECT 
@@ -99,7 +98,7 @@ class CustomerAcquisitionBonus extends CommissionType
                 FROM v_cm_transactions
                 WHERE transaction_date >= '$last_60_days' AND transaction_date <= '$today'
             ) > 0
-            AND t.`type` = 'product' AND t.sponsor_catid = 13 -- for ambassadors catid only";            
+            AND t.`type` = 'product' -- AND t.sponsor_catid = 13 -- for ambassadors catid only";            
 
         if ($start !== null) {
             $sql .= " LIMIT {$start}, {$length}";
