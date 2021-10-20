@@ -89,7 +89,7 @@ class CustomerAcquisitionBonus extends CommissionType
         $last_60_days = date('Y-m-d', strtotime('-60 days'));
         $today = date('Y-m-d');
 
-        $sql1 = "SELECT 
+        $sql = "SELECT 
                 t.transaction_id,
                 t.user_id,
                 t.sponsor_id,
