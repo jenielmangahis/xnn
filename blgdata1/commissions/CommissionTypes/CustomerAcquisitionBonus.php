@@ -19,6 +19,7 @@ class CustomerAcquisitionBonus extends CommissionType
     {
         return $this->getSponsoredCustomerOrders()->count();
     }
+
     public function generateCommission($start, $length)
     {
         $orders = $this->getSponsoredCustomerOrders($start, $length);
@@ -26,27 +27,56 @@ class CustomerAcquisitionBonus extends CommissionType
         foreach ($orders as $order) {
             $this->log("Processing Order ID " . $order['transaction_id']);
             $purchaser_id = $order['user_id'];
-            $sponsor_id = $order['sponsor_id'];
-            $percentage = $this->getInfluencerCommission($order['influencer_level'])
-            $amount = $this->computedInfluencerCommission($order['computed_cv'] ,$percentage);
-
-            if($amount > 0) {
-                $this->insertPayout(
-                    $sponsor_id,
-                    $purchaser_id,
-                    $order['computed_cv'],
-                    $percentage,
-                    $amount,
-                    "Sponsor ID: $sponsor_id received Customer Acquisition Bonus from purchaser $purchaser_id",
-                    $order['transaction_id'],
-                    1,
-                    $sponsor_id
-                );
+            $sponsor_id   = $order['sponsor_id'];
+            $is_valid     = true;
+            if( $order['influencer_level'] == 1 ){
+                $totalOrders = $this->totalOrdersPass60Days($order['sponsor_id']); //Has at least 1 sale in the last 60 days (if Free Influencer)
+                if( $totalOrders['total_orders'] > 0 ){
+                    $is_valid = true;
+                }else{
+                    $is_valid = false;
+                }
             }
+                
+            if( $is_valid ){
+                $percentage = $this->getInfluencerCommission($order['influencer_level'])
+                $amount     = $this->computedInfluencerCommission($order['computed_cv'] ,$percentage);
 
-            $this->log(); // For progress bar. Put this every end of the loop.
+                if($amount > 0) {
+                    $this->insertPayout(
+                        $sponsor_id,
+                        $purchaser_id,
+                        $order['computed_cv'],
+                        $percentage,
+                        $amount,
+                        "Sponsor ID: $sponsor_id received Customer Acquisition Bonus from purchaser $purchaser_id",
+                        $order['transaction_id'],
+                        1,
+                        $sponsor_id
+                    );
+                }
+
+                $this->log(); // For progress bar. Put this every end of the loop.
+            }             
         }
 
+    }
+
+    public function totalOrdersPass60Days( $sponsor_id )
+    {
+        $last_60_days = date('Y-m-d', strtotime('-60 days'));
+        $today = date('Y-m-d');
+
+        $sql = "
+            SELECT COUNT(id) AS total_orders
+            FROM v_cm_transactions t
+            WHERE t.sponsor_id = '$sponsor_id' AND transaction_date >= '$last_60_days' AND transaction_date <= '$today'
+        ";            
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute();
+
+        return $stmt->fetch();
     }
 
     private function getSponsoredCustomerOrders($start = null, $length = null)
@@ -56,7 +86,6 @@ class CustomerAcquisitionBonus extends CommissionType
         $last_60_days = date('Y-m-d', strtotime('-60 days'));
         $today = date('Y-m-d');
 
-        //method 1
         $sql1 = "SELECT 
                 t.transaction_id,
                 t.user_id,
@@ -69,36 +98,11 @@ class CustomerAcquisitionBonus extends CommissionType
             FROM v_cm_transactions t
             JOIN cm_daily_ranks dr ON dr.user_id = t.sponsor_id AND dr.rank_date = '$end_date'
             JOIN transaction_products tp ON tp.transaction_id = t.transaction_id
-            WHERE t.transaction_date BETWEEN '$start_date' AND '$end_date' AND dr.is_active = 1
-            AND FIND_IN_SET(tp.shoppingcart_product_id,'13,14,15')
-            AND (   
-                SELECT COUNT(id)
-                FROM v_cm_transactions
-                WHERE DATE(transaction_date) < DATE_SUB(CURDATE(), INTERVAL 60 DAY)
-            ) > 0
-            AND t.`type` = 'product' -- AND t.sponsor_catid = 13 -- for ambassadors catid only";
-
-        //method 2
-        $sql = "SELECT 
-                t.transaction_id,
-                t.user_id,
-                t.sponsor_id,
-                t.purchaser_catid,
-                t.sponsor_catid,
-                tp.shoppingcart_product_id,
-                dr.influencer_level,
-                t.computed_cv
-            FROM v_cm_transactions t
-            JOIN cm_daily_ranks dr ON dr.user_id = t.sponsor_id AND dr.rank_date = '$end_date'
-            JOIN transaction_products tp ON tp.transaction_id = t.transaction_id
-            WHERE t.transaction_date BETWEEN '$start_date' AND '$end_date' AND dr.is_active = 1
-            AND FIND_IN_SET(tp.shoppingcart_product_id,'13,14,15')
-            AND (   
-                SELECT COUNT(id)
-                FROM v_cm_transactions
-                WHERE transaction_date >= '$last_60_days' AND transaction_date <= '$today'
-            ) > 0
-            AND t.`type` = 'product' -- AND t.sponsor_catid = 13 -- for ambassadors catid only";            
+            WHERE t.transaction_date BETWEEN '$start_date' AND '$end_date' 
+                AND (dr.rank_id = 1 OR dr.influencer_level = 1)
+                AND dr.is_active = 1
+                AND FIND_IN_SET(tp.shoppingcart_product_id,'13,14,15')            
+                AND t.`type` = 'product' ";
 
         if ($start !== null) {
             $sql .= " LIMIT {$start}, {$length}";
