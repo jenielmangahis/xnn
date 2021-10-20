@@ -17,6 +17,8 @@ use App\OfficeGiftCard;
 use Commissions\BackgroundWorkerLogger;
 use Commissions\CommissionTypes\FastStartBonus;
 use Commissions\CommissionTypes\FastStartMatchingBonus;
+use Commissions\CommissionTypes\RunBonus14Day;
+use Commissions\CommissionTypes\RunBonus60Day;
 use Commissions\CommissionTypes\UnilevelMatchingBonus;
 use Commissions\CommissionTypes\UnilevelTeamCommission;
 use Commissions\CommissionTypes\CustomerAcquisitionBonus;
@@ -561,12 +563,16 @@ class RunCommission
         $period = CommissionPeriod::find($commission_period_id);
         $background_worker_logger = new BackgroundWorkerLogger(storage_path(static::LOG_PATH), $background_worker_id, $background_worker_process_id);
         $payout_repository = new PayoutRepository();
-        $this->log("Com ID " . $commission_type_id);
+
         switch (+$commission_type_id) {
             case config('commission.commission-types.fast-start-bonus'):
                 return new FastStartBonus($period, $background_worker_logger, $payout_repository);
             case config('commission.commission-types.fast-start-matching-bonus'):
                 return new FastStartMatchingBonus($period, $background_worker_logger, $payout_repository);
+            case config('commission.commission-types.run-bonus-14-day'):
+                return new RunBonus14Day($period, $background_worker_logger, $payout_repository);
+            case config('commission.commission-types.run-bonus-60-day'):
+                return new RunBonus60Day($period, $background_worker_logger, $payout_repository);
             case config('commission.commission-types.unilevel-team-commission'):
                 return new UnilevelTeamCommission($period, $background_worker_logger, $payout_repository);
             break;
@@ -577,7 +583,7 @@ class RunCommission
                 return new CustomerAcquisitionBonus($period, $background_worker_logger, $payout_repository);
             break;
             case config('commission.commission-types.sample-commission'):
-            default:                
+            default:
                 return new SampleCommission($period, $background_worker_logger, $payout_repository);
         }
     }
