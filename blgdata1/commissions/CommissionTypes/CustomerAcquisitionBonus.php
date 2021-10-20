@@ -39,6 +39,7 @@ class CustomerAcquisitionBonus extends CommissionType
             }
                 
             if( $is_valid ){
+                $this->log('test valid');
                 $percentage = $this->getInfluencerCommission($order['influencer_level'])
                 $amount     = $this->computedInfluencerCommission($order['computed_cv'] ,$percentage);
 
@@ -57,7 +58,9 @@ class CustomerAcquisitionBonus extends CommissionType
                 }
 
                 $this->log(); // For progress bar. Put this every end of the loop.
-            }             
+            }else{
+                $this->log('test invalid');
+            }           
         }
 
     }
