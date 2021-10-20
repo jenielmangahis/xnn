@@ -13,6 +13,12 @@ use Illuminate\Support\Facades\DB as DB;
 
 class CustomerAcquisitionBonus extends CommissionType
 {
+  
+
+    public function count()
+    {
+        return count($this->getSponsoredCustomerOrders());        
+    }
 
     public function generateCommission($start, $length)
     {
