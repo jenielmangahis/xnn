@@ -40,7 +40,7 @@ class CustomerAcquisitionBonus extends CommissionType
                 
             if( $is_valid ){
                 $this->log('test valid');
-                $percentage = $this->getInfluencerCommission($order['influencer_level'])
+                $percentage = $this->getInfluencerCommission($order['influencer_level']);
                 $amount     = $this->computedInfluencerCommission($order['computed_cv'] ,$percentage);
 
                 if($amount > 0) {
