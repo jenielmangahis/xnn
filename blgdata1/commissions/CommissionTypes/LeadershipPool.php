@@ -33,7 +33,9 @@ class LeadershipPool extends CommissionType
     public function getQualifiedUsers()
     {
         $start_date = $this->getPeriodStartDate();
-        $end_date   = $this->getPeriodEndDate();
+        $end_date   = $this->getPeriodEndDate();        
+        $last_30d_start = date('Y-m-d', strtotime('-30 days'));
+        $last_30d_end   = date('Y-m-d');
 
         $sql = "
             SELECT 
@@ -53,7 +55,7 @@ class LeadershipPool extends CommissionType
                     SELECT SUM(dva.pv) 
                     FROM cm_daily_volumes dva 
                     WHERE dva.user_id = t.sponsor_id
-                        AND dva.volume_date BETWEEN '$start_date' AND '$end_date'
+                        AND dva.volume_date BETWEEN '$last_30d_start' AND '$last_30d_end'
                 ) >= 50
                 AND u.active = 'Yes'
                 AND cdr.rank_id = 1
