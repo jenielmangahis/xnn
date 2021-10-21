@@ -22,6 +22,7 @@ use Commissions\CommissionTypes\RunBonus60Day;
 use Commissions\CommissionTypes\RunMatchingBonus;
 use Commissions\CommissionTypes\UnilevelMatchingBonus;
 use Commissions\CommissionTypes\UnilevelTeamCommission;
+use Commissions\CommissionTypes\LeadershipPool;
 use Commissions\CommissionTypes\CustomerAcquisitionBonus;
 use Commissions\CsvReport;
 use Commissions\CommissionTypes\SampleCommission;
@@ -581,6 +582,9 @@ class RunCommission
             break;
             case config('commission.commission-types.unilevel-team-matching-bonus'):
                 return new UnilevelMatchingBonus($period, $background_worker_logger, $payout_repository);
+            break;
+            case config('commission.commission-types.leadership-pool'):
+                return new LeadershipPool($period, $background_worker_logger, $payout_repository);
             break;
             case config('commission.commission-types.customer-acquisition-bonus'):
                 return new CustomerAcquisitionBonus($period, $background_worker_logger, $payout_repository);
