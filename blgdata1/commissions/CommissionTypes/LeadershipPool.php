@@ -18,18 +18,17 @@ class LeadershipPool extends CommissionType
 
     public function count()
     {
-        return count($this->getQualifiedUsers());
+        return count($this->getQualifiedAmbassador());
     }
 
     public function generateCommission($start, $length)
     {
         $this->log("Processing");
-        $qualifiedUsers = $this->getQualifiedUsers();
-        foreach( $qualifiedUsers as $u ){
+        $qualifiedAmbassadors = $this->getQualifiedAmbassador();
+        foreach( $qualifiedAmbassadors as $u ){
             $this->log("Processing leadership pool for Transaction ID " . $u['transaction_id']);
             $order_id   = $u['transaction_id'];
-            $sponsor_id = $u['sponsor_id'];
-            $poolAmount = $this->getTotalPoolAmount($sponsor_id);            
+            $sponsor_id = $u['sponsor_id'];       
             $this->insertPayout(
                 $sponsor_id,
                 $sponsor_id,
@@ -44,12 +43,13 @@ class LeadershipPool extends CommissionType
         }
     }
 
-    public function getQualifiedUsers()
+    public function getQualifiedAmbassador()
     {
         $start_date = $this->getPeriodStartDate();
         $end_date   = $this->getPeriodEndDate();        
         $last_30d_start = date('Y-m-d', strtotime('-30 days'));
         $last_30d_end   = date('Y-m-d');
+        $affiliates     = config('commission.member-types.affiliates');
 
         $sql = "
             SELECT 
@@ -63,7 +63,7 @@ class LeadershipPool extends CommissionType
             JOIN cm_daily_volumes cdv ON t.sponsor_id = cdv.user_id
             JOIN cm_daily_ranks cdr ON cdr.volume_id = cdv.id 
             WHERE 
-                t.purchaser_catid IN('13,16,14,8033')
+                AND FIND_IN_SET(t.purchaser_catid, '$affiliates')
                 AND 
                     t.transaction_date BETWEEN '$start_date' AND '$end_date'
                 AND 
@@ -73,8 +73,9 @@ class LeadershipPool extends CommissionType
                     WHERE dva.user_id = t.sponsor_id
                         AND dva.volume_date BETWEEN '$last_30d_start' AND '$last_30d_end'
                 ) >= 50
+                AND 
                 AND u.active = 'Yes'
-                AND cdr.rank_id = 1
+                AND cdr.rank_id IN(8,9,10)
                 AND cdr.is_system_active = 1
             GROUP BY t.sponsor_id
         ";
@@ -84,27 +85,4 @@ class LeadershipPool extends CommissionType
         $stmt->execute();
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
-
-    public function getTotalPoolAmount( $sponsor_id )
-    {
-        $start_date = $this->getPeriodStartDate();
-        $end_date = $this->getPeriodStartDate();        
-        $affiliates = config('commission.member-types.affiliates');
-
-        $sql = "
-            SELECT
-                SUM(t.computed_cv) AS total_pool_amount
-            FROM v_cm_transactions t
-            WHERE t.transaction_date BETWEEN '$start_date' AND '$end_date'
-                AND t.sponsor_id = '$sponsor_id'
-                AND t.billmethod = 'cash' 
-                AND FIND_IN_SET(t.purchaser_catid, '$affiliates')
-        ";
-
-        $db = DB::connection()->getPdo();
-        $stmt = $db->prepare($sql);
-        $stmt->execute();
-        return $stmt->fetch(\PDO::FETCH_ASSOC);
-    }
-    
 }
