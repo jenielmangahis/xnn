@@ -39,22 +39,24 @@ class CustomerAcquisitionBonus extends CommissionType
             }
                 
             if( $is_valid ){
-                $percentage = $this->getInfluencerCommission($order['influencer_level']);
-                $amount     = $this->computedInfluencerCommission($order['computed_cv'] ,$percentage);
+                if($order['influencer_level'] > 0){                
+                    $percentage = $this->getInfluencerCommission($order['influencer_level']);
+                    $amount     = $this->computedInfluencerCommission($order['computed_cv'] ,$percentage);
 
-                if($amount > 0) {
-                    $this->insertPayout(
-                        $sponsor_id,
-                        $purchaser_id,
-                        $order['computed_cv'],
-                        $percentage,
-                        $amount,
-                        "Sponsor ID: $sponsor_id received Customer Acquisition Bonus from purchaser $purchaser_id",
-                        $order['transaction_id'],
-                        1,
-                        $sponsor_id
-                    );
-                }
+                    if($amount > 0) {
+                        $this->insertPayout(
+                            $sponsor_id,
+                            $purchaser_id,
+                            $order['computed_cv'],
+                            $percentage,
+                            $amount,
+                            "Sponsor ID: $sponsor_id received Customer Acquisition Bonus from purchaser $purchaser_id",
+                            $order['transaction_id'],
+                            1,
+                            $sponsor_id
+                        );
+                    }
+                }    
 
                 $this->log(); // For progress bar. Put this every end of the loop.
             }           
