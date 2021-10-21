@@ -101,10 +101,12 @@ class LeadershipPool extends CommissionType
                 AND EXISTS(SELECT 1 FROM cm_affiliates a WHERE a.user_id = cdv.user_id AND FIND_IN_SET(a.cat_id,'$affiliates'))
                 AND 
                 (
-                    SELECT SUM(dva.pv) 
+                    SELECT dva.pv
                     FROM cm_daily_volumes dva 
                     WHERE dva.user_id = u.sponsorid
                         AND dva.volume_date BETWEEN '$last_30d_start' AND '$last_30d_end'
+                    ORDER BY dva.volume_date DESC 
+                    LIMIT 1
                 ) >= 50
                 AND cdr.rank_id IN(8,9,10)
                 AND cdr.is_system_active = 1
