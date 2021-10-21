@@ -58,7 +58,8 @@ class LeadershipPool extends CommissionType
         $last_30d_end   = date('Y-m-d');
         $affiliates     = config('commission.member-types.affiliates');
 
-        $sql = "
+        //Using transactions 
+        /*$sql = "
             SELECT 
                 t.transaction_id,
                 t.sponsor_id,
@@ -84,6 +85,30 @@ class LeadershipPool extends CommissionType
                 AND cdr.rank_id IN(8,9,10)
                 AND cdr.is_system_active = 1
             GROUP BY t.sponsor_id
+        ";*/
+
+        $sql = "
+            SELECT
+                u.id AS user_id,
+                dr.paid_as_rank_id,
+                u.sponsorid AS sponsor_id,
+                cdr.paid_as_rank_id,
+                cdv.bg5_count
+            FROM cm_daily_volumes cdv
+            JOIN cm_daily_ranks dr ON dr.volume_id = cdv.id AND dr.rank_date = '$end_date'
+            JOIN users u ON u.id = cdv.user_id
+            JOIN cm_ranks cdr ON cdr.id = dr.paid_as_rank_id
+            WHERE u.active = 'Yes' 
+                AND EXISTS(SELECT 1 FROM cm_affiliates a WHERE a.user_id = cdv.user_id AND FIND_IN_SET(a.cat_id,'$affiliates'))
+                AND 
+                (
+                    SELECT SUM(dva.pv) 
+                    FROM cm_daily_volumes dva 
+                    WHERE dva.user_id = u.sponsorid
+                        AND dva.volume_date BETWEEN '$last_30d_start' AND '$last_30d_end'
+                ) >= 50
+                AND cdr.rank_id IN(8,9,10)
+                AND cdr.is_system_active = 1
         ";
 
         $db = DB::connection()->getPdo();
