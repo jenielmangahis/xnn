@@ -9,6 +9,7 @@
 namespace Commissions\CommissionTypes;
 
 use Illuminate\Support\Facades\DB as DB;
+use \PDO;
 
 
 class LeadershipPool extends CommissionType
@@ -52,6 +53,7 @@ class LeadershipPool extends CommissionType
                     SELECT SUM(dva.pv) 
                     FROM cm_daily_volumes dva 
                     WHERE dva.user_id = t.sponsor_id
+                        AND dva.volume_date BETWEEN '$start_date' AND '$end_date'
                 ) >= 50
                 AND u.active = 'Yes'
                 AND cdr.rank_id = 1
