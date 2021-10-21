@@ -17,7 +17,7 @@ class LeadershipPool extends CommissionType
 
     public function count()
     {
-        return count($this->getSponsoredCustomerOrders());        
+        return 1;
     }
 
     public function generateCommission($start, $length)
