@@ -28,14 +28,19 @@ class LeadershipPool extends CommissionType
         foreach( $qualifiedAmbassadors as $u ){
             $this->log("Processing leadership pool for Transaction ID " . $u['transaction_id']);
             $order_id   = $u['transaction_id'];
-            $sponsor_id = $u['sponsor_id'];       
+            $sponsor_id = $u['sponsor_id'];   
+            $paid_as_rank = $u['paid_as_rank'];
+            $bg5_count = $u['bg5_count'];   
+            $share = $this->getBGShares($paid_as_rank);
+            $total_shares = $this->getBGTotalShares($share, $bg5_count)
+            $percentage = 2;
             $this->insertPayout(
                 $sponsor_id,
                 $sponsor_id,
-                0,
+                $total_shares,
                 $percentage,
-                $commission_value * $percentage,
-                "Leadership Pool | Member: $id has a total of $payout payout",
+                $total_shares,
+                "Leadership Pool | Member: $id has a total of $total_shares share",
                 $order_id,
                 0,
                 $sponsor_id
@@ -84,5 +89,23 @@ class LeadershipPool extends CommissionType
         $stmt = $db->prepare($sql);
         $stmt->execute();
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
+    private function getBGTotalShares($share, $bg5_count)
+    {  
+        $total_shares = $share + $bg5_count;
+
+        return $total_shares;
+    }    
+
+    private function getBGShares($paid_as_rank)
+    {  
+        $shares = [
+              8 => 1,
+              9 => 2,
+              10 => 3
+        ];
+
+        return $shares[$paid_as_rank];
     }
 }
