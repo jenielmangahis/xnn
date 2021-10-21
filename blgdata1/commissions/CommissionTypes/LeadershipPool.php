@@ -55,7 +55,9 @@ class LeadershipPool extends CommissionType
             SELECT 
                 t.transaction_id,
                 t.sponsor_id,
-                t.user_id
+                t.user_id,
+                cdr.paid_as_rank,
+                cdv.bg5_count
             FROM v_cm_transactions t  
             JOIN users u ON t.sponsor_id = u.id
             JOIN cm_daily_volumes cdv ON t.sponsor_id = cdv.user_id
