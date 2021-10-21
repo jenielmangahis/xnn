@@ -90,14 +90,13 @@ class LeadershipPool extends CommissionType
         $sql = "
             SELECT
                 u.id AS user_id,
-                dr.paid_as_rank_id,
+                cdr.paid_as_rank_id,
                 u.sponsorid AS sponsor_id,
                 cdr.paid_as_rank_id,
                 cdv.bg5_count
             FROM cm_daily_volumes cdv
-            JOIN cm_daily_ranks dr ON dr.volume_id = cdv.id AND dr.rank_date = '$end_date'
+            JOIN cm_daily_ranks cdr ON cdr.volume_id = cdv.id 
             JOIN users u ON u.id = cdv.user_id
-            JOIN cm_ranks cdr ON cdr.id = dr.paid_as_rank_id
             WHERE u.active = 'Yes' 
                 AND EXISTS(SELECT 1 FROM cm_affiliates a WHERE a.user_id = cdv.user_id AND FIND_IN_SET(a.cat_id,'$affiliates'))
                 AND 
