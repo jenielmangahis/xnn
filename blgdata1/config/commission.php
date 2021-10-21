@@ -23,9 +23,10 @@ return [
         'fast-start-matching-bonus' => 2,
         'run-bonus-14-day' => 3,
         'run-bonus-60-day' => 4,
+        'run-matching-bonus' => 5,
         'unilevel-team-commission' => 6,
         'unilevel-team-matching-bonus' => 7,
-        'customer-acquisition-bonus' => 12,
+        'customer-acquisition-bonus' => 12
     ],
 
     'member-types' => [

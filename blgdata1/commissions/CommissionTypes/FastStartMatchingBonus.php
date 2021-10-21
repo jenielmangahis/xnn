@@ -24,6 +24,8 @@ class FastStartMatchingBonus extends CommissionType implements CommissionTypeInt
                 if($member['amount_earned'] > 0) {
 
                     if(count($user_uplines) >= 1) { // level 1
+
+                        $lvl_counter = 0;
                         foreach($user_uplines as $upline) {
 
                             if($upline['level'] == 0) {
@@ -32,23 +34,28 @@ class FastStartMatchingBonus extends CommissionType implements CommissionTypeInt
 
                             if($upline['is_active'] == 0 || $upline['is_system_active'] == 0) {
 
-                                $this->log('Level - '.$upline['level'].' Upline '. $upline['user_id'] .' is in-active and not qualified to recieve Matching Bonus');
+                                $this->log(' Upline:'. $upline['user_id'] .' is in-active and not qualified to recieve Matching Bonus');
                                 continue; // next upline // compression
                             }
 
-                            $percentage = $this->getPercentage($upline['level']);
+                            $lvl_counter++;
+                            $percentage = $this->getPercentage($lvl_counter);
 
                             $this->insertPayout(
                                 $upline['user_id'],
                                 $member['user_id'],
-                                0,
+                                $member['amount_earned'],
                                 $percentage,
                                 $member['amount_earned'] * ($percentage / 100),
-                                "Level - ".$upline['level']." Upline ID: ".$upline['user_id']." received Fast Start Matching Bonus from ".$member['user_id'],
+                                " Upline ID: ".$upline['user_id']." received Fast Start Matching Bonus from ".$member['user_id'],
                                 0,
                                 $upline['level'],
                                 $upline['user_id']
                             );
+                        
+                            if($lvl_counter == 3) { //up to level 3 only
+                                break;
+                            }
                         }
                     }
                     else {
@@ -92,29 +99,28 @@ class FastStartMatchingBonus extends CommissionType implements CommissionTypeInt
         $q = $this->db->prepare(
             "WITH RECURSIVE upline AS (
                 SELECT 
-                        user_id,
-                        sponsor_id AS parent_id,
-                        0 AS `level`
-                    FROM cm_genealogy_placement
-                       WHERE user_id = $user_id
-                       AND is_placed = 1 
+                    id AS user_id,
+                    sponsorid AS parent_id,
+                    0 AS `level`
+                    FROM users
+                       WHERE id = $user_id
+                       
                     UNION ALL
                     
                     SELECT
-                        p.user_id,
-                        p.sponsor_id AS parent_id,
-                        upline.`level` + 1 `level`
-                    FROM cm_genealogy_placement p
-                    INNER JOIN upline ON p.user_id = upline.parent_id
-                    WHERE p.user_id <> upline.user_id
-                   AND p.is_placed = 1
+                    p.id AS user_id,
+                    p.sponsorid AS parent_id,
+                    upline.`level` + 1 `level`
+                    FROM users p
+                    INNER JOIN upline ON p.id = upline.parent_id
+                    WHERE p.id <> upline.user_id
                 )
                 SELECT u.*,
                     dr.is_active,
                     dr.is_system_active
                 FROM upline u
                 JOIN cm_daily_ranks dr ON u.user_id = dr.user_id
-                WHERE u.level <=3 AND dr.rank_date = '$rank_date'
+                WHERE dr.rank_date = '$rank_date'
                 ORDER BY u.level ASC
             "
         );
