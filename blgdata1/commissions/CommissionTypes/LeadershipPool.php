@@ -26,7 +26,21 @@ class LeadershipPool extends CommissionType
         $this->log("Processing");
         $qualifiedUsers = $this->getQualifiedUsers();
         foreach( $qualifiedUsers as $u ){
-
+            $this->log("Processing leadership pool for Transaction ID " . $u['transaction_id']);
+            $order_id   = $u['transaction_id'];
+            $sponsor_id = $u['sponsor_id'];
+            $poolAmount = $this->getTotalPoolAmount($sponsor_id);            
+            $this->insertPayout(
+                $sponsor_id,
+                $sponsor_id,
+                0,
+                $percentage,
+                $commission_value * $percentage,
+                "Leadership Pool | Member: $id has a total of $payout payout",
+                $order_id,
+                0,
+                $sponsor_id
+            );
         }
     }
 
@@ -66,9 +80,29 @@ class LeadershipPool extends CommissionType
         $db = DB::connection()->getPdo();
         $stmt = $db->prepare($sql);
         $stmt->execute();
-        $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
-        return $result;
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
 
+    public function getTotalPoolAmount( $sponsor_id )
+    {
+        $start_date = $this->getPeriodStartDate();
+        $end_date = $this->getPeriodStartDate();        
+        $affiliates = config('commission.member-types.affiliates');
+
+        $sql = "
+            SELECT
+                SUM(t.computed_cv) AS total_pool_amount
+            FROM v_cm_transactions t
+            WHERE t.transaction_date BETWEEN '$start_date' AND '$end_date'
+                AND t.sponsor_id = '$sponsor_id'
+                AND t.billmethod = 'cash' 
+                AND FIND_IN_SET(t.purchaser_catid, '$affiliates')
+        ";
+
+        $db = DB::connection()->getPdo();
+        $stmt = $db->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetch(\PDO::FETCH_ASSOC);
+    }
     
 }
