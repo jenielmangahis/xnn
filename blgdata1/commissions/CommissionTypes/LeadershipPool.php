@@ -34,7 +34,7 @@ class LeadershipPool extends CommissionType
             $paid_as_rank = $u['paid_as_rank'];
             $bg5_count    = $u['bg5_count'];   
             $share        = $this->getBGShares($paid_as_rank);
-            $total_shares = $this->getBGTotalShares($share, $bg5_count)
+            $total_shares = $this->getBGTotalShares($share, $bg5_count);
             $percentage = 2;
             $this->insertPayout(
                 $sponsor_id,
