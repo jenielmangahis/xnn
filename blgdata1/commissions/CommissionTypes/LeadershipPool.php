@@ -92,7 +92,6 @@ class LeadershipPool extends CommissionType
                 u.id AS user_id,
                 cdr.paid_as_rank_id,
                 u.sponsorid AS sponsor_id,
-                cdr.paid_as_rank_id,
                 cdv.bg5_count
             FROM cm_daily_volumes cdv
             JOIN cm_daily_ranks cdr ON cdr.volume_id = cdv.id 
