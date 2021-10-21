@@ -80,9 +80,8 @@ class LeadershipPool extends CommissionType
                     WHERE dva.user_id = t.sponsor_id
                         AND dva.volume_date BETWEEN '$last_30d_start' AND '$last_30d_end'
                 ) >= 50
-                AND 
                 AND u.active = 'Yes'
-                AND cdr.rank_id IN(8,9,10)
+                AND cdr.rank_id FIND_IN_SET(8,9,10)
                 AND cdr.is_system_active = 1
             GROUP BY t.sponsor_id
         ";
