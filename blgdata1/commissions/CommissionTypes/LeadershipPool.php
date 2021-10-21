@@ -31,7 +31,7 @@ class LeadershipPool extends CommissionType
 
             $order_id   = $u['transaction_id'];
             $sponsor_id = $u['sponsor_id'];   
-            $paid_as_rank = $u['paid_as_rank'];
+            $paid_as_rank = $u['paid_as_rank_id'];
             $bg5_count    = $u['bg5_count'];   
             $share        = $this->getBGShares($paid_as_rank);
             $total_shares = $this->getBGTotalShares($share, $bg5_count);
@@ -63,7 +63,7 @@ class LeadershipPool extends CommissionType
                 t.transaction_id,
                 t.sponsor_id,
                 t.user_id,
-                cdr.paid_as_rank,
+                cdr.paid_as_rank_id,
                 cdv.bg5_count
             FROM v_cm_transactions t  
             JOIN users u ON t.sponsor_id = u.id
