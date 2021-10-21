@@ -70,7 +70,7 @@ class LeadershipPool extends CommissionType
             JOIN cm_daily_volumes cdv ON t.sponsor_id = cdv.user_id
             JOIN cm_daily_ranks cdr ON cdr.volume_id = cdv.id 
             WHERE 
-                AND FIND_IN_SET(t.purchaser_catid, '$affiliates')
+                FIND_IN_SET(t.purchaser_catid, '$affiliates')
                 AND 
                     t.transaction_date BETWEEN '$start_date' AND '$end_date'
                 AND 
