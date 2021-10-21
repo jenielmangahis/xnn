@@ -26,12 +26,14 @@ class LeadershipPool extends CommissionType
         $this->log("Processing");
         $qualifiedAmbassadors = $this->getQualifiedAmbassador();
         foreach( $qualifiedAmbassadors as $u ){
-            $this->log("Processing leadership pool for Transaction ID " . $u['transaction_id']);
+            
+            $this->log("Processing leadership pool for sponsor ID " . $u['sponsor_id']);
+
             $order_id   = $u['transaction_id'];
             $sponsor_id = $u['sponsor_id'];   
             $paid_as_rank = $u['paid_as_rank'];
-            $bg5_count = $u['bg5_count'];   
-            $share = $this->getBGShares($paid_as_rank);
+            $bg5_count    = $u['bg5_count'];   
+            $share        = $this->getBGShares($paid_as_rank);
             $total_shares = $this->getBGTotalShares($share, $bg5_count)
             $percentage = 2;
             $this->insertPayout(
