@@ -28,8 +28,7 @@ class LeadershipPool extends CommissionType
         foreach( $qualifiedAmbassadors as $u ){
             
             $this->log("Processing leadership pool for sponsor ID " . $u['sponsor_id']);
-
-            $order_id   = $u['transaction_id'];
+            $order_id = 0;
             $sponsor_id = $u['sponsor_id'];   
             $paid_as_rank = $u['paid_as_rank_id'];
             $bg5_count    = $u['bg5_count'];   
@@ -42,7 +41,7 @@ class LeadershipPool extends CommissionType
                 $total_shares,
                 $percentage,
                 $total_shares,
-                "Leadership Pool | Member: $id has a total of $total_shares share",
+                "Leadership Pool | Member: $sponsor_id has a total of $total_shares share",
                 $order_id,
                 0,
                 $sponsor_id
@@ -58,35 +57,6 @@ class LeadershipPool extends CommissionType
         $last_30d_end   = date('Y-m-d');
         $affiliates     = config('commission.member-types.affiliates');
 
-        //Using transactions 
-        /*$sql = "
-            SELECT 
-                t.transaction_id,
-                t.sponsor_id,
-                t.user_id,
-                cdr.paid_as_rank_id,
-                cdv.bg5_count
-            FROM v_cm_transactions t  
-            JOIN users u ON t.sponsor_id = u.id
-            JOIN cm_daily_volumes cdv ON t.sponsor_id = cdv.user_id
-            JOIN cm_daily_ranks cdr ON cdr.volume_id = cdv.id 
-            WHERE 
-                FIND_IN_SET(t.purchaser_catid, '$affiliates')
-                AND 
-                    t.transaction_date BETWEEN '$start_date' AND '$end_date'
-                AND 
-                (
-                    SELECT SUM(dva.pv) 
-                    FROM cm_daily_volumes dva 
-                    WHERE dva.user_id = t.sponsor_id
-                        AND dva.volume_date BETWEEN '$last_30d_start' AND '$last_30d_end'
-                ) >= 50
-                AND u.active = 'Yes'
-                AND cdr.rank_id IN(8,9,10)
-                AND cdr.is_system_active = 1
-            GROUP BY t.sponsor_id
-        ";*/
-
         $sql = "
             SELECT
                 u.id AS user_id,
@@ -98,15 +68,6 @@ class LeadershipPool extends CommissionType
             JOIN users u ON u.id = cdv.user_id
             WHERE u.active = 'Yes' 
                 AND EXISTS(SELECT 1 FROM cm_affiliates a WHERE a.user_id = cdv.user_id AND FIND_IN_SET(a.cat_id,'$affiliates'))
-                AND 
-                (
-                    SELECT dva.pv
-                    FROM cm_daily_volumes dva 
-                    WHERE dva.user_id = u.sponsorid
-                        AND dva.volume_date BETWEEN '$last_30d_start' AND '$last_30d_end'
-                    ORDER BY dva.volume_date DESC 
-                    LIMIT 1
-                ) >= 50
                 AND cdr.rank_id IN(8,9,10)
                 AND cdr.is_system_active = 1
         ";

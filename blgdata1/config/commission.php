@@ -26,7 +26,6 @@ return [
         'run-matching-bonus' => 5,
         'unilevel-team-commission' => 6,
         'unilevel-team-matching-bonus' => 7,
-        'leadership-pool' => 9,
         'customer-acquisition-bonus' => 12
     ],
 
