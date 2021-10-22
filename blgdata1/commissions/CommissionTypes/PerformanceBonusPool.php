@@ -27,21 +27,22 @@ class PerformanceBonusPool extends CommissionType
         $qualifiedAmbassadors = $this->getQualifiedAmbassador();
         foreach( $qualifiedAmbassadors as $u ){
             
-            $this->log("Processing leadership pool for sponsor ID " . $u['sponsor_id']);
+            $this->log("Processing performance bonus pool for sponsor ID " . $u['sponsor_id']);
             $order_id = 0;
             $sponsor_id = $u['sponsor_id'];   
             $paid_as_rank = $u['paid_as_rank_id'];
             $bg5_count    = $u['bg5_count'];   
+            $bg8_count    = $u['bg8_count'];   
             $share        = $this->getBGShares($paid_as_rank);
-            $total_shares = $this->getBGTotalShares($share, $bg5_count);
-            $percentage = 2;
+            $total_shares = $this->getBGTotalShares($share, $bg5_count, $bg8_count);
+            $percentage = 1;
             $this->insertPayout(
                 $sponsor_id,
                 $sponsor_id,
                 $total_shares,
                 $percentage,
                 $total_shares,
-                "Leadership Pool | Member: $sponsor_id has a total of $total_shares share",
+                "Performance Bonus Pool | Member: $sponsor_id has a total of $total_shares share",
                 $order_id,
                 0,
                 $sponsor_id
@@ -62,13 +63,14 @@ class PerformanceBonusPool extends CommissionType
                 u.id AS user_id,
                 cdr.paid_as_rank_id,
                 u.sponsorid AS sponsor_id,
-                cdv.bg5_count
+                cdv.bg5_count,
+                cdv.bg8_count
             FROM cm_daily_volumes cdv
             JOIN cm_daily_ranks cdr ON cdr.volume_id = cdv.id 
             JOIN users u ON u.id = cdv.user_id
             WHERE u.active = 'Yes' 
                 AND EXISTS(SELECT 1 FROM cm_affiliates a WHERE a.user_id = cdv.user_id AND FIND_IN_SET(a.cat_id,'$affiliates'))
-                AND cdr.rank_id IN(8,9,10)
+                AND cdr.rank_id IN(11,12,13)
                 AND cdr.is_system_active = 1
         ";
 
@@ -78,9 +80,9 @@ class PerformanceBonusPool extends CommissionType
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
 
-    private function getBGTotalShares($share, $bg5_count)
+    private function getBGTotalShares($share, $bg5_count, $bg8_count )
     {  
-        $total_shares = $share + $bg5_count;
+        $total_shares = $share + $bg5_count + $bg8_count;
 
         return $total_shares;
     }    
@@ -88,9 +90,9 @@ class PerformanceBonusPool extends CommissionType
     private function getBGShares($paid_as_rank)
     {  
         $shares = [
-              8 => 1,
-              9 => 2,
-              10 => 3
+              11 => 4,
+              12 => 5,
+              13 => 6
         ];
 
         return $shares[$paid_as_rank];
