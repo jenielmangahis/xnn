@@ -73,7 +73,7 @@ class CustomerAcquisitionBonus extends CommissionType
         $sql = "
             SELECT COUNT(id) AS total_orders
             FROM v_cm_transactions t
-            WHERE t.sponsor_id = '$sponsor_id' AND transaction_date >= '$last_60_days' AND transaction_date <= '$today'
+            WHERE t.sponsor_id = '$sponsor_id' AND transaction_date >= '$last_60_days' AND transaction_date <= '$end_date'
         ";            
 
         $stmt = $this->db->prepare($sql);
@@ -98,7 +98,7 @@ class CustomerAcquisitionBonus extends CommissionType
             FROM v_cm_transactions t
             JOIN cm_daily_ranks dr ON dr.user_id = t.sponsor_id AND dr.rank_date = '$end_date'
             WHERE t.transaction_date BETWEEN '$start_date' AND '$end_date' 
-                AND t.purchaser_catid = '$customer'
+                AND FIND_IN_SET(t.purchaser_catid,'$customer')
                 AND (dr.rank_id >= 1 OR dr.influencer_level >= 1)
                 AND dr.is_active = 1
                 AND t.`type` = 'product' ";
