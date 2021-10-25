@@ -36,6 +36,8 @@ class LeadershipPool extends CommissionType
             $share        = $this->getBGShares($paid_as_rank);
             $total_shares = $this->getBGTotalShares($share, $bg5_count);
             $percentage = 2;
+            $global_company_sales = $this->getCompanyGlobalSales();
+            $computed_total_share = $this->getComputedShares($total_shares, $percentage, $company_global_share);
             $this->insertPayout(
                 $sponsor_id,
                 $sponsor_id,
@@ -97,7 +99,20 @@ class LeadershipPool extends CommissionType
         return $shares[$paid_as_rank];
     }
 
-    private function getCompanyGlobalShare()
+    
+    private function getComputedShares($total_shares, $percentage, $company_global_share)
+    {  
+
+        $2_percent_global_company_sales = $company_global_share * ($percentage/100);
+
+
+        $computed_shares = $total_shares + $bg5_count;
+
+        return $computed_shares;
+    }        
+
+
+    private function getCompanyGlobalSales()
     {
         $end_date = $this->getPeriodEndDate();
         $start_date = $this->getPeriodStartDate();
