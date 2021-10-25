@@ -39,14 +39,15 @@ class LeadershipPool extends CommissionType
             ];
         }
 
-        $share_value = $totalGlobalShare['total_amount'] / $total_shares;
+        $percentage_global_share = $totalGlobalShare['total_amount'] * ($percentage/100);
+        $per_share_value = $percentage_global_share / $total_shares;
 
         foreach( $com_data as $com ){
             
             $this->log("Processing leadership pool for sponsor ID " . $com['sponsor_id']);
 
             $sponsor_id = $com['sponsor_id'];
-            $computed_shares = $share_value * $com['share_amount'];
+            $computed_shares = $per_share_value * $com['share_amount'];
 
             $this->insertPayout(
                 $sponsor_id,
