@@ -28,6 +28,7 @@ return [
         'unilevel-team-matching-bonus' => 7,
         'leadership-pool' => 9,
         'performance-bonus-pool' => 10,
+        'big-dog-bonus-pool' => 11,
         'customer-acquisition-bonus' => 12
     ],
 

@@ -65,16 +65,15 @@ class CustomerAcquisitionBonus extends CommissionType
     }
 
     public function totalOrdersLast60Days( $sponsor_id )
-    {   
-        $end_date = $this->getPeriodEndDate();
-        $last_60_days =  date('Y-m-d',(strtotime ( '-60 day' , strtotime ( $end_date) ) ));
+    {
+        $last_60_days = date('Y-m-d', strtotime('-60 days'));	// TODO: Jeniel, you need to use the $this->getPeriodEndDate() as basis for the last 60 days. 
         $today = date('Y-m-d');
 
         $sql = "
             SELECT COUNT(id) AS total_orders
             FROM v_cm_transactions t
             WHERE t.sponsor_id = '$sponsor_id' AND transaction_date >= '$last_60_days' AND transaction_date <= '$today'
-        ";            
+        ";
 
         $stmt = $this->db->prepare($sql);
         $stmt->execute();
@@ -100,10 +99,12 @@ class CustomerAcquisitionBonus extends CommissionType
                 t.computed_cv
             FROM v_cm_transactions t
             JOIN cm_daily_ranks dr ON dr.user_id = t.sponsor_id AND dr.rank_date = '$end_date'
+            JOIN transaction_products tp ON tp.transaction_id = t.transaction_id	-- TODO: Jeniel, not sure why this one is being joined as well. Just use v_cm_transactions
             WHERE t.transaction_date BETWEEN '$start_date' AND '$end_date' 
-
+				-- TODO: Jeniel, add a filter here to only fetch transactions from purchases by customers only
                 AND (dr.rank_id >= 1 OR dr.influencer_level >= 1)
                 AND dr.is_active = 1
+                AND FIND_IN_SET(tp.shoppingcart_product_id,'13,14,15')    -- TODO: Jeniel, not sure why you're filtering this as well?  
                 AND t.`type` = 'product' ";
 
         if ($start !== null) {
