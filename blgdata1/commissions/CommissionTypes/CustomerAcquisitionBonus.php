@@ -88,7 +88,7 @@ class CustomerAcquisitionBonus extends CommissionType
         $start_date = $this->getPeriodStartDate();
         $last_60_days = date('Y-m-d', strtotime('-60 days'));
         $today = date('Y-m-d');
-
+        $customer = config('commission.member-types.customer');
         $sql = "SELECT 
                 t.transaction_id,
                 t.user_id,
@@ -101,7 +101,7 @@ class CustomerAcquisitionBonus extends CommissionType
             FROM v_cm_transactions t
             JOIN cm_daily_ranks dr ON dr.user_id = t.sponsor_id AND dr.rank_date = '$end_date'
             WHERE t.transaction_date BETWEEN '$start_date' AND '$end_date' 
-
+                AND t.purchaser_catid = '$customer'
                 AND (dr.rank_id >= 1 OR dr.influencer_level >= 1)
                 AND dr.is_active = 1
                 AND t.`type` = 'product' ";
