@@ -103,10 +103,10 @@ class LeadershipPool extends CommissionType
         $start_date = $this->getPeriodStartDate();
         $customer = config('commission.member-types.customer');
 
-        $sql = "SELECT SUM(t.sub_total) AS total_amount
+        $sql = "SELECT COALESCE(SUM(t.sub_total),0) AS total_amount
             FROM v_cm_transactions t
             WHERE t.transaction_date BETWEEN '$start_date' AND '$end_date'                 
-        ";
+                AND t.`type` = 'product'";
 
         $stmt = $this->db->prepare($sql);
         $stmt->execute();
