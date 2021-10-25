@@ -25,10 +25,11 @@ class LeadershipPool extends CommissionType
     {
         $this->log("Processing");
         $qualifiedAmbassadors = $this->getQualifiedAmbassador();
+        $totalGlobalShare     = $this->getCompanyGlobalShare();
         foreach( $qualifiedAmbassadors as $u ){
-            
             $this->log("Processing leadership pool for sponsor ID " . $u['sponsor_id']);
             $order_id = 0;
+            $total_global_share = $totalGlobalShare['total_amount'];
             $sponsor_id = $u['sponsor_id'];   
             $paid_as_rank = $u['paid_as_rank_id'];
             $bg5_count    = $u['bg5_count'];   
@@ -94,5 +95,22 @@ class LeadershipPool extends CommissionType
         ];
 
         return $shares[$paid_as_rank];
+    }
+
+    private function getCompanyGlobalShare()
+    {
+        $end_date = $this->getPeriodEndDate();
+        $start_date = $this->getPeriodStartDate();
+        $customer = config('commission.member-types.customer');
+
+        $sql = "SELECT SUM(t.sub_total) AS total_amount
+            FROM v_cm_transactions t
+            WHERE t.transaction_date BETWEEN '$start_date' AND '$end_date'                 
+        ";
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute();
+
+        return $stmt->fetch();
     }
 }
