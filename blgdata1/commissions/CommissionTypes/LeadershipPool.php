@@ -25,27 +25,37 @@ class LeadershipPool extends CommissionType
     {
         $this->log("Processing");
         $qualifiedAmbassadors = $this->getQualifiedAmbassador();
-        $totalGlobalShare     = $this->getCompanyGlobalShare();
+        $totalGlobalShare     = $this->getCompanyGlobalSales();
+        $total_shares = 0;
+        $com_data     = array();
         foreach( $qualifiedAmbassadors as $u ){
-            $this->log("Processing leadership pool for sponsor ID " . $u['sponsor_id']);
-            $order_id = 0;
-            $total_global_share = $totalGlobalShare['total_amount'];
-            $sponsor_id = $u['sponsor_id'];   
             $paid_as_rank = $u['paid_as_rank_id'];
-            $bg5_count    = $u['bg5_count'];   
             $share        = $this->getBGShares($paid_as_rank);
-            $total_shares = $this->getBGTotalShares($share, $bg5_count);
-            $percentage = 2;
-            $global_company_sales = $this->getCompanyGlobalSales();
-            $computed_total_share = $this->getComputedShares($total_shares, $percentage, $company_global_share);
+            $bg5_count    = $u['bg5_count'];               
+            $total_shares += $this->getBGTotalShares($share, $bg5_count);
+            $com_data[]= [
+                'sponsor_id' => $u['sponsor_id'],
+                'share_amount' => $this->getBGTotalShares($share, $bg5_count),
+            ];
+        }
+
+        $share_value = $totalGlobalShare['total_amount'] / $total_shares;
+
+        foreach( $com_data as $com ){
+            
+            $this->log("Processing leadership pool for sponsor ID " . $com['sponsor_id']);
+
+            $sponsor_id = $com['sponsor_id'];
+            $computed_shares = $share_value * $com['share_amount'];
+
             $this->insertPayout(
                 $sponsor_id,
                 $sponsor_id,
-                $total_shares,
+                $computed_shares,
                 $percentage,
-                $total_shares,
-                "Leadership Pool | Member: $sponsor_id has a total of $total_shares share",
-                $order_id,
+                $computed_shares,
+                "Leadership Pool | Member: $sponsor_id has a total of $computed_shares share",
+                0,
                 0,
                 $sponsor_id
             );
