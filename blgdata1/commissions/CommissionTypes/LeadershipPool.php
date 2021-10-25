@@ -26,6 +26,7 @@ class LeadershipPool extends CommissionType
         $this->log("Processing");
         $qualifiedAmbassadors = $this->getQualifiedAmbassador();
         $totalGlobalShare     = $this->getCompanyGlobalSales();
+        $percentage = 2;
         $total_shares = 0;
         $com_data     = array();
         foreach( $qualifiedAmbassadors as $u ){
@@ -41,6 +42,10 @@ class LeadershipPool extends CommissionType
 
         $percentage_global_share = $totalGlobalShare['total_amount'] * ($percentage/100);
         $per_share_value = $percentage_global_share / $total_shares;
+        $this->log("Global Company Sales:" . $totalGlobalShare['total_amount']);
+        $this->log("2% of Global Company Sales:" . $percentage_global_share);
+        $this->log("Per Share Value:" . $per_share_value);
+        $this->log("Total Share:" . $total_shares);
 
         foreach( $com_data as $com ){
             
@@ -65,10 +70,6 @@ class LeadershipPool extends CommissionType
 
     public function getQualifiedAmbassador()
     {
-        $start_date = $this->getPeriodStartDate();
-        $end_date   = $this->getPeriodEndDate();        
-        $last_30d_start = date('Y-m-d', strtotime('-30 days'));
-        $last_30d_end   = date('Y-m-d');
         $affiliates     = config('commission.member-types.affiliates');
 
         $sql = "
@@ -109,19 +110,6 @@ class LeadershipPool extends CommissionType
 
         return $shares[$paid_as_rank];
     }
-
-    
-    private function getComputedShares($total_shares, $percentage, $company_global_share)
-    {  
-
-        $2_percent_global_company_sales = $company_global_share * ($percentage/100);
-
-
-        $computed_shares = $total_shares + $bg5_count;
-
-        return $computed_shares;
-    }        
-
 
     private function getCompanyGlobalSales()
     {
