@@ -376,10 +376,10 @@ print <<EOS;
 
 </div>
 
-<script src="$commission_engine_api_url/js/app.js?v=$app_css_version"></script>
+<script src="$commission_engine_api_url:81/js/app.js?v=$app_css_version"></script>
 <script src="https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js"></script>
 <script src="https://cdn.datatables.net/responsive/2.2.3/js/responsive.bootstrap.min.js"></script>
-<script src="$commission_engine_api_url/js/affiliate_dashboard.js?v=1.4"></script>
+<script src="$commission_engine_api_url:81/js/affiliate_dashboard.js?v=1.4"></script>
 
 EOS
 1;
