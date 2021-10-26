@@ -5,14 +5,6 @@ print <<EOS;
 <link rel="stylesheet" href="$commission_engine_api_url/css/select2-bootstrap.css"/>
 <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.3/css/responsive.bootstrap.min.css">
 <link rel="stylesheet" href="$commission_engine_api_url/css/affiliate_historical_commission.css?v=1.0&app=$app_css_version" />
-<link rel="stylesheet" href="$commission_engine_api_url/css/money-admin-menu.css" />
-
-<style>
-div.dataTables_wrapper div.dataTables_length select 
-    {
-        margin-left: 14px !important;
-    }
-</style>
 
 <div class="historical-commission tool-container tool-container--default" v-cloak>
     <div class="row">
@@ -26,7 +18,7 @@ div.dataTables_wrapper div.dataTables_length select
         <div class="col-md-4">
             <form class="form-horizontal" style="margin-bottom: 15px;">
                 <div class="form-group">
-                    <div class="col-md-6" style="margin-top: 15px;">
+                    <div class="col-md-6">
                         <label for="frequency">Frequency <span class="text-danger">*</span></label>
                         <select disabled
                                 v-bind:disabled="frequencyState !== 'loaded' || commissionPeriodState === 'fetching'"
@@ -51,7 +43,7 @@ div.dataTables_wrapper div.dataTables_length select
                         </select>
                         <a style="display: none;" v-show="frequencyState === 'error'" v-on:click.prevent="getFrequencies" class="help-block text-danger">Unable to fetch. Click here to try again.</a>
                     </div>
-                    <div class="col-md-6" style="margin-top: 15px;">
+                    <div class="col-md-6">
                         <label for="commission_type">Commission Type</label>
                         <select
                                 name="commission_type"
@@ -157,25 +149,24 @@ div.dataTables_wrapper div.dataTables_length select
 
     <div class="row">
         <div class="col-md-12">
-            <div class="table-responsive">
-                <table id="table-historical-commission" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
-                    <thead class="table__header table__header--bg-primary">
-                    <tr class="table__row">
-                        <th class="table__cell">Commission Type</th>
-                        <th class="table__cell">Commission Period</th>
-                        <th class="table__cell">Payee</th>
-                        <th class="table__cell">Invoice</th>
-                        <th class="table__cell">Purchaser</th>
-                        <th class="table__cell">CV</th>
-                        <th class="table__cell">Percentage</th>
-                        <th class="table__cell">Amount Earned</th>
-                        <th class="table__cell">Level</th>
-                    </tr>
-                    </thead>
-                    <tbody class="table__body">
-                    </tbody>
-                </table>
-            </div>            
+
+            <table id="table-historical-commission" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
+                <thead class="table__header table__header--bg-primary">
+                <tr class="table__row">
+                    <th class="table__cell">Commission Type</th>
+                    <th class="table__cell">Commission Period</th>
+                    <th class="table__cell">Payee</th>
+                    <th class="table__cell">Invoice</th>
+                    <th class="table__cell">Purchaser</th>
+                    <th class="table__cell">CV</th>
+                    <th class="table__cell">Percentage</th>
+                    <th class="table__cell">Amount Earned</th>
+                    <th class="table__cell">Level</th>
+                </tr>
+                </thead>
+                <tbody class="table__body">
+                </tbody>
+            </table>
         </div>
     </div>
 </div>

@@ -113,6 +113,20 @@ class DashboardController extends Controller
         );
     }
 
+    public function getTransformationPackSales(Request $request)
+    {
+        return response()->json(
+            $this->dashboard->getTransformationPackSales($request->input('start_date'), $request->input('end_date'))
+        );
+    }
+
+    public function getElitePackSales(Request $request)
+    {
+        return response()->json(
+            $this->dashboard->getElitePackSales($request->input('start_date'), $request->input('end_date'))
+        );
+    }
+
     public function getFamilyElitePackSales(Request $request)
     {
         return response()->json(
@@ -146,36 +160,5 @@ class DashboardController extends Controller
         return response()->json([
             'link' => $this->dashboard->getDownloadLink($request->input('report_type'), $request->input('start_date'), $request->input('end_date'), $request->input('user_id'))
         ]);
-    }
-
-
-
-    public function getNewAmbassadorCount(Request $request)
-    {
-        return response()->json([
-            'count' => $this->dashboard->getNewAmbassadorCount($request->input('start_date'), $request->input('end_date'))
-        ]);
-    }
-
-    public function getNewAmbassadorWithProductSubscriptionCount(Request $request)
-    {
-        return response()->json([
-            'count' => $this->dashboard->getNewAmbassadorWithProductSubscriptionCount($request->input('start_date'), $request->input('end_date'))
-        ]);
-    }
-
-
-    public function getNewAmbassadors(Request $request)
-    {
-        return response()->json(
-            $this->dashboard->getNewAmbassadors($request->input('start_date'), $request->input('end_date'))
-        );
-    }
-
-    public function getNewAmbassadorsWithProductSubscription(Request $request)
-    {
-        return response()->json(
-            $this->dashboard->getNewAmbassadorsWithProductSubscription($request->input('start_date'), $request->input('end_date'))
-        );
     }
 }

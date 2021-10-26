@@ -85,19 +85,8 @@ print <<EOS;
                     <th class="table__cell">Name</th>
                     <th class="table__cell">Current $rank_title</th>
                     <th class="table__cell">Paid-as $rank_title</th>
-                    <th class="table__cell">Coach Points</th>
-                    <th class="table__cell">Referral Points</th>
-                    <th class="table__cell">Org. Points</th>
-                    <th class="table__cell">Team Group Points</th>
-                    <th class="table__cell">Preferred Customers</th>
-                    <th class="table__cell">Influencers</th>
-                    <th class="table__cell">Silver Influencers</th>
-                    <th class="table__cell">Gold Influencers</th>
-                    <th class="table__cell">Platinum Influencers</th>
-                    <th class="table__cell">Diamond Influencers</th>
-                    <th class="table__cell">Active</th>
-                    <th class="table__cell">Level</th>
-                    <th class="table__cell">Sponsor</th>
+                    <th class="table__cell">PV</th>
+                    <th class="table__cell">GV</th>
                     <th class="table__cell">Needs for Next $rank_title</th>
                 </tr>
                 </thead>

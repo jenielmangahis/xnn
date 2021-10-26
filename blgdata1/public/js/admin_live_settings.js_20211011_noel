@@ -1,6 +1,6 @@
 (function ($, api_url, Vue, swal, axios, location, moment, _, undefined) {
 
-    const client = commissionEngine.createAccessClient('admin');
+    const client = commissionEngine.createAccessClient('admin/ledger-withdrawal');
     commissionEngine.setupAccessTokenJQueryAjax();
 
     const sampData = [{
@@ -15,15 +15,10 @@
     const vm = new Vue({
         el: "#live-settings",
         data: {
-            pool:{
-                id:null,
-                name:'',
-                percentage:0
-            }
+
         },
         mounted() {
-            this.initializeDataTables();
-            this.initializeJQueryEvents();
+
         },
         computed: {
 
@@ -105,42 +100,6 @@
             showPoolModalLogs(){
                 $('#modal-show-pool-logs').modal({ backdrop: 'static', keyboard: false });
             },
-            initializeDataTables()
-            {
-                $dt = $("#tbl-pool").DataTable({
-                    searching: false,
-                    ordering: false,
-                    lengthChange: false,
-                    ajax:{
-                        "url": api_url + 'admin/poolbonus-live-settings/'
-                    },
-                    columns: [
-                        {data: 'name'},
-                        {data: 'percentage', className: "text-center",
-                            render: $.fn.dataTable.render.number( ',', '', 0, '',  '%')
-                        },
-                        {
-                            data: 'action',
-                            width: '200px',
-                            render: function (data, type, row, meta) {
-                                return '<div class="btn-group-xs" role="group" aria-label="...">' +
-                                    '<button type="button" class="btn btn-primary btn-pool-edit">Edit</button>' +
-                                    '</div>';
-                            }
-                        }
-
-                    ]
-                });
-
-            },
-            initializeJQueryEvents() {
-                let _this = this;
-
-                $('#tbl-pool tbody').on('click', '.btn-pool-edit', function () {
-                    let data = $dt.row($(this).parents('tr')).data();
-                    _this.showEditPoolModal(data);
-                });
-            }
         },
     });
 

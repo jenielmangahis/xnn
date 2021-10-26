@@ -4,18 +4,6 @@ print <<EOS;
 <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.3/css/responsive.bootstrap.min.css">
 <link rel="stylesheet" href="$commission_engine_api_url/css/datepicker.css?v=$app_css_version" />
 <link rel="stylesheet" href="$commission_engine_api_url/css/admin_withdrawal_request.css?v=1" />
-<link rel="stylesheet" href="$commission_engine_api_url/css/money-admin-menu.css" />
-
-<style>
-div.dataTables_wrapper div.dataTables_length select 
-    {
-        margin-left: 14px !important;
-    }
-.tool-container .btn 
-    {
-        padding:5px 12px !important;
-    }    
-</style>
 
 <div id="withdrawal-request" class="withdrawal-request tool-container tool-container--default" v-cloak>
     <div class="row">
@@ -41,11 +29,11 @@ div.dataTables_wrapper div.dataTables_length select
                         <div class="col-md-12">
                             <form class="form-horizontal">
                                 <div class="form-group">
-                                    <div class="form-sub-group col-md-3 col-lg-3" style="margin-bottom:15px">
+                                    <div class="form-sub-group col-md-3 col-lg-3">
                                         <label for="start-date">From</label>
                                         <datepicker id="start-date" v-model="start_date" />
                                     </div>
-                                    <div class="form-sub-group col-md-3 col-lg-3" style="margin-bottom:15px">
+                                    <div class="form-sub-group col-md-3 col-lg-3">
                                         <label for="end-date">To</label>
                                         <datepicker id="end-date" v-model="end_date" v-bind:start-date="start_date"/>
                                     </div>

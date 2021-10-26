@@ -41,7 +41,7 @@ class LeadershipPool extends CommissionType
         }
 
         $percentage_global_share = $totalGlobalShare['total_amount'] * ($percentage/100);
-        $per_share_value = $percentage_global_share / $total_shares;
+        $per_share_value = $total_shares / $percentage_global_share  ;
         $this->log("Global Company Sales:" . $totalGlobalShare['total_amount']);
         $this->log("2% of Global Company Sales:" . $percentage_global_share);
         $this->log("Per Share Value:" . $per_share_value);
@@ -53,12 +53,12 @@ class LeadershipPool extends CommissionType
 
             $sponsor_id = $com['sponsor_id'];
             $computed_shares = $per_share_value * $com['share_amount'];
-
+            $percentage_amount = $percentage_global_share / $computed_shares;
             $this->insertPayout(
                 $sponsor_id,
                 $sponsor_id,
                 $computed_shares,
-                $percentage,
+                $percentage_amount, 
                 $computed_shares,
                 "Leadership Pool | Member: $sponsor_id has a total of $computed_shares share",
                 0,
@@ -70,6 +70,7 @@ class LeadershipPool extends CommissionType
 
     public function getQualifiedAmbassador()
     {
+        $end_date = $this->getPeriodEndDate();
         $affiliates     = config('commission.member-types.affiliates');
 
         $sql = "
@@ -79,7 +80,7 @@ class LeadershipPool extends CommissionType
                 u.sponsorid AS sponsor_id,
                 cdv.bg5_count
             FROM cm_daily_volumes cdv
-            JOIN cm_daily_ranks cdr ON cdr.volume_id = cdv.id 
+            JOIN cm_daily_ranks cdr ON cdr.volume_id = cdv.id  AND cdr.rank_date = '$end_date'
             JOIN users u ON u.id = cdv.user_id
             WHERE u.active = 'Yes' 
                 AND EXISTS(SELECT 1 FROM cm_affiliates a WHERE a.user_id = cdv.user_id AND FIND_IN_SET(a.cat_id,'$affiliates'))

@@ -16,9 +16,14 @@
             new_customer_with_product_subscription_count: null,
             new_endorser_count: null,
             new_endorser_with_product_subscription_count: null,
-            new_ambassador_count: null,
-            new_ambassador_with_product_subscription_count: null,
             customer_transformation_pack_total_sales: null,
+            transformation_pack_total_sales: null,
+            elite_pack_total_sales: null,
+            family_elite_pack_total_sales: null,
+            average_reorder: null,
+            viral_index: null,
+            viral_index_start_date: null,
+            viral_index_end_date: null,
             error: null,
             start_date: null,
             end_date: null,
@@ -27,7 +32,7 @@
             is_downloading_top_endorser: false,
             top_endorser_count: 0,
             user_id: 0,
-            sales_volume: 0,
+            pack_count: 0,
         },
         mounted() {
             $dt = $("#table-top-endorsers").DataTable({
@@ -35,11 +40,22 @@
                 ordering: false,
                 lengthChange: false,
                 columns: [
-                    {data: 'top', className: "text-center"},
                     {data: 'user_id', className: "text-center"},
-                    {data: 'affiliate'},
+                    {data: 'endorser'},
+                    {
+                        data: 'endorser_count',
+                        className: "text-center",
+                        render: function ( data, type, row, meta ) {
+                            return `<a class="btn-link btn-view-endorsers">${data}</a>`;
+                        }
+                    },
                     {data: 'volume', className: "text-right"},
                 ]
+            });
+
+            $("#table-top-endorsers").on('click', '.btn-view-endorsers', function () {
+                let data = $dt.row($(this).parents('tr')).data();
+                vm.viewEndorsers(+data.user_id);
             });
 
             $new_members = $("#table-new-members").DataTable({
@@ -54,11 +70,31 @@
                     {data: 'cv'},
                     {data: 'amount_paid'},
                     {data: 'has_coupon'},
+                    {data: 'has_gift_card'},
                     {data: 'shipping_city'},
                     {data: 'shipping_state'},
                     {data: 'has_subscription'},
                     {data: 'cellphone'},
 
+                ]
+            });
+
+            $pack_sales = $("#table-pack-sales").DataTable({
+                responsive: true,
+                columns: [
+                    {data: 'purchaser_id', className: "text-center"},
+                    {data: 'purchaser'},
+                    {data: 'invoice', className: "text-center"},
+                    {data: 'sponsor_id', className: "text-center"},
+                    {data: 'sponsor'},
+                    {data: 'order_id'},
+                    {data: 'cv'},
+                    {data: 'amount_paid'},
+                    {data: 'has_coupon'},
+                    {data: 'has_gift_card'},
+                    {data: 'shipping_city'},
+                    {data: 'shipping_state'},
+                    {data: 'sponsor_type'},
                 ]
             });
 
@@ -76,6 +112,7 @@
                     {data: 'cv'},
                     {data: 'amount_paid'},
                     {data: 'has_coupon'},
+                    {data: 'has_gift_card'},
                     {data: 'shipping_city'},
                     {data: 'shipping_state'},
                     {data: 'sponsor_type'},
@@ -130,18 +167,6 @@
                     this.new_endorser_with_product_subscription_count = +response.data.count;
                 }).catch(this.axiosErrorHandler);
             },
-            getNewAmbassadorCount() {
-                this.new_ambassador_count = null;
-                client.get(`new-ambassador-count?start_date=${this.start_date}&end_date=${this.end_date}`).then(response => {
-                    this.new_ambassador_count = +response.data.count;
-                }).catch(this.axiosErrorHandler);
-            },
-            getNewAmbassadorWithProductSubscriptionCount() {
-                this.new_ambassador_with_product_subscription_count = null;
-                client.get(`new-ambassador-with-product-subscription-count?start_date=${this.start_date}&end_date=${this.end_date}`).then(response => {
-                    this.new_ambassador_with_product_subscription_count = +response.data.count;
-                }).catch(this.axiosErrorHandler);
-            },
             getCustomerTransformationPackTotalSales() {
                 this.customer_transformation_pack_total_sales = null;
                 client.get(`total-sales/customer-transformation-pack?start_date=${this.start_date}&end_date=${this.end_date}`).then(response => {
@@ -181,6 +206,18 @@
                     $dt.columns.adjust().draw();
                 }).catch(this.axiosErrorHandler);
             },
+            getViralIndex() {
+                this.viral_index = null;
+                this.viral_index_start_date = null;
+                this.viral_index_end_date = null;
+
+                client.get(`viral-index?start_date=${this.start_date}&end_date=${this.end_date}`).then(response => {
+                    let data = response.data;
+                    this.viral_index = data.viral_index;
+                    this.viral_index_start_date = data.this_month.start_date;
+                    this.viral_index_end_date = data.this_month.end_date;
+                });
+            },
             view() {
                 this.start_date = $('#start-date').val();
                 this.end_date = $('#end-date').val();
@@ -189,11 +226,13 @@
                 this.getNewCustomerWithProductSubscriptionCount();
                 this.getNewEndorserCount();
                 this.getNewEndorserWithProductSubscriptionCount();
-
-                this.getNewAmbassadorCount();
-                this.getNewAmbassadorWithProductSubscriptionCount();
-
+                this.getCustomerTransformationPackTotalSales();
+                this.getTransformationPackTotalSales();
+                this.getElitePackTotalSales();
+                this.getFamilyElitePackTotalSales();
+                this.getAveragaReorder();
                 this.getTopEndorsers();
+                this.getViralIndex();
             },
             viewNewCustomers() {
                 this.report_type = "NEW_CUSTOMERS";
@@ -212,7 +251,7 @@
             viewNewCustomersWithProductSubscription() {
                 this.report_type = "NEW_CUSTOMERS_PS";
                 $new_members.clear().draw();
-                $('#modal-view-new-members-title').text("New Customers with Autoship");
+                $('#modal-view-new-members-title').text("New Customers with Product Subscription");
                 $('#modal-view-new-members').modal({backdrop: 'static', keyboard: false});
                 $new_members.responsive.recalc();
 
@@ -226,7 +265,7 @@
             viewNewEndorsers() {
                 this.report_type = "NEW_ENDORSERS";
                 $new_members.clear().draw();
-                $('#modal-view-new-members-title').text("New Influencers");
+                $('#modal-view-new-members-title').text("New Endorsers");
                 $('#modal-view-new-members').modal({backdrop: 'static', keyboard: false});
                 $new_members.responsive.recalc();
 
@@ -239,37 +278,11 @@
             viewNewEndorsersWithProductSubscription() {
                 this.report_type = "NEW_ENDORSERS_PS";
                 $new_members.clear().draw();
-                $('#modal-view-new-members-title').text("New Influencers with Autoship");
+                $('#modal-view-new-members-title').text("New Endorsers with Product Subscription");
                 $('#modal-view-new-members').modal({backdrop: 'static', keyboard: false});
                 $new_members.responsive.recalc();
 
                 client.get(`new-endorsers-with-product-subscription?start_date=${this.start_date}&end_date=${this.end_date}`).then(response => {
-                    $new_members.rows.add(response.data);
-                    $new_members.columns.adjust().draw();
-                    $new_members.responsive.recalc();
-                });
-            },
-            viewNewAmbassador() {
-                this.report_type = "NEW_AMBASSADORS";
-                $new_members.clear().draw();
-                $('#modal-view-new-members-title').text("New Distributor");
-                $('#modal-view-new-members').modal({backdrop: 'static', keyboard: false});
-                $new_members.responsive.recalc();
-
-                client.get(`new-ambassador?start_date=${this.start_date}&end_date=${this.end_date}`).then(response => {
-                    $new_members.rows.add(response.data);
-                    $new_members.columns.adjust().draw();
-                    $new_members.responsive.recalc();
-                });
-            },
-            viewNewAmbassadorWithProductSubscription() {
-                this.report_type = "NEW_AMBASSADORS_PS";
-                $new_members.clear().draw();
-                $('#modal-view-new-members-title').text("New Distributor with Autoship");
-                $('#modal-view-new-members').modal({backdrop: 'static', keyboard: false});
-                $new_members.responsive.recalc();
-
-                client.get(`new-ambassador-with-product-subscription?start_date=${this.start_date}&end_date=${this.end_date}`).then(response => {
                     $new_members.rows.add(response.data);
                     $new_members.columns.adjust().draw();
                     $new_members.responsive.recalc();

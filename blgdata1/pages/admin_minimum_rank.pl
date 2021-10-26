@@ -5,16 +5,11 @@ print <<EOS;
 <link rel="stylesheet" href="$commission_engine_api_url/css/select2-bootstrap.css"/>
 <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.3/css/responsive.bootstrap.min.css">
 <link rel="stylesheet" href="$commission_engine_api_url/css/datepicker.css?v=$app_css_version" />
-<link rel="stylesheet" href="$commission_engine_api_url/css/money-admin-menu.css" />
 
 <style>
     .tool-container__actions {
         margin-bottom: 15px;
     }
-    div.dataTables_wrapper div.dataTables_length select 
-    {
-        margin-left: 14px !important;
-    }    
 </style>
 
 <div class="minimum-rank tool-container tool-container--default" v-cloak>
@@ -37,23 +32,22 @@ print <<EOS;
 
     <div class="row">
         <div class="col-md-12">
-            <div class="table-responsive">
-                <table id="table-minimum-rank" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
-                    <thead class="table__header table__header--bg-primary">
-                    <tr class="table__row">
-                        <th class="table__cell">Name</th>
-                        <th class="table__cell">$rank_title</th>
-                        <th class="table__cell">Start Date</th>
-                        <th class="table__cell">End Date</th>
-                        <th class="table__cell">Set By</th>
-                        <th class="table__cell">Set Date</th>
-                        <th class="table__cell">Action</th>
-                    </tr>
-                    </thead>
-                    <tbody class="table__body">
-                    </tbody>
-                </table>
-            </div>
+
+            <table id="table-minimum-rank" class="table table-striped table-bordered dt-responsive nowrap" style="width:100%">
+                <thead class="table__header table__header--bg-primary">
+                <tr class="table__row">
+                    <th class="table__cell">Name</th>
+                    <th class="table__cell">$rank_title</th>
+                    <th class="table__cell">Start Date</th>
+                    <th class="table__cell">End Date</th>
+                    <th class="table__cell">Set By</th>
+                    <th class="table__cell">Set Date</th>
+                    <th class="table__cell">Action</th>
+                </tr>
+                </thead>
+                <tbody class="table__body">
+                </tbody>
+            </table>
         </div>
     </div>
 

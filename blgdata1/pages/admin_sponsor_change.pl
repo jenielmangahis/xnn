@@ -4,14 +4,6 @@ print <<EOS;
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.7/css/select2.min.css" />
 <link rel="stylesheet" href="$commission_engine_api_url/css/select2-bootstrap.css"/>
 <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.3/css/responsive.bootstrap.min.css">
-<link rel="stylesheet" href="$commission_engine_api_url/css/money-admin-menu.css" />
-
-<style>
-div.dataTables_wrapper div.dataTables_length select 
-    {
-        margin-left: 14px !important;
-    }
-</style>
 
 <div class="tool-container tool-container--default" id="sponsor-change" v-cloak>
     <div class="row">
@@ -67,83 +59,79 @@ div.dataTables_wrapper div.dataTables_length select
                     <div class="row">
                         <div class="col-md-6">
                             <div class="h4 label-red">Current Relationship</div>
-                            <div class="table-responsive">
-                                <table class="table table-striped table-bordered table-relationship">
-                                    <thead>
-                                    <tr>
-                                        <th>ID</th>
-                                        <th>Name</th>
-                                        <th>Level</th>
-                                        <th>Sponsor</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr v-show="relationship.before.length == 0">
-                                        <td colspan="4" class="text-center">
-                                            <i class="fa fa-cog fa-spin" v-if="is_processing"></i>
-                                            <span v-else>No preview available</span>
-                                        </td>
-                                    </tr>
-                                    <tr v-for="(item, index) in relationship.before">
-                                        <td v-if="item.message != undefined" colspan="4" class="text-center">
-                                            {{ item.message }}
-                                        </td>
-                                        <td v-if="item.message == undefined">
-                                            #{{ item.member_id }}
-                                        </td>
-                                        <td v-if="item.message == undefined">
-                                            {{ item.member_name }}
-                                        </td>
-                                        <td v-if="item.message == undefined">
-                                            {{ item.level }}
-                                        </td>
-                                        <td v-if="item.message == undefined">
-                                            #{{ item.sponsor_id }} {{ item.sponsor_name }}
-                                        </td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            </div>
+                            <table class="table table-striped table-bordered table-relationship">
+                                <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Level</th>
+                                    <th>Sponsor</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr v-show="relationship.before.length == 0">
+                                    <td colspan="4" class="text-center">
+                                        <i class="fa fa-cog fa-spin" v-if="is_processing"></i>
+                                        <span v-else>No preview available</span>
+                                    </td>
+                                </tr>
+                                <tr v-for="(item, index) in relationship.before">
+                                    <td v-if="item.message != undefined" colspan="4" class="text-center">
+                                        {{ item.message }}
+                                    </td>
+                                    <td v-if="item.message == undefined">
+                                        #{{ item.member_id }}
+                                    </td>
+                                    <td v-if="item.message == undefined">
+                                        {{ item.member_name }}
+                                    </td>
+                                    <td v-if="item.message == undefined">
+                                        {{ item.level }}
+                                    </td>
+                                    <td v-if="item.message == undefined">
+                                        #{{ item.sponsor_id }} {{ item.sponsor_name }}
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
                         </div>
                         <div class="col-md-6">
                             <div class="h4 label-red">After the Change</div>
-                            <div class="table-responsive">
-                                <table class="table table-striped table-bordered table-relationship">
-                                    <thead>
-                                    <tr>
-                                        <th>ID</th>
-                                        <th>Name</th>
-                                        <th>Level</th>
-                                        <th>Sponsor</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr v-show="relationship.after.length == 0">
-                                        <td colspan="4" class="text-center">
-                                            <i class="fa fa-cog fa-spin" v-if="is_processing"></i>
-                                            <span v-else>No preview available</span>
-                                        </td>
-                                    </tr>
-                                    <tr v-for="(item, index) in relationship.after">
-                                        <td v-if="item.message != undefined" colspan="4" class="text-center">
-                                            {{ item.message }}
-                                        </td>
-                                        <td v-if="item.message == undefined">
-                                            #{{ item.member_id }}
-                                        </td>
-                                        <td v-if="item.message == undefined">
-                                            {{ item.member_name }}
-                                        </td>
-                                        <td v-if="item.message == undefined">
-                                            {{ item.level }}
-                                        </td>
-                                        <td v-if="item.message == undefined">
-                                            #{{ item.sponsor_id }} {{ item.sponsor_name }}
-                                        </td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            </div>
+                            <table class="table table-striped table-bordered table-relationship">
+                                <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Level</th>
+                                    <th>Sponsor</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr v-show="relationship.after.length == 0">
+                                    <td colspan="4" class="text-center">
+                                        <i class="fa fa-cog fa-spin" v-if="is_processing"></i>
+                                        <span v-else>No preview available</span>
+                                    </td>
+                                </tr>
+                                <tr v-for="(item, index) in relationship.after">
+                                    <td v-if="item.message != undefined" colspan="4" class="text-center">
+                                        {{ item.message }}
+                                    </td>
+                                    <td v-if="item.message == undefined">
+                                        #{{ item.member_id }}
+                                    </td>
+                                    <td v-if="item.message == undefined">
+                                        {{ item.member_name }}
+                                    </td>
+                                    <td v-if="item.message == undefined">
+                                        {{ item.level }}
+                                    </td>
+                                    <td v-if="item.message == undefined">
+                                        #{{ item.sponsor_id }} {{ item.sponsor_name }}
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
 
@@ -156,7 +144,6 @@ div.dataTables_wrapper div.dataTables_length select
                     </div>
                 </div>
                 <div role="tabpanel" class="tab-pane" id="tab-log">
-                <div class="table-responsive">
                     <table class="table table-striped table-bordered dt-responsive nowrap" id="table-history" style="width:100%">
                         <thead class="table__header table__header--bg-primary">
                         <tr class="table__row">
@@ -172,7 +159,6 @@ div.dataTables_wrapper div.dataTables_length select
                         <tbody class="table__body">
                         </tbody>
                     </table>
-                </div>    
                 </div>
             </div>
         </div>

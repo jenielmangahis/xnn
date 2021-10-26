@@ -6,16 +6,6 @@ print <<EOS;
 <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.3/css/responsive.bootstrap.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css" />
 <link rel="stylesheet" href="$commission_engine_api_url/css/admin_transactions_report.css?v=1" />
-<link rel="stylesheet" href="$commission_engine_api_url/css/money-admin-menu.css" />
-
-<style>
-    div.dataTables_wrapper div.dataTables_length select 
-    {
-        margin-left: 14px !important;
-        width:102px !important;
-    }
-    .dataTables_scrollHeadInner[style], .dataTable[style] { width:100% !important; }
-</style>
 
 <div id="transactions-report" class="tool-container tool-container--default">
     <div class="row">
@@ -77,56 +67,52 @@ print <<EOS;
             </div>
         </div>
         <div class="col-md-6">
-            <div class="table-responsive">
-                <table id="table-admin-totals" class="table table-striped table-bordered dt-responsive nowrap" style="width: 100% !important;">
-                    <thead class="table__header table__header--bg-primary">
-                    <tr class="table__row">
-                        <th class="table__cell">Totals</th>
-                        <th class="table__cell">All</th>
-                        <th class="table__cell">Approved</th>
-                        <th class="table__cell">Declined</th>
-                        <th class="table__cell">Error</th>
-                        <th class="table__cell">Failed</th>
-                    </tr>
-                    </thead>
-                    <tbody class="table__body">
-                    </tbody>
-                </table>
-            </div>    
+            <table id="table-admin-totals" class="table table-striped table-bordered dt-responsive nowrap" style="width: 100%;">
+                <thead class="table__header table__header--bg-primary">
+                <tr class="table__row">
+                    <th class="table__cell">Totals</th>
+                    <th class="table__cell">All</th>
+                    <th class="table__cell">Approved</th>
+                    <th class="table__cell">Declined</th>
+                    <th class="table__cell">Error</th>
+                    <th class="table__cell">Failed</th>
+                </tr>
+                </thead>
+                <tbody class="table__body">
+				</tbody>
+            </table>
         </div>
     </div>
     <div class="row">
         <div class="col-md-12">
-            <div class="table-responsive">
-                <table id="table-admin-transactions" class="table table-striped table-bordered dt-responsive nowrap" style="width: 100%;">
-                    <thead class="table__header table__header--bg-primary">
-                    <tr class="table__row">
-                        <th class="table__cell">ORDER ID</th>
-                        <th class="table__cell">Purchaser</th>
-                        <th class="table__cell">Sponsor</th>
-                        <th class="table__cell">Product</th>
-                        <th class="table__cell">CV</th>
-                        <th class="table__cell">Volume</th>
-                        <th class="table__cell">Date
-                            <br>Purchase</th>
-                        <th class="table__cell">Price
-                            <br>Paid</th>
-                        <th class="table__cell">Credited</th>
-                        <th class="table__cell">Status</th>
-                        <th class="table__cell">Order
-                            <br>Type</th>
-                        <th class="table__cell">Payment
-                            <br>Type</th>
-                        <th class="table__cell">Phone</th>
-                        <th class="table__cell">Gift Card</th>
-                        <th class="table__cell">Coupon</th>
-                        <th class="table__cell">Ledger</th>
-                    </tr>
-                    </thead>
-                    <tbody class="table__body">
-                    </tbody>
-                </table>
-            </div>    
+            <table id="table-admin-transactions" class="table table-striped table-bordered dt-responsive nowrap" style="width: 100%;">
+                <thead class="table__header table__header--bg-primary">
+                <tr class="table__row">
+                    <th class="table__cell">ORDER ID</th>
+                    <th class="table__cell">Purchaser</th>
+                    <th class="table__cell">Sponsor</th>
+                    <th class="table__cell">Product</th>
+                    <th class="table__cell">CV</th>
+                    <th class="table__cell">Volume</th>
+                    <th class="table__cell">Date
+                        <br>Purchase</th>
+                    <th class="table__cell">Price
+                        <br>Paid</th>
+                    <th class="table__cell">Credited</th>
+                    <th class="table__cell">Status</th>
+                    <th class="table__cell">Order
+                        <br>Type</th>
+                    <th class="table__cell">Payment
+                        <br>Type</th>
+                    <th class="table__cell">Phone</th>
+                    <th class="table__cell">Gift Card</th>
+                    <th class="table__cell">Coupon</th>
+                    <th class="table__cell">Ledger</th>
+                </tr>
+                </thead>
+                <tbody class="table__body">
+				</tbody>
+            </table>
         </div>
     </div>
 </div>

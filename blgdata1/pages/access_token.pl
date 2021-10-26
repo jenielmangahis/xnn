@@ -4,7 +4,7 @@ use HTTP::Request;
 
 our $app_js_version = "1.5";
 our $app_css_version = "1.3";
-our $commission_engine_api_url = "https://office.stg1-bellagraceglobal.xyz:81";
+our $commission_engine_api_url = "https://office.bellagraceglobal.com:81";
 
 our $rank_title = "Rank";
 our $rank_title_plural = "Ranks";

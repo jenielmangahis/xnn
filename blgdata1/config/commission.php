@@ -26,10 +26,11 @@ return [
         'run-matching-bonus' => 5,
         'unilevel-team-commission' => 6,
         'unilevel-team-matching-bonus' => 7,
+        'customer-acquisition-bonus' => 8,
         'leadership-pool' => 9,
         'performance-bonus-pool' => 10,
-        'big-dog-bonus-pool' => 11,
-        'customer-acquisition-bonus' => 12
+        'big-dog-bonus-pool' => 11
+        
     ],
 
     'member-types' => [

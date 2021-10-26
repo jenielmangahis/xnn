@@ -27,7 +27,7 @@
                 this.dt = $("#table-rank-progress").DataTable({
                     // searching: false,
                     // lengthChange: true,
-                    scrollX: true,
+                    // scrollX: true,
                     processing: true,
                     serverSide: true,
                     responsive: true,
@@ -60,37 +60,8 @@
                                 return row.paid_as_rank;
                             }
                         },
-                        {data: 'referral_points', className: "text-center"}, // render: $.fn.dataTable.render.number(',', '.', 2, '$')
-                        {data: 'coach_points', className: "text-center"},
-                        {data: 'organization_points', className: "text-center"},
-                        {data: 'team_group_points', className: "text-center"},
-                        {data: 'preferred_customer_count', className: "text-center"},
-                        {data: 'influencer_count', className: "text-center"},
-                        {data: 'silver_influencer_count', className: "text-center"},
-                        {data: 'gold_influencer_count', className: "text-center"},
-                        {data: 'platinum_influencer_count', className: "text-center"},
-                        {data: 'diamond_influencer_count', className: "text-center"},
-                        {
-                            data: 'is_active',
-                            className: "text-center",
-                            render: function (data, type, row, meta) {
-
-                                if (+row.is_active) {
-                                    return `<span class="label label-success">Yes</span>`;
-                                }
-
-                                return `<span class="label label-warning">No</span>`;
-                            }
-                        },
-                        {data: 'level', className: "text-center"},
-                        {
-                            data: 'sponsor_id',
-                            render: function (data, type, row, meta) {
-                                let sponsor_id = row.sponsor_id;
-                                let sponsor = row.sponsor;
-                                return `${sponsor_id}: ${sponsor}`;
-                            }
-                        },
+                        {data: 'pv', className: "text-center"}, // render: $.fn.dataTable.render.number(',', '.', 2, '$')
+                        {data: 'gv', className: "text-center"},
                         {
                             data: null,
                             orderable: false,
@@ -112,12 +83,12 @@
                             }
                         },
                     ],
-                    columnDefs: [
-
-                        {responsivePriority: 1, targets: 0},
-                        {responsivePriority: 2, targets: -1},
-                        {responsivePriority: 3, targets: 1},
-                    ]
+                    // columnDefs: [
+                    //
+                    //     {responsivePriority: 1, targets: 0},
+                    //     {responsivePriority: 2, targets: -1},
+                    //     {responsivePriority: 3, targets: 1},
+                    // ]
                 });
             },
             getRanks() {

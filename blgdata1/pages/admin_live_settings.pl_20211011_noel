@@ -3,7 +3,7 @@ print <<EOS;
 <link rel="stylesheet" href="$commission_engine_api_url/css/app.css?v=$app_css_version" />
 <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.3/css/responsive.bootstrap.min.css">
 <link rel="stylesheet" href="$commission_engine_api_url/css/datepicker.css?v=$app_css_version" />
-<link rel="stylesheet" href="$commission_engine_api_url/css/admin_sandbox_settings.css?v=1" />
+<link rel="stylesheet" href="$commission_engine_api_url/css/admin_live_settings.css?v=1" />
 <link rel="stylesheet" href="$commission_engine_api_url/css/money-admin-menu.css" />
 
 <style>
@@ -17,10 +17,10 @@ div.dataTables_wrapper div.dataTables_length select
     }    
 </style>
 
-<div id="sandbox-settings" class="sandbox-settings tool-container tool-container--default" v-cloak>
+<div id="live-settings" class="live-settings tool-container tool-container--default" v-cloak>
     <div class="row">
         <div class="col-md-12">
-            <h4>Sandbox Settings</h4>
+            <h4>Live Settings</h4>
             <hr />
         </div>
     </div>
@@ -1127,6 +1127,6 @@ div.dataTables_wrapper div.dataTables_length select
 <script src="https://cdn.datatables.net/responsive/2.2.3/js/responsive.bootstrap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/js/bootstrap-datepicker.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js" integrity="sha256-4iQZ6BVL4qNKlQ27TExEhBN1HFPvAvAMbFavKKosSWQ=" crossorigin="anonymous"></script>
-<script src="$commission_engine_api_url/js/admin_sandbox_settings.js?v=1.1"></script>
+<script src="$commission_engine_api_url/js/admin_live_settings.js?v=1.1"></script>
 EOS
 1;

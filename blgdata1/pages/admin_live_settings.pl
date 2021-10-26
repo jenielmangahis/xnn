@@ -42,7 +42,7 @@ div.dataTables_wrapper div.dataTables_length select
             <div class="tab-content" style="padding: 15px;border: 1px solid #ddd;border-top: none;">
                 <div role="tabpanel" class="tab-pane active" id="fast-start">
 
-                    <div class="row">
+                    <div class="row mtb-15">
                         <div class="col-md-12">
                             <button class="btn btn-primary" v-on:click.prevent="showModalLogs">View Logs</button>
                             <button class="btn btn-primary" v-on:click.prevent="showAddModal">Add</button>
@@ -91,7 +91,7 @@ div.dataTables_wrapper div.dataTables_length select
 
                 <div role="tabpanel" class="tab-pane" id="matching-bonus">
 
-                    <div class="row">
+                    <div class="row mtb-15">
                         <div class="col-md-12">
                             <button class="btn btn-primary" v-on:click.prevent="showMatchingBonusModalLogs">View Logs</button>
                             <button class="btn btn-primary" v-on:click.prevent="showAddMatchingBonusModal">Add</button>
@@ -136,7 +136,7 @@ div.dataTables_wrapper div.dataTables_length select
 
                 <div role="tabpanel" class="tab-pane" id="60-day">
 
-                    <div class="row">
+                    <div class="row mtb-15">
                         <div class="col-md-12">
                             <button class="btn btn-primary" v-on:click.prevent="show60daysModalLogs">View Logs</button>
                             <button class="btn btn-primary" v-on:click.prevent="showAdd60daysModal">Add</button>
@@ -171,7 +171,7 @@ div.dataTables_wrapper div.dataTables_length select
 
                 <div role="tabpanel" class="tab-pane" id="unilevel">
 
-                    <div class="row">
+                    <div class="row mtb-15">
                         <div class="col-md-12">
                             <button class="btn btn-primary" v-on:click.prevent="showUnilevelModalLogs">View Logs</button>
                             <button class="btn btn-primary" v-on:click.prevent="showAddUnilevelModal">Add</button>
@@ -258,7 +258,7 @@ div.dataTables_wrapper div.dataTables_length select
 
                 <div role="tabpanel" class="tab-pane" id="unilevel-matching">
 
-                    <div class="row">
+                    <div class="row mtb-15">
                         <div class="col-md-12">
                             <button class="btn btn-primary" v-on:click.prevent="showUnilevelBonusModalLogs">View Logs</button>
                             <button class="btn btn-primary" v-on:click.prevent="showAddUnilevelBonusModal">Add</button>
@@ -303,7 +303,7 @@ div.dataTables_wrapper div.dataTables_length select
 
                 <div role="tabpanel" class="tab-pane" id="customer-acquisition">
 
-                    <div class="row">
+                    <div class="row mtb-15">
                         <div class="col-md-12">
                             <button class="btn btn-primary" v-on:click.prevent="showCustomerBonusModalLogs">View Logs</button>
                         </div>
@@ -347,7 +347,7 @@ div.dataTables_wrapper div.dataTables_length select
 
                 <div role="tabpanel" class="tab-pane" id="pools">
 
-                    <div class="row">
+                    <div class="row mtb-15">
                         <div class="col-md-12">
                             <button class="btn btn-primary" v-on:click.prevent="showPoolModalLogs">View Logs</button>
                         </div>
@@ -356,7 +356,7 @@ div.dataTables_wrapper div.dataTables_length select
                     <div class="row">
                         <div class="col-md-12">
                             <div class="table-responsive">
-                                <table class="table table-bordered table-striped">
+                                <table class="table table-bordered table-striped" id="tbl-pool" style="width:100%">
                                     <thead>
                                         <tr>
                                             <th>Pool</th>
@@ -365,21 +365,6 @@ div.dataTables_wrapper div.dataTables_length select
                                         </tr>
                                     <thead>
                                     <tbody>
-                                        <tr>
-                                            <td>Performance Bonus</td>
-                                            <td>1%</td>
-                                            <td><button class="btn btn-primary" v-on:click.prevent="showEditPoolModal">Edit</button></td>
-                                        </tr>
-                                        <tr>
-                                            <td>Big Dog Bonus</td>
-                                            <td>1%</td>
-                                            <td><button class="btn btn-primary" v-on:click.prevent="showEditPoolModal">Edit</button></td>
-                                        </tr>
-                                        <tr>
-                                            <td>Leadership Pool</td>
-                                            <td>2%</td>
-                                            <td><button class="btn btn-primary" v-on:click.prevent="showEditPoolModal">Edit</button></td>
-                                        </tr>
                                     </tbody>
                                 </table>
                             </div>

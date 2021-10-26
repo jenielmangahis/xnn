@@ -5,14 +5,6 @@ print <<EOS;
 <link rel="stylesheet" href="$commission_engine_api_url/css/select2-bootstrap.css"/>
 <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.3/css/responsive.bootstrap.min.css">
 <link rel="stylesheet" href="$commission_engine_api_url/css/admin_commission_adjustments.css?v=1.0&app=$app_css_version" />
-<link rel="stylesheet" href="$commission_engine_api_url/css/money-admin-menu.css" />
-
-<style>
-div.dataTables_wrapper div.dataTables_length select 
-    {
-        margin-left: 14px !important;
-    }
-</style>
 
 <div class="tool-container tool-container--default" v-cloak >
 	<div class="row">
@@ -32,21 +24,19 @@ div.dataTables_wrapper div.dataTables_length select
 	</div>
 	<div class="row">
 		<div class="col-md-12">
-		 	<div class="table-responsive">
-				<table class="table table-striped table-bordered dt-responsive nowrap" id="table-adjustments" style="width:100%">
-					<thead class="table__header table__header--bg-primary">
-						<tr class="table__row">
-							<th class="table__cell">Name</th>
-							<th class="table__cell">Commission Type</th>
-							<th class="table__cell">Commission Period</th>
-							<th class="table__cell">Amount</th>
-							<th class="table__cell"></th>
-						</tr>
-					</thead>
-					<tbody class="table__body">
-					</tbody>
-				</table>
-			</div>	
+			<table class="table table-striped table-bordered dt-responsive nowrap" id="table-adjustments" style="width:100%">
+				<thead class="table__header table__header--bg-primary">
+					<tr class="table__row">
+						<th class="table__cell">Name</th>
+						<th class="table__cell">Commission Type</th>
+						<th class="table__cell">Commission Period</th>
+						<th class="table__cell">Amount</th>
+						<th class="table__cell"></th>
+					</tr>
+				</thead>
+                <tbody class="table__body">
+				</tbody>
+			</table>
 		</div>
 	</div>
 
